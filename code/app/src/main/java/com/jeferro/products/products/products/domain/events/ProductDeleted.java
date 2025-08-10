@@ -1,7 +1,7 @@
 package com.jeferro.products.products.products.domain.events;
 
 import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.products.products.domain.models.ProductId;
 import com.jeferro.products.products.products.domain.models.status.ProductStatus;
 import com.jeferro.shared.ddd.domain.events.EventId;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
@@ -15,10 +15,10 @@ public class ProductDeleted extends ProductEvent {
     private final ProductStatus status;
 
     private ProductDeleted(EventId id,
-                           ProductCode code,
+                           ProductId productId,
                            LocalizedField name,
                            ProductStatus status) {
-        super(id, code);
+        super(id, productId);
 
         this.name = name;
         this.status = status;
@@ -27,10 +27,10 @@ public class ProductDeleted extends ProductEvent {
     public static ProductDeleted create(Product product) {
         var id = EventId.create();
 
-        var code = product.getCode();
+        var productId = product.getId();
         var name = product.getName();
         var status = product.getStatus();
 
-        return new ProductDeleted(id, code, name, status);
+        return new ProductDeleted(id, productId, name, status);
     }
 }

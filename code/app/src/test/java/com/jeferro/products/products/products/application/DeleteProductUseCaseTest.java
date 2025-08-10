@@ -69,7 +69,7 @@ class DeleteProductUseCaseTest {
 
         var event = (ProductDeleted) eventInMemoryBus.getFirstOrError();
 
-        assertEquals(product.getId(), event.getCode());
+        assertEquals(product.getId(), event.getProductId());
     }
 
     private Product givenAnAppleInDatabase() {

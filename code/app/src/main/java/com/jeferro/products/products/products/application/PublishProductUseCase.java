@@ -30,16 +30,16 @@ public class PublishProductUseCase extends UseCase<PublishProductParams, Product
     public Product execute(Context context, PublishProductParams params) {
         var product = ensureProductExists(params);
 
-        return publishProduct(params, product);
+        return publishProduct(product);
     }
 
     private Product ensureProductExists(PublishProductParams params) {
-        var productCode = params.getProductCode();
+        var productId = params.getProductId();
 
-        return productsRepository.findByIdOrError(productCode);
+        return productsRepository.findByIdOrError(productId);
     }
 
-    private Product publishProduct(PublishProductParams params, Product product) {
+    private Product publishProduct(Product product) {
         product.publish();
 
         productsRepository.save(product);

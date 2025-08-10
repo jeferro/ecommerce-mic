@@ -1,21 +1,21 @@
 package com.jeferro.products.products.products.domain.events;
 
 import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.products.products.domain.models.ProductId;
 import com.jeferro.shared.ddd.domain.events.EventId;
 
 public class ProductUnpublished extends ProductEvent {
 
     private ProductUnpublished(EventId id,
-                               ProductCode code) {
-        super(id, code);
+                               ProductId productId) {
+        super(id, productId);
     }
 
     public static ProductUnpublished create(Product product) {
         var id = EventId.create();
 
-        var code = product.getCode();
+        var productId = product.getId();
 
-        return new ProductUnpublished(id, code);
+        return new ProductUnpublished(id, productId);
     }
 }

@@ -9,7 +9,7 @@
       "doc": "Identifier of the event"
     },
     {
-      "name": "code",
+      "name": "productId",
       "type": "string",
       "doc": "Identifier of the product updated"
     },

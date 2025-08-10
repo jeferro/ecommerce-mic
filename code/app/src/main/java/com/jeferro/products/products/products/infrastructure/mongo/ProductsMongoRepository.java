@@ -33,14 +33,7 @@ public class ProductsMongoRepository implements ProductsRepository {
 
     private final SequenceGenerator sequenceGenerator;
 
-    @Override
-    public ProductCode nextId() {
-        var value = sequenceGenerator.generate(ProductMongoDTO.class);
-
-        return new ProductCode(value);
-    }
-
-    @Override
+  @Override
     public void save(Product product) {
         var dto = productMongoMapper.toDTO(product);
 

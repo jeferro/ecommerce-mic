@@ -25,8 +25,8 @@ public class GetProductUseCase extends UseCase<GetProductParams, Product> {
 
     @Override
     public Product execute(Context context, GetProductParams params) {
-        var productCode = params.getProductCode();
+        var productId = params.getProductId();
 
-        return productsRepository.findByIdOrError(productCode);
+        return productsRepository.findByIdOrError(productId);
     }
 }

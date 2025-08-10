@@ -36,15 +36,15 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, Product> 
     }
 
     private Product ensureProductExists(DeleteProductParams params) {
-        var productCode = params.getProductCode();
+        var productId = params.getProductId();
 
-        return productsRepository.findByIdOrError(productCode);
+        return productsRepository.findByIdOrError(productId);
     }
 
     private void deleteProduct(Product product) {
         product.delete();
 
-        productsRepository.deleteById(product.getCode());
+        productsRepository.deleteById(product.getId());
 
         eventBus.sendAll(product);
     }

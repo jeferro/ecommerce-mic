@@ -58,7 +58,7 @@ class ProductsRestControllerTest extends RestControllerTest {
                     "en-US": "Apple"
                   }
                 }"""
-                .formatted(apple.getCode(), apple.getTypeId());
+                .formatted(apple.getProductCode(), apple.getTypeId());
 
         var requestBuilder = MockMvcRequestBuilders.post("/v1/products")
                 .contentType(MediaType.APPLICATION_JSON)

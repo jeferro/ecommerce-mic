@@ -9,12 +9,7 @@ import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 public class ProductsInMemoryRepository extends InMemoryRepository<Product, ProductCode>
         implements ProductsRepository {
 
-    @Override
-    public ProductCode nextId() {
-        return new ProductCode("1");
-    }
-
-    @Override
+  @Override
     public PaginatedList<Product> findAll(ProductFilter filter) {
         var entities = data.values().stream()
                 .filter(product -> matchProduct(filter, product))

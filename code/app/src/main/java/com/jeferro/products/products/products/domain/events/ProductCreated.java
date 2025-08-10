@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.domain.events;
 
 import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
 import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.products.products.domain.models.ProductId;
 import com.jeferro.products.products.products.domain.models.status.ProductStatus;
 import com.jeferro.shared.ddd.domain.events.EventId;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
@@ -18,11 +18,11 @@ public class ProductCreated extends ProductEvent {
     private final ProductStatus status;
 
     private ProductCreated(EventId id,
-                           ProductCode code,
+                           ProductId productId,
                            LocalizedField name,
                            ParametricValueId typeId,
                            ProductStatus status) {
-        super(id, code);
+        super(id, productId);
 
         this.name = name;
         this.typeId = typeId;
@@ -32,11 +32,11 @@ public class ProductCreated extends ProductEvent {
     public static ProductCreated create(Product product) {
         var id = EventId.create();
 
-        var code = product.getCode();
+        var productId = product.getId();
         var typeId = product.getTypeId();
         var name = product.getName();
         var status = product.getStatus();
 
-        return new ProductCreated(id, code, name, typeId, status);
+        return new ProductCreated(id, productId, name, typeId, status);
     }
 }

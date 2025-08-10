@@ -8,11 +8,13 @@ import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
+import java.time.Instant;
+
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.PUBLISHED;
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.UNPUBLISHED;
 
 @Getter
-public class Product extends AggregateRoot<ProductCode> {
+public class Product extends AggregateRoot<ProductId> {
 
     private LocalizedField name;
 
@@ -20,7 +22,7 @@ public class Product extends AggregateRoot<ProductCode> {
 
     private ProductStatus status;
 
-    public Product(ProductCode id,
+    public Product(ProductId id,
                    LocalizedField name,
                    ParametricValueId typeId,
                    ProductStatus status) {
@@ -32,13 +34,17 @@ public class Product extends AggregateRoot<ProductCode> {
     }
 
     public static Product create(ProductCode productCode,
+                                 Instant effectiveDate,
                                  ParametricValueId typeId,
                                  LocalizedField name) {
         ValueValidationUtils.isNotNull(productCode, "productCode", Product.class);
+        ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate", Product.class);
         ValueValidationUtils.isNotNull(typeId, "typeId", Product.class);
         ValueValidationUtils.isNotNull(name, "name", Product.class);
 
-        var product = new Product(productCode, name, typeId, UNPUBLISHED);
+        var productId = new ProductId(productCode, effectiveDate);
+
+        var product = new Product(productId, name, typeId, UNPUBLISHED);
 
         var event = ProductCreated.create(product);
         product.record(event);
@@ -82,7 +88,11 @@ public class Product extends AggregateRoot<ProductCode> {
         record(event);
     }
 
-    public ProductCode getCode() {
-        return id;
+    public ProductCode getProductCode() {
+        return id.getProductCode();
+    }
+
+    public Instant getEffectiveDate() {
+        return id.getEffectiveDate();
     }
 }

@@ -20,7 +20,7 @@ public class ProductEventKafkaProducer implements EventBusProducer<ProductEvent>
 
     @Override
     public void send(ProductEvent event) {
-        String key = event.getCode().toString();
+        String key = event.getProductId().toString();
         var data = productKafkaMapper.toDTO(event);
 
         kafkaTemplate.send(productsComponentProperties.getProductsTopic(), key, data);

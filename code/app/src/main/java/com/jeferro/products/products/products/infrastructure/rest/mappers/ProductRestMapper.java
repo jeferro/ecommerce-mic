@@ -4,6 +4,7 @@ import com.jeferro.products.generated.rest.v1.dtos.*;
 import com.jeferro.products.products.products.application.params.*;
 import com.jeferro.products.products.products.domain.models.Product;
 import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.products.products.domain.models.ProductId;
 import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
@@ -15,7 +16,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductRestMapper extends AggregateRestMapper<Product, ProductCode, ProductRestDTO> {
+public abstract d class ProductRestMapper extends AggregateRestMapper<Product, ProductId, ProductRestDTO> {
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 

@@ -1,9 +1,9 @@
 components:
   parameters:
-    productCodePath:
-      name: productCode
+    productIdPath:
+      name: productId
       in: path
-      description: Product code
+      description: Identifier of product
       required: true
       schema:
         type: string
@@ -34,15 +34,26 @@ components:
       type: object
       description: Product information
       required:
+        - id
         - code
+        - effectiveDate
         - typeId
         - name
         - status
       properties:
-        code:
+        id:
           type: string
           description: Identifier of product
+          example: '123456789::2025-08-01T09:00:00Z'
+        code:
+          type: string
+          description: Code of the product
           example: '123456789'
+        effectiveDate:
+          type: string
+          format: date-time
+          description: Effective date of the product
+          example: '2025-08-01T09:00:00Z'
         typeId:
           type: string
           description: Identifier of the product type
@@ -62,14 +73,25 @@ components:
       type: object
       description: Product summary information
       required:
+        - id
         - code
+        - effectiveDate
         - name
         - status
       properties:
+        id:
+          type: string
+          description: Identifier of the product
+          example: '123456789::2025-08-01T09:00:00Z'
         code:
           type: string
-          description: Identifier of product
+          description: Code of the product
           example: '123456789'
+        effectiveDate:
+          type: string
+          format: date-time
+          description: Effective date of the product
+          example: '2025-08-01T09:00:00Z'
         typeId:
           type: string
           description: Identifier of the product type
@@ -111,9 +133,14 @@ components:
       type: object
       description: Create product input
       required:
+        - id
         - typeId
         - name
       properties:
+        id:
+          type: string
+          description: Identifier of the product
+          example: '123456789::2025-08-01T09:00:00Z'
         typeId:
           type: string
           description: Identifier of the product type
