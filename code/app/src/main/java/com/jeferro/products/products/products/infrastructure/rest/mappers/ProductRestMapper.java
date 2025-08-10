@@ -16,7 +16,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(config = MapstructConfig.class)
-public abstract d class ProductRestMapper extends AggregateRestMapper<Product, ProductId, ProductRestDTO> {
+public abstract class ProductRestMapper extends AggregateRestMapper<Product, ProductId, ProductRestDTO> {
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 
