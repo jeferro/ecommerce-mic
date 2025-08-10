@@ -137,7 +137,7 @@ components:
         - typeId
         - name
       properties:
-        id:
+        productId:
           type: string
           description: Identifier of the product
           example: '123456789::2025-08-01T09:00:00Z'

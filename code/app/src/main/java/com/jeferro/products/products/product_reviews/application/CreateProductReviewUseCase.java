@@ -59,7 +59,7 @@ public class CreateProductReviewUseCase extends UseCase<CreateProductReviewParam
 
         var product = productsRepository.findByIdOrError(productCode);
 
-        return product.getProductCode();
+        return product.getCode();
     }
 
     private void ensureProductReviewDoesNotExists(Context context, ProductCode productCode) {

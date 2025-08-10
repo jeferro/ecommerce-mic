@@ -31,7 +31,7 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, Product> 
 
     @Override
     public Product execute(Context context, CreateProductParams params) {
-        var code = params.getCode();
+        var code = params.getProductId();
         var effectiveDate = params.getEffectiveDate();
         var typeId = params.getTypeId();
         var name = params.getName();

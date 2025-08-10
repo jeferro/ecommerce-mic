@@ -50,13 +50,12 @@ class CreateProductUseCaseTest {
         var name = LocalizedField.createOf("en-US", "Apple");
         var params = new CreateProductParams(
             productCode,
-            effectiveDate,
             fruit.getId(),
             name);
 
         var result = createProductUseCase.execute(userContext, params);
 
-        assertEquals(productCode, result.getProductCode());
+        assertEquals(productCode, result.getCode());
         assertEquals(effectiveDate, result.getEffectiveDate());
         assertEquals(name, result.getName());
         assertEquals(fruit.getId(), result.getTypeId());

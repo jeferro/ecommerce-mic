@@ -88,7 +88,7 @@ public class Product extends AggregateRoot<ProductId> {
         record(event);
     }
 
-    public ProductCode getProductCode() {
+    public ProductCode getCode() {
         return id.getProductCode();
     }
 
