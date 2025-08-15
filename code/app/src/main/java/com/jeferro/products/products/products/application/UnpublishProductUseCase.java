@@ -34,9 +34,9 @@ public class UnpublishProductUseCase extends UseCase<UnpublishProductParams, Pro
     }
 
     private Product ensureProductExists(UnpublishProductParams params) {
-        var productId = params.getProductId();
+        var id = params.getId();
 
-        return productsRepository.findByIdOrError(productId);
+        return productsRepository.findByIdOrError(id);
     }
 
     private Product unpublishProduct(UnpublishProductParams params, Product product) {

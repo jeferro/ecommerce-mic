@@ -1,3 +1,3 @@
-data[0] = UpdateProductParams[name=LocalizedField[values={en-US=LocalizedField[values={en-US=Apple, es-ES=Manzana}]}],productCode=apple]
+data[0] = UpdateProductParams[id=apple::2025-08-15T10:15:30Z,name=LocalizedField[values={en-US=LocalizedField[values={en-US=Apple, es-ES=Manzana}]}]]
 data[1] = 200
-data[2] = {"code":"apple","typeId":"fruit","name":{"en-US":"Apple"},"status":"PUBLISHED"}
+data[2] = {"id":"apple::2025-08-15T10:15:30Z","code":"apple","startEffectiveDate":"2025-08-15T10:15:30Z","typeId":"fruit","name":{"en-US":"Apple"},"status":"PUBLISHED"}

@@ -42,14 +42,14 @@ public abstract class ProductRestMapper extends AggregateRestMapper<Product, Pro
 
     public abstract CreateProductParams toCreateProductParams(CreateProductInputRestDTO productInputRestDTO);
 
-    public abstract GetProductParams toGetProductParams(String productCode);
+    public abstract GetProductParams toGetProductParams(String id);
 
     @Mapping(target = "name", source = "inputRestDTO.name")
-    public abstract UpdateProductParams toUpdateProductParams(String productCode, UpdateProductInputRestDTO inputRestDTO);
+    public abstract UpdateProductParams toUpdateProductParams(String id, UpdateProductInputRestDTO inputRestDTO);
 
-    public abstract PublishProductParams toPublishProductParams(String productCode);
+    public abstract PublishProductParams toPublishProductParams(String id);
 
-    public abstract UnpublishProductParams toUnpublishProductParams(String productCode);
+    public abstract UnpublishProductParams toUnpublishProductParams(String id);
 
-    public abstract DeleteProductParams toDeleteProductParams(String productCode);
+    public abstract DeleteProductParams toDeleteProductParams(String id);
 }

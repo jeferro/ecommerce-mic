@@ -1,12 +1,12 @@
 package com.jeferro.products.products.products.domain.repositories;
 
 import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.products.products.domain.models.ProductId;
 import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
-public class ProductsInMemoryRepository extends InMemoryRepository<Product, ProductCode>
+public class ProductsInMemoryRepository extends InMemoryRepository<Product, ProductId>
         implements ProductsRepository {
 
   @Override

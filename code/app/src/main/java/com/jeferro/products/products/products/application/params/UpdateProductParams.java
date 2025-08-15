@@ -10,17 +10,17 @@ import lombok.Getter;
 @Getter
 public class UpdateProductParams extends Params<Product> {
 
-    private final ProductId productId;
+    private final ProductId id;
 
     private final LocalizedField name;
 
-    public UpdateProductParams(ProductId productId, LocalizedField name) {
+    public UpdateProductParams(ProductId id, LocalizedField name) {
         super();
 
-        ValueValidationUtils.isNotNull(productId, "productId", this);
+        ValueValidationUtils.isNotNull(id, "id", this);
         ValueValidationUtils.isNotNull(name, "name", this);
 
-        this.productId = productId;
+        this.id = id;
         this.name = name;
     }
 }

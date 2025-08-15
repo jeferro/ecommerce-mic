@@ -38,8 +38,9 @@ public class CreateProductReviewUseCase extends UseCase<CreateProductReviewParam
     @Override
     public ProductReview execute(Context context, CreateProductReviewParams params) {
         Auth auth = context.getAuth();
+        var productCode = params.getProductCode();
 
-        var productCode = ensureProductExists(params);
+        ensureProductExists(productCode);
 
         ensureUserIsAuthenticated(auth);
 
@@ -54,12 +55,8 @@ public class CreateProductReviewUseCase extends UseCase<CreateProductReviewParam
         }
     }
 
-    private ProductCode ensureProductExists(CreateProductReviewParams params) {
-        var productCode = params.getProductCode();
-
-        var product = productsRepository.findByIdOrError(productCode);
-
-        return product.getCode();
+    private void ensureProductExists(ProductCode productCode) {
+        // TODO productsRepository.findByIdOrError(productCode);
     }
 
     private void ensureProductReviewDoesNotExists(Context context, ProductCode productCode) {

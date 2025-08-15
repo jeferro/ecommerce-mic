@@ -14,23 +14,20 @@ public class ProductUpdated extends ProductEvent {
 
     private final ProductStatus status;
 
-    private ProductUpdated(EventId id,
-                           ProductId productId,
+    private ProductUpdated(ProductId productId,
                            LocalizedField name,
                            ProductStatus status) {
-        super(id, productId);
+        super(productId);
 
         this.name = name;
         this.status = status;
     }
 
     public static ProductUpdated create(Product product) {
-        var id = EventId.create();
-
-        var productId = product.getId();
+        var id = product.getId();
         var name = product.getName();
         var status = product.getStatus();
 
-        return new ProductUpdated(id, productId, name, status);
+        return new ProductUpdated(id, name, status);
     }
 }

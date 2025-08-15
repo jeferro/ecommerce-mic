@@ -11,7 +11,7 @@ public class ProductNotFoundException extends NotFoundException {
         super(PRODUCT_NOT_FOUND, "Product not found", message);
     }
 
-    public static ProductNotFoundException createOf(ProductId productId) {
-        return new ProductNotFoundException("Product " + productId.getProductCode() + " with " + productId.getEffectiveDate() + " not found");
+    public static ProductNotFoundException createOf(ProductId id) {
+        return new ProductNotFoundException("Product " + id + " not found");
     }
 }

@@ -33,12 +33,13 @@ class DeleteProductUseCaseTest {
     void givenOneProduct_whenDeleteProduct_thenDeletesProduct() {
         var apple = givenAnAppleInDatabase();
 
-        var userContext = ContextMother.user();
         var params = new DeleteProductParams(
                 apple.getId()
         );
 
-        var result = deleteProductUseCase.execute(userContext, params);
+        var result = deleteProductUseCase.execute(
+            ContextMother.user(),
+            params);
 
         assertEquals(apple, result);
 
@@ -69,7 +70,7 @@ class DeleteProductUseCaseTest {
 
         var event = (ProductDeleted) eventInMemoryBus.getFirstOrError();
 
-        assertEquals(product.getId(), event.getProductId());
+        assertEquals(product.getId(), event.getId());
     }
 
     private Product givenAnAppleInDatabase() {

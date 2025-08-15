@@ -4,12 +4,12 @@
   "name": "ProductUpdatedAvroDTO",
   "fields": [
     {
-      "name": "id",
+      "name": "eventId",
       "type": "string",
       "doc": "Identifier of the event"
     },
     {
-      "name": "productId",
+      "name": "id",
       "type": "string",
       "doc": "Identifier of the product updated"
     },

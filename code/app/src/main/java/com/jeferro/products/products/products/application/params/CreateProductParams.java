@@ -11,22 +11,22 @@ import lombok.Getter;
 @Getter
 public class CreateProductParams extends Params<Product> {
 
-  private final ProductId productId;
+  private final ProductId id;
 
   private final ParametricValueId typeId;
 
   private final LocalizedField name;
 
-  public CreateProductParams(ProductId productId,
+  public CreateProductParams(ProductId id,
 	  ParametricValueId typeId,
 	  LocalizedField name) {
 	super();
 
-	ValueValidationUtils.isNotNull(productId, "productId", this);
+	ValueValidationUtils.isNotNull(id, "id", this);
 	ValueValidationUtils.isNotNull(typeId, "typeId", this);
 	ValueValidationUtils.isNotNull(name, "name", this);
 
-	this.productId = productId;
+	this.id = id;
 	this.typeId = typeId;
 	this.name = name;
   }

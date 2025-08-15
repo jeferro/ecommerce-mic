@@ -54,7 +54,6 @@ class UpdateProductUseCaseTest {
     void givenNoProducts_whenUpdateProduct_thenThrowsException() {
         var apple = ProductMother.apple();
 
-        var userContext = ContextMother.user();
         var newName = LocalizedField.createOf("en-US", "new product name");
         var params = new UpdateProductParams(
                 apple.getId(),
@@ -62,7 +61,9 @@ class UpdateProductUseCaseTest {
         );
 
         assertThrows(ProductNotFoundException.class,
-                () -> updateProductUseCase.execute(userContext, params));
+                () -> updateProductUseCase.execute(
+                    ContextMother.user(),
+                    params));
     }
 
     private void assertProductDataInDatabase(Product product) {
@@ -76,7 +77,7 @@ class UpdateProductUseCaseTest {
 
         var event = (ProductUpdated) eventInMemoryBus.getFirstOrError();
 
-        assertEquals(product.getId(), event.getProductId());
+        assertEquals(product.getId(), event.getId());
     }
 
     private Product givenAnAppleInDatabase() {

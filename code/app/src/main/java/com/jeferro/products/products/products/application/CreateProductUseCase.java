@@ -31,14 +31,13 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, Product> 
 
     @Override
     public Product execute(Context context, CreateProductParams params) {
-        var code = params.getProductId();
-        var effectiveDate = params.getEffectiveDate();
+        var id = params.getId();
         var typeId = params.getTypeId();
         var name = params.getName();
 
         parametricValidator.validateProductType(typeId);
 
-        var product = Product.create(code, effectiveDate, typeId, name);
+        var product = Product.create(id, typeId, name);
 
         productsRepository.save(product);
 

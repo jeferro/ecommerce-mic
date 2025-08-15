@@ -4,7 +4,7 @@
   "name": "ProductReviewUpdatedAvroDTO",
   "fields": [
     {
-      "name": "id",
+      "name": "eventId",
       "type": "string",
       "doc": "Identifier of the event"
     },

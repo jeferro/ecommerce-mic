@@ -6,16 +6,13 @@ import com.jeferro.shared.ddd.domain.events.EventId;
 
 public class ProductUnpublished extends ProductEvent {
 
-    private ProductUnpublished(EventId id,
-                               ProductId productId) {
-        super(id, productId);
+    private ProductUnpublished(ProductId productId) {
+        super(productId);
     }
 
     public static ProductUnpublished create(Product product) {
-        var id = EventId.create();
+        var id = product.getId();
 
-        var productId = product.getId();
-
-        return new ProductUnpublished(id, productId);
+        return new ProductUnpublished(id);
     }
 }

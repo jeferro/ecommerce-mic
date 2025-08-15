@@ -33,18 +33,14 @@ public class Product extends AggregateRoot<ProductId> {
         this.status = status;
     }
 
-    public static Product create(ProductCode productCode,
-                                 Instant effectiveDate,
+    public static Product create(ProductId id,
                                  ParametricValueId typeId,
                                  LocalizedField name) {
-        ValueValidationUtils.isNotNull(productCode, "productCode", Product.class);
-        ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate", Product.class);
+        ValueValidationUtils.isNotNull(id, "id", Product.class);
         ValueValidationUtils.isNotNull(typeId, "typeId", Product.class);
         ValueValidationUtils.isNotNull(name, "name", Product.class);
 
-        var productId = new ProductId(productCode, effectiveDate);
-
-        var product = new Product(productId, name, typeId, UNPUBLISHED);
+        var product = new Product(id, name, typeId, UNPUBLISHED);
 
         var event = ProductCreated.create(product);
         product.record(event);
@@ -89,10 +85,10 @@ public class Product extends AggregateRoot<ProductId> {
     }
 
     public ProductCode getCode() {
-        return id.getProductCode();
+        return id.getCode();
     }
 
-    public Instant getEffectiveDate() {
-        return id.getEffectiveDate();
+    public Instant getStartEffectiveDate() {
+        return id.getStartEffectiveDate();
     }
 }

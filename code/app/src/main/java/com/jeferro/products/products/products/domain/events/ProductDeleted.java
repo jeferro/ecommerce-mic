@@ -14,23 +14,20 @@ public class ProductDeleted extends ProductEvent {
 
     private final ProductStatus status;
 
-    private ProductDeleted(EventId id,
-                           ProductId productId,
+    private ProductDeleted(ProductId id,
                            LocalizedField name,
                            ProductStatus status) {
-        super(id, productId);
+        super(id);
 
         this.name = name;
         this.status = status;
     }
 
     public static ProductDeleted create(Product product) {
-        var id = EventId.create();
-
-        var productId = product.getId();
+        var id = product.getId();
         var name = product.getName();
         var status = product.getStatus();
 
-        return new ProductDeleted(id, productId, name, status);
+        return new ProductDeleted(id, name, status);
     }
 }

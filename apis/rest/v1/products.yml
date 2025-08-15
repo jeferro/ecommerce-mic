@@ -36,7 +36,7 @@ components:
       required:
         - id
         - code
-        - effectiveDate
+        - startEffectiveDate
         - typeId
         - name
         - status
@@ -49,10 +49,10 @@ components:
           type: string
           description: Code of the product
           example: '123456789'
-        effectiveDate:
+        startEffectiveDate:
           type: string
           format: date-time
-          description: Effective date of the product
+          description: Start effective date of the product
           example: '2025-08-01T09:00:00Z'
         typeId:
           type: string
@@ -75,7 +75,7 @@ components:
       required:
         - id
         - code
-        - effectiveDate
+        - startEffectiveDate
         - name
         - status
       properties:
@@ -87,10 +87,10 @@ components:
           type: string
           description: Code of the product
           example: '123456789'
-        effectiveDate:
+        startEffectiveDate:
           type: string
           format: date-time
-          description: Effective date of the product
+          description: Start effective date of the product
           example: '2025-08-01T09:00:00Z'
         typeId:
           type: string
@@ -137,7 +137,7 @@ components:
         - typeId
         - name
       properties:
-        productId:
+        id:
           type: string
           description: Identifier of the product
           example: '123456789::2025-08-01T09:00:00Z'

@@ -12,14 +12,14 @@ public interface ProductsRepository {
 
     void save(Product product);
 
-    Optional<Product> findById(ProductId productId);
+    Optional<Product> findById(ProductId id);
 
-    default Product findByIdOrError(ProductId productId) {
-        return findById(productId)
-                .orElseThrow(() -> ProductNotFoundException.createOf(productId));
+    default Product findByIdOrError(ProductId id) {
+        return findById(id)
+                .orElseThrow(() -> ProductNotFoundException.createOf(id));
     }
 
-    void deleteById(ProductId productId);
+    void deleteById(ProductId id);
 
     PaginatedList<Product> findAll(ProductFilter filter);
 }

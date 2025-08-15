@@ -9,13 +9,13 @@ import lombok.Getter;
 @Getter
 public class GetProductParams extends Params<Product> {
 
-    private final ProductId productId;
+    private final ProductId id;
 
-    public GetProductParams(ProductId productId) {
+    public GetProductParams(ProductId id) {
         super();
 
-        ValueValidationUtils.isNotNull(productId, "productId", this);
+        ValueValidationUtils.isNotNull(id, "id", this);
 
-        this.productId = productId;
+        this.id = id;
     }
 }

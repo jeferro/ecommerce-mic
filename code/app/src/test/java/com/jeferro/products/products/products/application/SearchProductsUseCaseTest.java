@@ -28,12 +28,13 @@ class SearchProductsUseCaseTest {
     void givenTwoProducts_whenListProducts_thenReturnsAllProducts() {
         var databaseData = givenSeveralProductsInDatabase();
 
-        var userContext = ContextMother.user();
         var params = new SearchProductsParams(
                 ProductFilter.createEmpty()
         );
 
-        var result = searchProductsUseCase.execute(userContext, params);
+        var result = searchProductsUseCase.execute(
+            ContextMother.user(),
+            params);
 
         assertEquals(2, result.size());
         assertTrue(result.contains(databaseData.apple()));

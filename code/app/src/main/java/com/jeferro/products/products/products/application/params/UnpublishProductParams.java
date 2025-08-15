@@ -9,13 +9,13 @@ import lombok.Getter;
 @Getter
 public class UnpublishProductParams extends Params<Product> {
 
-    private final ProductId productId;
+    private final ProductId id;
 
-    public UnpublishProductParams(ProductId productId) {
+    public UnpublishProductParams(ProductId id) {
         super();
 
-        ValueValidationUtils.isNotNull(productId, "productId", this);
+        ValueValidationUtils.isNotNull(id, "id", this);
 
-        this.productId = productId;
+        this.id = id;
     }
 }

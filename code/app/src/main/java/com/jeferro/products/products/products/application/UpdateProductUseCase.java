@@ -34,9 +34,9 @@ public class UpdateProductUseCase extends UseCase<UpdateProductParams, Product> 
     }
 
     private Product ensureProductExists(UpdateProductParams params) {
-        var productId = params.getProductId();
+        var id = params.getId();
 
-        return productsRepository.findByIdOrError(productId);
+        return productsRepository.findByIdOrError(id);
     }
 
     private Product updateProduct(UpdateProductParams params, Product product) {

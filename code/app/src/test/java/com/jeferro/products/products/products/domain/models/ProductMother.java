@@ -11,8 +11,8 @@ public class ProductMother {
 
     public static Product apple() {
         var productCode = ProductCodeMother.appleCode();
-        var effectiveDate = Instant.now();
-        var productId = new ProductId(productCode, effectiveDate);
+        var startEffectiveDate = Instant.parse("2025-08-15T10:15:30.00Z");
+        var productId = ProductId.createOf(productCode, startEffectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(
@@ -24,8 +24,8 @@ public class ProductMother {
 
     public static Product pear() {
         var productCode = ProductCodeMother.pearCode();
-        var effectiveDate = Instant.now();
-        var productId = new ProductId(productCode, effectiveDate);
+        var startEffectiveDate = Instant.parse("2025-08-15T10:15:30.00Z");
+        var productId = ProductId.createOf(productCode, startEffectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(

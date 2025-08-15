@@ -29,12 +29,13 @@ class GetProductUseCaseTest {
     void givenOneProduct_whenGetProduct_thenReturnsProduct() {
         var apple = givenAnAppleInDatabase();
 
-        var userContext = ContextMother.user();
         var params = new GetProductParams(
                 apple.getId()
         );
 
-        var result = getProductUseCase.execute(userContext, params);
+        var result = getProductUseCase.execute(
+            ContextMother.user(),
+            params);
 
         assertEquals(apple, result);
     }
