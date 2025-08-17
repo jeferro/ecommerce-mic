@@ -11,16 +11,22 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 public class AuthMother {
 
-    public static UserAuth user() {
+    public static UserAuth john() {
         var roles = Set.of(USER);
 
-        return new UserAuth("user", roles);
+        return new UserAuth("john", roles);
     }
 
-    public static UserAuth admin() {
+    public static UserAuth james() {
+        var roles = Set.of(USER);
+
+        return new UserAuth("james", roles);
+    }
+
+    public static UserAuth emily() {
         var roles = Set.of(ADMIN);
 
-        return new UserAuth("admin", roles);
+        return new UserAuth("emily", roles);
     }
 
     public static AnonymousAuth anonymous() {

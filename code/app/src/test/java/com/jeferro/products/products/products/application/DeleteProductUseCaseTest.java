@@ -31,38 +31,41 @@ class DeleteProductUseCaseTest {
 
     @Test
     void givenOneProduct_whenDeleteProduct_thenDeletesProduct() {
-        var apple = givenAnAppleInDatabase();
+        var appleV1 = ProductMother.appleV1();
 
         var params = new DeleteProductParams(
-                apple.getId()
+                appleV1.getId()
         );
 
         var result = deleteProductUseCase.execute(
-            ContextMother.user(),
+            ContextMother.john(),
             params);
 
-        assertEquals(apple, result);
+        assertEquals(appleV1, result);
 
-        assertProductDoesNotExistInDatabase();
+        assertProductDoesNotExistInDatabase(appleV1);
 
-        assertProductDeletedWasPublished(apple);
+        assertProductDeletedWasPublished(appleV1);
     }
 
     @Test
-    void givenNoProducts_whenDeleteProduct_thenThrowsException() {
-        var apple = ProductMother.apple();
+    void givenUnknownProduct_whenDeleteProduct_thenThrowsException() {
+        var bananaV1 = ProductMother.bananaV1();
 
-        var userContext = ContextMother.user();
         var params = new DeleteProductParams(
-                apple.getId()
+                bananaV1.getId()
         );
 
         assertThrows(ProductNotFoundException.class,
-                () -> deleteProductUseCase.execute(userContext, params));
+                () -> deleteProductUseCase.execute(
+                    ContextMother.john(),
+                    params));
     }
 
-    private void assertProductDoesNotExistInDatabase() {
-        assertTrue(productsInMemoryRepository.isEmpty());
+    private void assertProductDoesNotExistInDatabase(Product appleV1) {
+        var product = productsInMemoryRepository.findById(appleV1.getId());
+
+        assertTrue(product.isEmpty());
     }
 
     private void assertProductDeletedWasPublished(Product product) {
@@ -71,11 +74,5 @@ class DeleteProductUseCaseTest {
         var event = (ProductDeleted) eventInMemoryBus.getFirstOrError();
 
         assertEquals(product.getId(), event.getId());
-    }
-
-    private Product givenAnAppleInDatabase() {
-        var apple = ProductMother.apple();
-        productsInMemoryRepository.init(apple);
-        return apple;
     }
 }

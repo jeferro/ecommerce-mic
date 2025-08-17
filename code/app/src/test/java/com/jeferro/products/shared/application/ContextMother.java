@@ -7,15 +7,22 @@ import java.util.Locale;
 
 public class ContextMother {
 
-    public static Context user() {
-        var auth = AuthMother.user();
+    public static Context john() {
+        var auth = AuthMother.john();
         var locale = Locale.of("en", "US");
 
         return new Context(auth, locale);
     }
 
-    public static Context admin() {
-        var auth = AuthMother.admin();
+    public static Context james() {
+        var auth = AuthMother.james();
+        var locale = Locale.of("en", "US");
+
+        return new Context(auth, locale);
+    }
+
+    public static Context emily() {
+        var auth = AuthMother.emily();
         var locale = Locale.of("en", "US");
 
         return new Context(auth, locale);

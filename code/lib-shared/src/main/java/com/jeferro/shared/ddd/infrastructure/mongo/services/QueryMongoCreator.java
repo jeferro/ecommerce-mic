@@ -39,7 +39,7 @@ public abstract class QueryMongoCreator<Order, F extends Filter<Order>> {
     }
 
     private Pageable createPageable(F filter) {
-        int pageNumber = filter.getPageNumber() - 1;
+        int pageNumber = filter.getPageNumber();
         int pageSize = filter.getPageSize();
 
         return PageRequest.of(pageNumber, pageSize);

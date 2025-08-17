@@ -26,8 +26,8 @@ class ProductsRestControllerTest extends RestControllerTest {
     @Test
     void execute_list_products_on_request() throws Exception {
         var products = PaginatedList.createOfItems(
-                ProductMother.apple(),
-                ProductMother.pear()
+                ProductMother.appleV1(),
+                ProductMother.pearV1()
         );
         stubUseCaseBus.init(products);
 
@@ -47,7 +47,7 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_create_product_on_request() throws Exception {
-        var apple = ProductMother.apple();
+        var apple = ProductMother.appleV1();
         stubUseCaseBus.init(apple);
 
         var requestContent = """
@@ -79,7 +79,7 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_get_product_on_request() throws Exception {
-        var apple = ProductMother.apple();
+        var apple = ProductMother.appleV1();
         stubUseCaseBus.init(apple);
 
         var requestBuilder = MockMvcRequestBuilders.get("/v1/products/" + apple.getId())
@@ -98,7 +98,7 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_update_product_on_request() throws Exception {
-        var apple = ProductMother.apple();
+        var apple = ProductMother.appleV1();
         stubUseCaseBus.init(apple);
 
         var requestContent = """
@@ -126,7 +126,7 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_delete_product_on_request() throws Exception {
-        var apple = ProductMother.apple();
+        var apple = ProductMother.appleV1();
         stubUseCaseBus.init(apple);
 
         var requestBuilder = MockMvcRequestBuilders.delete("/v1/products/" + apple.getId())

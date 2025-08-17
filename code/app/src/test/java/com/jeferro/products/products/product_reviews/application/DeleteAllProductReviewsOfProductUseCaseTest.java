@@ -6,6 +6,7 @@ import com.jeferro.products.products.product_reviews.domain.models.ProductReview
 import com.jeferro.products.products.product_reviews.domain.models.ProductReviewMother;
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsInMemoryRepository;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
+import com.jeferro.products.products.products.domain.models.ProductMother;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,16 +36,15 @@ class DeleteAllProductReviewsOfProductUseCaseTest {
 
     @Test
     void givenSeveralReviewsOfSameProduct_whenDeleteItsReviews_thenPublishEvents() {
-        givenSeveralAppleReviewsInDatabase();
-
-        var adminContext = ContextMother.admin();
-        var appleCode = ProductCodeMother.appleCode();
+        var appleCode = ProductCodeMother.apple();
 
         var params = new DeleteAllProductReviewsOfProductParams(
                 appleCode
         );
 
-        deleteAllProductReviewsOfProductUseCase.execute(adminContext, params);
+        deleteAllProductReviewsOfProductUseCase.execute(
+            ContextMother.emily(),
+            params);
 
         assertThereAreNotReviewsOfApple();
 
@@ -53,14 +53,15 @@ class DeleteAllProductReviewsOfProductUseCaseTest {
 
     @Test
     void givenProductDoNotHaveReviews_whenDeleteItsReviews_thenDoNothing() {
-        var adminContext = ContextMother.admin();
-        var appleCode = ProductCodeMother.appleCode();
+        var pearV1 = ProductMother.pearV1();
 
         var params = new DeleteAllProductReviewsOfProductParams(
-                appleCode
+                pearV1.getCode()
         );
 
-        deleteAllProductReviewsOfProductUseCase.execute(adminContext, params);
+        deleteAllProductReviewsOfProductUseCase.execute(
+            ContextMother.emily(),
+            params);
 
         assertNoEventsWerePublished();
     }
@@ -79,22 +80,16 @@ class DeleteAllProductReviewsOfProductUseCaseTest {
             notifiedProductReviewIds.add(productReviewDeleted.getProductReviewId());
         });
 
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
-        var adminReviewOfApple = ProductReviewMother.adminReviewOfApple();
-        Set<ProductReviewId> deletedProductReviewIds = Set.of(userReviewOfApple.getId(),
-                adminReviewOfApple.getId());
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
+        var emilyReviewOfApple = ProductReviewMother.emilyReviewOfApple();
+        Set<ProductReviewId> deletedProductReviewIds = Set.of(johnReviewOfApple.getId(),
+                emilyReviewOfApple.getId());
 
         assertEquals(deletedProductReviewIds, notifiedProductReviewIds);
     }
 
     private void assertNoEventsWerePublished() {
         assertTrue(eventInMemoryBus.isEmpty());
-    }
-
-    private void givenSeveralAppleReviewsInDatabase() {
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
-        var adminReviewOfApple = ProductReviewMother.adminReviewOfApple();
-        productReviewsInMemoryRepository.init(userReviewOfApple, adminReviewOfApple);
     }
 
 }

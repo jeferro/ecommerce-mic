@@ -32,17 +32,18 @@ class UpdateProductReviewUseCaseTest {
 
     @Test
     void givenAProductReview_whenUpdateProductReview_thenReturnsUpdatedProductReview() {
-        var userReviewOfApple = givenAnUserProductReviewOfAppleInDatabase();
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var newComment = "New comment about apple";
-        var userContext = ContextMother.user();
         var params = new UpdateProductReviewParams(
-                userReviewOfApple.getId(),
+                johnReviewOfApple.getId(),
                 newComment
         );
-        var result = updateProductReviewUseCase.execute(userContext, params);
+        var result = updateProductReviewUseCase.execute(
+            ContextMother.john(),
+            params);
 
-        assertResult(userReviewOfApple, result, newComment);
+        assertResult(johnReviewOfApple, result, newComment);
 
         assertProductReviewInDatabase(result);
 
@@ -51,40 +52,41 @@ class UpdateProductReviewUseCaseTest {
 
     @Test
     void givenNoProductReview_whenUpdateProductReview_thenThrowsException() {
-        var userContext = ContextMother.user();
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
+        var jamesReviewOfApple = ProductReviewMother.jamesReviewOfApple();
         var newComment = "New comment about apple";
         var params = new UpdateProductReviewParams(
-                userReviewOfApple.getId(),
+                jamesReviewOfApple.getId(),
                 newComment
         );
 
         assertThrows(ProductReviewNotFoundException.class,
-                () -> updateProductReviewUseCase.execute(userContext, params));
+                () -> updateProductReviewUseCase.execute(
+                    ContextMother.james(),
+                    params));
     }
 
     @Test
     void givenOtherUserCommentsOnProduct_whenUpdateProductReviewOfOtherUser_throwsException() {
-        var userReviewOfApple = givenAnUserProductReviewOfAppleInDatabase();
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
-        var adminContext = ContextMother.admin();
         var newComment = "New comment about apple";
         var params = new UpdateProductReviewParams(
-                userReviewOfApple.getId(),
+                johnReviewOfApple.getId(),
                 newComment
         );
 
         assertThrows(ProductReviewDoesNotBelongUserException.class,
-                () -> updateProductReviewUseCase.execute(adminContext, params));
+                () -> updateProductReviewUseCase.execute(
+                    ContextMother.emily(),
+                    params));
     }
 
     private static void assertResult(ProductReview userReviewOfApple, ProductReview result, String newComment) {
         assertEquals(userReviewOfApple.getId(), result.getId());
-        assertEquals(newComment, userReviewOfApple.getComment());
+        assertEquals(newComment, result.getComment());
     }
 
     private void assertProductReviewInDatabase(ProductReview result) {
-        assertEquals(1, productReviewsInMemoryRepository.size());
         assertTrue(productReviewsInMemoryRepository.contains(result));
     }
 
@@ -94,11 +96,5 @@ class UpdateProductReviewUseCaseTest {
         var event = (ProductReviewUpdated) eventInMemoryBus.getFirstOrError();
 
         assertEquals(result.getId(), event.getProductReviewId());
-    }
-
-    private ProductReview givenAnUserProductReviewOfAppleInDatabase() {
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
-        productReviewsInMemoryRepository.init(userReviewOfApple);
-        return userReviewOfApple;
     }
 }

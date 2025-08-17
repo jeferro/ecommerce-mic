@@ -22,25 +22,34 @@ public class Product extends AggregateRoot<ProductId> {
 
     private ProductStatus status;
 
+    private final Instant endEffectiveDate;
+
     public Product(ProductId id,
                    LocalizedField name,
                    ParametricValueId typeId,
+                   Instant endEffectiveDate,
                    ProductStatus status) {
         super(id);
 
         this.name = name;
         this.typeId = typeId;
         this.status = status;
+        this.endEffectiveDate = endEffectiveDate;
     }
 
     public static Product create(ProductId id,
                                  ParametricValueId typeId,
-                                 LocalizedField name) {
+                                 LocalizedField name,
+                                 Product nextProduct) {
         ValueValidationUtils.isNotNull(id, "id", Product.class);
         ValueValidationUtils.isNotNull(typeId, "typeId", Product.class);
         ValueValidationUtils.isNotNull(name, "name", Product.class);
+        ValueValidationUtils.ensure(() -> nextProduct == null || nextProduct.hasSameCode(id.getCode()),
+            "Next product version hasn't belong new product version");
 
-        var product = new Product(id, name, typeId, UNPUBLISHED);
+        var endEffectiveDate = nextProduct != null ? nextProduct.getEffectiveDate() : null;
+
+        var product = new Product(id, name, typeId, endEffectiveDate, UNPUBLISHED);
 
         var event = ProductCreated.create(product);
         product.record(event);
@@ -84,11 +93,15 @@ public class Product extends AggregateRoot<ProductId> {
         record(event);
     }
 
+    public boolean hasSameCode(ProductCode code){
+        return getCode().equals(code);
+    }
+
     public ProductCode getCode() {
         return id.getCode();
     }
 
-    public Instant getStartEffectiveDate() {
-        return id.getStartEffectiveDate();
+    public Instant getEffectiveDate() {
+        return id.getEffectiveDate();
     }
 }

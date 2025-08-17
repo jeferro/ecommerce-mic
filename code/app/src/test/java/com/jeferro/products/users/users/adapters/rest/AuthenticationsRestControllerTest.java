@@ -24,7 +24,7 @@ class AuthenticationsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_sign_in_on_request() throws Exception {
-        var user = UserMother.user();
+        var user = UserMother.john();
         stubUseCaseBus.init(user);
 
         var requestContent = """

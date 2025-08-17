@@ -27,10 +27,10 @@ class ProductReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_list_product_reviews_on_request() throws Exception {
-        var apple = ProductMother.apple();
+        var apple = ProductMother.appleV1();
         var productReviews = List.of(
-            ProductReviewMother.userReviewOfApple(),
-            ProductReviewMother.adminReviewOfApple()
+            ProductReviewMother.johnReviewOfApple(),
+            ProductReviewMother.emilyReviewOfApple()
         );
         stubUseCaseBus.init(productReviews);
 
@@ -50,15 +50,15 @@ class ProductReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_create_product_on_request() throws Exception {
-        var userReviewOfProduct = ProductReviewMother.userReviewOfApple();
-        stubUseCaseBus.init(userReviewOfProduct);
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
+        stubUseCaseBus.init(johnReviewOfApple);
 
         var requestContent = """
                 {
                   "productCode": "%s",
                   "comment": "%s"
                 }"""
-                .formatted(userReviewOfProduct.getProductCode(), userReviewOfProduct.getComment());
+                .formatted(johnReviewOfApple.getProductCode(), johnReviewOfApple.getComment());
 
         var requestBuilder = MockMvcRequestBuilders.post("/v1/product-reviews")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -77,10 +77,10 @@ class ProductReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_get_product_on_request() throws Exception {
-        var userReviewOfProduct = ProductReviewMother.userReviewOfApple();
-        stubUseCaseBus.init(userReviewOfProduct);
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
+        stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/product-reviews/" + userReviewOfProduct.getId())
+        var requestBuilder = MockMvcRequestBuilders.get("/v1/product-reviews/" + johnReviewOfApple.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -96,16 +96,16 @@ class ProductReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_update_product_on_request() throws Exception {
-        var userReviewOfProduct = ProductReviewMother.userReviewOfApple();
-        stubUseCaseBus.init(userReviewOfProduct);
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
+        stubUseCaseBus.init(johnReviewOfApple);
 
         var requestContent = """
                 {
                   "comment": "%s"
                 }"""
-                .formatted(userReviewOfProduct.getComment());
+                .formatted(johnReviewOfApple.getComment());
 
-        var requestBuilder = MockMvcRequestBuilders.patch("/v1/product-reviews/" + userReviewOfProduct.getId())
+        var requestBuilder = MockMvcRequestBuilders.patch("/v1/product-reviews/" + johnReviewOfApple.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -122,10 +122,10 @@ class ProductReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_delete_product_on_request() throws Exception {
-        var userReviewOfProduct = ProductReviewMother.userReviewOfApple();
-        stubUseCaseBus.init(userReviewOfProduct);
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
+        stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestBuilder = MockMvcRequestBuilders.delete("/v1/product-reviews/" + userReviewOfProduct.getId())
+        var requestBuilder = MockMvcRequestBuilders.delete("/v1/product-reviews/" + johnReviewOfApple.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);

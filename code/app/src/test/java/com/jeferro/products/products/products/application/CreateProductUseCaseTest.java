@@ -38,18 +38,18 @@ class CreateProductUseCaseTest {
 
     @Test
     void givenNoProduct_whenCreateProduct_thenCreatesProduct() {
-        var apple = ProductMother.apple();
+        var bananaV1 = ProductMother.bananaV1();
 
         var params = new CreateProductParams(
-            apple.getId(),
-            apple.getTypeId(),
-            apple.getName());
+            bananaV1.getId(),
+            bananaV1.getTypeId(),
+            bananaV1.getName());
 
         var result = createProductUseCase.execute(
-            ContextMother.user(),
+            ContextMother.john(),
             params);
 
-        assertEquals(apple, result);
+        assertEquals(bananaV1, result);
 
         assertProductDataInDatabase(result);
 
@@ -57,7 +57,6 @@ class CreateProductUseCaseTest {
     }
 
     private void assertProductDataInDatabase(Product result) {
-        assertEquals(1, productsInMemoryRepository.size());
         assertTrue(productsInMemoryRepository.contains(result));
     }
 

@@ -8,7 +8,6 @@ import com.jeferro.products.products.product_reviews.domain.models.ProductReview
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsInMemoryRepository;
 import com.jeferro.products.products.products.domain.models.ProductCode;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
-import com.jeferro.products.products.products.domain.models.ProductMother;
 import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
@@ -16,13 +15,13 @@ import com.jeferro.shared.ddd.domain.models.context.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreateProductReviewUseCaseTest {
 
-    private ProductsInMemoryRepository productsInMemoryRepository;
-
-    private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
+  private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
 
     private EventInMemoryBus eventInMemoryBus;
 
@@ -30,7 +29,7 @@ class CreateProductReviewUseCaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        productsInMemoryRepository = new ProductsInMemoryRepository();
+	  ProductsInMemoryRepository productsInMemoryRepository = new ProductsInMemoryRepository();
         productReviewsInMemoryRepository = new ProductReviewsInMemoryRepository();
         eventInMemoryBus = new EventInMemoryBus();
 
@@ -40,19 +39,17 @@ class CreateProductReviewUseCaseTest {
 
     @Test
     void givenUserDidNotCommentOnProduct_whenCreateProductReview_thenReturnsNewProductReview() {
-        givenAnAppleInDatabase();
-
-        var userContext = ContextMother.user();
-        var productCode = ProductCodeMother.appleCode();
+        var productCode = ProductCodeMother.apple();
         var comment = "New comment about product";
         var params = new CreateProductReviewParams(
                 productCode,
                 comment
         );
 
-        var result = createProductReviewUseCase.execute(userContext, params);
+        var jamesContext = ContextMother.james();
+        var result = createProductReviewUseCase.execute(jamesContext, params);
 
-        assertResult(userContext, result, productCode, comment);
+        assertResult(jamesContext, result, productCode, comment);
 
         assertProductReviewInDatabase(result);
 
@@ -61,16 +58,17 @@ class CreateProductReviewUseCaseTest {
 
     @Test
     void givenUserCommentsOnProduct_whenCreateProductReview_throwsException() {
-        var userReviewOfApple = givenAnUserProductReviewOfAppleInDatabase();
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
-        var userContext = ContextMother.user();
         var params = new CreateProductReviewParams(
-                userReviewOfApple.getProductCode(),
+                johnReviewOfApple.getProductCode(),
                 "other comment"
         );
 
         assertThrows(ProductReviewAlreadyExistsException.class,
-                () -> createProductReviewUseCase.execute(userContext, params));
+                () -> createProductReviewUseCase.execute(
+                    ContextMother.john(),
+                    params));
     }
 
     private static void assertResult(Context context, ProductReview result, ProductCode productCode, String comment) {
@@ -80,7 +78,6 @@ class CreateProductReviewUseCaseTest {
     }
 
     private void assertProductReviewInDatabase(ProductReview result) {
-        assertEquals(1, productReviewsInMemoryRepository.size());
         assertTrue(productReviewsInMemoryRepository.contains(result));
     }
 
@@ -90,19 +87,5 @@ class CreateProductReviewUseCaseTest {
         var event = (ProductReviewCreated) eventInMemoryBus.getFirstOrError();
 
         assertEquals(result.getId(), event.getProductReviewId());
-    }
-
-    private void givenAnAppleInDatabase() {
-        var apple = ProductMother.apple();
-        productsInMemoryRepository.init(apple);
-    }
-
-    private ProductReview givenAnUserProductReviewOfAppleInDatabase() {
-        var apple = ProductMother.apple();
-        productsInMemoryRepository.init(apple);
-
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
-        productReviewsInMemoryRepository.init(userReviewOfApple);
-        return userReviewOfApple;
     }
 }

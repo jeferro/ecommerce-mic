@@ -2,7 +2,6 @@ package com.jeferro.products.products.product_reviews.application;
 
 import com.jeferro.products.products.product_reviews.application.params.GetProductReviewParams;
 import com.jeferro.products.products.product_reviews.domain.exceptions.ProductReviewNotFoundException;
-import com.jeferro.products.products.product_reviews.domain.models.ProductReview;
 import com.jeferro.products.products.product_reviews.domain.models.ProductReviewMother;
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
@@ -14,46 +13,40 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GetProductReviewUseCaseTest {
 
-    private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
-
-    private GetProductReviewUseCase getProductReviewUseCase;
+  private GetProductReviewUseCase getProductReviewUseCase;
 
     @BeforeEach
     void beforeEach() {
-        productReviewsInMemoryRepository = new ProductReviewsInMemoryRepository();
+	  ProductReviewsInMemoryRepository productReviewsInMemoryRepository = new ProductReviewsInMemoryRepository();
 
         getProductReviewUseCase = new GetProductReviewUseCase(productReviewsInMemoryRepository);
     }
 
     @Test
     void givenAProductReview_whenGetProductReview_thenReturnsProductReview() {
-        var userContext = ContextMother.user();
-        var userReviewOfApple = givenAnUserProductReviewOfAppleInDatabase();
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new GetProductReviewParams(
-                userReviewOfApple.getId()
+                johnReviewOfApple.getId()
         );
 
-        var result = getProductReviewUseCase.execute(userContext, params);
+        var result = getProductReviewUseCase.execute(
+            ContextMother.john(),
+            params);
 
-        assertEquals(userReviewOfApple, result);
+        assertEquals(johnReviewOfApple, result);
     }
 
     @Test
     void givenNoProductReview_whenGetProductReview_thenThrowsException() {
-        var userContext = ContextMother.user();
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
+        var jamesReviewOfApple = ProductReviewMother.jamesReviewOfApple();
         var params = new GetProductReviewParams(
-                userReviewOfApple.getId()
+                jamesReviewOfApple.getId()
         );
 
         assertThrows(ProductReviewNotFoundException.class,
-                () -> getProductReviewUseCase.execute(userContext, params));
-    }
-
-    private ProductReview givenAnUserProductReviewOfAppleInDatabase() {
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
-        productReviewsInMemoryRepository.init(userReviewOfApple);
-        return userReviewOfApple;
+                () -> getProductReviewUseCase.execute(
+                    ContextMother.james(),
+                        params));
     }
 }

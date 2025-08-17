@@ -7,21 +7,30 @@ import java.util.Locale;
 
 public abstract class ProductReviewMother {
 
-    public static ProductReview userReviewOfApple() {
-        var appleCode = ProductCodeMother.appleCode();
-        var userAuth = AuthMother.user();
+    public static ProductReview johnReviewOfApple() {
+        var appleCode = ProductCodeMother.apple();
+        var johnAuth = AuthMother.john();
 
-        var productReviewId = ProductReviewId.createOf(userAuth, appleCode);
+        var productReviewId = ProductReviewId.createOf(johnAuth, appleCode);
 
         return new ProductReview(productReviewId, Locale.US, "Comment about apple");
     }
 
-    public static ProductReview adminReviewOfApple() {
-        var appleCode = ProductCodeMother.appleCode();
-        var adminAuth = AuthMother.admin();
+    public static ProductReview emilyReviewOfApple() {
+        var appleCode = ProductCodeMother.apple();
+        var emilyAuth = AuthMother.emily();
 
-        var productReviewId = ProductReviewId.createOf(adminAuth, appleCode);
+        var productReviewId = ProductReviewId.createOf(emilyAuth, appleCode);
 
         return new ProductReview(productReviewId, Locale.US, "I love apples");
+    }
+
+    public static ProductReview jamesReviewOfApple() {
+        var appleCode = ProductCodeMother.apple();
+        var jamesAuth = AuthMother.james();
+
+        var productReviewId = ProductReviewId.createOf(jamesAuth, appleCode);
+
+        return new ProductReview(productReviewId, Locale.US, "I hate apples");
     }
 }

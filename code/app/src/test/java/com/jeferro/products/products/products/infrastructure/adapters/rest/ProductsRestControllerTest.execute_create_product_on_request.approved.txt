@@ -1,3 +1,3 @@
-data[0] = CreateProductParams[id=apple::2025-08-15T10:15:30Z,name=LocalizedField[values={en-US=Apple}],typeId=fruit]
+data[0] = CreateProductParams[id=apple::2025-01-01T09:00:00Z,name=LocalizedField[values={en-US=Apple}],typeId=fruit]
 data[1] = 200
-data[2] = {"id":"apple::2025-08-15T10:15:30Z","code":"apple","startEffectiveDate":"2025-08-15T10:15:30Z","typeId":"fruit","name":{"en-US":"Apple"},"status":"PUBLISHED"}
+data[2] = {"id":"apple::2025-01-01T09:00:00Z","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","typeId":"fruit","name":{"en-US":"Apple"},"status":"PUBLISHED"}

@@ -33,45 +33,48 @@ class DeleteProductReviewUseCaseTest {
 
     @Test
     void givenUserCommentsOnProduct_whenDeleteProductReview_thenReturnsDeletedProductReview() {
-        var userReviewOfApple = givenAnUserProductReviewOfAppleInDatabase();
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
-        var userContext = ContextMother.user();
         var params = new DeleteProductReviewParams(
-                userReviewOfApple.getId()
+                johnReviewOfApple.getId()
         );
 
-        var result = deleteProductReviewUseCase.execute(userContext, params);
+        var result = deleteProductReviewUseCase.execute(
+            ContextMother.john(),
+            params);
 
-        assertEquals(userReviewOfApple, result);
+        assertEquals(johnReviewOfApple, result);
 
-        assertTrue(productReviewsInMemoryRepository.isEmpty());
+        assertFalse(productReviewsInMemoryRepository.contains(result));
 
         assertProductReviewDeletedWasPublished(result);
     }
 
     @Test
     void givenUserDoesNotCommentOnProduct_whenDeleteProductReview_throwsException() {
-        var userContext = ContextMother.user();
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
+        var jamesReviewOfApple = ProductReviewMother.jamesReviewOfApple();
         var params = new DeleteProductReviewParams(
-                userReviewOfApple.getId()
+                jamesReviewOfApple.getId()
         );
 
         assertThrows(ProductReviewNotFoundException.class,
-                () -> deleteProductReviewUseCase.execute(userContext, params));
+                () -> deleteProductReviewUseCase.execute(
+                    ContextMother.james(),
+                    params));
     }
 
     @Test
     void givenOtherUserCommentsOnProduct_whenDeleteProductReviewOfOtherUser_throwsException() {
-        var adminContext = ContextMother.admin();
-        var userReviewOfApple = givenAnUserProductReviewOfAppleInDatabase();
+        var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new DeleteProductReviewParams(
-                userReviewOfApple.getId()
+                johnReviewOfApple.getId()
         );
 
         assertThrows(ProductReviewDoesNotBelongUserException.class,
-                () -> deleteProductReviewUseCase.execute(adminContext, params));
+                () -> deleteProductReviewUseCase.execute(
+                    ContextMother.emily(),
+                    params));
     }
 
     private void assertProductReviewDeletedWasPublished(ProductReview result) {
@@ -80,11 +83,5 @@ class DeleteProductReviewUseCaseTest {
         var event = (ProductReviewDeleted) eventInMemoryBus.getFirstOrError();
 
         assertEquals(result.getId(), event.getProductReviewId());
-    }
-
-    private ProductReview givenAnUserProductReviewOfAppleInDatabase() {
-        var userReviewOfApple = ProductReviewMother.userReviewOfApple();
-        productReviewsInMemoryRepository.init(userReviewOfApple);
-        return userReviewOfApple;
     }
 }

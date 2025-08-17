@@ -23,6 +23,18 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductFilterOrd
             criteria.add(nameCriteria);
         }
 
+        if (filter.hasCode()) {
+            Criteria codeCriteria = Criteria.where("code").is(filter.getCode().getValue());
+
+            criteria.add(codeCriteria);
+        }
+
+        if (filter.hasMinEffectiveDate()) {
+            Criteria codeCriteria = Criteria.where("effectiveDate").gt(filter.getMinEffectiveDate());
+
+            criteria.add(codeCriteria);
+        }
+
         return criteria;
     }
 
@@ -35,6 +47,7 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductFilterOrd
         return switch (order) {
             case TYPE_ID -> "typeId";
             case NAME -> "name";
+            case START_EFFECTIVE_DATE -> "effectiveDate";
         };
     }
 }

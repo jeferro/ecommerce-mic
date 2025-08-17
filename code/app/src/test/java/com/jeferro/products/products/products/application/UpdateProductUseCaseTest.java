@@ -32,16 +32,17 @@ class UpdateProductUseCaseTest {
 
     @Test
     void givenOneProduct_whenUpdateProduct_thenUpdatesProduct() {
-        var apple = givenAnAppleInDatabase();
+        var appleV1 = ProductMother.appleV1();
 
-        var userContext = ContextMother.user();
         var newName = LocalizedField.createOf("en-US", "new product name");
         var params = new UpdateProductParams(
-                apple.getId(),
+                appleV1.getId(),
                 newName
         );
 
-        var result = updateProductUseCase.execute(userContext, params);
+        var result = updateProductUseCase.execute(
+            ContextMother.john(),
+            params);
 
         assertEquals(newName, result.getName());
 
@@ -52,24 +53,22 @@ class UpdateProductUseCaseTest {
 
     @Test
     void givenNoProducts_whenUpdateProduct_thenThrowsException() {
-        var apple = ProductMother.apple();
+        var bananaV1 = ProductMother.bananaV1();
 
         var newName = LocalizedField.createOf("en-US", "new product name");
         var params = new UpdateProductParams(
-                apple.getId(),
+                bananaV1.getId(),
                 newName
         );
 
         assertThrows(ProductNotFoundException.class,
                 () -> updateProductUseCase.execute(
-                    ContextMother.user(),
+                    ContextMother.john(),
                     params));
     }
 
-    private void assertProductDataInDatabase(Product product) {
-        assertEquals(1, productsInMemoryRepository.size());
-
-        assertTrue(productsInMemoryRepository.contains(product));
+    private void assertProductDataInDatabase(Product result) {
+        assertTrue(productsInMemoryRepository.contains(result));
     }
 
     private void assertProductUpdatedWasPublished(Product product) {
@@ -78,11 +77,5 @@ class UpdateProductUseCaseTest {
         var event = (ProductUpdated) eventInMemoryBus.getFirstOrError();
 
         assertEquals(product.getId(), event.getId());
-    }
-
-    private Product givenAnAppleInDatabase() {
-        var apple = ProductMother.apple();
-        productsInMemoryRepository.init(apple);
-        return apple;
     }
 }

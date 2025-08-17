@@ -13,13 +13,13 @@ public class ProductId extends StringIdentifier {
 
   private final ProductCode code;
 
-  private final Instant startEffectiveDate;
+  private final Instant effectiveDate;
 
-  private ProductId(ProductCode code, Instant startEffectiveDate) {
-	super(code + SEPARATOR + startEffectiveDate);
+  private ProductId(ProductCode code, Instant effectiveDate) {
+	super(code + SEPARATOR + effectiveDate);
 
 	this.code = code;
-	this.startEffectiveDate = startEffectiveDate;
+	this.effectiveDate = effectiveDate;
   }
 
   public ProductId(String value) {
@@ -28,13 +28,13 @@ public class ProductId extends StringIdentifier {
 	var split = value.split(SEPARATOR);
 
 	this.code = new ProductCode(split[0]);
-	this.startEffectiveDate = Instant.parse(split[1]);
+	this.effectiveDate = Instant.parse(split[1]);
   }
 
-  public static ProductId createOf(ProductCode code, Instant startEffectiveDate) {
+  public static ProductId createOf(ProductCode code, Instant effectiveDate) {
 	ValueValidationUtils.isNotNull(code, "code", ProductId.class);
-	ValueValidationUtils.isNotNull(startEffectiveDate, "startEffectiveDate", ProductId.class);
+	ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate", ProductId.class);
 
-	return new ProductId(code, startEffectiveDate);
+	return new ProductId(code, effectiveDate);
   }
 }

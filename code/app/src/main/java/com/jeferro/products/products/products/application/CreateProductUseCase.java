@@ -3,6 +3,7 @@ package com.jeferro.products.products.products.application;
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
 import com.jeferro.products.products.products.application.params.CreateProductParams;
 import com.jeferro.products.products.products.domain.models.Product;
+import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
 import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -37,7 +38,10 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, Product> 
 
         parametricValidator.validateProductType(typeId);
 
-        var product = Product.create(id, typeId, name);
+        var nextProductFilter = ProductFilter.nextProduct(id);
+        var nextProduct = productsRepository.findAll(nextProductFilter).getFirstOrNull();
+
+        var product = Product.create(id, typeId, name, nextProduct);
 
         productsRepository.save(product);
 
