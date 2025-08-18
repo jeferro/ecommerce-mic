@@ -1,5 +1,6 @@
 package com.jeferro.products.products.products.domain.models;
 
+import com.jeferro.products.products.products.domain.services.InstantTruncator;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import lombok.Getter;
@@ -35,6 +36,8 @@ public class ProductId extends StringIdentifier {
 	ValueValidationUtils.isNotNull(code, "code", ProductId.class);
 	ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate", ProductId.class);
 
-	return new ProductId(code, effectiveDate);
+	var truncatedEffectiveDate = InstantTruncator.trunkToSeconds(effectiveDate);
+
+	return new ProductId(code, truncatedEffectiveDate);
   }
 }

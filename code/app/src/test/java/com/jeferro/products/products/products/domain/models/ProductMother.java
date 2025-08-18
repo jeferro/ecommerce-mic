@@ -4,41 +4,61 @@ import com.jeferro.products.products.parametrics.domain.models.ProductTypeMother
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.PUBLISHED;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class ProductMother {
 
+    private static final Instant APPLE_V2_EFFECTIVE_DATE = Instant.parse("2025-02-01T09:00:00.00Z");
+
     public static Product appleV1() {
         var productCode = ProductCodeMother.apple();
-        var startEffectiveDate = Instant.parse("2025-01-01T09:00:00.00Z");
-        var productId = ProductId.createOf(productCode, startEffectiveDate);
+        var effectiveDate = Instant.parse("2025-01-01T09:00:00.00Z");
+        var productId = ProductId.createOf(productCode, effectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(
-                "en-US", "Apple",
-                "es-ES", "Manzana");
+                "en-US", "Apple v1",
+                "es-ES", "Manzana v1");
+
+        return new Product(productId,
+            name,
+            fruitId,
+            APPLE_V2_EFFECTIVE_DATE.minus(1, SECONDS),
+            PUBLISHED);
+    }
+
+    public static Product appleV2() {
+        var productCode = ProductCodeMother.apple();
+        var productId = ProductId.createOf(productCode, APPLE_V2_EFFECTIVE_DATE);
+
+        var fruitId = ProductTypeMother.fruitId();
+        var name = LocalizedField.createOf(
+            "en-US", "Apple v2",
+            "es-ES", "Manzana v2");
 
         return new Product(productId, name, fruitId, null, PUBLISHED);
     }
 
     public static Product pearV1() {
         var productCode = ProductCodeMother.pear();
-        var startEffectiveDate = Instant.parse("2025-01-01T09:00:00.00Z");
-        var productId = ProductId.createOf(productCode, startEffectiveDate);
+        var effectiveDate = Instant.parse("2025-01-01T09:00:00.00Z");
+        var productId = ProductId.createOf(productCode, effectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(
-                "en-US", "Pear",
-                "es-ES", "Pera");
+                "en-US", "Pear v1",
+                "es-ES", "Pera v1");
 
         return new Product(productId, name, fruitId, null, PUBLISHED);
     }
 
     public static Product bananaV1() {
         var productCode = ProductCodeMother.banana();
-        var startEffectiveDate = Instant.parse("2025-01-01T09:00:00.00Z");
-        var productId = ProductId.createOf(productCode, startEffectiveDate);
+        var effectiveDate = Instant.parse("2025-01-01T09:00:00.00Z");
+        var productId = ProductId.createOf(productCode, effectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(

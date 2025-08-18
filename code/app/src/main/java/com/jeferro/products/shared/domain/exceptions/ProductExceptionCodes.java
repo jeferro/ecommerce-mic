@@ -6,8 +6,8 @@ public interface ProductExceptionCodes {
     String PARAMETRIC_VALUE_NOT_FOUND = "parametric-value-not-found";
 
     // Products
-    String PRODUCT_NOT_FOUND = "product-not-found";
-    String PRODUCT_ALREADY_EXISTS = "product-already-exists";
+    String PRODUCT_VERSION_NOT_FOUND = "product-version-not-found";
+    String PRODUCT_VERSION_ALREADY_EXISTS = "product-version-already-exists";
 
     // Product Reviews
     String REVIEW_NOT_FOUND = "product-review-not-found";

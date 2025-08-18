@@ -14,6 +14,9 @@ public class ProductsInMemoryRepository extends InMemoryRepository<Product, Prod
 	var appleV1 = ProductMother.appleV1();
 	data.put(appleV1.getId(), appleV1);
 
+	var appleV2 = ProductMother.appleV2();
+	data.put(appleV2.getId(), appleV2);
+
 	var pearV1 = ProductMother.pearV1();
 	data.put(pearV1.getId(), pearV1);
   }
@@ -33,7 +36,8 @@ public class ProductsInMemoryRepository extends InMemoryRepository<Product, Prod
   private boolean matchProduct(ProductFilter filter, Product product) {
 	return matchProductName(product, filter)
 		&& matchProductCode(product, filter)
-		&& matchMinEffectiveProductCode(product, filter);
+		&& matchMinEffectiveProductCode(product, filter)
+		&& matchMaxEffectiveProductCode(product, filter);
   }
 
   private boolean matchProductName(Product product, ProductFilter filter) {
@@ -49,6 +53,11 @@ public class ProductsInMemoryRepository extends InMemoryRepository<Product, Prod
   private boolean matchMinEffectiveProductCode(Product product, ProductFilter filter) {
 	return !filter.hasMinEffectiveDate()
 		|| product.getEffectiveDate().isAfter(filter.getMinEffectiveDate());
+  }
+
+  private boolean matchMaxEffectiveProductCode(Product product, ProductFilter filter) {
+	return !filter.hasMaxEffectiveDate()
+		|| product.getEffectiveDate().isBefore(filter.getMaxEffectiveDate());
   }
 
   private int compareProducts(Product p1, Product p2, ProductFilter filter) {

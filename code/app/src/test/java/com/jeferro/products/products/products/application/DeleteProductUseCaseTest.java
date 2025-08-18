@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.DeleteProductParams;
 import com.jeferro.products.products.products.domain.events.ProductDeleted;
-import com.jeferro.products.products.products.domain.exceptions.ProductNotFoundException;
+import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.products.products.products.domain.models.Product;
 import com.jeferro.products.products.products.domain.models.ProductMother;
 import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
@@ -56,7 +56,7 @@ class DeleteProductUseCaseTest {
                 bananaV1.getId()
         );
 
-        assertThrows(ProductNotFoundException.class,
+        assertThrows(ProductVersionNotFoundException.class,
                 () -> deleteProductUseCase.execute(
                     ContextMother.john(),
                     params));

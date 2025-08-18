@@ -3,15 +3,19 @@ package com.jeferro.products.products.products.domain.models;
 import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
 import com.jeferro.products.products.products.domain.events.*;
 import com.jeferro.products.products.products.domain.models.status.ProductStatus;
+import com.jeferro.products.products.products.domain.services.InstantTruncator;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.PUBLISHED;
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.UNPUBLISHED;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Getter
 public class Product extends AggregateRoot<ProductId> {
@@ -22,7 +26,7 @@ public class Product extends AggregateRoot<ProductId> {
 
     private ProductStatus status;
 
-    private final Instant endEffectiveDate;
+    private Instant endEffectiveDate;
 
     public Product(ProductId id,
                    LocalizedField name,
@@ -40,16 +44,27 @@ public class Product extends AggregateRoot<ProductId> {
     public static Product create(ProductId id,
                                  ParametricValueId typeId,
                                  LocalizedField name,
-                                 Product nextProduct) {
+                                 Product nextVersion) {
         ValueValidationUtils.isNotNull(id, "id", Product.class);
         ValueValidationUtils.isNotNull(typeId, "typeId", Product.class);
         ValueValidationUtils.isNotNull(name, "name", Product.class);
-        ValueValidationUtils.ensure(() -> nextProduct == null || nextProduct.hasSameCode(id.getCode()),
-            "Next product version hasn't belong new product version");
 
-        var endEffectiveDate = nextProduct != null ? nextProduct.getEffectiveDate() : null;
+        if(nextVersion != null) {
+            ValueValidationUtils.ensure(() -> nextVersion.hasSameCode(id.getCode()),
+                "Next product version hasn't belong new product version");
+            ValueValidationUtils.ensure(() -> nextVersion.isAfter(id.getEffectiveDate()),
+                "Next product version is before than new product version");
+        }
 
-        var product = new Product(id, name, typeId, endEffectiveDate, UNPUBLISHED);
+        var endEffectiveDate = nextVersion != null
+            ? nextVersion.getEffectiveDate().minus(1, SECONDS)
+            : null;
+
+        var product = new Product(id,
+            name,
+            typeId,
+            InstantTruncator.trunkToSeconds(endEffectiveDate),
+            UNPUBLISHED);
 
         var event = ProductCreated.create(product);
         product.record(event);
@@ -93,8 +108,19 @@ public class Product extends AggregateRoot<ProductId> {
         record(event);
     }
 
+    public void expireBefore(ProductId productId) {
+        endEffectiveDate = productId.getEffectiveDate().minus(1, SECONDS);
+
+        var event = ProductUpdated.create(this);
+        record(event);
+    }
+
     public boolean hasSameCode(ProductCode code){
         return getCode().equals(code);
+    }
+
+    private Boolean isAfter(Instant effectiveDate) {
+        return getEffectiveDate().isAfter(effectiveDate);
     }
 
     public ProductCode getCode() {

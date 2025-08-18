@@ -19,25 +19,38 @@ public class ProductFilter extends Filter<ProductFilterOrder> {
 
     private final Instant minEffectiveDate;
 
-    public ProductFilter(Integer pageNumber, Integer pageSize, ProductFilterOrder order, Boolean ascending, String name, ProductCode code,
-        Instant minEffectiveDate) {
+    private final Instant maxEffectiveDate;
+
+    public ProductFilter(Integer pageNumber,
+        Integer pageSize,
+        ProductFilterOrder order,
+        Boolean ascending,
+        String name,
+        ProductCode code,
+        Instant minEffectiveDate,
+        Instant maxEffectiveDate) {
         super(pageNumber, pageSize, order, ascending);
 
         this.name = name;
         this.code = code;
         this.minEffectiveDate = minEffectiveDate;
+        this.maxEffectiveDate = maxEffectiveDate;
     }
 
     public static ProductFilter createEmpty() {
-        return new ProductFilter(null, null, NAME, null, null, null, null);
+        return new ProductFilter(null, null, NAME, null, null, null, null, null);
     }
 
     public static ProductFilter searchName(String name) {
-        return new ProductFilter(null, null, NAME, false, name, null, null);
+        return new ProductFilter(null, null, NAME, false, name, null, null, null);
+    }
+
+    public static ProductFilter previousProduct(ProductId id) {
+        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, false, null, id.getCode(), null, id.getEffectiveDate());
     }
 
     public static ProductFilter nextProduct(ProductId id) {
-        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, false, null, id.getCode(), id.getEffectiveDate());
+        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, true, null, id.getCode(), id.getEffectiveDate(), null);
     }
 
     public boolean hasName() {
@@ -48,6 +61,9 @@ public class ProductFilter extends Filter<ProductFilterOrder> {
         return code != null;
     }
 
+    public boolean hasMaxEffectiveDate() {
+        return maxEffectiveDate != null;
+    }
     public boolean hasMinEffectiveDate() {
         return minEffectiveDate != null;
     }

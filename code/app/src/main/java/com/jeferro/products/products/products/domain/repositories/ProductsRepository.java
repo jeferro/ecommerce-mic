@@ -1,6 +1,6 @@
 package com.jeferro.products.products.products.domain.repositories;
 
-import com.jeferro.products.products.products.domain.exceptions.ProductNotFoundException;
+import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.products.products.products.domain.models.Product;
 import com.jeferro.products.products.products.domain.models.ProductId;
 import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
@@ -16,7 +16,7 @@ public interface ProductsRepository {
 
     default Product findByIdOrError(ProductId id) {
         return findById(id)
-                .orElseThrow(() -> ProductNotFoundException.createOf(id));
+                .orElseThrow(() -> ProductVersionNotFoundException.createOf(id));
     }
 
     void deleteById(ProductId id);

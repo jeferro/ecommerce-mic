@@ -36,6 +36,7 @@ public abstract class ProductRestMapper extends AggregateRestMapper<Product, Pro
 
     @Mapping(target = "code", ignore = true)
     @Mapping(target = "minEffectiveDate", ignore = true)
+    @Mapping(target = "maxEffectiveDate", ignore = true)
     protected abstract ProductFilter toProductFilter(Integer pageNumber,
                                                   Integer pageSize,
                                                   ProductFilterOrderRestDTO order,

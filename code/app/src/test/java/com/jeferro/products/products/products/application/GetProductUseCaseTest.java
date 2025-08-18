@@ -1,7 +1,7 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.GetProductParams;
-import com.jeferro.products.products.products.domain.exceptions.ProductNotFoundException;
+import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.products.products.products.domain.models.ProductMother;
 import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
@@ -45,7 +45,7 @@ class GetProductUseCaseTest {
                 bananaV1.getId()
         );
 
-        assertThrows(ProductNotFoundException.class,
+        assertThrows(ProductVersionNotFoundException.class,
                 () -> getProductUseCase.execute(
                     ContextMother.john(),
                     params));

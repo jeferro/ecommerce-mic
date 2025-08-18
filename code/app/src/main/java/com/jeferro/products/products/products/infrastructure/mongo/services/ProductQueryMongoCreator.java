@@ -35,6 +35,12 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductFilterOrd
             criteria.add(codeCriteria);
         }
 
+        if (filter.hasMaxEffectiveDate()) {
+            Criteria codeCriteria = Criteria.where("effectiveDate").lt(filter.getMinEffectiveDate());
+
+            criteria.add(codeCriteria);
+        }
+
         return criteria;
     }
 
