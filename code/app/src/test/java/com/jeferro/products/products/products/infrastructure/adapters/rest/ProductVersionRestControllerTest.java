@@ -1,7 +1,7 @@
 package com.jeferro.products.products.products.infrastructure.adapters.rest;
 
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.products.infrastructure.rest.ProductsRestController;
+import com.jeferro.products.products.products.infrastructure.rest.ProductVersionRestController;
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.products.shared.infrastructure.adapters.utils.ApprovalUtils;
@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@WebMvcTest(ProductsRestController.class)
-class ProductsRestControllerTest extends RestControllerTest {
+@WebMvcTest(ProductVersionRestController.class)
+class ProductVersionRestControllerTest extends RestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

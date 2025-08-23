@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 
 @RestController
 @RequiredArgsConstructor
-public class ProductsRestController implements ProductVersionsApi {
+public class ProductVersionRestController implements ProductVersionsApi {
 
     private final ProductRestMapper productRestMapper = ProductRestMapper.INSTANCE;
 

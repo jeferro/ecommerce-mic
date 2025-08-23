@@ -184,7 +184,7 @@ paths:
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/products/{productId}/versions/{effectiveDate}/unpublished:
+  /v1/products/{productCode}/versions/{effectiveDate}/unpublished:
     put:
       operationId: unpublish-product-version
       summary: Unpublish product version

@@ -1,7 +1,6 @@
 package com.jeferro.products.products.products.domain.models;
 
 import com.jeferro.products.products.products.domain.services.InstantTruncator;
-import com.jeferro.products.shared.domain.utils.InstantUtils;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import lombok.Getter;
@@ -13,8 +12,6 @@ public class ProductVersionId extends StringIdentifier {
 
   private static final String SEPARATOR = "::";
 
-  private static final String PATTERN = "yyyy-MM-dd_HH:mm:ss";
-
   private final ProductCode code;
 
   private final Instant effectiveDate;
@@ -25,11 +22,11 @@ public class ProductVersionId extends StringIdentifier {
 	var split = value.split(SEPARATOR);
 
 	this.code = new ProductCode(split[0]);
-	this.effectiveDate = InstantUtils.parse(split[1], PATTERN);
+	this.effectiveDate = Instant.parse(split[1]);
   }
 
   private ProductVersionId(ProductCode code, Instant effectiveDate) {
-	super(code + SEPARATOR + InstantUtils.toString(effectiveDate, PATTERN));
+	super(code + SEPARATOR + effectiveDate);
 
 	this.code = code;
 	this.effectiveDate = effectiveDate;
