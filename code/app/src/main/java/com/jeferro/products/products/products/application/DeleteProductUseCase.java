@@ -3,7 +3,7 @@ package com.jeferro.products.products.products.application;
 import com.jeferro.products.products.products.application.params.DeleteProductParams;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -40,14 +40,14 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVe
     }
 
     private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
-        var previousVersionFilter = ProductFilter.previousProduct(versionId);
+        var previousVersionFilter = ProductVersionFilter.previousProduct(versionId);
         var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
 
         if(previousVersion == null){
             return;
         }
 
-        var nextVersionFilter = ProductFilter.nextProduct(versionId);
+        var nextVersionFilter = ProductVersionFilter.nextProduct(versionId);
         var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
 
         if(nextVersion != null) {

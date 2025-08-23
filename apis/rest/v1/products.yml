@@ -1,13 +1,22 @@
 components:
   parameters:
-    productIdPath:
-      name: productId
+    productCodePath:
+      name: productCode
       in: path
-      description: Identifier of product
+      description: Code of the product
       required: true
       schema:
         type: string
       example: '123456789'
+
+    effectiveDatePath:
+      name: effectiveDate
+      in: path
+      description: Effective date of the product version
+      required: true
+      schema:
+        type: string
+      example: '2025-08-01_09:00:00'
 
   schemas:
     ProductFilterOrder:
@@ -30,9 +39,9 @@ components:
         - PUBLISHED
         - UNPUBLISHED
 
-    Product:
+    ProductVersion:
       type: object
-      description: Product information
+      description: Product version
       required:
         - versionId
         - code
@@ -44,7 +53,7 @@ components:
         versionId:
           type: string
           description: Identifier of product version
-          example: '123456789::2025-08-01T09:00:00Z'
+          example: '123456789::2025-08-01_09:00:00'
         code:
           type: string
           description: Code of the product
@@ -54,6 +63,11 @@ components:
           format: date-time
           description: Effective date of the product
           example: '2025-08-01T09:00:00Z'
+        endEffectiveDate:
+          type: string
+          format: date-time
+          description: End effective date of the product
+          example: '2025-08-15T09:00:00Z'
         typeId:
           type: string
           description: Identifier of the product type
@@ -69,9 +83,9 @@ components:
         status:
           $ref: '#/components/schemas/ProductStatus'
 
-    ProductSummary:
+    ProductVersionSummary:
       type: object
-      description: Product summary information
+      description: Summary of product version
       required:
         - versionId
         - code
@@ -82,7 +96,7 @@ components:
         versionId:
           type: string
           description: Identifier of the product version
-          example: '123456789::2025-08-01T09:00:00Z'
+          example: '123456789::2025-08-01_09:00:00'
         code:
           type: string
           description: Code of the product
@@ -107,7 +121,7 @@ components:
         status:
           $ref: '#/components/schemas/ProductStatus'
 
-    ProductSummaryList:
+    ProductVersionSummaryList:
       type: object
       required:
         - pageNumber
@@ -127,11 +141,11 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ProductSummary'
+            $ref: '#/components/schemas/ProductVersionSummary'
 
-    CreateProductInput:
+    CreateProductVersionInput:
       type: object
-      description: Create product input
+      description: Input to create product version
       required:
         - versionId
         - typeId
@@ -140,7 +154,7 @@ components:
         versionId:
           type: string
           description: Identifier of the product
-          example: '123456789::2025-08-01T09:00:00Z'
+          example: '123456789::2025-08-01_09:00:00'
         typeId:
           type: string
           description: Identifier of the product type
@@ -151,12 +165,12 @@ components:
             type: string
           description: Name of the product
           example:
-            es: 'Manzana'
-            en: 'Apple'
+            es_ES: 'Manzana'
+            en_US: 'Apple'
 
-    UpdateProductInput:
+    UpdateProductVersionInput:
       type: object
-      description: Create product input
+      description: Input to product version
       required:
         - name
       properties:
@@ -166,5 +180,5 @@ components:
             type: string
           description: Name of the product
           example:
-            es: 'Manzana'
-            en: 'Apple'
+            es_ES: 'Manzana'
+            en_US: 'Apple'

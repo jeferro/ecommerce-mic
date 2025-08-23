@@ -2,14 +2,14 @@ let now = new Date()
 
 db['products'].insertMany([
     {
-        _id: "0000001::2025-01-01-09:00:00",
+        _id: "0000001::2025-01-01_09:00:00",
         typeId: "fruit",
         name: {
           "en-US": "Apple",
           "es-ES": "Manzana",
         },
         effectiveDate: "2025-01-01T09:00:00.00Z",
-        endEffectiveDate: "2025-01-15T08:59:59.00Z"
+        endEffectiveDate: "2025-01-15T08:59:59.00Z",
         status: "UNPUBLISHED",
         metadata: {
             createdBy: 'user',
@@ -19,7 +19,7 @@ db['products'].insertMany([
         }
     },
     {
-        _id: "0000001::2025-01-15-09:00:00",
+        _id: "0000001::2025-01-15_09:00:00",
         typeId: "fruit",
         name: {
           "en-US": "Apple",
@@ -36,7 +36,7 @@ db['products'].insertMany([
         }
     },
     {
-        _id: "0000002::2025-01-01-09:00:00",
+        _id: "0000002::2025-01-01_09:00:00",
         typeId: "fruit",
         name: {
           "en-US": "Kiwi",
@@ -53,7 +53,7 @@ db['products'].insertMany([
         }
     },
     {
-        _id: "0000003::2025-01-01-09:00:00",
+        _id: "0000003::2025-01-01_09:00:00",
         typeId: "fruit",
         name: {
           "en-US": "Banana",

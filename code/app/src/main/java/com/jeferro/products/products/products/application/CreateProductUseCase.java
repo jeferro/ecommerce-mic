@@ -6,7 +6,7 @@ import com.jeferro.products.products.products.application.params.CreateProductPa
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionAlreadyExistsException;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -58,7 +58,7 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
     }
 
     private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) {
-        var previousVersionFilter = ProductFilter.previousProduct(versionId);
+        var previousVersionFilter = ProductVersionFilter.previousProduct(versionId);
         var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
 
         if(previousVersion == null){
@@ -73,7 +73,7 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
     }
 
     private ProductVersion createNewVersion(ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
-        var nextVersionFilter = ProductFilter.nextProduct(versionId);
+        var nextVersionFilter = ProductVersionFilter.nextProduct(versionId);
         var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
 
         var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);

@@ -1,7 +1,7 @@
 package com.jeferro.products.products.products.infrastructure.mongo.services;
 
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilterOrder;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionOrder;
 import com.jeferro.shared.ddd.infrastructure.mongo.services.QueryMongoCreator;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductQueryMongoCreator extends QueryMongoCreator<ProductFilterOrder, ProductFilter> {
+public class ProductQueryMongoCreator extends QueryMongoCreator<ProductVersionOrder, ProductVersionFilter> {
 
     @Override
-    protected List<Criteria> mapFilter(ProductFilter filter) {
+    protected List<Criteria> mapFilter(ProductVersionFilter filter) {
         var criteria = new ArrayList<Criteria>();
 
         if (filter.hasName()) {
@@ -56,7 +56,7 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductFilterOrd
     }
 
     @Override
-    protected String mapOrder(ProductFilterOrder order) {
+    protected String mapOrder(ProductVersionOrder order) {
         if (order == null) {
             return "name";
         }

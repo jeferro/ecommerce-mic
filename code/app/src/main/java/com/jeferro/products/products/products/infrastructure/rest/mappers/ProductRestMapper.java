@@ -4,7 +4,7 @@ import com.jeferro.products.generated.rest.v1.dtos.*;
 import com.jeferro.products.products.products.application.params.*;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
@@ -12,17 +12,18 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersion, ProductVersionId, ProductRestDTO> {
+public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersion, ProductVersionId, ProductVersionRestDTO> {
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 
-    public abstract ProductSummaryRestDTO toSummaryDTO(ProductVersion productVersion);
+    public abstract ProductVersionSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersion);
 
-    public abstract ProductSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersion);
+    public ProductVersionId toDomain(String productCode, String effectiveDate) {
+        return new ProductVersionId(productCode + "::" + effectiveDate);
+    }
 
     public SearchProductsParams toSearchProductsParams(Integer pageNumber,
                                                        Integer pageSize,
@@ -38,23 +39,23 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
     @Mapping(target = "code", ignore = true)
     @Mapping(target = "minEffectiveDate", ignore = true)
     @Mapping(target = "maxEffectiveDate", ignore = true)
-    protected abstract ProductFilter toProductFilter(Integer pageNumber,
+    protected abstract ProductVersionFilter toProductFilter(Integer pageNumber,
                                                   Integer pageSize,
                                                   ProductFilterOrderRestDTO order,
                                                   Boolean ascending,
                                                   String name,
                                                   OffsetDateTime searchDate);
 
-    public abstract CreateProductParams toCreateProductParams(CreateProductInputRestDTO productInputRestDTO);
+    public abstract CreateProductParams toCreateProductParams(ProductVersionId versionId, CreateProductVersionInputRestDTO productInputRestDTO);
 
-    public abstract GetProductParams toGetProductParams(String versionId);
+    public abstract GetProductParams toGetProductParams(ProductVersionId versionId);
 
     @Mapping(target = "name", source = "inputRestDTO.name")
-    public abstract UpdateProductParams toUpdateProductParams(String versionId, UpdateProductInputRestDTO inputRestDTO);
+    public abstract UpdateProductParams toUpdateProductParams(ProductVersionId versionId, UpdateProductVersionInputRestDTO inputRestDTO);
 
-    public abstract PublishProductParams toPublishProductParams(String versionId);
+    public abstract PublishProductParams toPublishProductParams(ProductVersionId versionId);
 
-    public abstract UnpublishProductParams toUnpublishProductParams(String versionId);
+    public abstract UnpublishProductParams toUnpublishProductParams(ProductVersionId versionId);
 
-    public abstract DeleteProductParams toDeleteProductParams(String versionId);
+    public abstract DeleteProductParams toDeleteProductParams(ProductVersionId versionId);
 }

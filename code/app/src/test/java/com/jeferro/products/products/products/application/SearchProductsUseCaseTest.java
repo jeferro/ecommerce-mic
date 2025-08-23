@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.SearchProductsParams;
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ class SearchProductsUseCaseTest {
     @Test
     void should_returnProducts_when_exist() {
         var params = new SearchProductsParams(
-                ProductFilter.createEmpty()
+                ProductVersionFilter.createEmpty()
         );
 
         var result = searchProductsUseCase.execute(
@@ -47,7 +47,7 @@ class SearchProductsUseCaseTest {
     @Test
     void should_returnFilteredProduct_when_exist() {
         var params = new SearchProductsParams(
-                ProductFilter.searchName("pe")
+                ProductVersionFilter.searchName("pe")
         );
 
         var result = searchProductsUseCase.execute(
@@ -68,7 +68,7 @@ class SearchProductsUseCaseTest {
       productsInMemoryRepository.clear();
 
         var params = new SearchProductsParams(
-                ProductFilter.createEmpty()
+                ProductVersionFilter.createEmpty()
         );
 
         var result = searchProductsUseCase.execute(

@@ -13,8 +13,8 @@ security:
   - BearerAuth: []
 
 tags:
-  - name: Products
-    description: Section of the products
+  - name: Product versions
+    description: Section of the product versions
 
   - name: Product reviews
     description: Section of the product reviews
@@ -22,11 +22,11 @@ tags:
 paths:
   /v1/products:
     get:
-      operationId: search-products
-      summary: Search products
-      description: Search products
+      operationId: search-product-versions
+      summary: Search product versions
+      description: Search product versions
       tags:
-        - Products
+        - Product versions
       parameters:
         - name: pageNumber
           in: query
@@ -64,135 +64,143 @@ paths:
           schema:
             type: string
             format: date-time
-          description: Search date of the published products
+          description: Show only active product version at date
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/ProductSummaryList'
+                $ref: './products.yml#/components/schemas/ProductVersionSummaryList'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
+  /v1/products/{productCode}/versions/{effectiveDate}:
     post:
-      operationId: create-product
-      summary: Create product
-      description: Create product
+      operationId: create-product-version
+      summary: Create product version
+      description: Create product version
       tags:
-        - Products
+        - Product versions
+      parameters:
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - $ref: './products.yml#/components/parameters/effectiveDatePath'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: './products.yml#/components/schemas/CreateProductInput'
+              $ref: './products.yml#/components/schemas/CreateProductVersionInput'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/Product'
+                $ref: './products.yml#/components/schemas/ProductVersion'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/products/{productId}:
     get:
-      operationId: get-product
-      summary: Get product
-      description: Get product
+      operationId: get-product-version
+      summary: Get product version
+      description: Get product version
       tags:
-        - Products
+        - Product versions
       parameters:
-        - $ref: './products.yml#/components/parameters/productIdPath'
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - $ref: './products.yml#/components/parameters/effectiveDatePath'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/Product'
+                $ref: './products.yml#/components/schemas/ProductVersion'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
     patch:
-      operationId: update-product
-      summary: Update product
-      description: Update product
+      operationId: update-product-version
+      summary: Update product version
+      description: Update product version
       tags:
-        - Products
+        - Product versions
       parameters:
-        - $ref: './products.yml#/components/parameters/productIdPath'
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - $ref: './products.yml#/components/parameters/effectiveDatePath'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: './products.yml#/components/schemas/UpdateProductInput'
+              $ref: './products.yml#/components/schemas/UpdateProductVersionInput'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/Product'
+                $ref: './products.yml#/components/schemas/ProductVersion'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
     delete:
-      operationId: delete-product
-      summary: Delete product
-      description: Delete product
+      operationId: delete-product-version
+      summary: Delete product version
+      description: Delete product version
       tags:
-        - Products
+        - Product versions
       parameters:
-        - $ref: './products.yml#/components/parameters/productIdPath'
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - $ref: './products.yml#/components/parameters/effectiveDatePath'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/Product'
+                $ref: './products.yml#/components/schemas/ProductVersion'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/products/{productId}/published:
+  /v1/products/{productCode}/versions/{effectiveDate}/published:
     put:
-      operationId: publish-product
-      summary: Publish product
-      description: Publish product
+      operationId: publish-product-version
+      summary: Publish product version
+      description: Publish product version
       tags:
-        - Products
+        - Product versions
       parameters:
-        - $ref: './products.yml#/components/parameters/productIdPath'
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - $ref: './products.yml#/components/parameters/effectiveDatePath'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/Product'
+                $ref: './products.yml#/components/schemas/ProductVersion'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/products/{productId}/unpublished:
+  /v1/products/{productId}/versions/{effectiveDate}/unpublished:
     put:
-      operationId: unpublish-product
-      summary: Unpublish product
-      description: Unpublish product
+      operationId: unpublish-product-version
+      summary: Unpublish product version
+      description: Unpublish product version
       tags:
-        - Products
+        - Product versions
       parameters:
-        - $ref: './products.yml#/components/parameters/productIdPath'
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - $ref: './products.yml#/components/parameters/effectiveDatePath'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './products.yml#/components/schemas/Product'
+                $ref: './products.yml#/components/schemas/ProductVersion'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 

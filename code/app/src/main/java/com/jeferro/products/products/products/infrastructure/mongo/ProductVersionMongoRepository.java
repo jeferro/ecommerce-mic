@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.infrastructure.mongo;
 
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.products.products.products.infrastructure.mongo.daos.ProductsMongoDao;
 import com.jeferro.products.products.products.infrastructure.mongo.dtos.ProductVersionMongoDTO;
@@ -53,7 +53,7 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
     }
 
     @Override
-    public PaginatedList<ProductVersion> findAll(ProductFilter filter) {
+    public PaginatedList<ProductVersion> findAll(ProductVersionFilter filter) {
         Query query = productQueryMongoCreator.create(filter);
 
         Page<ProductVersionMongoDTO> page = customMongoTemplate.findPage(query, ProductVersionMongoDTO.class);

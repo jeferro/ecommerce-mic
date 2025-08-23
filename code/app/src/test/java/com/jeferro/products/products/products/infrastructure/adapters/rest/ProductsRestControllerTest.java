@@ -47,8 +47,8 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_create_product_on_request() throws Exception {
-        var apple = ProductVersionMother.appleV1();
-        stubUseCaseBus.init(apple);
+        var appleV1 = ProductVersionMother.appleV1();
+        stubUseCaseBus.init(appleV1);
 
         var requestContent = """
                 {
@@ -60,10 +60,15 @@ class ProductsRestControllerTest extends RestControllerTest {
                   }
                 }"""
                 .formatted(
-                    apple.getVersionId(),
-                    apple.getTypeId());
+                    appleV1.getVersionId(),
+                    appleV1.getTypeId());
 
-        var requestBuilder = MockMvcRequestBuilders.post("/v1/products")
+        var url = "/v1/products/"
+            + appleV1.getCode()
+            + "/versions/"
+            + appleV1.getEffectiveDate();
+
+        var requestBuilder = MockMvcRequestBuilders.post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -80,10 +85,15 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_get_product_on_request() throws Exception {
-        var apple = ProductVersionMother.appleV1();
-        stubUseCaseBus.init(apple);
+        var appleV1 = ProductVersionMother.appleV1();
+        stubUseCaseBus.init(appleV1);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/products/" + apple.getVersionId())
+        var url = "/v1/products/"
+            + appleV1.getCode()
+            + "/versions/"
+            + appleV1.getEffectiveDate();
+
+        var requestBuilder = MockMvcRequestBuilders.get(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -99,8 +109,8 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_update_product_on_request() throws Exception {
-        var apple = ProductVersionMother.appleV1();
-        stubUseCaseBus.init(apple);
+        var appleV1 = ProductVersionMother.appleV1();
+        stubUseCaseBus.init(appleV1);
 
         var requestContent = """
                 {
@@ -108,9 +118,14 @@ class ProductsRestControllerTest extends RestControllerTest {
                     "en-US": "%s"
                   }
                 }"""
-                .formatted(apple.getName());
+                .formatted(appleV1.getName());
 
-        var requestBuilder = MockMvcRequestBuilders.patch("/v1/products/" + apple.getVersionId())
+        var url = "/v1/products/"
+            + appleV1.getCode()
+            + "/versions/"
+            + appleV1.getEffectiveDate();
+
+        var requestBuilder = MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -127,10 +142,15 @@ class ProductsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_delete_product_on_request() throws Exception {
-        var apple = ProductVersionMother.appleV1();
-        stubUseCaseBus.init(apple);
+        var appleV1 = ProductVersionMother.appleV1();
+        stubUseCaseBus.init(appleV1);
 
-        var requestBuilder = MockMvcRequestBuilders.delete("/v1/products/" + apple.getVersionId())
+        var url = "/v1/products/"
+            + appleV1.getCode()
+            + "/versions/"
+            + appleV1.getEffectiveDate();
+
+        var requestBuilder = MockMvcRequestBuilders.delete(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
