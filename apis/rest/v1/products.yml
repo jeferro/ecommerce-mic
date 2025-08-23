@@ -147,14 +147,9 @@ components:
       type: object
       description: Input to create product version
       required:
-        - versionId
         - typeId
         - name
       properties:
-        versionId:
-          type: string
-          description: Identifier of the product
-          example: '123456789::2025-08-01_09:00:00'
         typeId:
           type: string
           description: Identifier of the product type

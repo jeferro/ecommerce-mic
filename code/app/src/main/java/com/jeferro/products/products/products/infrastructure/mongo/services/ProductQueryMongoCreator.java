@@ -30,23 +30,23 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductVersionOr
         }
 
         if (filter.hasMinEffectiveDate()) {
-            Criteria codeCriteria = Criteria.where("effectiveDate").gt(filter.getMinEffectiveDate());
+            Criteria minEffectiveDateCriteria = Criteria.where("effectiveDate").gt(filter.getMinEffectiveDate());
 
-            criteria.add(codeCriteria);
+            criteria.add(minEffectiveDateCriteria);
         }
 
         if (filter.hasMaxEffectiveDate()) {
-            Criteria codeCriteria = Criteria.where("effectiveDate").lt(filter.getMinEffectiveDate());
+            Criteria maxEffectiveDateCriteria = Criteria.where("effectiveDate").lt(filter.getMaxEffectiveDate());
 
-            criteria.add(codeCriteria);
+            criteria.add(maxEffectiveDateCriteria);
         }
 
         if (filter.hasSearchDate()) {
             Criteria searchDateCriteria = new Criteria().andOperator(
-                Criteria.where("effectiveDate").gte(filter.getSearchDate()),
+                Criteria.where("effectiveDate").lte(filter.getSearchDate()),
                 new Criteria().orOperator(
                     Criteria.where("endEffectiveDate").is(null),
-                    Criteria.where("endEffectiveDate").lte(filter.getSearchDate())
+                    Criteria.where("endEffectiveDate").gte(filter.getSearchDate())
                 ));
 
             criteria.add(searchDateCriteria);
