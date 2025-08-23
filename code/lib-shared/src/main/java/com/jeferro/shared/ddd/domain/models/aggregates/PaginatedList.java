@@ -148,6 +148,10 @@ public class PaginatedList<T> extends ValueObject implements Collection<T> {
         return !isPageable();
     }
 
+    public T getFirstOrNull() {
+        return items.isEmpty() ? null : items.getFirst();
+    }
+
     public long getTotalPages() {
         if (isNotPageable()) {
             return 1;

@@ -1,21 +1,26 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.DeleteProductParams;
-import com.jeferro.products.products.products.domain.events.ProductDeleted;
-import com.jeferro.products.products.products.domain.exceptions.ProductNotFoundException;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductMother;
-import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
+import com.jeferro.products.products.products.domain.events.ProductVersionDeleted;
+import com.jeferro.products.products.products.domain.events.ProductVersionUpdated;
+import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class DeleteProductUseCaseTest {
 
-    public ProductsInMemoryRepository productsInMemoryRepository;
+    public ProductVersionInMemoryRepository productsInMemoryRepository;
 
     public EventInMemoryBus eventInMemoryBus;
 
@@ -24,57 +29,89 @@ class DeleteProductUseCaseTest {
     @BeforeEach
     void beforeEach() {
         eventInMemoryBus = new EventInMemoryBus();
-        productsInMemoryRepository = new ProductsInMemoryRepository();
+        productsInMemoryRepository = new ProductVersionInMemoryRepository();
 
         deleteProductUseCase = new DeleteProductUseCase(productsInMemoryRepository, eventInMemoryBus);
     }
 
     @Test
-    void givenOneProduct_whenDeleteProduct_thenDeletesProduct() {
-        var apple = givenAnAppleInDatabase();
+    void should_deleteProductVersion_when_exists() {
+        var appleV1 = ProductVersionMother.appleV1();
 
-        var userContext = ContextMother.user();
         var params = new DeleteProductParams(
-                apple.getId()
+                appleV1.getVersionId()
         );
 
-        var result = deleteProductUseCase.execute(userContext, params);
+        var result = deleteProductUseCase.execute(
+            ContextMother.john(),
+            params);
 
-        assertEquals(apple, result);
+        assertEquals(appleV1, result);
 
-        assertProductDoesNotExistInDatabase();
+        assertProductDoesNotExistInDatabase(appleV1);
 
-        assertProductDeletedWasPublished(apple);
+        assertProductDeletedWasPublished(appleV1);
     }
 
     @Test
-    void givenNoProducts_whenDeleteProduct_thenThrowsException() {
-        var apple = ProductMother.apple();
+    void should_setEndEffectiveDateOfPreviousVersion_when_previousVersionExists() {
+        var appleV2 = ProductVersionMother.appleV2();
 
-        var userContext = ContextMother.user();
         var params = new DeleteProductParams(
-                apple.getId()
+            appleV2.getVersionId()
         );
 
-        assertThrows(ProductNotFoundException.class,
-                () -> deleteProductUseCase.execute(userContext, params));
+        deleteProductUseCase.execute(
+            ContextMother.john(),
+            params);
+
+        var appleV1Id = ProductVersionMother.appleV1().getVersionId();
+        var appleV1 = productsInMemoryRepository.findByIdOrError(appleV1Id);
+
+        assertNull(appleV1.getEndEffectiveDate());
+
+        assertProductUpdatedWasPublished(appleV1);
     }
 
-    private void assertProductDoesNotExistInDatabase() {
-        assertTrue(productsInMemoryRepository.isEmpty());
+    @Test
+    void should_failedAsUnknownProductVersion_when_notExist() {
+        var bananaV1 = ProductVersionMother.bananaV1();
+
+        var params = new DeleteProductParams(
+                bananaV1.getVersionId()
+        );
+
+        assertThrows(ProductVersionNotFoundException.class,
+                () -> deleteProductUseCase.execute(
+                    ContextMother.john(),
+                    params));
     }
 
-    private void assertProductDeletedWasPublished(Product product) {
-        assertEquals(1, eventInMemoryBus.size());
+    private void assertProductDoesNotExistInDatabase(ProductVersion appleV1) {
+        var product = productsInMemoryRepository.findById(appleV1.getVersionId());
 
-        var event = (ProductDeleted) eventInMemoryBus.getFirstOrError();
-
-        assertEquals(product.getId(), event.getCode());
+        assertTrue(product.isEmpty());
     }
 
-    private Product givenAnAppleInDatabase() {
-        var apple = ProductMother.apple();
-        productsInMemoryRepository.init(apple);
-        return apple;
+    private void assertProductDeletedWasPublished(ProductVersion productVersion) {
+        var event = eventInMemoryBus.filterOfClass(ProductVersionDeleted.class)
+            .findFirst();
+
+        if( event.isEmpty()) {
+            fail();
+        }
+
+        assertEquals(productVersion.getVersionId(), event.get().getVersionId());
+    }
+
+    private void assertProductUpdatedWasPublished(ProductVersion previousVersion) {
+        var event = eventInMemoryBus.filterOfClass(ProductVersionUpdated.class)
+            .findFirst();
+
+        if( event.isEmpty()) {
+            fail();
+        }
+
+        assertEquals(previousVersion.getVersionId(), event.get().getVersionId());
     }
 }

@@ -7,7 +7,6 @@ on:
       - closed
     branches:
       - main
-      - master
       - develop
 
 env:
@@ -22,7 +21,7 @@ jobs:
 
   release-version:
     name: Release version
-    if: ${{ (github.event.pull_request.merged == 'true') && (github.head_ref == 'develop' || startsWith(github.head_ref , 'hotfix')) }}
+    if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == 'main') && (github.head_ref == 'develop' || startsWith(github.head_ref , 'hotfix')) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

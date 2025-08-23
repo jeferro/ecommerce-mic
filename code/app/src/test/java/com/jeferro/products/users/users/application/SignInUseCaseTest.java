@@ -2,7 +2,6 @@ package com.jeferro.products.users.users.application;
 
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.users.users.application.params.SignInParams;
-import com.jeferro.products.users.users.domain.models.User;
 import com.jeferro.products.users.users.domain.models.UserMother;
 import com.jeferro.products.users.users.domain.repositories.UsersInMemoryRepository;
 import com.jeferro.products.users.users.domain.services.FakePasswordEncoder;
@@ -28,66 +27,64 @@ class SignInUseCaseTest {
     }
 
     @Test
-    void givenOneUSer_whenSignIn_thenReturnsUser() {
-        var user = givenAnUserInDatabase();
+    void givenOneUser_whenSignIn_thenReturnsUser() {
+        var john = UserMother.john();
 
-        var anonymousContext = ContextMother.anonymous();
         var params = new SignInParams(
-                user.getUsername(),
-                user.getEncodedPassword()
+                john.getUsername(),
+                john.getEncodedPassword()
         );
 
-        var result = signInUseCase.execute(anonymousContext, params);
+        var result = signInUseCase.execute(
+            ContextMother.anonymous(),
+            params);
 
-        assertEquals(user, result);
+        assertEquals(john, result);
     }
 
     @Test
     void givenAnAuthenticatedUser_whenSignIn_thenReturnsUser() {
-        var user = givenAnUserInDatabase();
-        var userContext = ContextMother.user();
+        var john = UserMother.john();
 
         var params = new SignInParams(
-                user.getUsername(),
-                user.getEncodedPassword()
+                john.getUsername(),
+                john.getEncodedPassword()
         );
 
-        var result = signInUseCase.execute(userContext, params);
+        var result = signInUseCase.execute(
+            ContextMother.john(),
+            params);
 
-        assertEquals(user, result);
+        assertEquals(john, result);
     }
 
     @Test
-    void givenNoUsers_whenSignIn_thenThrowsUnauthorizedException() {
-        var user = UserMother.user();
-        var anonymousContext = ContextMother.anonymous();
+    void givenUnknownUsers_whenSignIn_thenThrowsUnauthorizedException() {
+        var unknown = UserMother.unknown();
 
         var params = new SignInParams(
-                user.getUsername(),
-                user.getEncodedPassword()
+                unknown.getUsername(),
+                unknown.getEncodedPassword()
         );
 
         assertThrows(UnauthorizedException.class,
-                () -> signInUseCase.execute(anonymousContext, params));
+                () -> signInUseCase.execute(
+                    ContextMother.anonymous(),
+                    params));
     }
 
     @Test
     void givenWrongCredentials_whenSignIn_thenThrowsUnauthorizedException() {
-        var user = givenAnUserInDatabase();
-        var anonymousContext = ContextMother.anonymous();
+        var john = UserMother.john();
 
         var params = new SignInParams(
-                user.getUsername(),
+                john.getUsername(),
                 "wrong-password"
         );
 
         assertThrows(UnauthorizedException.class,
-                () -> signInUseCase.execute(anonymousContext, params));
-    }
-
-    private User givenAnUserInDatabase() {
-        var user = UserMother.user();
-        usersInMemoryRepository.init(user);
-        return user;
+                () -> signInUseCase.execute(
+                    ContextMother.anonymous(),
+                    params));
     }
 }

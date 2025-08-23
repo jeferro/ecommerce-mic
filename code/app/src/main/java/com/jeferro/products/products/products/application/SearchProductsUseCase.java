@@ -1,8 +1,8 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.SearchProductsParams;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.ddd.domain.models.context.Context;
@@ -15,9 +15,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class SearchProductsUseCase extends UseCase<SearchProductsParams, PaginatedList<Product>> {
+public class SearchProductsUseCase extends UseCase<SearchProductsParams, PaginatedList<ProductVersion>> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     @Override
     public Set<String> getMandatoryUserRoles() {
@@ -25,9 +25,9 @@ public class SearchProductsUseCase extends UseCase<SearchProductsParams, Paginat
     }
 
     @Override
-    public PaginatedList<Product> execute(Context context, SearchProductsParams params) {
+    public PaginatedList<ProductVersion> execute(Context context, SearchProductsParams params) {
         var filter = params.getFilter();
 
-        return productsRepository.findAll(filter);
+        return productVersionRepository.findAll(filter);
     }
 }

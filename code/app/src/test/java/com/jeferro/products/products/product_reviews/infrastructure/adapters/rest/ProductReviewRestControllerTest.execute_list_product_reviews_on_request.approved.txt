@@ -1,3 +1,3 @@
 data[0] = SearchProductReviewParams[productCode=apple]
-data[1] = 500
-data[2] = {"type":"about:blank","title":"Internal Server Error","status":500,"detail":"class java.util.ImmutableCollections$List12 cannot be cast to class com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList (java.util.ImmutableCollections$List12 is in module java.base of loader 'bootstrap'; com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList is in unnamed module of loader 'app')","instance":"/v1/product-reviews"}
+data[1] = 200
+data[2] = {"pageNumber":0,"pageSize":2,"totalItems":2,"items":[{"id":{"productCode":"apple","username":"john"},"locale":"en-US","comment":"Comment about apple"},{"id":{"productCode":"apple","username":"emily"},"locale":"en-US","comment":"I love apples"}]}

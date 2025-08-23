@@ -2,9 +2,9 @@ package com.jeferro.products.products.products.infrastructure.rest.mappers;
 
 import com.jeferro.products.generated.rest.v1.dtos.*;
 import com.jeferro.products.products.products.application.params.*;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductCode;
-import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
@@ -12,43 +12,57 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
+import java.time.OffsetDateTime;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductRestMapper extends AggregateRestMapper<Product, ProductCode, ProductRestDTO> {
+public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersion, ProductVersionId, ProductVersionRestDTO> {
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 
-    public abstract ProductSummaryRestDTO toSummaryDTO(Product product);
+    public abstract ProductVersionSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersions);
 
-    public abstract ProductSummaryListRestDTO toSummaryDTO(PaginatedList<Product> product);
+    public String toVersionItemDTO(ProductVersion productVersion) {
+        return productVersion.getVersionId().getValue();
+    }
+
+    public abstract ProductVersionListRestDTO toVersionListDTO(PaginatedList<ProductVersion> productVersions);
+
+    public ProductVersionId toDomain(String productCode, String effectiveDate) {
+        return new ProductVersionId(productCode + "::" + effectiveDate);
+    }
 
     public SearchProductsParams toSearchProductsParams(Integer pageNumber,
                                                        Integer pageSize,
                                                        ProductFilterOrderRestDTO order,
                                                        Boolean ascending,
-                                                       String name) {
-        var filter = toProductFilter(pageNumber, pageSize, order, ascending, name);
+                                                       String code,
+                                                       String name,
+                                                       OffsetDateTime searchDate) {
+        var filter = toProductFilter(pageNumber, pageSize, order, ascending, code, name, searchDate);
 
         return new SearchProductsParams(filter);
     }
 
-    protected abstract ProductFilter toProductFilter(Integer pageNumber,
+    @Mapping(target = "minEffectiveDate", ignore = true)
+    @Mapping(target = "maxEffectiveDate", ignore = true)
+    protected abstract ProductVersionFilter toProductFilter(Integer pageNumber,
                                                   Integer pageSize,
                                                   ProductFilterOrderRestDTO order,
                                                   Boolean ascending,
-                                                  String name);
+                                                  String code,
+                                                  String name,
+                                                  OffsetDateTime searchDate);
 
-    public abstract CreateProductParams toCreateProductParams(CreateProductInputRestDTO productInputRestDTO);
+    public abstract CreateProductParams toCreateProductParams(ProductVersionId versionId, CreateProductVersionInputRestDTO productInputRestDTO);
 
-    public abstract GetProductParams toGetProductParams(String productCode);
+    public abstract GetProductParams toGetProductParams(ProductVersionId versionId);
 
     @Mapping(target = "name", source = "inputRestDTO.name")
-    public abstract UpdateProductParams toUpdateProductParams(String productCode, UpdateProductInputRestDTO inputRestDTO);
+    public abstract UpdateProductParams toUpdateProductParams(ProductVersionId versionId, UpdateProductVersionInputRestDTO inputRestDTO);
 
-    public abstract PublishProductParams toPublishProductParams(String productCode);
+    public abstract PublishProductParams toPublishProductParams(ProductVersionId versionId);
 
-    public abstract UnpublishProductParams toUnpublishProductParams(String productCode);
+    public abstract UnpublishProductParams toUnpublishProductParams(ProductVersionId versionId);
 
-    public abstract DeleteProductParams toDeleteProductParams(String productCode);
+    public abstract DeleteProductParams toDeleteProductParams(ProductVersionId versionId);
 }

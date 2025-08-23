@@ -4,14 +4,14 @@
   "name": "ProductReviewDeletedAvroDTO",
   "fields": [
     {
-      "name": "id",
+      "name": "eventId",
       "type": "string",
       "doc": "Identifier of the event"
     },
     {
       "name": "productCode",
       "type": "string",
-      "doc": "Code of the product"
+      "doc": "Code of the productVersion"
     },
     {
       "name": "username",

@@ -1,12 +1,17 @@
 package com.jeferro.products.products.products.application;
 
+import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
 import com.jeferro.products.products.products.application.params.CreateProductParams;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.exceptions.ProductVersionAlreadyExistsException;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +21,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class CreateProductUseCase extends UseCase<CreateProductParams, Product> {
+public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVersion> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     private final ParametricValidator parametricValidator;
 
@@ -30,20 +35,53 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, Product> 
     }
 
     @Override
-    public Product execute(Context context, CreateProductParams params) {
+    public ProductVersion execute(Context context, CreateProductParams params) {
+        var versionId = params.getVersionId();
         var typeId = params.getTypeId();
         var name = params.getName();
 
+        ensureProductVersionNotExist(versionId);
+
         parametricValidator.validateProductType(typeId);
 
-        var code = productsRepository.nextId();
+        setEndEffectiveDateOfPreviousProduct(versionId);
 
-        var product = Product.create(code, typeId, name);
+        return createNewVersion(versionId, typeId, name);
+    }
 
-        productsRepository.save(product);
+    private void ensureProductVersionNotExist(ProductVersionId versionId) {
+        var version = productVersionRepository.findById(versionId);
 
-        eventBus.sendAll(product);
+        if(version.isPresent()){
+            throw ProductVersionAlreadyExistsException.createOf(versionId);
+        }
+    }
 
-        return product;
+    private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) {
+        var previousVersionFilter = ProductVersionFilter.previousProduct(versionId);
+        var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
+
+        if(previousVersion == null){
+            return;
+        }
+
+        previousVersion.expireBeforeVersion(versionId);
+
+        productVersionRepository.save(previousVersion);
+
+        eventBus.sendAll(previousVersion);
+    }
+
+    private ProductVersion createNewVersion(ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
+        var nextVersionFilter = ProductVersionFilter.nextProduct(versionId);
+        var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
+
+        var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);
+
+        productVersionRepository.save(newVersion);
+
+        eventBus.sendAll(newVersion);
+
+        return newVersion;
     }
 }

@@ -24,7 +24,7 @@ class AuthenticationsRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_sign_in_on_request() throws Exception {
-        var user = UserMother.user();
+        var user = UserMother.john();
         stubUseCaseBus.init(user);
 
         var requestContent = """
@@ -43,7 +43,7 @@ class AuthenticationsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }

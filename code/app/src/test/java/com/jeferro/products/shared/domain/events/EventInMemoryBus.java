@@ -6,6 +6,7 @@ import com.jeferro.shared.ddd.domain.events.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class EventInMemoryBus extends EventBus {
 
@@ -20,12 +21,14 @@ public class EventInMemoryBus extends EventBus {
         return events.size();
     }
 
-    public boolean isEmpty() {
-        return events.isEmpty();
+    public <T> Stream<T> filterOfClass(Class<T> clazz) {
+        return events.stream()
+            .filter(clazz::isInstance)
+            .map(clazz::cast);
     }
 
-    public Event getFirstOrError() {
-        return events.getFirst();
+    public boolean isEmpty() {
+        return events.isEmpty();
     }
 
     public void forEach(Consumer<Event> action) {

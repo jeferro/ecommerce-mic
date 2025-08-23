@@ -12,6 +12,6 @@ public class ParametricNotFoundException extends NotFoundException {
     }
 
     public static ParametricNotFoundException createOf(ParametricId parametricId) {
-        return new ParametricNotFoundException("Parametric " + parametricId + " not found");
+        return new ParametricNotFoundException("Parametric '" + parametricId + "' not found");
     }
 }

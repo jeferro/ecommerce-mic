@@ -2,12 +2,16 @@ package com.jeferro.products.products.products.domain.models;
 
 public class ProductCodeMother {
 
-    public static ProductCode appleCode() {
+    public static ProductCode apple() {
         return new ProductCode("apple");
     }
 
-    public static ProductCode pearCode() {
+    public static ProductCode pear() {
         return new ProductCode("pear");
+    }
+
+    public static ProductCode banana() {
+        return new ProductCode("banana");
     }
 
 }

@@ -3,8 +3,15 @@ package com.jeferro.shared.ddd.domain.utils;
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 public class ValueValidationUtils {
+
+    public static void ensure(Supplier<Boolean> predicate, String message) {
+        if(!predicate.get()) {
+            throw ValueValidationException.createOfMessage(message);
+        }
+    }
 
     public static void isNotBlank(String value, String attributeName, Object obj) {
         isNotBlank(value, attributeName, obj.getClass());

@@ -6,7 +6,7 @@ import com.jeferro.products.products.product_reviews.domain.models.ProductReview
 import com.jeferro.products.products.product_reviews.domain.models.ProductReviewId;
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsRepository;
 import com.jeferro.products.products.products.domain.models.ProductCode;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.exceptions.auth.ForbiddenException;
@@ -24,7 +24,7 @@ import static com.jeferro.products.shared.application.Roles.USER;
 @RequiredArgsConstructor
 public class CreateProductReviewUseCase extends UseCase<CreateProductReviewParams, ProductReview> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     private final ProductReviewsRepository productReviewsRepository;
 
@@ -38,8 +38,9 @@ public class CreateProductReviewUseCase extends UseCase<CreateProductReviewParam
     @Override
     public ProductReview execute(Context context, CreateProductReviewParams params) {
         Auth auth = context.getAuth();
+        var productCode = params.getProductCode();
 
-        var productCode = ensureProductExists(params);
+        ensureProductExists(productCode);
 
         ensureUserIsAuthenticated(auth);
 
@@ -54,12 +55,8 @@ public class CreateProductReviewUseCase extends UseCase<CreateProductReviewParam
         }
     }
 
-    private ProductCode ensureProductExists(CreateProductReviewParams params) {
-        var productCode = params.getProductCode();
-
-        var product = productsRepository.findByIdOrError(productCode);
-
-        return product.getCode();
+    private void ensureProductExists(ProductCode productCode) {
+        // TODO productsRepository.findByIdOrError(productCode);
     }
 
     private void ensureProductReviewDoesNotExists(Context context, ProductCode productCode) {

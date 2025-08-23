@@ -1,0 +1,17 @@
+{
+  "namespace": "com.jeferro.products.generated.kafka.v1.dtos",
+  "type": "record",
+  "name": "ProductPublishedAvroDTO",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string",
+      "doc": "Identifier of the event"
+    },
+    {
+      "name": "versionId",
+      "type": "string",
+      "doc": "Identifier of the product version updated"
+    }
+  ]
+}

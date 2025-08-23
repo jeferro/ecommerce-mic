@@ -1,8 +1,8 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.PublishProductParams;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.context.Context;
@@ -15,9 +15,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class PublishProductUseCase extends UseCase<PublishProductParams, Product> {
+public class PublishProductUseCase extends UseCase<PublishProductParams, ProductVersion> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     private final EventBus eventBus;
 
@@ -27,25 +27,25 @@ public class PublishProductUseCase extends UseCase<PublishProductParams, Product
     }
 
     @Override
-    public Product execute(Context context, PublishProductParams params) {
-        var product = ensureProductExists(params);
+    public ProductVersion execute(Context context, PublishProductParams params) {
+        var version = ensureProductVersionExists(params);
 
-        return publishProduct(params, product);
+        return publishProductVersion(version);
     }
 
-    private Product ensureProductExists(PublishProductParams params) {
-        var productCode = params.getProductCode();
+    private ProductVersion ensureProductVersionExists(PublishProductParams params) {
+        var versionId = params.getVersionId();
 
-        return productsRepository.findByIdOrError(productCode);
+        return productVersionRepository.findByIdOrError(versionId);
     }
 
-    private Product publishProduct(PublishProductParams params, Product product) {
-        product.publish();
+    private ProductVersion publishProductVersion(ProductVersion version) {
+        version.publish();
 
-        productsRepository.save(product);
+        productVersionRepository.save(version);
 
-        eventBus.sendAll(product);
+        eventBus.sendAll(version);
 
-        return product;
+        return version;
     }
 }

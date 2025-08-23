@@ -10,10 +10,8 @@ public abstract class InMemoryRepository<Aggregate extends AggregateRoot<Id>, Id
 
     protected final Map<Id, Aggregate> data = new HashMap<>();
 
-    @SafeVarargs
-    public final void init(Aggregate... aggregates) {
-        Arrays.stream(aggregates)
-                .forEach(aggregate -> data.put(aggregate.getId(), aggregate));
+    public void clear() {
+        data.clear();
     }
 
     public void save(Aggregate aggregate) {
@@ -30,8 +28,8 @@ public abstract class InMemoryRepository<Aggregate extends AggregateRoot<Id>, Id
         return Optional.of(product);
     }
 
-    public void deleteById(Id id) {
-        data.remove(id);
+    public void deleteById(Id versionId) {
+        data.remove(versionId);
     }
 
     public boolean isEmpty() {
@@ -49,7 +47,7 @@ public abstract class InMemoryRepository<Aggregate extends AggregateRoot<Id>, Id
     }
 
     protected List<Aggregate> paginateEntities(List<Aggregate> entities, Filter<?> filter) {
-        int initialIndex = (filter.getPageNumber() - 1) * filter.getPageSize();
+        int initialIndex = filter.getPageNumber() * filter.getPageSize();
         int maxIndex = entities.size() - 1;
 
         if (initialIndex > maxIndex) {
