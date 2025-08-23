@@ -13,6 +13,6 @@ public class ParametricValueNotFoundException extends NotFoundException {
     }
 
     public static ParametricValueNotFoundException createOf(Parametric parametric, ParametricValueId missingParametricValueId) {
-        return new ParametricValueNotFoundException("Value " + missingParametricValueId + " not found in parametric " + parametric.getId());
+        return new ParametricValueNotFoundException("Value '" + missingParametricValueId + "' not found in parametric " + parametric.getId());
     }
 }

@@ -12,6 +12,6 @@ public class ProductVersionNotFoundException extends NotFoundException {
     }
 
     public static ProductVersionNotFoundException createOf(ProductVersionId versionId) {
-        return new ProductVersionNotFoundException("Product " + versionId + " not found");
+        return new ProductVersionNotFoundException("Product '" + versionId + "' not found");
     }
 }

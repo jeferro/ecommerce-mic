@@ -12,6 +12,6 @@ public class ProductVersionAlreadyExistsException extends NotFoundException {
     }
 
     public static ProductVersionAlreadyExistsException createOf(ProductVersionId versionId) {
-        return new ProductVersionAlreadyExistsException("Product " + versionId + " already exists");
+        return new ProductVersionAlreadyExistsException("Product '" + versionId + "' already exists");
     }
 }
