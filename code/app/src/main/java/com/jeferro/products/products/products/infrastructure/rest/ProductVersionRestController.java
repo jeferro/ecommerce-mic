@@ -3,6 +3,7 @@ package com.jeferro.products.products.products.infrastructure.rest;
 import com.jeferro.products.generated.rest.v1.apis.ProductVersionsApi;
 import com.jeferro.products.generated.rest.v1.dtos.CreateProductVersionInputRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductFilterOrderRestDTO;
+import com.jeferro.products.generated.rest.v1.dtos.ProductVersionListRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionSummaryListRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.UpdateProductVersionInputRestDTO;
@@ -24,11 +25,20 @@ public class ProductVersionRestController implements ProductVersionsApi {
     @Override
     public ProductVersionSummaryListRestDTO searchProductVersions(Integer pageNumber, Integer pageSize, ProductFilterOrderRestDTO order,
         Boolean ascending, String name, OffsetDateTime searchDate) {
-        var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, name, searchDate);
+        var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, null, name, searchDate);
 
-        var products = useCaseBus.execute(params);
+        var productVersions = useCaseBus.execute(params);
 
-        return productRestMapper.toSummaryDTO(products);
+        return productRestMapper.toSummaryDTO(productVersions);
+    }
+
+    @Override
+    public ProductVersionListRestDTO searchProductVersionIds(String productCode, Integer pageNumber, Integer pageSize) {
+        var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, null, null,  productCode, null, null);
+
+        var productVersions = useCaseBus.execute(params);
+
+        return productRestMapper.toVersionListDTO(productVersions);
     }
 
     @Override
@@ -38,9 +48,9 @@ public class ProductVersionRestController implements ProductVersionsApi {
             productRestMapper.toDomain(productCode, effectiveDate),
             createProductVersionInputRestDTO);
 
-        var product = useCaseBus.execute(params);
+        var productVersion = useCaseBus.execute(params);
 
-        return productRestMapper.toDTO(product);
+        return productRestMapper.toDTO(productVersion);
     }
 
     @Override
@@ -49,9 +59,9 @@ public class ProductVersionRestController implements ProductVersionsApi {
             productRestMapper.toDomain(productCode, effectiveDate)
         );
 
-        var product = useCaseBus.execute(params);
+        var productVersion = useCaseBus.execute(params);
 
-        return productRestMapper.toDTO(product);
+        return productRestMapper.toDTO(productVersion);
     }
 
     @Override
@@ -61,9 +71,9 @@ public class ProductVersionRestController implements ProductVersionsApi {
             productRestMapper.toDomain(productCode, effectiveDate),
             updateProductVersionInputRestDTO);
 
-        var user = useCaseBus.execute(params);
+        var productVersion = useCaseBus.execute(params);
 
-        return productRestMapper.toDTO(user);
+        return productRestMapper.toDTO(productVersion);
     }
 
     @Override
@@ -72,9 +82,9 @@ public class ProductVersionRestController implements ProductVersionsApi {
             productRestMapper.toDomain(productCode, effectiveDate)
         );
 
-        var user = useCaseBus.execute(params);
+        var productVersion = useCaseBus.execute(params);
 
-        return productRestMapper.toDTO(user);
+        return productRestMapper.toDTO(productVersion);
     }
 
     @Override
@@ -83,9 +93,9 @@ public class ProductVersionRestController implements ProductVersionsApi {
             productRestMapper.toDomain(productCode, effectiveDate)
         );
 
-        var user = useCaseBus.execute(params);
+        var productVersion = useCaseBus.execute(params);
 
-        return productRestMapper.toDTO(user);
+        return productRestMapper.toDTO(productVersion);
     }
 
     @Override
@@ -94,8 +104,8 @@ public class ProductVersionRestController implements ProductVersionsApi {
             productRestMapper.toDomain(productCode, effectiveDate)
         );
 
-        var user = useCaseBus.execute(params);
+        var productVersion = useCaseBus.execute(params);
 
-        return productRestMapper.toDTO(user);
+        return productRestMapper.toDTO(productVersion);
     }
 }

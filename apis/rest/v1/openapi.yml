@@ -75,6 +75,37 @@ paths:
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
+  /v1/products/{productCode}/versions:
+    get:
+      operationId: search-product-version-ids
+      summary: Search product versions
+      description: Search product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: './products.yml#/components/parameters/productCodePath'
+        - name: pageNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Number of the page
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Size of the page
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: './products.yml#/components/schemas/ProductVersionList'
+        default:
+          $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
+
   /v1/products/{productCode}/versions/{effectiveDate}:
     post:
       operationId: create-product-version

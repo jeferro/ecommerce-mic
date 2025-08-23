@@ -1,3 +1,0 @@
-data[0] = CreateProductParams[name=LocalizedField[values={en-US=Apple, es-ES=Manzana}],typeId=fruit,versionId=apple::2025-01-01_09:00:00]
-data[1] = 200
-data[2] = {"versionId":"apple::2025-01-01_09:00:00","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","endEffectiveDate":"2025-02-01T08:59:59Z","typeId":"fruit","name":{"en-US":"Apple v1"},"status":"UNPUBLISHED"}

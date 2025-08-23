@@ -24,7 +24,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
     private StubUseCaseBus stubUseCaseBus;
 
     @Test
-    void execute_list_products_on_request() throws Exception {
+    void execute_list_product_versions_on_request() throws Exception {
         var products = PaginatedList.createOfItems(
                 ProductVersionMother.appleV1(),
                 ProductVersionMother.pearV1()
@@ -46,7 +46,35 @@ class ProductVersionRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_create_product_on_request() throws Exception {
+    void execute_list_product_version_ids_on_request() throws Exception {
+        var appleV1 = ProductVersionMother.appleV1();
+
+        var products = PaginatedList.createOfItems(
+            ProductVersionMother.appleV1(),
+            ProductVersionMother.appleV2()
+        );
+        stubUseCaseBus.init(products);
+
+        String url = "/v1/products/"
+            + appleV1.getCode()
+            + "/versions?pageNumber=0&pageSize=10";
+
+        var requestBuilder = MockMvcRequestBuilders.get(url)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
+            .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
+
+        var response = mockMvc.perform(requestBuilder)
+            .andReturn()
+            .getResponse();
+
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
+            response.getStatus(),
+            response.getContentAsString());
+    }
+
+    @Test
+    void execute_create_product_version_on_request() throws Exception {
         var appleV1 = ProductVersionMother.appleV1();
         stubUseCaseBus.init(appleV1);
 
@@ -84,7 +112,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_get_product_on_request() throws Exception {
+    void execute_get_product_version_on_request() throws Exception {
         var appleV1 = ProductVersionMother.appleV1();
         stubUseCaseBus.init(appleV1);
 
@@ -108,7 +136,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_update_product_on_request() throws Exception {
+    void execute_update_product_version_on_request() throws Exception {
         var appleV1 = ProductVersionMother.appleV1();
         stubUseCaseBus.init(appleV1);
 
@@ -141,7 +169,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_delete_product_on_request() throws Exception {
+    void execute_delete_product_version_on_request() throws Exception {
         var appleV1 = ProductVersionMother.appleV1();
         stubUseCaseBus.init(appleV1);
 

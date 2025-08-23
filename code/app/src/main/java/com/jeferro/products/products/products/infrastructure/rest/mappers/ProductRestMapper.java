@@ -19,7 +19,13 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 
-    public abstract ProductVersionSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersion);
+    public abstract ProductVersionSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersions);
+
+    public String toVersionItemDTO(ProductVersion productVersion) {
+        return productVersion.getVersionId().getValue();
+    }
+
+    public abstract ProductVersionListRestDTO toVersionListDTO(PaginatedList<ProductVersion> productVersions);
 
     public ProductVersionId toDomain(String productCode, String effectiveDate) {
         return new ProductVersionId(productCode + "::" + effectiveDate);
@@ -29,20 +35,21 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
                                                        Integer pageSize,
                                                        ProductFilterOrderRestDTO order,
                                                        Boolean ascending,
+                                                       String code,
                                                        String name,
                                                        OffsetDateTime searchDate) {
-        var filter = toProductFilter(pageNumber, pageSize, order, ascending, name, searchDate);
+        var filter = toProductFilter(pageNumber, pageSize, order, ascending, code, name, searchDate);
 
         return new SearchProductsParams(filter);
     }
 
-    @Mapping(target = "code", ignore = true)
     @Mapping(target = "minEffectiveDate", ignore = true)
     @Mapping(target = "maxEffectiveDate", ignore = true)
     protected abstract ProductVersionFilter toProductFilter(Integer pageNumber,
                                                   Integer pageSize,
                                                   ProductFilterOrderRestDTO order,
                                                   Boolean ascending,
+                                                  String code,
                                                   String name,
                                                   OffsetDateTime searchDate);
 

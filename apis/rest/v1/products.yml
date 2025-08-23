@@ -143,6 +143,28 @@ components:
           items:
             $ref: '#/components/schemas/ProductVersionSummary'
 
+    ProductVersionList:
+      type: object
+      required:
+        - pageNumber
+        - pageSize
+        - totalItems
+        - items
+      properties:
+        pageNumber:
+          type: integer
+          description: Number of total pages
+        pageSize:
+          type: integer
+          description: Size of each page
+        totalItems:
+          type: integer
+          description: Number of total items
+        items:
+          type: array
+          items:
+            type: string
+
     CreateProductVersionInput:
       type: object
       description: Input to create product version
