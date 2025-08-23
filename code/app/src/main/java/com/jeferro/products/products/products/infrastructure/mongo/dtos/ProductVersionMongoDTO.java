@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.Map;
 
 @Document(collection = "products")
-public record ProductMongoDTO(
+public record ProductVersionMongoDTO(
         String id,
 		String code,
 		Instant effectiveDate,

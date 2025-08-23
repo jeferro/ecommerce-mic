@@ -1,8 +1,10 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.DeleteProductParams;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
+import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.context.Context;
@@ -15,9 +17,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class DeleteProductUseCase extends UseCase<DeleteProductParams, Product> {
+public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVersion> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     private final EventBus eventBus;
 
@@ -27,25 +29,50 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, Product> 
     }
 
     @Override
-    public Product execute(Context context, DeleteProductParams params) {
-        var product = ensureProductExists(params);
+    public ProductVersion execute(Context context, DeleteProductParams params) {
+        var version = ensureProductVersionExists(params);
 
-        deleteProduct(product);
+        deleteProductVersion(version);
 
-        return product;
+        setEndEffectiveDateOfPreviousVersion(version.getVersionId());
+
+        return version;
     }
 
-    private Product ensureProductExists(DeleteProductParams params) {
-        var id = params.getId();
+    private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
+        var previousVersionFilter = ProductFilter.previousProduct(versionId);
+        var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
 
-        return productsRepository.findByIdOrError(id);
+        if(previousVersion == null){
+            return;
+        }
+
+        var nextVersionFilter = ProductFilter.nextProduct(versionId);
+        var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
+
+        if(nextVersion != null) {
+            previousVersion.expireBeforeVersion(nextVersion.getVersionId());
+        }
+        else{
+            previousVersion.notExpire();
+        }
+
+        productVersionRepository.save(previousVersion);
+
+        eventBus.sendAll(previousVersion);
     }
 
-    private void deleteProduct(Product product) {
-        product.delete();
+    private ProductVersion ensureProductVersionExists(DeleteProductParams params) {
+        var versionId = params.getVersionId();
 
-        productsRepository.deleteById(product.getId());
+        return productVersionRepository.findByIdOrError(versionId);
+    }
 
-        eventBus.sendAll(product);
+    private void deleteProductVersion(ProductVersion version) {
+        version.delete();
+
+        productVersionRepository.deleteById(version.getVersionId());
+
+        eventBus.sendAll(version);
     }
 }

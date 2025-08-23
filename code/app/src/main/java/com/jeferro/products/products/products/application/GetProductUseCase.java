@@ -1,8 +1,8 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.GetProductParams;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.context.Context;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +14,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class GetProductUseCase extends UseCase<GetProductParams, Product> {
+public class GetProductUseCase extends UseCase<GetProductParams, ProductVersion> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     @Override
     public Set<String> getMandatoryUserRoles() {
@@ -24,9 +24,9 @@ public class GetProductUseCase extends UseCase<GetProductParams, Product> {
     }
 
     @Override
-    public Product execute(Context context, GetProductParams params) {
-        var id = params.getId();
+    public ProductVersion execute(Context context, GetProductParams params) {
+        var versionId = params.getVersionId();
 
-        return productsRepository.findByIdOrError(id);
+        return productVersionRepository.findByIdOrError(versionId);
     }
 }

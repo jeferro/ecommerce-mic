@@ -4,10 +4,10 @@ import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
 import com.jeferro.products.products.products.application.params.CreateProductParams;
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionAlreadyExistsException;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductId;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.context.Context;
@@ -21,9 +21,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class CreateProductUseCase extends UseCase<CreateProductParams, Product> {
+public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVersion> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     private final ParametricValidator parametricValidator;
 
@@ -35,53 +35,53 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, Product> 
     }
 
     @Override
-    public Product execute(Context context, CreateProductParams params) {
-        var id = params.getId();
+    public ProductVersion execute(Context context, CreateProductParams params) {
+        var versionId = params.getVersionId();
         var typeId = params.getTypeId();
         var name = params.getName();
 
-        ensureVersionNotExists(id);
+        ensureProductVersionNotExist(versionId);
 
         parametricValidator.validateProductType(typeId);
 
-        updatePreviousVersionIfExists(id);
+        setEndEffectiveDateOfPreviousProduct(versionId);
 
-        return createNewVersion(id, typeId, name);
+        return createNewVersion(versionId, typeId, name);
     }
 
-    private void ensureVersionNotExists(ProductId id) {
-        var version = productsRepository.findById(id);
+    private void ensureProductVersionNotExist(ProductVersionId versionId) {
+        var version = productVersionRepository.findById(versionId);
 
         if(version.isPresent()){
-            throw ProductVersionAlreadyExistsException.createOf(id);
+            throw ProductVersionAlreadyExistsException.createOf(versionId);
         }
     }
 
-    private void updatePreviousVersionIfExists(ProductId id) {
-        var previousVersionFilter = ProductFilter.previousProduct(id);
-        var nextVersion = productsRepository.findAll(previousVersionFilter).getFirstOrNull();
+    private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) {
+        var previousVersionFilter = ProductFilter.previousProduct(versionId);
+        var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
 
-        if(nextVersion == null){
+        if(previousVersion == null){
             return;
         }
 
-        nextVersion.expireBefore(id);
+        previousVersion.expireBeforeVersion(versionId);
 
-        productsRepository.save(nextVersion);
+        productVersionRepository.save(previousVersion);
 
-        eventBus.sendAll(nextVersion);
+        eventBus.sendAll(previousVersion);
     }
 
-    private Product createNewVersion(ProductId id, ParametricValueId typeId, LocalizedField name) {
-        var nextVersionFilter = ProductFilter.nextProduct(id);
-        var nextVersion = productsRepository.findAll(nextVersionFilter).getFirstOrNull();
+    private ProductVersion createNewVersion(ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
+        var nextVersionFilter = ProductFilter.nextProduct(versionId);
+        var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
 
-        var product = Product.create(id, typeId, name, nextVersion);
+        var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);
 
-        productsRepository.save(product);
+        productVersionRepository.save(newVersion);
 
-        eventBus.sendAll(product);
+        eventBus.sendAll(newVersion);
 
-        return product;
+        return newVersion;
     }
 }

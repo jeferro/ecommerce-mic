@@ -1,21 +1,21 @@
 package com.jeferro.products.products.products.application.params;
 
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductId;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import lombok.Getter;
 
 @Getter
-public class PublishProductParams extends Params<Product> {
+public class PublishProductParams extends Params<ProductVersion> {
 
-    private final ProductId id;
+    private final ProductVersionId versionId;
 
-    public PublishProductParams(ProductId id) {
+    public PublishProductParams(ProductVersionId versionId) {
         super();
 
-        ValueValidationUtils.isNotNull(id, "id", this);
+        ValueValidationUtils.isNotNull(versionId, "id", this);
 
-        this.id = id;
+        this.versionId = versionId;
     }
 }

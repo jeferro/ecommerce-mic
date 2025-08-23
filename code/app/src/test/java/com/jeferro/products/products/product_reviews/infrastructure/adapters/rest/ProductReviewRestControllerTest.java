@@ -2,10 +2,11 @@ package com.jeferro.products.products.product_reviews.infrastructure.adapters.re
 
 import com.jeferro.products.products.product_reviews.domain.models.ProductReviewMother;
 import com.jeferro.products.products.product_reviews.infrastructure.rest.ProductReviewRestController;
-import com.jeferro.products.products.products.domain.models.ProductMother;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.products.shared.infrastructure.adapters.utils.ApprovalUtils;
+import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,8 +14,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.List;
 
 @WebMvcTest(ProductReviewRestController.class)
 class ProductReviewRestControllerTest extends RestControllerTest {
@@ -27,14 +26,14 @@ class ProductReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_list_product_reviews_on_request() throws Exception {
-        var apple = ProductMother.appleV1();
-        var productReviews = List.of(
+        var apple = ProductVersionMother.appleV1();
+        var productReviews = PaginatedList.createOfItems(
             ProductReviewMother.johnReviewOfApple(),
             ProductReviewMother.emilyReviewOfApple()
         );
         stubUseCaseBus.init(productReviews);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/product-reviews?productCode=" + apple.getId())
+        var requestBuilder = MockMvcRequestBuilders.get("/v1/product-reviews?productCode=" + apple.getCode())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -43,7 +42,7 @@ class ProductReviewRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
@@ -70,7 +69,7 @@ class ProductReviewRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
@@ -89,7 +88,7 @@ class ProductReviewRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
@@ -115,7 +114,7 @@ class ProductReviewRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
@@ -134,7 +133,7 @@ class ProductReviewRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }

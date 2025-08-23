@@ -6,7 +6,7 @@ import com.jeferro.products.products.product_reviews.domain.models.ProductReview
 import com.jeferro.products.products.product_reviews.domain.models.ProductReviewMother;
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsInMemoryRepository;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
-import com.jeferro.products.products.products.domain.models.ProductMother;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DeleteAllProductReviewsOfProductUseCaseTest {
+class DeleteAllProductReviewsOfProductVersionUseCaseTest {
 
     private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
 
@@ -53,7 +53,7 @@ class DeleteAllProductReviewsOfProductUseCaseTest {
 
     @Test
     void givenProductDoNotHaveReviews_whenDeleteItsReviews_thenDoNothing() {
-        var pearV1 = ProductMother.pearV1();
+        var pearV1 = ProductVersionMother.pearV1();
 
         var params = new DeleteAllProductReviewsOfProductParams(
                 pearV1.getCode()

@@ -1,3 +1,3 @@
-data[0] = SearchProductsParams[filter=ProductFilter[code=<null>,maxEffectiveDate=<null>,minEffectiveDate=<null>,name=apple,ascending=true,order=NAME,pageNumber=0,pageSize=10]]
+data[0] = SearchProductsParams[filter=ProductFilter[code=<null>,maxEffectiveDate=<null>,minEffectiveDate=<null>,name=apple,searchDate=<null>,ascending=true,order=NAME,pageNumber=0,pageSize=10]]
 data[1] = 200
-data[2] = {"pageNumber":0,"pageSize":2,"totalItems":2,"items":[{"id":"apple::2025-01-01T09:00:00Z","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","typeId":"fruit","name":{"en-US":"Apple v1"},"status":"PUBLISHED"},{"id":"pear::2025-01-01T09:00:00Z","code":"pear","effectiveDate":"2025-01-01T09:00:00Z","typeId":"fruit","name":{"en-US":"Pear v1"},"status":"PUBLISHED"}]}
+data[2] = {"pageNumber":0,"pageSize":2,"totalItems":2,"items":[{"versionId":"apple::2025-01-01-09-00-00","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","typeId":"fruit","name":{"en-US":"Apple v1"},"status":"UNPUBLISHED"},{"versionId":"pear::2025-01-01-09-00-00","code":"pear","effectiveDate":"2025-01-01T09:00:00Z","typeId":"fruit","name":{"en-US":"Pear v1"},"status":"PUBLISHED"}]}

@@ -9,9 +9,9 @@
       "doc": "Identifier of the event"
     },
     {
-      "name": "id",
+      "name": "versionId",
       "type": "string",
-      "doc": "Identifier of the product updated"
+      "doc": "Identifier of the product version updated"
     }
   ]
 }

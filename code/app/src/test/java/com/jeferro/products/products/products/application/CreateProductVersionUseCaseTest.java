@@ -4,14 +4,14 @@ import com.jeferro.products.parametrics.domain.services.ParametricInMemoryFinder
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
 import com.jeferro.products.products.parametrics.domain.models.ProductTypeMother;
 import com.jeferro.products.products.products.application.params.CreateProductParams;
-import com.jeferro.products.products.products.domain.events.ProductCreated;
-import com.jeferro.products.products.products.domain.events.ProductUpdated;
+import com.jeferro.products.products.products.domain.events.ProductVersionCreated;
+import com.jeferro.products.products.products.domain.events.ProductVersionUpdated;
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionAlreadyExistsException;
-import com.jeferro.products.products.products.domain.models.Product;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
-import com.jeferro.products.products.products.domain.models.ProductId;
-import com.jeferro.products.products.products.domain.models.ProductMother;
-import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
@@ -23,14 +23,14 @@ import java.time.temporal.ChronoUnit;
 
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.PUBLISHED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class CreateProductUseCaseTest {
+class CreateProductVersionUseCaseTest {
 
-    private ProductsInMemoryRepository productsInMemoryRepository;
+    private ProductVersionInMemoryRepository productsInMemoryRepository;
 
     private EventInMemoryBus eventInMemoryBus;
 
@@ -39,7 +39,7 @@ class CreateProductUseCaseTest {
     @BeforeEach
     void beforeEach() {
         eventInMemoryBus = new EventInMemoryBus();
-        productsInMemoryRepository = new ProductsInMemoryRepository();
+        productsInMemoryRepository = new ProductVersionInMemoryRepository();
 
         var parametricFinder = new ParametricInMemoryFinder();
         var parametricValidator = new ParametricValidator(parametricFinder);
@@ -54,7 +54,7 @@ class CreateProductUseCaseTest {
         var pearV2 = pearV2();
 
         var params = new CreateProductParams(
-            pearV2.getId(),
+            pearV2.getVersionId(),
             pearV2.getTypeId(),
             pearV2.getName());
 
@@ -70,11 +70,11 @@ class CreateProductUseCaseTest {
     }
 
     @Test
-    void should_updatePreviousVersion_when_previousVersionExists() {
+    void should_setEndEffectiveDateOfPreviousVersion_when_previousVersionExists() {
         var pearV2 = pearV2();
 
         var params = new CreateProductParams(
-            pearV2.getId(),
+            pearV2.getVersionId(),
             pearV2.getTypeId(),
             pearV2.getName());
 
@@ -82,7 +82,7 @@ class CreateProductUseCaseTest {
             ContextMother.john(),
             params);
 
-        var pearV1Id = ProductMother.pearV1().getId();
+        var pearV1Id = ProductVersionMother.pearV1().getVersionId();
         var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
 
         assertEquals(pearV2.getEffectiveDate().minus(1, ChronoUnit.SECONDS), pearV1.getEndEffectiveDate());
@@ -95,7 +95,7 @@ class CreateProductUseCaseTest {
         var previousPearV2 = previousPearV2();
 
         var params = new CreateProductParams(
-            previousPearV2.getId(),
+            previousPearV2.getVersionId(),
             previousPearV2.getTypeId(),
             previousPearV2.getName());
 
@@ -103,20 +103,17 @@ class CreateProductUseCaseTest {
             ContextMother.john(),
             params);
 
-        var pearV1Id = ProductMother.pearV1().getId();
-        var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
-
-        assertEquals(pearV1.getEffectiveDate().minus(1, ChronoUnit.SECONDS), result.getEndEffectiveDate());
-
         assertTrue(productsInMemoryRepository.contains(result));
+
+        assertEndEffectiveDateOfPreviousVersion(result);
     }
 
     @Test
     void should_failedAsDuplicatedVersion_when_versionExists() {
-        var pearV1 = ProductMother.pearV1();
+        var pearV1 = ProductVersionMother.pearV1();
 
         var params = new CreateProductParams(
-            pearV1.getId(),
+            pearV1.getVersionId(),
             pearV1.getTypeId(),
             pearV1.getName());
 
@@ -126,45 +123,58 @@ class CreateProductUseCaseTest {
                 params));
     }
 
-    private void assertProductCreatedWasPublished(Product result) {
-        assertFalse(eventInMemoryBus.isEmpty());
+    private void assertProductCreatedWasPublished(ProductVersion result) {
+        var event = eventInMemoryBus.filterOfClass(ProductVersionCreated.class)
+            .findFirst();
 
-        var event = (ProductCreated) eventInMemoryBus.getOrError(1);
+        if( event.isEmpty()) {
+            fail();
+        }
 
-        assertEquals(result.getId(), event.getId());
+        assertEquals(result.getVersionId(), event.get().getVersionId());
     }
 
-    private void assertProductUpdatedWasPublished(Product previous) {
-        assertFalse(eventInMemoryBus.isEmpty());
+    private void assertProductUpdatedWasPublished(ProductVersion previous) {
+        var event = eventInMemoryBus.filterOfClass(ProductVersionUpdated.class)
+            .findFirst();
 
-        var event = (ProductUpdated) eventInMemoryBus.getOrError(0);
+        if( event.isEmpty()) {
+            fail();
+        }
 
-        assertEquals(previous.getId(), event.getId());
+        assertEquals(previous.getVersionId(), event.get().getVersionId());
     }
 
-    public Product pearV2() {
+    private void assertEndEffectiveDateOfPreviousVersion(ProductVersion result) {
+        var pearV1Id = ProductVersionMother.pearV1().getVersionId();
+        var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
+
+        assertEquals(pearV1.getEffectiveDate().minus(1, ChronoUnit.SECONDS), result.getEndEffectiveDate());
+    }
+
+    public ProductVersion pearV2() {
         var productCode = ProductCodeMother.pear();
         var effectiveDate = Instant.parse("2025-02-01T09:00:00.00Z");
-        var productId = ProductId.createOf(productCode, effectiveDate);
+        var productId = ProductVersionId.createOf(productCode, effectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-        return new Product(productId, name, fruitId, null, PUBLISHED);
+        return new ProductVersion(productId, name, fruitId, null, PUBLISHED);
     }
 
-    public Product previousPearV2() {
+    public ProductVersion previousPearV2() {
         var productCode = ProductCodeMother.pear();
-        var effectiveDate = ProductMother.pearV1().getEffectiveDate().minus(60, ChronoUnit.DAYS);
-        var productId = ProductId.createOf(productCode, effectiveDate);
+        var effectiveDate = ProductVersionMother.pearV1().getEffectiveDate().minus(60, ChronoUnit.DAYS);
+        var productId = ProductVersionId.createOf(productCode, effectiveDate);
 
         var fruitId = ProductTypeMother.fruitId();
         var name = LocalizedField.createOf(
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-        return new Product(productId, name, fruitId, null, PUBLISHED);
+        return new ProductVersion(productId, name, fruitId, null, PUBLISHED);
     }
 }

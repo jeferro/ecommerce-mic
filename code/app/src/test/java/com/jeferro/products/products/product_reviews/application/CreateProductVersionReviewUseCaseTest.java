@@ -8,7 +8,7 @@ import com.jeferro.products.products.product_reviews.domain.models.ProductReview
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsInMemoryRepository;
 import com.jeferro.products.products.products.domain.models.ProductCode;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
-import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import com.jeferro.shared.ddd.domain.models.context.Context;
@@ -18,8 +18,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class CreateProductReviewUseCaseTest {
+class CreateProductVersionReviewUseCaseTest {
 
   private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
 
@@ -29,7 +30,7 @@ class CreateProductReviewUseCaseTest {
 
     @BeforeEach
     public void beforeEach() {
-	  ProductsInMemoryRepository productsInMemoryRepository = new ProductsInMemoryRepository();
+	  ProductVersionInMemoryRepository productsInMemoryRepository = new ProductVersionInMemoryRepository();
         productReviewsInMemoryRepository = new ProductReviewsInMemoryRepository();
         eventInMemoryBus = new EventInMemoryBus();
 
@@ -82,10 +83,13 @@ class CreateProductReviewUseCaseTest {
     }
 
     private void assertProductReviewCreatedWasPublished(ProductReview result) {
-        assertEquals(1, eventInMemoryBus.size());
+        var event = eventInMemoryBus.filterOfClass(ProductReviewCreated.class)
+            .findFirst();
 
-        var event = (ProductReviewCreated) eventInMemoryBus.getFirstOrError();
+        if(event.isEmpty()){
+          fail();
+        }
 
-        assertEquals(result.getId(), event.getProductReviewId());
+        assertEquals(result.getId(), event.get().getProductReviewId());
     }
 }

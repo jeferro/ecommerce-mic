@@ -41,6 +41,17 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductFilterOrd
             criteria.add(codeCriteria);
         }
 
+        if (filter.hasSearchDate()) {
+            Criteria searchDateCriteria = new Criteria().andOperator(
+                Criteria.where("effectiveDate").gte(filter.getSearchDate()),
+                new Criteria().orOperator(
+                    Criteria.where("endEffectiveDate").is(null),
+                    Criteria.where("endEffectiveDate").lte(filter.getSearchDate())
+                ));
+
+            criteria.add(searchDateCriteria);
+        }
+
         return criteria;
     }
 

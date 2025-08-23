@@ -41,7 +41,7 @@ public class StubUseCaseBus extends UseCaseBus {
         return params.size();
     }
 
-    public Params<?> getFirstParamOrError() {
+    public Params<?> getFirstParamsOrError() {
         return params.stream()
                 .findFirst()
                 .orElseThrow();

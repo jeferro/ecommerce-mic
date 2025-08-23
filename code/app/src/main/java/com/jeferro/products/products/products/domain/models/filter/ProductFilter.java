@@ -1,7 +1,7 @@
 package com.jeferro.products.products.products.domain.models.filter;
 
 import com.jeferro.products.products.products.domain.models.ProductCode;
-import com.jeferro.products.products.products.domain.models.ProductId;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.shared.ddd.domain.models.filter.Filter;
 import lombok.Getter;
 
@@ -21,6 +21,8 @@ public class ProductFilter extends Filter<ProductFilterOrder> {
 
     private final Instant maxEffectiveDate;
 
+    private final Instant searchDate;
+
     public ProductFilter(Integer pageNumber,
         Integer pageSize,
         ProductFilterOrder order,
@@ -28,29 +30,31 @@ public class ProductFilter extends Filter<ProductFilterOrder> {
         String name,
         ProductCode code,
         Instant minEffectiveDate,
-        Instant maxEffectiveDate) {
+        Instant maxEffectiveDate,
+        Instant searchDate) {
         super(pageNumber, pageSize, order, ascending);
 
         this.name = name;
         this.code = code;
         this.minEffectiveDate = minEffectiveDate;
         this.maxEffectiveDate = maxEffectiveDate;
-    }
+	  this.searchDate = searchDate;
+	}
 
     public static ProductFilter createEmpty() {
-        return new ProductFilter(null, null, NAME, null, null, null, null, null);
+        return new ProductFilter(null, null, NAME, null, null, null, null, null, null);
     }
 
     public static ProductFilter searchName(String name) {
-        return new ProductFilter(null, null, NAME, false, name, null, null, null);
+        return new ProductFilter(null, null, NAME, false, name, null, null, null, null);
     }
 
-    public static ProductFilter previousProduct(ProductId id) {
-        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, false, null, id.getCode(), null, id.getEffectiveDate());
+    public static ProductFilter previousProduct(ProductVersionId versionId) {
+        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, false, null, versionId.getCode(), null, versionId.getEffectiveDate(), null);
     }
 
-    public static ProductFilter nextProduct(ProductId id) {
-        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, true, null, id.getCode(), id.getEffectiveDate(), null);
+    public static ProductFilter nextProduct(ProductVersionId versionId) {
+        return new ProductFilter(0, 1, START_EFFECTIVE_DATE, true, null, versionId.getCode(), versionId.getEffectiveDate(), null, null);
     }
 
     public boolean hasName() {
@@ -64,7 +68,12 @@ public class ProductFilter extends Filter<ProductFilterOrder> {
     public boolean hasMaxEffectiveDate() {
         return maxEffectiveDate != null;
     }
+
     public boolean hasMinEffectiveDate() {
         return minEffectiveDate != null;
+    }
+
+    public boolean hasSearchDate() {
+        return searchDate != null;
     }
 }

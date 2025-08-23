@@ -1,14 +1,14 @@
 package com.jeferro.products.products.products.domain.events;
 
 import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductId;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.products.domain.models.status.ProductStatus;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
 @Getter
-public class ProductCreated extends ProductEvent {
+public class ProductVersionCreated extends ProductVersionEvent {
 
     private final LocalizedField name;
 
@@ -16,23 +16,23 @@ public class ProductCreated extends ProductEvent {
 
     private final ProductStatus status;
 
-    private ProductCreated(ProductId id,
+    private ProductVersionCreated(ProductVersionId versionId,
                            LocalizedField name,
                            ParametricValueId typeId,
                            ProductStatus status) {
-        super(id);
+        super(versionId);
 
         this.name = name;
         this.typeId = typeId;
         this.status = status;
     }
 
-    public static ProductCreated create(Product product) {
-        var id = product.getId();
-        var typeId = product.getTypeId();
-        var name = product.getName();
-        var status = product.getStatus();
+    public static ProductVersionCreated create(ProductVersion productVersion) {
+        var versionId = productVersion.getVersionId();
+        var typeId = productVersion.getTypeId();
+        var name = productVersion.getName();
+        var status = productVersion.getStatus();
 
-        return new ProductCreated(id, name, typeId, status);
+        return new ProductVersionCreated(versionId, name, typeId, status);
     }
 }

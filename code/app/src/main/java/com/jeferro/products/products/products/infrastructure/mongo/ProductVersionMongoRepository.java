@@ -1,11 +1,11 @@
 package com.jeferro.products.products.products.infrastructure.mongo;
 
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductId;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.products.products.products.infrastructure.mongo.daos.ProductsMongoDao;
-import com.jeferro.products.products.products.infrastructure.mongo.dtos.ProductMongoDTO;
+import com.jeferro.products.products.products.infrastructure.mongo.dtos.ProductVersionMongoDTO;
 import com.jeferro.products.products.products.infrastructure.mongo.mappers.ProductMongoMapper;
 import com.jeferro.products.products.products.infrastructure.mongo.services.ProductQueryMongoCreator;
 import com.jeferro.shared.auth.infrastructure.mongo.services.CustomMongoTemplate;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProductsMongoRepository implements ProductsRepository {
+public class ProductVersionMongoRepository implements ProductVersionRepository {
 
     private final ProductMongoMapper productMongoMapper = ProductMongoMapper.INSTANCE;
 
@@ -31,34 +31,34 @@ public class ProductsMongoRepository implements ProductsRepository {
     private final CustomMongoTemplate customMongoTemplate;
 
     @Override
-    public void save(Product product) {
-        var dto = productMongoMapper.toDTO(product);
+    public void save(ProductVersion productVersion) {
+        var dto = productMongoMapper.toDTO(productVersion);
 
         productsMongoDao.save(dto);
     }
 
     @Override
-    public Optional<Product> findById(ProductId id) {
-        var productIdDto = productMongoMapper.toDTO(id);
+    public Optional<ProductVersion> findById(ProductVersionId versionId) {
+        var versionIdDto = productMongoMapper.toDTO(versionId);
 
-        return productsMongoDao.findById(productIdDto)
+        return productsMongoDao.findById(versionIdDto)
                 .map(productMongoMapper::toDomain);
     }
 
     @Override
-    public void deleteById(ProductId id) {
-        var productIdDto = productMongoMapper.toDTO(id);
+    public void deleteById(ProductVersionId versionId) {
+        var versionIdDto = productMongoMapper.toDTO(versionId);
 
-        productsMongoDao.deleteById(productIdDto);
+        productsMongoDao.deleteById(versionIdDto);
     }
 
     @Override
-    public PaginatedList<Product> findAll(ProductFilter filter) {
+    public PaginatedList<ProductVersion> findAll(ProductFilter filter) {
         Query query = productQueryMongoCreator.create(filter);
 
-        Page<ProductMongoDTO> page = customMongoTemplate.findPage(query, ProductMongoDTO.class);
+        Page<ProductVersionMongoDTO> page = customMongoTemplate.findPage(query, ProductVersionMongoDTO.class);
 
-        List<Product> entities = page.getContent().stream()
+        List<ProductVersion> entities = page.getContent().stream()
                 .map(productMongoMapper::toDomain)
                 .toList();
 

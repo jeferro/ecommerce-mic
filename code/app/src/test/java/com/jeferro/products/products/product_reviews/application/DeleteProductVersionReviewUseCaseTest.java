@@ -12,9 +12,12 @@ import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class DeleteProductReviewUseCaseTest {
+class DeleteProductVersionReviewUseCaseTest {
 
     private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
 
@@ -78,10 +81,13 @@ class DeleteProductReviewUseCaseTest {
     }
 
     private void assertProductReviewDeletedWasPublished(ProductReview result) {
-        assertEquals(1, eventInMemoryBus.size());
+        var event = eventInMemoryBus.filterOfClass(ProductReviewDeleted.class)
+            .findFirst();
 
-        var event = (ProductReviewDeleted) eventInMemoryBus.getFirstOrError();
+        if(event.isEmpty()){
+            fail();
+        }
 
-        assertEquals(result.getId(), event.getProductReviewId());
+        assertEquals(result.getId(), event.get().getProductReviewId());
     }
 }

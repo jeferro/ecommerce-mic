@@ -1,7 +1,7 @@
 {
   "namespace": "com.jeferro.products.generated.kafka.v1.dtos",
   "type": "record",
-  "name": "ProductDeletedAvroDTO",
+  "name": "ProductUpdatedAvroDTO",
   "fields": [
     {
       "name": "eventId",
@@ -9,9 +9,9 @@
       "doc": "Identifier of the event"
     },
     {
-      "name": "id",
+      "name": "versionId",
       "type": "string",
-      "doc": "Identifier of the product deleted"
+      "doc": "Identifier of the product version updated"
     },
     {
       "name": "name",
@@ -24,7 +24,7 @@
     {
       "name": "status",
       "type": "ProductStatusAvroDTO",
-      "doc": "Status of the product created"
+      "doc": "Status of the product"
     }
   ]
 }

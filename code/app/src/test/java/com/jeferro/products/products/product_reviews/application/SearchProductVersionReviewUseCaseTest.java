@@ -3,7 +3,7 @@ package com.jeferro.products.products.product_reviews.application;
 import com.jeferro.products.products.product_reviews.application.params.SearchProductReviewParams;
 import com.jeferro.products.products.product_reviews.domain.models.ProductReviewMother;
 import com.jeferro.products.products.product_reviews.domain.repositories.ProductReviewsInMemoryRepository;
-import com.jeferro.products.products.products.domain.models.ProductMother;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.shared.application.ContextMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SearchProductReviewUseCaseTest {
+class SearchProductVersionReviewUseCaseTest {
 
   private SearchProductReviewUseCase searchProductReviewUseCase;
 
@@ -40,7 +40,7 @@ class SearchProductReviewUseCaseTest {
 
     @Test
     void givenNoProductReviews_whenListProductReviews_thenReturnsEmptyList() {
-        var pearV1 = ProductMother.pearV1();
+        var pearV1 = ProductVersionMother.pearV1();
 
         var params = new SearchProductReviewParams(
                 pearV1.getCode()

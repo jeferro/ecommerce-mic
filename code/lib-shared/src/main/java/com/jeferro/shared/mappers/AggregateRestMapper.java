@@ -31,10 +31,18 @@ public abstract class AggregateRestMapper<Aggregate extends AggregateRoot<Identi
     }
 
     public OffsetDateTime toDTO(Instant date){
+        if(date == null){
+            return null;
+        }
+
         return date.atOffset(ZoneOffset.UTC);
     }
 
     public Instant toDomain(OffsetDateTime date){
+        if(date == null){
+            return null;
+        }
+
         return date.toInstant();
     }
 }

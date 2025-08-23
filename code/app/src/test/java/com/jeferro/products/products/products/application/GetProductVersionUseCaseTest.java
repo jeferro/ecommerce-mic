@@ -2,8 +2,8 @@ package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.GetProductParams;
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
-import com.jeferro.products.products.products.domain.models.ProductMother;
-import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class GetProductUseCaseTest {
+class GetProductVersionUseCaseTest {
 
   private GetProductUseCase getProductUseCase;
 
     @BeforeEach
     void beforeEach() {
-	  ProductsInMemoryRepository productsInMemoryRepository = new ProductsInMemoryRepository();
+	  ProductVersionInMemoryRepository productsInMemoryRepository = new ProductVersionInMemoryRepository();
 
         getProductUseCase = new GetProductUseCase(productsInMemoryRepository);
     }
 
     @Test
-    void givenOneProduct_whenGetProduct_thenReturnsProduct() {
-        var appleV1 = ProductMother.appleV1();
+    void should_returnProductVersion_when_exists() {
+        var appleV1 = ProductVersionMother.appleV1();
 
         var params = new GetProductParams(
-                appleV1.getId()
+                appleV1.getVersionId()
         );
 
         var result = getProductUseCase.execute(
@@ -38,11 +38,11 @@ class GetProductUseCaseTest {
     }
 
     @Test
-    void givenNoProducts_whenGetProduct_thenThrowsException() {
-        var bananaV1 = ProductMother.bananaV1();
+    void should_failedAsUnknownProductVersion_when_notExist() {
+        var bananaV1 = ProductVersionMother.bananaV1();
 
         var params = new GetProductParams(
-                bananaV1.getId()
+                bananaV1.getVersionId()
         );
 
         assertThrows(ProductVersionNotFoundException.class,

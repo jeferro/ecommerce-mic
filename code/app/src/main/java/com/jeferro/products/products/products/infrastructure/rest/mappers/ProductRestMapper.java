@@ -2,9 +2,8 @@ package com.jeferro.products.products.products.infrastructure.rest.mappers;
 
 import com.jeferro.products.generated.rest.v1.dtos.*;
 import com.jeferro.products.products.products.application.params.*;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductCode;
-import com.jeferro.products.products.products.domain.models.ProductId;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.products.domain.models.filter.ProductFilter;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
@@ -13,23 +12,25 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductRestMapper extends AggregateRestMapper<Product, ProductId, ProductRestDTO> {
+public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersion, ProductVersionId, ProductRestDTO> {
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 
-    public abstract ProductSummaryRestDTO toSummaryDTO(Product product);
+    public abstract ProductSummaryRestDTO toSummaryDTO(ProductVersion productVersion);
 
-    public abstract ProductSummaryListRestDTO toSummaryDTO(PaginatedList<Product> product);
+    public abstract ProductSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersion);
 
     public SearchProductsParams toSearchProductsParams(Integer pageNumber,
                                                        Integer pageSize,
                                                        ProductFilterOrderRestDTO order,
                                                        Boolean ascending,
-                                                       String name) {
-        var filter = toProductFilter(pageNumber, pageSize, order, ascending, name);
+                                                       String name,
+                                                       OffsetDateTime searchDate) {
+        var filter = toProductFilter(pageNumber, pageSize, order, ascending, name, searchDate);
 
         return new SearchProductsParams(filter);
     }
@@ -41,18 +42,19 @@ public abstract class ProductRestMapper extends AggregateRestMapper<Product, Pro
                                                   Integer pageSize,
                                                   ProductFilterOrderRestDTO order,
                                                   Boolean ascending,
-                                                  String name);
+                                                  String name,
+                                                  OffsetDateTime searchDate);
 
     public abstract CreateProductParams toCreateProductParams(CreateProductInputRestDTO productInputRestDTO);
 
-    public abstract GetProductParams toGetProductParams(String id);
+    public abstract GetProductParams toGetProductParams(String versionId);
 
     @Mapping(target = "name", source = "inputRestDTO.name")
-    public abstract UpdateProductParams toUpdateProductParams(String id, UpdateProductInputRestDTO inputRestDTO);
+    public abstract UpdateProductParams toUpdateProductParams(String versionId, UpdateProductInputRestDTO inputRestDTO);
 
-    public abstract PublishProductParams toPublishProductParams(String id);
+    public abstract PublishProductParams toPublishProductParams(String versionId);
 
-    public abstract UnpublishProductParams toUnpublishProductParams(String id);
+    public abstract UnpublishProductParams toUnpublishProductParams(String versionId);
 
-    public abstract DeleteProductParams toDeleteProductParams(String id);
+    public abstract DeleteProductParams toDeleteProductParams(String versionId);
 }

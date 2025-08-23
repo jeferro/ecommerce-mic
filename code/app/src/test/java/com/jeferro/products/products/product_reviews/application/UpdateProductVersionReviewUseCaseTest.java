@@ -12,9 +12,12 @@ import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class UpdateProductReviewUseCaseTest {
+class UpdateProductVersionReviewUseCaseTest {
 
     private ProductReviewsInMemoryRepository productReviewsInMemoryRepository;
 
@@ -91,10 +94,13 @@ class UpdateProductReviewUseCaseTest {
     }
 
     private void assertProductReviewUpdatedWasPublished(ProductReview result) {
-        assertEquals(1, eventInMemoryBus.size());
+        var event = eventInMemoryBus.filterOfClass(ProductReviewUpdated.class)
+            .findFirst();
 
-        var event = (ProductReviewUpdated) eventInMemoryBus.getFirstOrError();
+        if(event.isEmpty()){
+            fail();
+        }
 
-        assertEquals(result.getId(), event.getProductReviewId());
+        assertEquals(result.getId(), event.get().getProductReviewId());
     }
 }

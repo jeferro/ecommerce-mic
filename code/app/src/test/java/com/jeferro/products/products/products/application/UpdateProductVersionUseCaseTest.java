@@ -1,22 +1,25 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.UpdateProductParams;
-import com.jeferro.products.products.products.domain.events.ProductUpdated;
+import com.jeferro.products.products.products.domain.events.ProductVersionUpdated;
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.models.ProductMother;
-import com.jeferro.products.products.products.domain.repositories.ProductsInMemoryRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class UpdateProductUseCaseTest {
+class UpdateProductVersionUseCaseTest {
 
-    private ProductsInMemoryRepository productsInMemoryRepository;
+    private ProductVersionInMemoryRepository productsInMemoryRepository;
 
     private EventInMemoryBus eventInMemoryBus;
 
@@ -25,18 +28,18 @@ class UpdateProductUseCaseTest {
     @BeforeEach
     void beforeEach() {
         eventInMemoryBus = new EventInMemoryBus();
-        productsInMemoryRepository = new ProductsInMemoryRepository();
+        productsInMemoryRepository = new ProductVersionInMemoryRepository();
 
         updateProductUseCase = new UpdateProductUseCase(productsInMemoryRepository, eventInMemoryBus);
     }
 
     @Test
-    void givenOneProduct_whenUpdateProduct_thenUpdatesProduct() {
-        var appleV1 = ProductMother.appleV1();
+    void should_updateProductVersion_when_exists() {
+        var appleV1 = ProductVersionMother.appleV1();
 
         var newName = LocalizedField.createOf("en-US", "new product name");
         var params = new UpdateProductParams(
-                appleV1.getId(),
+                appleV1.getVersionId(),
                 newName
         );
 
@@ -52,12 +55,12 @@ class UpdateProductUseCaseTest {
     }
 
     @Test
-    void givenNoProducts_whenUpdateProduct_thenThrowsException() {
-        var bananaV1 = ProductMother.bananaV1();
+    void should_failedAsUnknownProductVersion_when_notExist() {
+        var bananaV1 = ProductVersionMother.bananaV1();
 
         var newName = LocalizedField.createOf("en-US", "new product name");
         var params = new UpdateProductParams(
-                bananaV1.getId(),
+                bananaV1.getVersionId(),
                 newName
         );
 
@@ -67,15 +70,18 @@ class UpdateProductUseCaseTest {
                     params));
     }
 
-    private void assertProductDataInDatabase(Product result) {
+    private void assertProductDataInDatabase(ProductVersion result) {
         assertTrue(productsInMemoryRepository.contains(result));
     }
 
-    private void assertProductUpdatedWasPublished(Product product) {
-        assertEquals(1, eventInMemoryBus.size());
+    private void assertProductUpdatedWasPublished(ProductVersion productVersion) {
+        var event = eventInMemoryBus.filterOfClass(ProductVersionUpdated.class)
+            .findFirst();
 
-        var event = (ProductUpdated) eventInMemoryBus.getFirstOrError();
+        if( event.isEmpty()) {
+            fail();
+        }
 
-        assertEquals(product.getId(), event.getId());
+        assertEquals(productVersion.getVersionId(), event.get().getVersionId());
     }
 }

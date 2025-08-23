@@ -1,8 +1,8 @@
 package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.products.products.application.params.UnpublishProductParams;
-import com.jeferro.products.products.products.domain.models.Product;
-import com.jeferro.products.products.products.domain.repositories.ProductsRepository;
+import com.jeferro.products.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.context.Context;
@@ -15,9 +15,9 @@ import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
-public class UnpublishProductUseCase extends UseCase<UnpublishProductParams, Product> {
+public class UnpublishProductUseCase extends UseCase<UnpublishProductParams, ProductVersion> {
 
-    private final ProductsRepository productsRepository;
+    private final ProductVersionRepository productVersionRepository;
 
     private final EventBus eventBus;
 
@@ -27,25 +27,25 @@ public class UnpublishProductUseCase extends UseCase<UnpublishProductParams, Pro
     }
 
     @Override
-    public Product execute(Context context, UnpublishProductParams params) {
-        var product = ensureProductExists(params);
+    public ProductVersion execute(Context context, UnpublishProductParams params) {
+        var version = ensureProductVersionExists(params);
 
-        return unpublishProduct(params, product);
+        return unpublishProductVersion(version);
     }
 
-    private Product ensureProductExists(UnpublishProductParams params) {
-        var id = params.getId();
+    private ProductVersion ensureProductVersionExists(UnpublishProductParams params) {
+        var versionId = params.getVersionId();
 
-        return productsRepository.findByIdOrError(id);
+        return productVersionRepository.findByIdOrError(versionId);
     }
 
-    private Product unpublishProduct(UnpublishProductParams params, Product product) {
-        product.unpublish();
+    private ProductVersion unpublishProductVersion(ProductVersion version) {
+        version.unpublish();
 
-        productsRepository.save(product);
+        productVersionRepository.save(version);
 
-        eventBus.sendAll(product);
+        eventBus.sendAll(version);
 
-        return product;
+        return version;
     }
 }

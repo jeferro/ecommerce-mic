@@ -28,7 +28,7 @@ public class ProductReviewsProductsKafkaConsumer {
     @KafkaHandler
     protected void consume(ProductDeletedAvroDTO productDeletedAvroDTO) {
         var params = new DeleteAllProductReviewsOfProductParams(
-                productKafkaMapper.toDomain(productDeletedAvroDTO.getId())
+                productKafkaMapper.toDomain(productDeletedAvroDTO.getVersionId())
         );
 
         useCaseBus.execute(params);

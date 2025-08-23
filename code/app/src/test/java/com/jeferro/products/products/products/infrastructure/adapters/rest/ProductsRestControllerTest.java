@@ -1,6 +1,6 @@
 package com.jeferro.products.products.products.infrastructure.adapters.rest;
 
-import com.jeferro.products.products.products.domain.models.ProductMother;
+import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.products.infrastructure.rest.ProductsRestController;
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
@@ -26,8 +26,8 @@ class ProductsRestControllerTest extends RestControllerTest {
     @Test
     void execute_list_products_on_request() throws Exception {
         var products = PaginatedList.createOfItems(
-                ProductMother.appleV1(),
-                ProductMother.pearV1()
+                ProductVersionMother.appleV1(),
+                ProductVersionMother.pearV1()
         );
         stubUseCaseBus.init(products);
 
@@ -40,26 +40,27 @@ class ProductsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
 
     @Test
     void execute_create_product_on_request() throws Exception {
-        var apple = ProductMother.appleV1();
+        var apple = ProductVersionMother.appleV1();
         stubUseCaseBus.init(apple);
 
         var requestContent = """
                 {
-                  "id": "%s",
+                  "versionId": "%s",
                   "typeId": "%s",
                   "name": {
-                    "en-US": "Apple"
+                    "en-US": "Apple",
+                    "es-ES": "Manzana"
                   }
                 }"""
                 .formatted(
-                    apple.getId(),
+                    apple.getVersionId(),
                     apple.getTypeId());
 
         var requestBuilder = MockMvcRequestBuilders.post("/v1/products")
@@ -72,17 +73,17 @@ class ProductsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
 
     @Test
     void execute_get_product_on_request() throws Exception {
-        var apple = ProductMother.appleV1();
+        var apple = ProductVersionMother.appleV1();
         stubUseCaseBus.init(apple);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/products/" + apple.getId())
+        var requestBuilder = MockMvcRequestBuilders.get("/v1/products/" + apple.getVersionId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -91,14 +92,14 @@ class ProductsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
 
     @Test
     void execute_update_product_on_request() throws Exception {
-        var apple = ProductMother.appleV1();
+        var apple = ProductVersionMother.appleV1();
         stubUseCaseBus.init(apple);
 
         var requestContent = """
@@ -109,7 +110,7 @@ class ProductsRestControllerTest extends RestControllerTest {
                 }"""
                 .formatted(apple.getName());
 
-        var requestBuilder = MockMvcRequestBuilders.patch("/v1/products/" + apple.getId())
+        var requestBuilder = MockMvcRequestBuilders.patch("/v1/products/" + apple.getVersionId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -119,17 +120,17 @@ class ProductsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
 
     @Test
     void execute_delete_product_on_request() throws Exception {
-        var apple = ProductMother.appleV1();
+        var apple = ProductVersionMother.appleV1();
         stubUseCaseBus.init(apple);
 
-        var requestBuilder = MockMvcRequestBuilders.delete("/v1/products/" + apple.getId())
+        var requestBuilder = MockMvcRequestBuilders.delete("/v1/products/" + apple.getVersionId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -138,7 +139,7 @@ class ProductsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }

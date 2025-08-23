@@ -9,31 +9,31 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductKafkaMapper extends EventMapper<ProductEvent> {
+public abstract class ProductKafkaMapper extends EventMapper<ProductVersionEvent> {
 
     public static final ProductKafkaMapper INSTANCE = Mappers.getMapper(ProductKafkaMapper.class);
 
-    public Object toDTO(ProductEvent event) {
+    public Object toDTO(ProductVersionEvent event) {
         return switch (event) {
-            case ProductCreated productCreated -> toDTO(productCreated);
-            case ProductUpdated productUpdated -> toDTO(productUpdated);
-            case ProductPublished productPublished -> toDTO(productPublished);
-            case ProductUnpublished productUnpublished -> toDTO(productUnpublished);
-            case ProductDeleted productDeleted -> toDTO(productDeleted);
+            case ProductVersionCreated productVersionCreated -> toDTO(productVersionCreated);
+            case ProductVersionUpdated productVersionUpdated -> toDTO(productVersionUpdated);
+            case ProductVersionPublished productVersionPublished -> toDTO(productVersionPublished);
+            case ProductVersionUnpublished productVersionUnpublished -> toDTO(productVersionUnpublished);
+            case ProductVersionDeleted productVersionDeleted -> toDTO(productVersionDeleted);
 
             default -> throw new IllegalStateException("Unexpected value: " + event);
         };
     }
 
-    protected abstract ProductCreatedAvroDTO toDTO(ProductCreated entity);
+    protected abstract ProductCreatedAvroDTO toDTO(ProductVersionCreated entity);
 
-    protected abstract ProductUpdatedAvroDTO toDTO(ProductUpdated entity);
+    protected abstract ProductUpdatedAvroDTO toDTO(ProductVersionUpdated entity);
 
-    protected abstract ProductPublishedAvroDTO toDTO(ProductPublished entity);
+    protected abstract ProductPublishedAvroDTO toDTO(ProductVersionPublished entity);
 
-    protected abstract ProductUnpublishedAvroDTO toDTO(ProductUnpublished entity);
+    protected abstract ProductUnpublishedAvroDTO toDTO(ProductVersionUnpublished entity);
 
-    protected abstract ProductDeletedAvroDTO toDTO(ProductDeleted entity);
+    protected abstract ProductDeletedAvroDTO toDTO(ProductVersionDeleted entity);
 
     public abstract ProductCode toDomain(String value);
 }

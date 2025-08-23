@@ -34,16 +34,16 @@ components:
       type: object
       description: Product information
       required:
-        - id
+        - versionId
         - code
         - effectiveDate
         - typeId
         - name
         - status
       properties:
-        id:
+        versionId:
           type: string
-          description: Identifier of product
+          description: Identifier of product version
           example: '123456789::2025-08-01T09:00:00Z'
         code:
           type: string
@@ -73,15 +73,15 @@ components:
       type: object
       description: Product summary information
       required:
-        - id
+        - versionId
         - code
         - effectiveDate
         - name
         - status
       properties:
-        id:
+        versionId:
           type: string
-          description: Identifier of the product
+          description: Identifier of the product version
           example: '123456789::2025-08-01T09:00:00Z'
         code:
           type: string
@@ -133,11 +133,11 @@ components:
       type: object
       description: Create product input
       required:
-        - id
+        - versionId
         - typeId
         - name
       properties:
-        id:
+        versionId:
           type: string
           description: Identifier of the product
           example: '123456789::2025-08-01T09:00:00Z'

@@ -11,6 +11,9 @@ import com.jeferro.shared.ddd.application.bus.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+
 @RestController
 @RequiredArgsConstructor
 public class ProductsRestController implements ProductsApi {
@@ -23,8 +26,9 @@ public class ProductsRestController implements ProductsApi {
     public ProductSummaryListRestDTO searchProducts(Integer pageNumber, Integer pageSize,
                                                       ProductFilterOrderRestDTO order,
                                                       Boolean ascending,
-                                                      String name) {
-        var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, name);
+                                                      String name,
+                                                      OffsetDateTime searchDate) {
+        var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, name, searchDate);
 
         var products = useCaseBus.execute(params);
 

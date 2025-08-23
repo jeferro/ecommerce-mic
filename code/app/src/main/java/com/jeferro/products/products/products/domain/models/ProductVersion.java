@@ -10,15 +10,13 @@ import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.PUBLISHED;
 import static com.jeferro.products.products.products.domain.models.status.ProductStatus.UNPUBLISHED;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Getter
-public class Product extends AggregateRoot<ProductId> {
+public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
     private LocalizedField name;
 
@@ -28,7 +26,7 @@ public class Product extends AggregateRoot<ProductId> {
 
     private Instant endEffectiveDate;
 
-    public Product(ProductId id,
+    public ProductVersion(ProductVersionId id,
                    LocalizedField name,
                    ParametricValueId typeId,
                    Instant endEffectiveDate,
@@ -41,18 +39,18 @@ public class Product extends AggregateRoot<ProductId> {
         this.endEffectiveDate = endEffectiveDate;
     }
 
-    public static Product create(ProductId id,
+    public static ProductVersion create(ProductVersionId versionId,
                                  ParametricValueId typeId,
                                  LocalizedField name,
-                                 Product nextVersion) {
-        ValueValidationUtils.isNotNull(id, "id", Product.class);
-        ValueValidationUtils.isNotNull(typeId, "typeId", Product.class);
-        ValueValidationUtils.isNotNull(name, "name", Product.class);
+                                 ProductVersion nextVersion) {
+        ValueValidationUtils.isNotNull(versionId, "versionId", ProductVersion.class);
+        ValueValidationUtils.isNotNull(typeId, "typeId", ProductVersion.class);
+        ValueValidationUtils.isNotNull(name, "name", ProductVersion.class);
 
         if(nextVersion != null) {
-            ValueValidationUtils.ensure(() -> nextVersion.hasSameCode(id.getCode()),
+            ValueValidationUtils.ensure(() -> nextVersion.hasSameCode(versionId.getCode()),
                 "Next product version hasn't belong new product version");
-            ValueValidationUtils.ensure(() -> nextVersion.isAfter(id.getEffectiveDate()),
+            ValueValidationUtils.ensure(() -> nextVersion.isAfter(versionId.getEffectiveDate()),
                 "Next product version is before than new product version");
         }
 
@@ -60,13 +58,13 @@ public class Product extends AggregateRoot<ProductId> {
             ? nextVersion.getEffectiveDate().minus(1, SECONDS)
             : null;
 
-        var product = new Product(id,
+        var product = new ProductVersion(versionId,
             name,
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
             UNPUBLISHED);
 
-        var event = ProductCreated.create(product);
+        var event = ProductVersionCreated.create(product);
         product.record(event);
 
         return product;
@@ -77,7 +75,7 @@ public class Product extends AggregateRoot<ProductId> {
 
         this.name = name;
 
-        var event = ProductUpdated.create(this);
+        var event = ProductVersionUpdated.create(this);
         record(event);
     }
 
@@ -88,7 +86,7 @@ public class Product extends AggregateRoot<ProductId> {
 
         this.status = PUBLISHED;
 
-        var event = ProductPublished.create(this);
+        var event = ProductVersionPublished.create(this);
         record(event);
     }
 
@@ -99,20 +97,45 @@ public class Product extends AggregateRoot<ProductId> {
 
         this.status = UNPUBLISHED;
 
-        var event = ProductUnpublished.create(this);
+        var event = ProductVersionUnpublished.create(this);
         record(event);
     }
 
     public void delete() {
-        var event = ProductDeleted.create(this);
+        var event = ProductVersionDeleted.create(this);
         record(event);
     }
 
-    public void expireBefore(ProductId productId) {
-        endEffectiveDate = productId.getEffectiveDate().minus(1, SECONDS);
+    public void expireBeforeVersion(ProductVersionId versionId) {
+        endEffectiveDate = versionId.getEffectiveDate().minus(1, SECONDS);
 
-        var event = ProductUpdated.create(this);
+        var event = ProductVersionUpdated.create(this);
         record(event);
+    }
+
+    public void notExpire() {
+        endEffectiveDate = null;
+
+        var event = ProductVersionUpdated.create(this);
+        record(event);
+    }
+
+    @Override
+    @Deprecated
+    public ProductVersionId getId() {
+        return id;
+    }
+
+    public ProductVersionId getVersionId() {
+        return id;
+    }
+
+    public boolean isPublished() {
+        return PUBLISHED.equals(status);
+    }
+
+    public boolean isUnpublished() {
+        return UNPUBLISHED.equals(status);
     }
 
     public boolean hasSameCode(ProductCode code){

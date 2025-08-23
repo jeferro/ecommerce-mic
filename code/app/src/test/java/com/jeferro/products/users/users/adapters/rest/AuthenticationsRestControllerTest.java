@@ -43,7 +43,7 @@ class AuthenticationsRestControllerTest extends RestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamOrError(),
+        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
                 response.getStatus(),
                 response.getContentAsString());
     }
