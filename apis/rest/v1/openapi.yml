@@ -52,12 +52,6 @@ paths:
           schema:
             type: boolean
           description: Return data using ascending order
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Name of the product
         - name: searchDate
           in: query
           required: false

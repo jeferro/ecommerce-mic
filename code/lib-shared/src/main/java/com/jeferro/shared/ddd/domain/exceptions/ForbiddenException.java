@@ -1,15 +1,13 @@
-package com.jeferro.shared.ddd.domain.exceptions.auth;
+package com.jeferro.shared.ddd.domain.exceptions;
 
-import com.jeferro.shared.ddd.domain.exceptions.ApplicationException;
-import com.jeferro.shared.ddd.domain.exceptions.SharedExceptionCodes;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 
 import java.util.Set;
 
-public class ForbiddenException extends ApplicationException {
+public non-sealed class ForbiddenException extends ApplicationException {
 
     protected ForbiddenException(String message) {
-        super(SharedExceptionCodes.FORBIDDEN.value, "Forbidden", message);
+        super(FORBIDDEN_CODE, "Forbidden", message);
     }
 
     public static ForbiddenException createOf(Auth auth, Set<String> mandatoryRoles) {

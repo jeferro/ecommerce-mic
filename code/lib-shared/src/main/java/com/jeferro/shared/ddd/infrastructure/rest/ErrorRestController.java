@@ -1,8 +1,9 @@
 package com.jeferro.shared.ddd.infrastructure.rest;
 
-import com.jeferro.shared.ddd.domain.exceptions.*;
-import com.jeferro.shared.ddd.domain.exceptions.auth.ForbiddenException;
-import com.jeferro.shared.ddd.domain.exceptions.auth.UnauthorizedException;
+import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
+import com.jeferro.shared.ddd.domain.exceptions.NotFoundException;
+import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
+import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.infrastructure.rest.mappers.ProblemDetailRestMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,28 +61,10 @@ public class ErrorRestController {
 
     @ResponseBody
     @ExceptionHandler(value = {
-            ConflictException.class
-    })
-    public ResponseEntity<ProblemDetail> handleConstraint(Exception cause) {
-        return problemDetailRestMapper.toDTO(HttpStatus.CONFLICT, cause);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(value = {
-            InternalErrorException.class
-    })
-    public ResponseEntity<ProblemDetail> handleInternalError(Exception cause) {
-        return problemDetailRestMapper.toDTO(HttpStatus.INTERNAL_SERVER_ERROR, cause);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(value = {
             Exception.class
     })
     public ResponseEntity<ProblemDetail> handleException(Exception cause) {
-        if (!(cause instanceof ApplicationException)) {
-            logger.error("Catch an unknown exception", cause);
-        }
+        logger.error("Catch an unknown exception", cause);
 
         return problemDetailRestMapper.toDTO(HttpStatus.INTERNAL_SERVER_ERROR, cause);
     }

@@ -9,7 +9,7 @@ import com.jeferro.products.products.products.domain.models.ProductCode;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.exceptions.auth.ForbiddenException;
+import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.models.auth.UserAuth;
 import com.jeferro.shared.ddd.domain.models.context.Context;
