@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.application;
 
 import com.jeferro.products.parametrics.domain.services.ParametricInMemoryFinder;
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
-import com.jeferro.products.products.parametrics.domain.models.ProductTypeMother;
+import com.jeferro.products.parametrics.domain.models.ProductTypeMother;
 import com.jeferro.products.products.products.application.params.CreateProductParams;
 import com.jeferro.products.products.products.domain.events.ProductVersionCreated;
 import com.jeferro.products.products.products.domain.events.ProductVersionUpdated;

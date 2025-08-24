@@ -1,7 +1,6 @@
 package com.jeferro.products.parametrics.domain.models.values;
 
 import com.jeferro.shared.ddd.domain.models.projection.Projection;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
