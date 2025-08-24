@@ -23,7 +23,7 @@ class GetProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenAProductReview_whenGetProductReview_thenReturnsProductReview() {
+    void should_returnReview_when_exists() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new GetProductReviewParams(
@@ -38,7 +38,7 @@ class GetProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenNoProductReview_whenGetProductReview_thenThrowsException() {
+    void should_failedAsReviewNotFound_when_notExist() {
         var jamesReviewOfApple = ProductReviewMother.jamesReviewOfApple();
         var params = new GetProductReviewParams(
                 jamesReviewOfApple.getId()

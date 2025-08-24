@@ -23,7 +23,7 @@ class SearchProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenProductReviews_whenListProductReviews_thenReturnsProductReviews() {
+    void should_returnListOfReviews_when_exist() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new SearchProductReviewParams(
@@ -39,7 +39,7 @@ class SearchProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenNoProductReviews_whenListProductReviews_thenReturnsEmptyList() {
+    void should_returnEmptyList_when_notExist() {
         var pearV1 = ProductVersionMother.pearV1();
 
         var params = new SearchProductReviewParams(

@@ -35,7 +35,7 @@ class DeleteProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenUserCommentsOnProduct_whenDeleteProductReview_thenReturnsDeletedProductReview() {
+    void should_deleteReview_when_exists() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new DeleteProductReviewParams(
@@ -54,7 +54,7 @@ class DeleteProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenUserDoesNotCommentOnProduct_whenDeleteProductReview_throwsException() {
+    void should_failedAsReviewNotFound_when_notExist() {
         var jamesReviewOfApple = ProductReviewMother.jamesReviewOfApple();
         var params = new DeleteProductReviewParams(
                 jamesReviewOfApple.getId()
@@ -67,7 +67,7 @@ class DeleteProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenOtherUserCommentsOnProduct_whenDeleteProductReviewOfOtherUser_throwsException() {
+    void should_failedAsDeniedPermission_when_userDeletesCommentOfOtherUser() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new DeleteProductReviewParams(

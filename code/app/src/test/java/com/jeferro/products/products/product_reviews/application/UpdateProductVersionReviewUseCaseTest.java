@@ -34,7 +34,7 @@ class UpdateProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenAProductReview_whenUpdateProductReview_thenReturnsUpdatedProductReview() {
+    void should_updateReview_when_exist() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var newComment = "New comment about apple";
@@ -54,7 +54,7 @@ class UpdateProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenNoProductReview_whenUpdateProductReview_thenThrowsException() {
+    void should_failedAsReviewNotFound_when_notExist() {
         var jamesReviewOfApple = ProductReviewMother.jamesReviewOfApple();
         var newComment = "New comment about apple";
         var params = new UpdateProductReviewParams(
@@ -69,7 +69,7 @@ class UpdateProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenOtherUserCommentsOnProduct_whenUpdateProductReviewOfOtherUser_throwsException() {
+    void should_failedAsDeniedPermission_when_userUpdatesReviewOtherUser() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var newComment = "New comment about apple";

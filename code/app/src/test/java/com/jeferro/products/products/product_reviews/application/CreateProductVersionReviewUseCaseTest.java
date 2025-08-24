@@ -39,7 +39,7 @@ class CreateProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenUserDidNotCommentOnProduct_whenCreateProductReview_thenReturnsNewProductReview() {
+    void should_createReview_when_reviewNotExist() {
         var productCode = ProductCodeMother.apple();
         var comment = "New comment about product";
         var params = new CreateProductReviewParams(
@@ -58,7 +58,7 @@ class CreateProductVersionReviewUseCaseTest {
     }
 
     @Test
-    void givenUserCommentsOnProduct_whenCreateProductReview_throwsException() {
+    void should_failedAsReviewExists_when_newReviewExists() {
         var johnReviewOfApple = ProductReviewMother.johnReviewOfApple();
 
         var params = new CreateProductReviewParams(

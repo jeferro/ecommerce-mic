@@ -35,7 +35,7 @@ class DeleteAllProductReviewsOfProductVersionUseCaseTest {
     }
 
     @Test
-    void givenSeveralReviewsOfSameProduct_whenDeleteItsReviews_thenPublishEvents() {
+    void should_deleteAllReviews_when_productHaveReviews() {
         var appleCode = ProductCodeMother.apple();
 
         var params = new DeleteAllProductReviewsOfProductParams(
@@ -52,7 +52,7 @@ class DeleteAllProductReviewsOfProductVersionUseCaseTest {
     }
 
     @Test
-    void givenProductDoNotHaveReviews_whenDeleteItsReviews_thenDoNothing() {
+    void should_notDeleteReviews_when_productNotHaveReviews() {
         var pearV1 = ProductVersionMother.pearV1();
 
         var params = new DeleteAllProductReviewsOfProductParams(
