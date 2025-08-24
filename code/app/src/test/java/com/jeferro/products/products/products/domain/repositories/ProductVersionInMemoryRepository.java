@@ -36,16 +36,10 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
   }
 
   private boolean matchProduct(ProductVersionFilter filter, ProductVersion productVersion) {
-	return matchProductName(productVersion, filter)
-		&& matchProductCode(productVersion, filter)
+	return matchProductCode(productVersion, filter)
 		&& matchMinEffectiveProductCode(productVersion, filter)
 		&& matchMaxEffectiveProductCode(productVersion, filter)
 		&& matchSearchDate(productVersion, filter);
-  }
-
-  private boolean matchProductName(ProductVersion productVersion, ProductVersionFilter filter) {
-	return !filter.hasName()
-		|| productVersion.getName().containsValue(filter.getName());
   }
 
   private boolean matchProductCode(ProductVersion productVersion, ProductVersionFilter filter) {

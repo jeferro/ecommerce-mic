@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SearchProductsUseCaseTest {
@@ -46,21 +45,17 @@ class SearchProductsUseCaseTest {
 
     @Test
     void should_returnFilteredProduct_when_exist() {
+        var appleV1 = ProductVersionMother.appleV1();
+
         var params = new SearchProductsParams(
-                ProductVersionFilter.searchName("pe")
+                ProductVersionFilter.byCode(appleV1.getCode())
         );
 
         var result = searchProductsUseCase.execute(
             ContextMother.john(),
             params);
 
-        assertEquals(1, result.size());
-
-        var appleV1 = ProductVersionMother.appleV1();
-        assertFalse(result.contains(appleV1));
-
-        var pearV1 = ProductVersionMother.pearV1();
-        assertTrue(result.contains(pearV1));
+        result.forEach(productVersion -> assertEquals(appleV1.getCode(), productVersion.getCode()));
     }
 
     @Test

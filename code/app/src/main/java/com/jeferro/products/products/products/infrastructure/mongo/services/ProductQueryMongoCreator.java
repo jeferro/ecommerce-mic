@@ -16,13 +16,6 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductVersionOr
     protected List<Criteria> mapFilter(ProductVersionFilter filter) {
         var criteria = new ArrayList<Criteria>();
 
-        if (filter.hasName()) {
-            Criteria nameCriteria = Criteria.where("name")
-                    .regex(filter.getName(), "i");
-
-            criteria.add(nameCriteria);
-        }
-
         if (filter.hasCode()) {
             Criteria codeCriteria = Criteria.where("code").is(filter.getCode().getValue());
 
