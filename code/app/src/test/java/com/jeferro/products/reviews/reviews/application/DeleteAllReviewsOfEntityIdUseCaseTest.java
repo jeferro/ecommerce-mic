@@ -1,12 +1,12 @@
 package com.jeferro.products.reviews.reviews.application;
 
+import com.jeferro.products.products.products.domain.models.ProductCodeMother;
 import com.jeferro.products.reviews.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.reviews.domain.events.ReviewDeleted;
+import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.products.products.domain.models.ProductCodeMother;
-import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,11 +15,13 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeleteAllReviewsOfEntityIdUseCaseTest {
 
-    private ReviewsInMemoryRepository productReviewsInMemoryRepository;
+    private ReviewsInMemoryRepository reviewsInMemoryRepository;
 
     private EventInMemoryBus eventInMemoryBus;
 
@@ -27,19 +29,21 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        productReviewsInMemoryRepository = new ReviewsInMemoryRepository();
+        reviewsInMemoryRepository = new ReviewsInMemoryRepository();
         eventInMemoryBus = new EventInMemoryBus();
 
-        deleteAllReviewsOfEntityIdUseCase =
-                new DeleteAllReviewsOfEntityIdUseCase(productReviewsInMemoryRepository, eventInMemoryBus);
+        deleteAllReviewsOfEntityIdUseCase = new DeleteAllReviewsOfEntityIdUseCase(reviewsInMemoryRepository, eventInMemoryBus);
     }
 
     @Test
     void should_deleteAllReviews_when_productHaveReviews() {
-        var appleCode = ProductCodeMother.apple();
+        var appleEntityId = EntityId.createOf(
+            "products",
+            ProductCodeMother.apple().getValue()
+        );
 
         var params = new DeleteAllReviewsOfEntityIdParams(
-                appleCode
+                appleEntityId
         );
 
         deleteAllReviewsOfEntityIdUseCase.execute(
@@ -48,15 +52,18 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
 
         assertThereAreNotReviewsOfApple();
 
-        assertProductReviewDeletedWasPublished();
+        assertReviewDeletedWasPublished();
     }
 
     @Test
     void should_notDeleteReviews_when_productNotHaveReviews() {
-        var pearV1 = ProductVersionMother.pearV1();
+	  var pearEntityId = EntityId.createOf(
+            "products",
+            ProductCodeMother.pear().getValue()
+        );
 
         var params = new DeleteAllReviewsOfEntityIdParams(
-                pearV1.getCode()
+            pearEntityId
         );
 
         deleteAllReviewsOfEntityIdUseCase.execute(
@@ -67,10 +74,10 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
     }
 
     private void assertThereAreNotReviewsOfApple() {
-        assertTrue(productReviewsInMemoryRepository.isEmpty());
+        assertTrue(reviewsInMemoryRepository.isEmpty());
     }
 
-    private void assertProductReviewDeletedWasPublished() {
+    private void assertReviewDeletedWasPublished() {
         Set<ReviewId> notifiedReviewIds = new HashSet<>();
 
         eventInMemoryBus.forEach(event -> {

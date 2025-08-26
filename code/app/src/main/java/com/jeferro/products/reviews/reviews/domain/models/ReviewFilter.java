@@ -28,7 +28,7 @@ public class ReviewFilter extends Filter<ReviewOrder> {
         return new ReviewFilter(pageNumber, DEFAULT_PAGE_SIZE, ID, null, entityId.getDomain(), entityId.getId());
     }
 
-    public boolean hasDomain() {
+  public boolean hasDomain() {
         return domain != null;
     }
 

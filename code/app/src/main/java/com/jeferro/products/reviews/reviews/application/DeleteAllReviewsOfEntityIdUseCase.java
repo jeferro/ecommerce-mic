@@ -2,6 +2,7 @@ package com.jeferro.products.reviews.reviews.application;
 
 import com.jeferro.products.reviews.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.reviews.domain.models.Review;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -28,19 +29,21 @@ public class DeleteAllReviewsOfEntityIdUseCase extends UseCase<DeleteAllReviewsO
 
     @Override
     public Void execute(Context context, DeleteAllReviewsOfEntityIdParams params) {
-        var entityId = params.getDomain();
+        var entityId = params.getEntityId();
 
-        var reviews = reviewsRepository.findAllByProductCode(entityId);
+        var criteria = ReviewFilter.byEntityId(entityId, 0);
+        var reviews = reviewsRepository.findAll(criteria);
 
-        if (reviews.isEmpty()) {
-            return null;
+        while(reviews.isNotEmpty()){
+            reviews.forEach(Review::deleteBySystem);
+
+            reviewsRepository.deleteAll(reviews);
+
+            eventBus.sendAll(reviews);
+
+            criteria.nextPage();
+            reviews = reviewsRepository.findAll(criteria);
         }
-
-        reviews.forEach(Review::deleteBySystem);
-
-        reviewsRepository.deleteAll(reviews);
-
-        eventBus.sendAll(reviews);
 
         return null;
     }
