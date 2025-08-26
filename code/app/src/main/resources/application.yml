@@ -21,6 +21,7 @@ logging:
 
 components:
   products:
-    products-topic: com.jeferro.${metadata.application-id}.products.${metadata.environment}.v1
-    product-reviews-topic: com.jeferro.${metadata.application-id}.product-reviews.${metadata.environment}.v1
-    product-reviews-consumer-group-id: ${metadata.application-id}.product-reviews.${metadata.environment}
+    products-topic: com.jeferro.${metadata.application-id}.${metadata.environment}.products.v1
+
+  reviews:
+    reviews-on-product-events-consumer-group-id: ${metadata.application-id}.${metadata.environment}.products.reviews

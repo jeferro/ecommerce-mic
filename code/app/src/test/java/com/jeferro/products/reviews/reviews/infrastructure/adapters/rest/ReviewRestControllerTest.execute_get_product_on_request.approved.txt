@@ -1,0 +1,3 @@
+data[0] = GetProductReviewParams[reviewId=john::apple]
+data[1] = 200
+data[2] = {"id":{"productCode":"apple","username":"john"},"locale":"en-US","comment":"Comment about apple"}

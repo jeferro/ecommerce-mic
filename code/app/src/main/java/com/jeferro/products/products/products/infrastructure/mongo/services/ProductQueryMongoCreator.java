@@ -55,6 +55,7 @@ public class ProductQueryMongoCreator extends QueryMongoCreator<ProductVersionOr
         }
 
         return switch (order) {
+            case ID -> "_id";
             case TYPE_ID -> "typeId";
             case NAME -> "name";
             case START_EFFECTIVE_DATE -> "effectiveDate";

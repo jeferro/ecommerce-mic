@@ -8,7 +8,7 @@ public abstract class Filter<Order> extends ValueObject {
 
     private static final int DEFAULT_PAGE_NUMBER = 0;
 
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    protected static final int DEFAULT_PAGE_SIZE = 100;
 
     public static final boolean DEFAULT_ASCENDING = true;
 

@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.infrastructure.rest;
 
 import com.jeferro.products.generated.rest.v1.apis.ProductVersionsApi;
 import com.jeferro.products.generated.rest.v1.dtos.CreateProductVersionInputRestDTO;
-import com.jeferro.products.generated.rest.v1.dtos.ProductFilterOrderRestDTO;
+import com.jeferro.products.generated.rest.v1.dtos.ProductOrderRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionListRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionSummaryListRestDTO;
@@ -23,7 +23,7 @@ public class ProductVersionRestController implements ProductVersionsApi {
     private final UseCaseBus useCaseBus;
 
     @Override
-    public ProductVersionSummaryListRestDTO searchProductVersions(Integer pageNumber, Integer pageSize, ProductFilterOrderRestDTO order,
+    public ProductVersionSummaryListRestDTO searchProductVersions(Integer pageNumber, Integer pageSize, ProductOrderRestDTO order,
         Boolean ascending, OffsetDateTime searchDate) {
         var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, null, searchDate);
 

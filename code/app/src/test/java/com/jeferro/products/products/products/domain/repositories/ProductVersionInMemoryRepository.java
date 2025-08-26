@@ -26,7 +26,7 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
   @Override
   public PaginatedList<ProductVersion> findAll(ProductVersionFilter filter) {
 	var entities = data.values().stream()
-		.filter(product -> matchProduct(filter, product))
+		.filter(product -> matchCriteria(filter, product))
 		.sorted((p1, p2) -> compareProducts(p1, p2, filter))
 		.toList();
 
@@ -35,7 +35,7 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
 	return PaginatedList.createOfList(paginatedEntities);
   }
 
-  private boolean matchProduct(ProductVersionFilter filter, ProductVersion productVersion) {
+  private boolean matchCriteria(ProductVersionFilter filter, ProductVersion productVersion) {
 	return matchProductCode(productVersion, filter)
 		&& matchMinEffectiveProductCode(productVersion, filter)
 		&& matchMaxEffectiveProductCode(productVersion, filter)
@@ -72,7 +72,7 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
 
   private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionFilter filter) {
 	return switch (filter.getOrder()) {
-	  case NAME, TYPE_ID -> -1;
+	  case ID, NAME, TYPE_ID -> -1;
 	  case START_EFFECTIVE_DATE -> p2.getEffectiveDate().isAfter(p1.getEffectiveDate()) ? -1 : 1;
 	};
   }

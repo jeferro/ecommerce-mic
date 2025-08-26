@@ -1,0 +1,37 @@
+{
+  "namespace": "com.jeferro.products.generated.kafka.v1.dtos",
+  "type": "record",
+  "name": "ReviewCreatedAvroDTO",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string",
+      "doc": "Identifier of the event"
+    },
+    {
+      "name": "reviewId",
+      "type": "string",
+      "doc": "Identifier of the review"
+    },
+    {
+      "name": "entityId",
+      "type": "EntityId",
+      "doc": "Entity id of the review"
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "doc": "Identifier of the username"
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "doc": "Localization of the review"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "doc": "Comment of the review"
+    }
+  ]
+}

@@ -33,7 +33,7 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
 
     public SearchProductsParams toSearchProductsParams(Integer pageNumber,
                                                        Integer pageSize,
-                                                       ProductFilterOrderRestDTO order,
+                                                       ProductOrderRestDTO order,
                                                        Boolean ascending,
                                                        String code,
                                                        OffsetDateTime searchDate) {
@@ -46,7 +46,7 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
     @Mapping(target = "maxEffectiveDate", ignore = true)
     protected abstract ProductVersionFilter toProductFilter(Integer pageNumber,
                                                   Integer pageSize,
-                                                  ProductFilterOrderRestDTO order,
+                                                  ProductOrderRestDTO order,
                                                   Boolean ascending,
                                                   String code,
                                                   OffsetDateTime searchDate);
