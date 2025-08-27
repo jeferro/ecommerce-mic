@@ -1,16 +1,22 @@
 package com.jeferro.products.reviews.reviews.infrastructure.mongo;
 
 import com.jeferro.products.reviews.reviews.domain.models.Review;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.products.reviews.reviews.infrastructure.mongo.daos.ReviewMongoDao;
+import com.jeferro.products.reviews.reviews.infrastructure.mongo.dtos.ReviewMongoDTO;
 import com.jeferro.products.reviews.reviews.infrastructure.mongo.mappers.ReviewMongoMapper;
-import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.reviews.reviews.infrastructure.mongo.services.ReviewQueryMongoCreator;
+import com.jeferro.shared.auth.infrastructure.mongo.services.CustomMongoTemplate;
 import com.jeferro.shared.ddd.domain.models.aggregates.Entity;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,6 +27,10 @@ public class ReviewMongoRepository implements ReviewsRepository {
 
     private final ReviewMongoDao reviewMongoDao;
 
+    private final ReviewQueryMongoCreator reviewQueryMongoCreator;
+
+    private final CustomMongoTemplate customMongoTemplate;
+
     @Override
     public void save(Review review) {
         var productReviewDto = reviewMongoMapper.toDTO(review);
@@ -29,14 +39,16 @@ public class ReviewMongoRepository implements ReviewsRepository {
     }
 
     @Override
-    public PaginatedList<Review> findAllByProductCode(ProductCode productCode) {
-        var productCodeDto = reviewMongoMapper.toDTO(productCode);
+    public PaginatedList<Review> findAll(ReviewFilter filter) {
+        Query query = reviewQueryMongoCreator.create(filter);
 
-        var products = reviewMongoDao.findAllByProductCode(productCodeDto).stream()
-                .map(reviewMongoMapper::toDomain)
-                .toList();
+        Page<ReviewMongoDTO> page = customMongoTemplate.findPage(query, ReviewMongoDTO.class);
 
-        return PaginatedList.createOfList(products);
+        List<Review> entities = page.getContent().stream()
+            .map(reviewMongoMapper::toDomain)
+            .toList();
+
+        return PaginatedList.createOfFilter(entities, filter, page.getTotalElements());
     }
 
     @Override

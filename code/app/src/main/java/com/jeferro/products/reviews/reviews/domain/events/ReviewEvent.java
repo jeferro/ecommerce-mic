@@ -1,7 +1,7 @@
 package com.jeferro.products.reviews.reviews.domain.events;
 
+import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
-import com.jeferro.products.products.products.domain.models.ProductCode;
 import com.jeferro.shared.ddd.domain.events.Event;
 import lombok.Getter;
 
@@ -16,7 +16,7 @@ public abstract class ReviewEvent extends Event {
         this.reviewId = reviewId;
     }
 
-    public ProductCode getProductCode() {
+    public EntityId getEntityId() {
         return reviewId.getEntityId();
     }
 

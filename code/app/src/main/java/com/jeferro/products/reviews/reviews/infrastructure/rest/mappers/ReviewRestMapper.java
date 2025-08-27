@@ -51,10 +51,10 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
 
     public abstract CreateReviewParams toCreateProductReviewParams(CreateReviewInputRestDTO inputRestDTO);
 
-    public abstract GetReviewParams toGetProductReviewParams(String productReviewId);
+    public abstract GetReviewParams toGetProductReviewParams(String reviewId);
 
-    public abstract UpdateReviewParams toUpdateProductReviewParams(String productReviewId,
+    public abstract UpdateReviewParams toUpdateProductReviewParams(String reviewId,
                                                                           UpdateReviewInputRestDTO inputRestDTO);
 
-    public abstract DeleteReviewParams toDeleteProductReviewParams(String productReviewId);
+    public abstract DeleteReviewParams toDeleteProductReviewParams(String reviewId);
 }

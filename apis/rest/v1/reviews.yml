@@ -27,7 +27,9 @@ components:
         - comment
       properties:
         entityId:
-          $ref: '#/components/schemas/EntityId'
+          type: string
+          description: Identifier of the entity to review
+          example: 'products::apple'
         comment:
           type: string
           description: Comment of the review
@@ -37,11 +39,8 @@ components:
       type: object
       description: Update review input
       required:
-        - reviewId
         - comment
       properties:
-        reviewId:
-          $ref: '#/components/schemas/ReviewId'
         comment:
           type: string
           description: Comment of the review

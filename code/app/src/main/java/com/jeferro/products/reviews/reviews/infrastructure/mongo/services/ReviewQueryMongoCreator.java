@@ -12,33 +12,30 @@ import java.util.List;
 @Component
 public class ReviewQueryMongoCreator extends QueryMongoCreator<ReviewOrder, ReviewFilter> {
 
-    @Override
-    protected List<Criteria> mapFilter(ReviewFilter filter) {
-        var criteria = new ArrayList<Criteria>();
+  @Override
+  protected List<Criteria> mapFilter(ReviewFilter filter) {
+	var criteria = new ArrayList<Criteria>();
 
-        if (filter.hasDomain()) {
-            var domainCriteria = Criteria.where("entityId.domain").is(filter.getDomain());
+	if (filter.hasEntityId()) {
+	  var domainCriteria = new Criteria().andOperator(
+		  Criteria.where("entityId.domain").is(filter.getEntityId().getDomain()),
+		  Criteria.where("entityId.id").is(filter.getEntityId().getId())
+	  );
 
-            criteria.add(domainCriteria);
-        }
+	  criteria.add(domainCriteria);
+	}
 
-        if (filter.hasId()) {
-            var domainCriteria = Criteria.where("entityId.id").is(filter.getDomain());
+	return criteria;
+  }
 
-            criteria.add(domainCriteria);
-        }
+  @Override
+  protected String mapOrder(ReviewOrder order) {
+	if (order == null) {
+	  return "name";
+	}
 
-        return criteria;
-    }
-
-    @Override
-    protected String mapOrder(ReviewOrder order) {
-        if (order == null) {
-            return "name";
-        }
-
-        return switch (order) {
-            case ID -> "_id";
-        };
-    }
+	return switch (order) {
+	  case ID -> "_id";
+	};
+  }
 }

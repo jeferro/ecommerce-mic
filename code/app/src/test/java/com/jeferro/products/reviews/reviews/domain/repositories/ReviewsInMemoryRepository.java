@@ -38,13 +38,13 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
                 .forEach(this::deleteById);
     }
 
+    private boolean matchCriteria(Review review, ReviewFilter filter) {
+        return matchEntityId(review, filter);
+    }
+
     private boolean matchEntityId(Review review, ReviewFilter filter) {
         return !filter.hasEntityId()
             || review.getEntityId().equals(filter.getEntityId());
-    }
-
-    private boolean matchCriteria(Review review, ReviewFilter filter) {
-        return matchEntityId(review, filter);
     }
 
     private int compareReviews(Review r1, Review r2, ReviewFilter filter) {

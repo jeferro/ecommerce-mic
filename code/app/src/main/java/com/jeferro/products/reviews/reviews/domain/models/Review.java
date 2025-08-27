@@ -71,6 +71,10 @@ public class Review extends AggregateRoot<ReviewId> {
         return id.getEntityId();
     }
 
+    public String getDomain() {
+        return id.getEntityId().getDomain();
+    }
+
     public void ensureReviewBelongsToUser(Auth auth) {
         if (auth.username().equals(getUsername())) {
             return;

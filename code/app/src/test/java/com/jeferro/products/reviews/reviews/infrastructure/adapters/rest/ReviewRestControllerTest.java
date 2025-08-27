@@ -25,7 +25,7 @@ class ReviewRestControllerTest extends RestControllerTest {
     private StubUseCaseBus stubUseCaseBus;
 
     @Test
-    void execute_list_product_reviews_on_request() throws Exception {
+    void execute_search_reviews_on_request() throws Exception {
         var apple = ProductVersionMother.appleV1();
         var productReviews = PaginatedList.createOfItems(
             ReviewMother.johnReviewOfApple(),
@@ -33,7 +33,11 @@ class ReviewRestControllerTest extends RestControllerTest {
         );
         stubUseCaseBus.init(productReviews);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/product-reviews?productCode=" + apple.getCode())
+        String url = "/v1/reviews?"
+            + "domain=products"
+            + "&id" + apple.getCode();
+
+        var requestBuilder = MockMvcRequestBuilders.get(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -59,7 +63,7 @@ class ReviewRestControllerTest extends RestControllerTest {
                 }"""
                 .formatted(johnReviewOfApple.getEntityId(), johnReviewOfApple.getComment());
 
-        var requestBuilder = MockMvcRequestBuilders.post("/v1/product-reviews")
+        var requestBuilder = MockMvcRequestBuilders.post("/v1/reviews")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -79,7 +83,7 @@ class ReviewRestControllerTest extends RestControllerTest {
         var johnReviewOfApple = ReviewMother.johnReviewOfApple();
         stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/product-reviews/" + johnReviewOfApple.getId())
+        var requestBuilder = MockMvcRequestBuilders.get("/v1/reviews/" + johnReviewOfApple.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -104,7 +108,7 @@ class ReviewRestControllerTest extends RestControllerTest {
                 }"""
                 .formatted(johnReviewOfApple.getComment());
 
-        var requestBuilder = MockMvcRequestBuilders.patch("/v1/product-reviews/" + johnReviewOfApple.getId())
+        var requestBuilder = MockMvcRequestBuilders.patch("/v1/reviews/" + johnReviewOfApple.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -124,7 +128,7 @@ class ReviewRestControllerTest extends RestControllerTest {
         var johnReviewOfApple = ReviewMother.johnReviewOfApple();
         stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestBuilder = MockMvcRequestBuilders.delete("/v1/product-reviews/" + johnReviewOfApple.getId())
+        var requestBuilder = MockMvcRequestBuilders.delete("/v1/reviews/" + johnReviewOfApple.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);

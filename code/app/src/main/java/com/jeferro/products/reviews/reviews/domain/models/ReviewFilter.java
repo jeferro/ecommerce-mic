@@ -8,31 +8,23 @@ import static com.jeferro.products.reviews.reviews.domain.models.ReviewOrder.ID;
 @Getter
 public class ReviewFilter extends Filter<ReviewOrder> {
 
-    private final String domain;
-
-    private final String id;
+    private final EntityId entityId;
 
     public ReviewFilter(Integer pageNumber,
         Integer pageSize,
         ReviewOrder order,
         Boolean ascending,
-        String domain,
-        String id) {
+        EntityId entityId) {
         super(pageNumber, pageSize, order, ascending);
 
-        this.domain = domain;
-        this.id = id;
+        this.entityId = entityId;
 	}
 
     public static ReviewFilter byEntityId(EntityId entityId, int pageNumber) {
-        return new ReviewFilter(pageNumber, DEFAULT_PAGE_SIZE, ID, null, entityId.getDomain(), entityId.getId());
+        return new ReviewFilter(pageNumber, DEFAULT_PAGE_SIZE, ID, null, entityId);
     }
 
-  public boolean hasDomain() {
-        return domain != null;
-    }
-
-    public boolean hasId() {
-        return id != null;
+  public boolean hasEntityId() {
+        return entityId != null;
     }
 }

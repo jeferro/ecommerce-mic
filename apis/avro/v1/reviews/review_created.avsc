@@ -16,7 +16,7 @@
     {
       "name": "entityId",
       "type": "EntityId",
-      "doc": "Entity id of the review"
+      "doc": "Identifier of the entity"
     },
     {
       "name": "username",

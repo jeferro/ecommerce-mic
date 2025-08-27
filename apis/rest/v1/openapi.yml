@@ -283,18 +283,12 @@ paths:
           schema:
             type: boolean
           description: Return data using ascending order
-        - name: domain
+        - name: entityId
           in: query
           required: false
           schema:
             type: string
-          description: Domain of the entity
-        - name: id
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Id of the entity
+          description: Identifier of the entity
       responses:
         '200':
           description: Ok

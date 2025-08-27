@@ -1,4 +1,4 @@
-package com.jeferro.products.shared.infrastructure.config.products;
+package com.jeferro.products.shared.infrastructure.config.reviews;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties("components.products")
-public class ProductsComponentProperties {
+@ConfigurationProperties("components.reviews")
+public class ReviewsComponentProperties {
 
     private String productsTopic;
+
+    private String productReviewsTopic;
 
     private String productReviewsConsumerGroupId;
 }

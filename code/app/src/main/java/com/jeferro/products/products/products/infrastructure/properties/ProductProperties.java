@@ -1,6 +1,6 @@
-package com.jeferro.products.shared.infrastructure.config.products;
+package com.jeferro.products.products.products.infrastructure.properties;
 
-import com.jeferro.products.shared.domain.config.ProductConfig;
+import com.jeferro.products.products.ProductsConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Configuration
 @ConfigurationProperties("application.configs")
-public class ProductProperties extends ProductConfig {
+public class ProductProperties extends ProductsConfig {
 
 }
