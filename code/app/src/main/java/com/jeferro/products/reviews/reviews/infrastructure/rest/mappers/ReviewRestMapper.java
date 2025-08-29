@@ -30,14 +30,12 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
         Integer pageSize,
         ReviewOrderRestDTO order,
         Boolean ascending,
-        String domain,
-        String id) {
+        String entityId) {
         var filter = toReviewFilter(pageNumber,
             pageSize,
             order,
             ascending,
-            domain,
-            id);
+            entityId);
 
         return new SearchReviewParams(filter);
     }
@@ -46,8 +44,7 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
         Integer pageSize,
         ReviewOrderRestDTO order,
         Boolean ascending,
-        String domain,
-        String id);
+        String entityId);
 
     public abstract CreateReviewParams toCreateProductReviewParams(CreateReviewInputRestDTO inputRestDTO);
 

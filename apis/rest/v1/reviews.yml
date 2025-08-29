@@ -46,35 +46,6 @@ components:
           description: Comment of the review
           example: 'One comment of the product'
 
-    EntityId:
-      type: object
-      description: Entity id
-      required:
-        - domain
-        - id
-      properties:
-        domain:
-          type: string
-          description: Domain of the entity
-          example: 'products'
-        id:
-          type: string
-          description: Identifier of the entity
-          example: 'apple'
-
-    ReviewId:
-      type: object
-      description: Product review
-      required:
-        - username
-        - entityId
-      properties:
-        username:
-          type: string
-          example: 'johndoe'
-        entityId:
-          $ref: '#/components/schemas/EntityId'
-
     Review:
       type: object
       description: Review
@@ -86,13 +57,17 @@ components:
         - comment
       properties:
         id:
-          $ref: '#/components/schemas/ReviewId'
+          type: string
+          description: Identifier of the entity
+          example: 'john::products::apple'
         username:
           type: string
           description: Username of the review
           example: 'john'
         entityId:
-          $ref: '#/components/schemas/EntityId'
+          type: string
+          description: Identifier of the entity
+          example: 'products::apple'
         locale:
           type: string
           description: Localization of the review

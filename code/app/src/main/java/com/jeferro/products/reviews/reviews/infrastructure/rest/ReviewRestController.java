@@ -20,14 +20,12 @@ public class ReviewRestController implements ReviewsApi {
     private final UseCaseBus useCaseBus;
 
     @Override
-    public ReviewListRestDTO searchReviews(Integer pageNumber, Integer pageSize, ReviewOrderRestDTO order, Boolean ascending, String domain,
-        String id) {
+    public ReviewListRestDTO searchReviews(Integer pageNumber, Integer pageSize, ReviewOrderRestDTO order, Boolean ascending, String entityId) {
         var params = reviewRestMapper.toSearchProductsParams(pageNumber,
             pageSize,
             order,
             ascending,
-            domain,
-            id);
+            entityId);
 
         var reviews = useCaseBus.execute(params);
 

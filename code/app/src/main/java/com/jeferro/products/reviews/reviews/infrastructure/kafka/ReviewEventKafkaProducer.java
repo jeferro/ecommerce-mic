@@ -23,7 +23,7 @@ public class ReviewEventKafkaProducer implements EventBusProducer<ReviewEvent> {
         String key = event.getReviewId().toString();
         var data = reviewKafkaMapper.toDTO(event);
 
-        kafkaTemplate.send(productsComponentProperties.getProductReviewsTopic(), key, data);
+        kafkaTemplate.send(productsComponentProperties.getProductsTopic(), key, data);
     }
 
 }
