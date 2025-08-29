@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @KafkaListener(
-        topics = "${components.products.products-topic}",
+        topics = "${components.products.topic}",
         groupId = "${components.reviews.reviews-on-product-events-consumer-group-id}"
 )
 public class ReviewsOnProductEventsKafkaConsumer {
