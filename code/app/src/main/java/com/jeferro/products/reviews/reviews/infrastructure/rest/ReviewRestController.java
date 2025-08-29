@@ -34,7 +34,7 @@ public class ReviewRestController implements ReviewsApi {
 
     @Override
     public ReviewRestDTO createReview(CreateReviewInputRestDTO inputRestDTO) {
-        var params = reviewRestMapper.toCreateProductReviewParams(inputRestDTO);
+        var params = reviewRestMapper.toCreateReviewParams(inputRestDTO);
 
         var reviews = useCaseBus.execute(params);
 
@@ -43,7 +43,7 @@ public class ReviewRestController implements ReviewsApi {
 
     @Override
     public ReviewRestDTO getReview(String reviewId) {
-        var params = reviewRestMapper.toGetProductReviewParams(reviewId);
+        var params = reviewRestMapper.toGetReviewParams(reviewId);
 
         var reviews = useCaseBus.execute(params);
 
@@ -52,7 +52,7 @@ public class ReviewRestController implements ReviewsApi {
 
     @Override
     public ReviewRestDTO updateReview(String reviewId, UpdateReviewInputRestDTO inputRestDTO) {
-        var params = reviewRestMapper.toUpdateProductReviewParams(reviewId, inputRestDTO);
+        var params = reviewRestMapper.toUpdateReviewParams(reviewId, inputRestDTO);
 
         var review = useCaseBus.execute(params);
 
@@ -61,7 +61,7 @@ public class ReviewRestController implements ReviewsApi {
 
     @Override
     public ReviewRestDTO deleteReview(String reviewId) {
-        var params = reviewRestMapper.toDeleteProductReviewParams(reviewId);
+        var params = reviewRestMapper.toDeleteReviewParams(reviewId);
 
         var review = useCaseBus.execute(params);
 

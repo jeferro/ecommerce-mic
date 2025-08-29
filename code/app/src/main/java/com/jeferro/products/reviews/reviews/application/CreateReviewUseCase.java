@@ -35,7 +35,7 @@ public class CreateReviewUseCase extends UseCase<CreateReviewParams, Review> {
 
 	ensureReviewDoesNotExists(reviewId);
 
-	return createProductReview(reviewId, params, context);
+	return createReview(reviewId, params, context);
   }
 
   private void ensureReviewDoesNotExists(ReviewId reviewId) {
@@ -46,7 +46,7 @@ public class CreateReviewUseCase extends UseCase<CreateReviewParams, Review> {
 	}
   }
 
-  private Review createProductReview(ReviewId reviewId, CreateReviewParams params, Context context) {
+  private Review createReview(ReviewId reviewId, CreateReviewParams params, Context context) {
 	var review = Review.createOf(reviewId,
 		context.getLocale(),
 		params.getComment()

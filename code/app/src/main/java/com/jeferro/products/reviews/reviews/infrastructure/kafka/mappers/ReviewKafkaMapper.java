@@ -20,7 +20,7 @@ public abstract class ReviewKafkaMapper {
     public Object toDTO(ReviewEvent event) {
         return switch (event) {
             case ReviewCreated reviewCreated -> toDTO(reviewCreated);
-            case ReviewUpdated productReviewUpdated -> toDTO(productReviewUpdated);
+            case ReviewUpdated reviewUpdated -> toDTO(reviewUpdated);
             case ReviewDeleted reviewDeleted -> toDTO(reviewDeleted);
 
             default -> throw new IllegalStateException("Unexpected value: " + event);

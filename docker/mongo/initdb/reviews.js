@@ -1,10 +1,13 @@
 let now = new Date()
 
-db['product_reviews'].insertMany([
+db['reviews'].insertMany([
     {
-        _id: "user::0000001",
+        _id: "user::products::apple",
         username: "user",
-        productCode: "0000001",
+        entityId: {
+            domain: "products",
+            id: "apple"
+        },
         locale: "en-US",
         comment: "Apple is so good",
         metadata: {
@@ -15,24 +18,30 @@ db['product_reviews'].insertMany([
         }
     },
     {
-        _id: "admin::0000001",
+        _id: "admin::products::apple",
         username: "admin",
-        productCode: "0000001",
+        entityId: {
+            domain: "products",
+            id: "apple"
+        },
         locale: "en-US",
         comment: "I prefer bananas",
         metadata: {
-            createdBy: 'user',
+            createdBy: 'admin',
             createdAt: now,
-            updatedBy: 'user',
+            updatedBy: 'admin',
             updatedAt: now
         }
     },
     {
-        _id: "user::0000002",
+        _id: "user::products::kiwi",
         username: "user",
-        productCode: "0000002",
+        entityId: {
+            domain: "products",
+            id: "kiwi"
+        },
         locale: "en-US",
-        comment: "Good kiwis",
+        comment: "Love kiwis",
         metadata: {
             createdBy: 'user',
             createdAt: now,

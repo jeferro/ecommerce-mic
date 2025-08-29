@@ -33,9 +33,9 @@ public class ReviewMongoRepository implements ReviewsRepository {
 
     @Override
     public void save(Review review) {
-        var productReviewDto = reviewMongoMapper.toDTO(review);
+        var reviewDto = reviewMongoMapper.toDTO(review);
 
-        reviewMongoDao.save(productReviewDto);
+        reviewMongoDao.save(reviewDto);
     }
 
     @Override

@@ -46,12 +46,12 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
         Boolean ascending,
         String entityId);
 
-    public abstract CreateReviewParams toCreateProductReviewParams(CreateReviewInputRestDTO inputRestDTO);
+    public abstract CreateReviewParams toCreateReviewParams(CreateReviewInputRestDTO inputRestDTO);
 
-    public abstract GetReviewParams toGetProductReviewParams(String reviewId);
+    public abstract GetReviewParams toGetReviewParams(String reviewId);
 
-    public abstract UpdateReviewParams toUpdateProductReviewParams(String reviewId,
+    public abstract UpdateReviewParams toUpdateReviewParams(String reviewId,
                                                                           UpdateReviewInputRestDTO inputRestDTO);
 
-    public abstract DeleteReviewParams toDeleteProductReviewParams(String reviewId);
+    public abstract DeleteReviewParams toDeleteReviewParams(String reviewId);
 }

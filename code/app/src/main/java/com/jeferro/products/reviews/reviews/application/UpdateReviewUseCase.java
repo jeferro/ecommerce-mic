@@ -32,7 +32,7 @@ public class UpdateReviewUseCase extends UseCase<UpdateReviewParams, Review> {
 
         review.ensureReviewBelongsToUser(context.getAuth());
 
-        return updateProductReview(context, params, review);
+        return updateReview(context, params, review);
     }
 
     private Review ensureReviewExists(UpdateReviewParams params) {
@@ -41,7 +41,7 @@ public class UpdateReviewUseCase extends UseCase<UpdateReviewParams, Review> {
         return reviewsRepository.findByIdOrError(reviewId);
     }
 
-    private Review updateProductReview(Context context, UpdateReviewParams params, Review review) {
+    private Review updateReview(Context context, UpdateReviewParams params, Review review) {
 	    var locale = context.getLocale();
 
         var comment = params.getComment();
