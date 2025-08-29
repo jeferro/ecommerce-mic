@@ -1,8 +1,8 @@
 package com.jeferro.products.reviews.reviews.infrastructure.adapters.rest;
 
+import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.infrastructure.rest.ReviewRestController;
-import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.products.shared.infrastructure.adapters.utils.ApprovalUtils;
@@ -26,16 +26,15 @@ class ReviewRestControllerTest extends RestControllerTest {
 
     @Test
     void execute_search_reviews_on_request() throws Exception {
-        var apple = ProductVersionMother.appleV1();
+        Review johnReviewOfApple = ReviewMother.johnReviewOfApple();
         var productReviews = PaginatedList.createOfItems(
-            ReviewMother.johnReviewOfApple(),
+            johnReviewOfApple,
             ReviewMother.emilyReviewOfApple()
         );
         stubUseCaseBus.init(productReviews);
 
         String url = "/v1/reviews?"
-            + "domain=products"
-            + "&id" + apple.getCode();
+            + "entityId=" + johnReviewOfApple.getId();
 
         var requestBuilder = MockMvcRequestBuilders.get(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,10 +57,10 @@ class ReviewRestControllerTest extends RestControllerTest {
 
         var requestContent = """
                 {
-                  "productCode": "%s",
+                  "entityId": "%s",
                   "comment": "%s"
                 }"""
-                .formatted(johnReviewOfApple.getEntityId(), johnReviewOfApple.getComment());
+                .formatted(johnReviewOfApple.getId(), johnReviewOfApple.getComment());
 
         var requestBuilder = MockMvcRequestBuilders.post("/v1/reviews")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +78,7 @@ class ReviewRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_get_product_on_request() throws Exception {
+    void execute_get_review_on_request() throws Exception {
         var johnReviewOfApple = ReviewMother.johnReviewOfApple();
         stubUseCaseBus.init(johnReviewOfApple);
 
@@ -98,7 +97,7 @@ class ReviewRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_update_product_on_request() throws Exception {
+    void execute_update_review_on_request() throws Exception {
         var johnReviewOfApple = ReviewMother.johnReviewOfApple();
         stubUseCaseBus.init(johnReviewOfApple);
 
@@ -124,7 +123,7 @@ class ReviewRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_delete_product_on_request() throws Exception {
+    void execute_delete_review_on_request() throws Exception {
         var johnReviewOfApple = ReviewMother.johnReviewOfApple();
         stubUseCaseBus.init(johnReviewOfApple);
 
