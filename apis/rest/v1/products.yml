@@ -19,13 +19,15 @@ components:
       example: '2025-08-01_09:00:00'
 
   schemas:
-    ProductFilterOrder:
+    ProductOrder:
       type: string
-      description: order of the product listing
+      description: Order of the product listing
       enum:
+        - 'ID'
         - 'NAME'
         - 'TYPE_ID'
       x-enum-varnames:
+        - ID
         - NAME
         - TYPE_ID
 

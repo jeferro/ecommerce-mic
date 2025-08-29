@@ -13,7 +13,5 @@ public class ProductsComponentProperties {
 
     private String productsTopic;
 
-    private String productReviewsTopic;
-
     private String productReviewsConsumerGroupId;
 }

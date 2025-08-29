@@ -3,10 +3,7 @@ package com.jeferro.shared.ddd.application.bus;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.application.UseCases;
 import com.jeferro.shared.ddd.application.params.Params;
-import com.jeferro.shared.ddd.domain.exceptions.ConflictException;
-import com.jeferro.shared.ddd.domain.exceptions.InternalErrorException;
-import com.jeferro.shared.ddd.domain.exceptions.NotFoundException;
-import com.jeferro.shared.ddd.domain.exceptions.auth.ForbiddenException;
+import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
 import com.jeferro.shared.ddd.domain.models.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +41,7 @@ public abstract class UseCaseBus {
         } catch (Exception cause) {
             logErrorExecution(startAt, context, useCae, params, cause);
 
-            if (cause instanceof NotFoundException
-                    || cause instanceof ConflictException
-                    || cause instanceof ForbiddenException) {
-                throw cause;
-            }
-
-            throw InternalErrorException.createOf(cause);
+            throw cause;
         }
     }
 

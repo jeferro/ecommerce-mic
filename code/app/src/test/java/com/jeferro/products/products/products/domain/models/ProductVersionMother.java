@@ -1,6 +1,6 @@
 package com.jeferro.products.products.products.domain.models;
 
-import com.jeferro.products.products.parametrics.domain.models.ProductTypeMother;
+import com.jeferro.products.parametrics.domain.models.ProductTypeMother;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 
 import java.time.Instant;

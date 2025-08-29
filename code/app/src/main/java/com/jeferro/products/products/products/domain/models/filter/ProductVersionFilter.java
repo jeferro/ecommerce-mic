@@ -13,8 +13,6 @@ import static com.jeferro.products.products.products.domain.models.filter.Produc
 @Getter
 public class ProductVersionFilter extends Filter<ProductVersionOrder> {
 
-    private final String name;
-
     private final ProductCode code;
 
     private final Instant minEffectiveDate;
@@ -27,14 +25,12 @@ public class ProductVersionFilter extends Filter<ProductVersionOrder> {
         Integer pageSize,
         ProductVersionOrder order,
         Boolean ascending,
-        String name,
         ProductCode code,
         Instant minEffectiveDate,
         Instant maxEffectiveDate,
         Instant searchDate) {
         super(pageNumber, pageSize, order, ascending);
 
-        this.name = name;
         this.code = code;
         this.minEffectiveDate = minEffectiveDate;
         this.maxEffectiveDate = maxEffectiveDate;
@@ -42,23 +38,19 @@ public class ProductVersionFilter extends Filter<ProductVersionOrder> {
 	}
 
     public static ProductVersionFilter createEmpty() {
-        return new ProductVersionFilter(null, null, NAME, null, null, null, null, null, null);
+        return new ProductVersionFilter(null, null, NAME, null, null, null, null, null);
     }
 
-    public static ProductVersionFilter searchName(String name) {
-        return new ProductVersionFilter(null, null, NAME, false, name, null, null, null, null);
+    public static ProductVersionFilter byCode(ProductCode code) {
+        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, false, code, null, null, null);
     }
 
     public static ProductVersionFilter previousProduct(ProductVersionId versionId) {
-        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, false, null, versionId.getCode(), null, versionId.getEffectiveDate(), null);
+        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, false, versionId.getCode(), null, versionId.getEffectiveDate(), null);
     }
 
     public static ProductVersionFilter nextProduct(ProductVersionId versionId) {
-        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, true, null, versionId.getCode(), versionId.getEffectiveDate(), null, null);
-    }
-
-    public boolean hasName() {
-        return name != null && !name.isBlank();
+        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, true, versionId.getCode(), versionId.getEffectiveDate(), null, null);
     }
 
     public boolean hasCode() {

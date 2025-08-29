@@ -1,8 +1,16 @@
 package com.jeferro.products.products.products.infrastructure.kafka.mappers;
 
-import com.jeferro.products.generated.kafka.v1.dtos.*;
-import com.jeferro.products.products.products.domain.events.*;
-import com.jeferro.products.products.products.domain.models.ProductCode;
+import com.jeferro.products.generated.kafka.v1.dtos.ProductCreatedAvroDTO;
+import com.jeferro.products.generated.kafka.v1.dtos.ProductDeletedAvroDTO;
+import com.jeferro.products.generated.kafka.v1.dtos.ProductPublishedAvroDTO;
+import com.jeferro.products.generated.kafka.v1.dtos.ProductUnpublishedAvroDTO;
+import com.jeferro.products.generated.kafka.v1.dtos.ProductUpdatedAvroDTO;
+import com.jeferro.products.products.products.domain.events.ProductVersionCreated;
+import com.jeferro.products.products.products.domain.events.ProductVersionDeleted;
+import com.jeferro.products.products.products.domain.events.ProductVersionEvent;
+import com.jeferro.products.products.products.domain.events.ProductVersionPublished;
+import com.jeferro.products.products.products.domain.events.ProductVersionUnpublished;
+import com.jeferro.products.products.products.domain.events.ProductVersionUpdated;
 import com.jeferro.shared.mappers.EventMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
@@ -34,6 +42,4 @@ public abstract class ProductKafkaMapper extends EventMapper<ProductVersionEvent
     protected abstract ProductUnpublishedAvroDTO toDTO(ProductVersionUnpublished entity);
 
     protected abstract ProductDeletedAvroDTO toDTO(ProductVersionDeleted entity);
-
-    public abstract ProductCode toDomain(String value);
 }

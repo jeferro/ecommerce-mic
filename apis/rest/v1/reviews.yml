@@ -1,0 +1,100 @@
+components:
+
+  parameters:
+    reviewIdPath:
+      name: reviewId
+      in: path
+      description: Review id
+      required: true
+      schema:
+        type: string
+      example: 'john::products:apple'
+
+  schemas:
+    ReviewOrder:
+      type: string
+      description: Order of the review listing
+      enum:
+        - 'ID'
+      x-enum-varnames:
+        - ID
+
+    CreateReviewInput:
+      type: object
+      description: Create review input
+      required:
+        - entityId
+        - comment
+      properties:
+        entityId:
+          type: string
+          description: Identifier of the entity to review
+          example: 'products::apple'
+        comment:
+          type: string
+          description: Comment of the review
+          example: 'One comment of the product'
+
+    UpdateReviewInput:
+      type: object
+      description: Update review input
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+          description: Comment of the review
+          example: 'One comment of the product'
+
+    Review:
+      type: object
+      description: Review
+      required:
+        - id
+        - username
+        - entityId
+        - locale
+        - comment
+      properties:
+        id:
+          type: string
+          description: Identifier of the entity
+          example: 'john::products::apple'
+        username:
+          type: string
+          description: Username of the review
+          example: 'john'
+        entityId:
+          type: string
+          description: Identifier of the entity
+          example: 'products::apple'
+        locale:
+          type: string
+          description: Localization of the review
+          example: 'en-US'
+        comment:
+          type: string
+          description: Comment of the review
+          example: 'One comment of the product'
+
+    ReviewList:
+      type: object
+      required:
+        - pageNumber
+        - pageSize
+        - totalItems
+        - items
+      properties:
+        pageNumber:
+          type: integer
+          description: Number of total pages
+        pageSize:
+          type: integer
+          description: Size of each page
+        totalItems:
+          type: integer
+          description: Number of total items
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'

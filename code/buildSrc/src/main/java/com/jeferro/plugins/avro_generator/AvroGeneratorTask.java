@@ -48,9 +48,9 @@ public class AvroGeneratorTask implements Action<Task> {
             Schema.Parser parser = new Schema.Parser();
 
             for (var avroFile : avroFiles) {
-                Schema schema = parser.parse(avroFile);
+                var schema = parser.parse(avroFile);
 
-                SpecificCompiler compiler = new SpecificCompiler(schema);
+                var compiler = new SpecificCompiler(schema);
                 compiler.setStringType(StringType.String);
                 compiler.compileToDestination(avroFile, targetDir);
             }
@@ -60,16 +60,17 @@ public class AvroGeneratorTask implements Action<Task> {
     }
 
     private File[] getAvroFiles(File schemaDir) {
-        List<File> avroFiles = getAvroFilesRecursively(schemaDir);
+        var avroFiles = getAvroFilesRecursively(schemaDir);
 
-        File[] avroFilesArray = new File[avroFiles.size()];
+        var avroFilesArray = new File[avroFiles.size()];
+
         return avroFiles.toArray(avroFilesArray);
     }
 
     private List<File> getAvroFilesRecursively(File directory) {
         List<File> schemaFiles = new ArrayList<>();
 
-        File[] files = directory.listFiles();
+        var files = directory.listFiles();
 
         if (files == null) {
             return List.of();

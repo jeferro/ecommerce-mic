@@ -2,8 +2,8 @@ let now = new Date()
 
 db['products'].insertMany([
     {
-        _id: "0000001::2025-01-01T09:00:00.00Z",
-        code: "0000001",
+        _id: "apple::2025-01-01T09:00:00.00Z",
+        code: "apple",
         effectiveDate: ISODate("2025-01-01T09:00:00.00Z"),
         endEffectiveDate: ISODate("2025-01-15T08:59:59.00Z"),
         typeId: "fruit",
@@ -20,8 +20,8 @@ db['products'].insertMany([
         }
     },
     {
-        _id: "0000001::2025-01-15T09:00:00.00Z",
-        code: "0000001",
+        _id: "apple::2025-01-15T09:00:00.00Z",
+        code: "apple",
         effectiveDate: ISODate("2025-01-15T09:00:00.00Z"),
         endEffectiveDate: null,
         typeId: "fruit",
@@ -38,8 +38,8 @@ db['products'].insertMany([
         }
     },
     {
-        _id: "0000002::2025-01-01T09:00:00.00Z",
-        code: "0000002",
+        _id: "kiwi::2025-01-01T09:00:00.00Z",
+        code: "kiwi",
         effectiveDate: ISODate("2025-01-01T09:00:00.00Z"),
         endEffectiveDate: null,
         typeId: "fruit",
@@ -56,8 +56,8 @@ db['products'].insertMany([
         }
     },
     {
-        _id: "0000003::2025-01-01T09:00:00.00Z",
-        code: "0000003",
+        _id: "banana::2025-01-01T09:00:00.00Z",
+        code: "banana",
         effectiveDate: ISODate("2025-01-01T09:00:00.00Z"),
         endEffectiveDate: null,
         typeId: "fruit",

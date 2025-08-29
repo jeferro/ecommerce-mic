@@ -1,0 +1,3 @@
+data[0] = CreateReviewParams[comment=Comment about apple,entityId=john::products::apple]
+data[1] = 200
+data[2] = {"id":"john::products::apple","username":"john","entityId":"products::apple","locale":"en-US","comment":"Comment about apple"}

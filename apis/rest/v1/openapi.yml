@@ -16,8 +16,8 @@ tags:
   - name: Product versions
     description: Section of the product versions
 
-  - name: Product reviews
-    description: Section of the product reviews
+  - name: Reviews
+    description: Section of the reviews
 
 paths:
   /v1/products:
@@ -43,7 +43,7 @@ paths:
         - name: order
           in: query
           schema:
-            $ref: './products.yml#/components/schemas/ProductFilterOrder'
+            $ref: './products.yml#/components/schemas/ProductOrder'
           description: Order of the result
           required: false
         - name: ascending
@@ -52,12 +52,6 @@ paths:
           schema:
             type: boolean
           description: Return data using ascending order
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Name of the product
         - name: searchDate
           in: query
           required: false
@@ -235,110 +229,134 @@ paths:
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/product-reviews:
+  /v1/reviews:
     post:
-      operationId: create-product-review
-      summary: Create product review
-      description: Create product review
+      operationId: create-review
+      summary: Create review
+      description: Create review
       tags:
-        - Product reviews
+        - Reviews
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: './product-reviews.yml#/components/schemas/CreateProductReviewInput'
+              $ref: './reviews.yml#/components/schemas/CreateReviewInput'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './product-reviews.yml#/components/schemas/ProductReview'
+                $ref: './reviews.yml#/components/schemas/Review'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
     get:
-      operationId: search-product-reviews
-      summary: Search product reviews
-      description: Search product reviews
+      operationId: search-reviews
+      summary: Search reviews
+      description: Search reviews
       tags:
-        - Product reviews
+        - Reviews
       parameters:
-        - name: productCode
+        - name: pageNumber
           in: query
-          required: true
+          required: false
+          schema:
+            type: integer
+          description: Number of the page
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Size of the page
+        - name: order
+          in: query
+          schema:
+            $ref: './reviews.yml#/components/schemas/ReviewOrder'
+          description: Order of the result
+          required: false
+        - name: ascending
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Return data using ascending order
+        - name: entityId
+          in: query
+          required: false
           schema:
             type: string
-          description: Code of the product
+          description: Identifier of the entity
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './product-reviews.yml#/components/schemas/ProductReviewList'
+                $ref: './reviews.yml#/components/schemas/ReviewList'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/product-reviews/{productReviewId}:
+  /v1/reviews/{reviewId}:
     get:
-      operationId: get-product-review
-      summary: Get product review
-      description: Get product review
+      operationId: get-review
+      summary: Get review
+      description: Get review
       tags:
-        - Product reviews
+        - Reviews
       parameters:
-        - $ref: './product-reviews.yml#/components/parameters/productReviewIdPath'
+        - $ref: './reviews.yml#/components/parameters/reviewIdPath'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './product-reviews.yml#/components/schemas/ProductReview'
+                $ref: './reviews.yml#/components/schemas/Review'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
     patch:
-      operationId: update-product-review
-      summary: Update product review
-      description: Update product review
+      operationId: update-review
+      summary: Update review
+      description: Update review
       tags:
-        - Product reviews
+        - Reviews
       parameters:
-        - $ref: './product-reviews.yml#/components/parameters/productReviewIdPath'
+        - $ref: './reviews.yml#/components/parameters/reviewIdPath'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: './product-reviews.yml#/components/schemas/UpdateProductReviewInput'
+              $ref: './reviews.yml#/components/schemas/UpdateReviewInput'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './product-reviews.yml#/components/schemas/ProductReview'
+                $ref: './reviews.yml#/components/schemas/Review'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 
     delete:
-      operationId: delete-product-review
-      summary: Delete product review
-      description: Delete product review
+      operationId: delete-review
+      summary: Delete review
+      description: Delete review
       tags:
-        - Product reviews
+        - Reviews
       parameters:
-        - $ref: './product-reviews.yml#/components/parameters/productReviewIdPath'
+        - $ref: './reviews.yml#/components/parameters/reviewIdPath'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: './product-reviews.yml#/components/schemas/ProductReview'
+                $ref: './reviews.yml#/components/schemas/Review'
         default:
           $ref: './shared.yml#/components/responses/ProblemDetailsResponse'
 

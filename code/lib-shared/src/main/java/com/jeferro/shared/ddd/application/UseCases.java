@@ -1,7 +1,7 @@
 package com.jeferro.shared.ddd.application;
 
+import com.jeferro.shared.ddd.application.bus.UseCaseNotFoundException;
 import com.jeferro.shared.ddd.application.params.Params;
-import com.jeferro.shared.ddd.domain.exceptions.InternalErrorException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -32,7 +32,7 @@ public class UseCases {
         Class<?> paramsClass = params.getClass();
 
         if (!useCases.containsKey(paramsClass)) {
-            throw InternalErrorException.createOfUseCaseNotFound(paramsClass.getSimpleName());
+            throw UseCaseNotFoundException.createOfNotFound(paramsClass);
         }
 
         return (UseCase<Params<R>, R>) useCases.get(paramsClass);

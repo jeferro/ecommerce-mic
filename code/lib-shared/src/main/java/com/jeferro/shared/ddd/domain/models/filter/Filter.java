@@ -8,11 +8,11 @@ public abstract class Filter<Order> extends ValueObject {
 
     private static final int DEFAULT_PAGE_NUMBER = 0;
 
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    protected static final int DEFAULT_PAGE_SIZE = 100;
 
     public static final boolean DEFAULT_ASCENDING = true;
 
-    private final Integer pageNumber;
+    private Integer pageNumber;
 
     private final Integer pageSize;
 
@@ -49,6 +49,10 @@ public abstract class Filter<Order> extends ValueObject {
         }
 
         return ascending;
+    }
+
+    public void nextPage() {
+        pageNumber = pageNumber + 1;
     }
 
     private boolean hasOrder() {
