@@ -28,8 +28,8 @@ public class Parametric extends Projection<ParametricId> {
     }
 
     public static Parametric createOf(ParametricId id, LocalizedField name, List<ParametricValue> values) {
-        ValueValidationUtils.isNotNull(name, "name", Parametric.class);
-        ValueValidationUtils.isNotEmpty(values, "values", Parametric.class);
+        ValueValidationUtils.isNotNull(name, "name");
+        ValueValidationUtils.isNotEmpty(values, "values");
 
         return new Parametric(id, name, values);
     }

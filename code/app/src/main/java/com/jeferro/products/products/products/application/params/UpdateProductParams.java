@@ -17,8 +17,8 @@ public class UpdateProductParams extends Params<ProductVersion> {
     public UpdateProductParams(ProductVersionId versionId, LocalizedField name) {
         super();
 
-        ValueValidationUtils.isNotNull(versionId, "id", this);
-        ValueValidationUtils.isNotNull(name, "name", this);
+        ValueValidationUtils.isNotNull(versionId, "id");
+        ValueValidationUtils.isNotNull(name, "name");
 
         this.versionId = versionId;
         this.name = name;

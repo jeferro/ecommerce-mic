@@ -14,7 +14,7 @@ public class LocalizedField extends ValueObject {
     private final Map<String, String> values;
 
     public LocalizedField(Map<String, String> values) {
-        ValueValidationUtils.isNotNull(values, "values", this);
+        ValueValidationUtils.isNotNull(values, "values");
 
         this.values = values;
     }

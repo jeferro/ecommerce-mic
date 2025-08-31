@@ -43,9 +43,9 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
                                  ParametricValueId typeId,
                                  LocalizedField name,
                                  ProductVersion nextVersion) {
-        ValueValidationUtils.isNotNull(versionId, "versionId", ProductVersion.class);
-        ValueValidationUtils.isNotNull(typeId, "typeId", ProductVersion.class);
-        ValueValidationUtils.isNotNull(name, "name", ProductVersion.class);
+        ValueValidationUtils.isNotNull(versionId, "versionId");
+        ValueValidationUtils.isNotNull(typeId, "typeId");
+        ValueValidationUtils.isNotNull(name, "name");
 
         if(nextVersion != null) {
             ValueValidationUtils.ensure(() -> nextVersion.hasSameCode(versionId.getCode()),
@@ -71,7 +71,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     }
 
     public void update(LocalizedField name) {
-        ValueValidationUtils.isNotNull(name, "name", this);
+        ValueValidationUtils.isNotNull(name, "name");
 
         this.name = name;
 

@@ -16,8 +16,8 @@ public class CreateReviewParams extends Params<Review> {
     public CreateReviewParams(EntityId entityId, String comment) {
         super();
 
-        ValueValidationUtils.isNotNull(entityId, "entityId", this);
-        ValueValidationUtils.isNotNull(comment, "comment", this);
+        ValueValidationUtils.isNotNull(entityId, "entityId");
+        ValueValidationUtils.isNotNull(comment, "comment");
 
         this.entityId = entityId;
         this.comment = comment;

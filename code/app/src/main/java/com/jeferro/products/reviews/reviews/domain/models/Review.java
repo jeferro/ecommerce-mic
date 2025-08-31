@@ -30,9 +30,9 @@ public class Review extends AggregateRoot<ReviewId> {
     public static Review createOf(ReviewId reviewId,
                                   Locale locale,
                                   String comment) {
-        ValueValidationUtils.isNotNull(reviewId, "reviewId", Review.class);
-        ValueValidationUtils.isNotNull(locale, "locale", Review.class);
-        ValueValidationUtils.isNotNull(comment, "comment", Review.class);
+        ValueValidationUtils.isNotNull(reviewId, "reviewId");
+        ValueValidationUtils.isNotNull(locale, "locale");
+        ValueValidationUtils.isNotNull(comment, "comment");
 
         var review = new Review(reviewId, locale, comment);
 
@@ -43,8 +43,8 @@ public class Review extends AggregateRoot<ReviewId> {
     }
 
     public void update(String comment, Locale locale) {
-        ValueValidationUtils.isNotNull(comment, "comment", this);
-        ValueValidationUtils.isNotNull(locale, "locale", this);
+        ValueValidationUtils.isNotNull(comment, "comment");
+        ValueValidationUtils.isNotNull(locale, "locale");
 
         this.comment = comment;
         this.locale = locale;

@@ -1,5 +1,6 @@
 package com.jeferro.products.reviews.reviews.domain.models;
 
+import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import lombok.Getter;
@@ -18,6 +19,10 @@ public class EntityId extends StringIdentifier {
 
 	    var split = value.split(SEPARATOR);
 
+        if( split.length != 2 ) {
+            throw ValueValidationException.createOfMessage("Incorrect format " + value);
+        }
+
         this.domain = split[0];
         this.id = split[1];
     }
@@ -30,8 +35,8 @@ public class EntityId extends StringIdentifier {
     }
 
     public static EntityId createOf(String domain, String id) {
-        ValueValidationUtils.isNotNull(domain, "domain", Review.class);
-        ValueValidationUtils.isNotNull(id, "id", Review.class);
+        ValueValidationUtils.isNotNull(domain, "domain");
+        ValueValidationUtils.isNotNull(id, "id");
 
         return new EntityId(domain, id);
     }

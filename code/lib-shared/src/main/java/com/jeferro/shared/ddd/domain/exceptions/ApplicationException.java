@@ -20,8 +20,8 @@ public sealed abstract class ApplicationException extends RuntimeException
     protected ApplicationException(String code, String title, String message) {
         super(message);
 
-        ValueValidationUtils.isNotBlank(code, "code", this);
-        ValueValidationUtils.isNotBlank(title, "title", this);
+        ValueValidationUtils.isNotBlank(code, "code");
+        ValueValidationUtils.isNotBlank(title, "title");
 
         this.code = code;
         this.title = title;

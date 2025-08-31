@@ -15,7 +15,7 @@ public class SearchProductsParams extends Params<PaginatedList<ProductVersion>> 
     public SearchProductsParams(ProductVersionFilter filter) {
         super();
 
-        ValueValidationUtils.isNotNull(filter, "filter", this);
+        ValueValidationUtils.isNotNull(filter, "filter");
 
         this.filter = filter;
     }

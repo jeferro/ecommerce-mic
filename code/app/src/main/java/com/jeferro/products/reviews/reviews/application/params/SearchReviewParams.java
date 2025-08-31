@@ -15,7 +15,7 @@ public class SearchReviewParams extends Params<PaginatedList<Review>> {
     public SearchReviewParams(ReviewFilter reviewFilter) {
         super();
 
-        ValueValidationUtils.isNotNull(reviewFilter, "reviewFilter", this);
+        ValueValidationUtils.isNotNull(reviewFilter, "reviewFilter");
 
         this.reviewFilter = reviewFilter;
     }

@@ -22,9 +22,9 @@ public class CreateProductParams extends Params<ProductVersion> {
 	  LocalizedField name) {
 	super();
 
-	ValueValidationUtils.isNotNull(versionId, "versionId", this);
-	ValueValidationUtils.isNotNull(typeId, "typeId", this);
-	ValueValidationUtils.isNotNull(name, "name", this);
+	ValueValidationUtils.isNotNull(versionId, "versionId");
+	ValueValidationUtils.isNotNull(typeId, "typeId");
+	ValueValidationUtils.isNotNull(name, "name");
 
 	this.versionId = versionId;
 	this.typeId = typeId;

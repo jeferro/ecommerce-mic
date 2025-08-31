@@ -21,8 +21,8 @@ public class Context {
     }
 
     public static Context createOf(Auth auth, Locale locale) {
-        ValueValidationUtils.isNotNull(auth, "auth", Context.class);
-        ValueValidationUtils.isNotNull(locale, "locale", Context.class);
+        ValueValidationUtils.isNotNull(auth, "auth");
+        ValueValidationUtils.isNotNull(locale, "locale");
 
         return new Context(auth, locale);
     }

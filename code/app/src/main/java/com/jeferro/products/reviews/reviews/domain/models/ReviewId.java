@@ -1,5 +1,6 @@
 package com.jeferro.products.reviews.reviews.domain.models;
 
+import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
@@ -19,6 +20,10 @@ public class ReviewId extends StringIdentifier {
 
 	    var split = value.split(SEPARATOR);
 
+        if( split.length != 3 ) {
+            throw ValueValidationException.createOfMessage("Incorrect format " + value);
+        }
+
         this.username = split[0];
         this.entityId = EntityId.createOf(split[1], split[2]);
     }
@@ -31,8 +36,8 @@ public class ReviewId extends StringIdentifier {
     }
 
     public static ReviewId createOf(EntityId entityId, Auth auth) {
-        ValueValidationUtils.isNotNull(entityId, "entityId", Review.class);
-        ValueValidationUtils.isNotNull(auth, "auth", Review.class);
+        ValueValidationUtils.isNotNull(entityId, "entityId");
+        ValueValidationUtils.isNotNull(auth, "auth");
 
         String username = auth.username();
 

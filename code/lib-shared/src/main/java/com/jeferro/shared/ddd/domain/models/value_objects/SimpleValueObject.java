@@ -11,7 +11,7 @@ public class SimpleValueObject<T extends Serializable> extends ValueObject {
     private final T value;
 
     public SimpleValueObject(T value) {
-        ValueValidationUtils.isNotNull(value, "value", this);
+        ValueValidationUtils.isNotNull(value, "value");
 
         this.value = value;
     }

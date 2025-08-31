@@ -14,7 +14,7 @@ public class GetReviewParams extends Params<Review> {
     public GetReviewParams(ReviewId reviewId) {
         super();
 
-        ValueValidationUtils.isNotNull(reviewId, "reviewId", this);
+        ValueValidationUtils.isNotNull(reviewId, "reviewId");
 
         this.reviewId = reviewId;
     }

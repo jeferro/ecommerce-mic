@@ -1,6 +1,7 @@
 package com.jeferro.products.products.products.domain.models;
 
 import com.jeferro.products.products.products.domain.services.InstantTruncator;
+import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import lombok.Getter;
@@ -21,6 +22,10 @@ public class ProductVersionId extends StringIdentifier {
 
 	var split = value.split(SEPARATOR);
 
+	if( split.length != 2 ) {
+	  throw ValueValidationException.createOfMessage("Incorrect format " + value);
+	}
+
 	this.code = new ProductCode(split[0]);
 	this.effectiveDate = Instant.parse(split[1]);
   }
@@ -33,8 +38,8 @@ public class ProductVersionId extends StringIdentifier {
   }
 
   public static ProductVersionId createOf(ProductCode code, Instant effectiveDate) {
-	ValueValidationUtils.isNotNull(code, "code", ProductVersionId.class);
-	ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate", ProductVersionId.class);
+	ValueValidationUtils.isNotNull(code, "code");
+	ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate");
 
 	var truncatedEffectiveDate = InstantTruncator.trunkToSeconds(effectiveDate);
 

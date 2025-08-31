@@ -16,8 +16,8 @@ public class SignInParams extends Params<User> {
     public SignInParams(Username username, String password) {
         super();
 
-        ValueValidationUtils.isNotNull(username, "username", this);
-        ValueValidationUtils.isNotNull(username, "username", this);
+        ValueValidationUtils.isNotNull(username, "username");
+        ValueValidationUtils.isNotNull(username, "username");
 
         this.username = username;
         this.password = password;

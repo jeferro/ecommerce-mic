@@ -9,7 +9,7 @@ public abstract class StringIdentifier extends Identifier {
     private final String value;
 
     public StringIdentifier(String value) {
-        ValueValidationUtils.isNotNull(value, "value", this);
+        ValueValidationUtils.isNotNull(value, "value");
 
         this.value = value;
     }
