@@ -1,11 +1,11 @@
-package com.jeferro.shared.ddd.domain.utils;
+package com.jeferro.shared.ddd.domain.services;
 
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 
 import java.util.Collection;
 import java.util.function.Supplier;
 
-public class ValueValidationUtils {
+public class ValueValidator {
 
     public static void ensure(Supplier<Boolean> predicate, String message) {
         if(!predicate.get()) {

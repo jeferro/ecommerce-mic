@@ -1,7 +1,7 @@
 package com.jeferro.shared.locale.domain.models;
 
 import com.jeferro.shared.ddd.domain.models.value_objects.ValueObject;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class LocalizedField extends ValueObject {
     private final Map<String, String> values;
 
     public LocalizedField(Map<String, String> values) {
-        ValueValidationUtils.isNotNull(values, "values");
+        ValueValidator.isNotNull(values, "values");
 
         this.values = values;
     }

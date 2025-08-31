@@ -6,7 +6,7 @@ import com.jeferro.products.reviews.reviews.domain.events.ReviewUpdated;
 import com.jeferro.products.reviews.reviews.domain.exceptions.ReviewDoesNotBelongUserException;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 import java.util.Locale;
@@ -30,9 +30,9 @@ public class Review extends AggregateRoot<ReviewId> {
     public static Review createOf(ReviewId reviewId,
                                   Locale locale,
                                   String comment) {
-        ValueValidationUtils.isNotNull(reviewId, "reviewId");
-        ValueValidationUtils.isNotNull(locale, "locale");
-        ValueValidationUtils.isNotNull(comment, "comment");
+        ValueValidator.isNotNull(reviewId, "reviewId");
+        ValueValidator.isNotNull(locale, "locale");
+        ValueValidator.isNotNull(comment, "comment");
 
         var review = new Review(reviewId, locale, comment);
 
@@ -43,8 +43,8 @@ public class Review extends AggregateRoot<ReviewId> {
     }
 
     public void update(String comment, Locale locale) {
-        ValueValidationUtils.isNotNull(comment, "comment");
-        ValueValidationUtils.isNotNull(locale, "locale");
+        ValueValidator.isNotNull(comment, "comment");
+        ValueValidator.isNotNull(locale, "locale");
 
         this.comment = comment;
         this.locale = locale;

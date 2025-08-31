@@ -1,6 +1,6 @@
 package com.jeferro.shared.ddd.domain.exceptions;
 
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 @Getter
@@ -20,8 +20,8 @@ public sealed abstract class ApplicationException extends RuntimeException
     protected ApplicationException(String code, String title, String message) {
         super(message);
 
-        ValueValidationUtils.isNotBlank(code, "code");
-        ValueValidationUtils.isNotBlank(title, "title");
+        ValueValidator.isNotBlank(code, "code");
+        ValueValidator.isNotBlank(title, "title");
 
         this.code = code;
         this.title = title;

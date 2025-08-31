@@ -3,7 +3,7 @@ package com.jeferro.products.products.products.domain.models;
 import com.jeferro.products.products.products.domain.services.InstantTruncator;
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -38,8 +38,8 @@ public class ProductVersionId extends StringIdentifier {
   }
 
   public static ProductVersionId createOf(ProductCode code, Instant effectiveDate) {
-	ValueValidationUtils.isNotNull(code, "code");
-	ValueValidationUtils.isNotNull(effectiveDate, "effectiveDate");
+	ValueValidator.isNotNull(code, "code");
+	ValueValidator.isNotNull(effectiveDate, "effectiveDate");
 
 	var truncatedEffectiveDate = InstantTruncator.trunkToSeconds(effectiveDate);
 

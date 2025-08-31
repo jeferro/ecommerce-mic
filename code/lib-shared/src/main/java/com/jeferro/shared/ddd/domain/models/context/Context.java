@@ -1,7 +1,7 @@
 package com.jeferro.shared.ddd.domain.models.context;
 
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 import java.util.Locale;
@@ -21,8 +21,8 @@ public class Context {
     }
 
     public static Context createOf(Auth auth, Locale locale) {
-        ValueValidationUtils.isNotNull(auth, "auth");
-        ValueValidationUtils.isNotNull(locale, "locale");
+        ValueValidator.isNotNull(auth, "auth");
+        ValueValidator.isNotNull(locale, "locale");
 
         return new Context(auth, locale);
     }

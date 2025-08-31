@@ -2,7 +2,7 @@ package com.jeferro.products.reviews.reviews.domain.models;
 
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 @Getter
@@ -35,8 +35,8 @@ public class EntityId extends StringIdentifier {
     }
 
     public static EntityId createOf(String domain, String id) {
-        ValueValidationUtils.isNotNull(domain, "domain");
-        ValueValidationUtils.isNotNull(id, "id");
+        ValueValidator.isNotNull(domain, "domain");
+        ValueValidator.isNotNull(id, "id");
 
         return new EntityId(domain, id);
     }

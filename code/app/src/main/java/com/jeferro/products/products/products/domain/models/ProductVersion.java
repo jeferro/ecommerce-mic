@@ -5,7 +5,7 @@ import com.jeferro.products.products.products.domain.events.*;
 import com.jeferro.products.products.products.domain.models.status.ProductStatus;
 import com.jeferro.products.products.products.domain.services.InstantTruncator;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
@@ -43,14 +43,14 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
                                  ParametricValueId typeId,
                                  LocalizedField name,
                                  ProductVersion nextVersion) {
-        ValueValidationUtils.isNotNull(versionId, "versionId");
-        ValueValidationUtils.isNotNull(typeId, "typeId");
-        ValueValidationUtils.isNotNull(name, "name");
+        ValueValidator.isNotNull(versionId, "versionId");
+        ValueValidator.isNotNull(typeId, "typeId");
+        ValueValidator.isNotNull(name, "name");
 
         if(nextVersion != null) {
-            ValueValidationUtils.ensure(() -> nextVersion.hasSameCode(versionId.getCode()),
+            ValueValidator.ensure(() -> nextVersion.hasSameCode(versionId.getCode()),
                 "Next product version hasn't belong new product version");
-            ValueValidationUtils.ensure(() -> nextVersion.isAfter(versionId.getEffectiveDate()),
+            ValueValidator.ensure(() -> nextVersion.isAfter(versionId.getEffectiveDate()),
                 "Next product version is before than new product version");
         }
 
@@ -71,7 +71,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     }
 
     public void update(LocalizedField name) {
-        ValueValidationUtils.isNotNull(name, "name");
+        ValueValidator.isNotNull(name, "name");
 
         this.name = name;
 

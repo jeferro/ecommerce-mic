@@ -1,6 +1,6 @@
 package com.jeferro.shared.ddd.domain.models.value_objects;
 
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -11,7 +11,7 @@ public class SimpleValueObject<T extends Serializable> extends ValueObject {
     private final T value;
 
     public SimpleValueObject(T value) {
-        ValueValidationUtils.isNotNull(value, "value");
+        ValueValidator.isNotNull(value, "value");
 
         this.value = value;
     }

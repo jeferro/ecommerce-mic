@@ -3,7 +3,7 @@ package com.jeferro.products.reviews.reviews.domain.models;
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 @Getter
@@ -36,8 +36,8 @@ public class ReviewId extends StringIdentifier {
     }
 
     public static ReviewId createOf(EntityId entityId, Auth auth) {
-        ValueValidationUtils.isNotNull(entityId, "entityId");
-        ValueValidationUtils.isNotNull(auth, "auth");
+        ValueValidator.isNotNull(entityId, "entityId");
+        ValueValidator.isNotNull(auth, "auth");
 
         String username = auth.username();
 
