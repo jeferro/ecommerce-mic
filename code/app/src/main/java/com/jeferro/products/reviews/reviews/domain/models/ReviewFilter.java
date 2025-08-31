@@ -20,8 +20,8 @@ public class ReviewFilter extends Filter<ReviewOrder> {
         this.entityId = entityId;
 	}
 
-    public static ReviewFilter byEntityId(EntityId entityId, int pageNumber) {
-        return new ReviewFilter(pageNumber, DEFAULT_PAGE_SIZE, ID, null, entityId);
+    public static ReviewFilter byEntityId(EntityId entityId) {
+        return new ReviewFilter(0, DEFAULT_PAGE_SIZE, ID, null, entityId);
     }
 
   public boolean hasEntityId() {

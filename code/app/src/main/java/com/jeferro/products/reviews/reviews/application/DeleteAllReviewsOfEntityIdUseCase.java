@@ -31,7 +31,7 @@ public class DeleteAllReviewsOfEntityIdUseCase extends UseCase<DeleteAllReviewsO
     public Void execute(Context context, DeleteAllReviewsOfEntityIdParams params) {
         var entityId = params.getEntityId();
 
-        var criteria = ReviewFilter.byEntityId(entityId, 0);
+        var criteria = ReviewFilter.byEntityId(entityId);
         var reviews = reviewsRepository.findAll(criteria);
 
         while(reviews.isNotEmpty()){

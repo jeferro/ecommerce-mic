@@ -1,13 +1,10 @@
 package com.jeferro.products.reviews.reviews.application;
 
-import com.jayway.jsonpath.Criteria;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
 import com.jeferro.products.reviews.reviews.application.params.SearchReviewParams;
 import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.shared.application.ContextMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +32,7 @@ class SearchReviewUseCaseTest {
       );
 
         var params = new SearchReviewParams(
-            ReviewFilter.byEntityId(appleEntityId, 0)
+            ReviewFilter.byEntityId(appleEntityId)
         );
 
         var result = searchReviewUseCase.execute(
@@ -53,7 +50,7 @@ class SearchReviewUseCaseTest {
       );
 
         var params = new SearchReviewParams(
-            ReviewFilter.byEntityId(appleEntityId, 1)
+            ReviewFilter.byEntityId(appleEntityId)
         );
 
         var result = searchReviewUseCase.execute(
