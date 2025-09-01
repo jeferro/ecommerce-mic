@@ -62,7 +62,7 @@ class ReviewRestControllerTest extends RestControllerTest {
                   "entityId": "%s",
                   "comment": "%s"
                 }"""
-                .formatted(johnReviewOfApple.getId(), johnReviewOfApple.getComment());
+                .formatted(johnReviewOfApple.getEntityId(), johnReviewOfApple.getComment());
 
         var requestBuilder = MockMvcRequestBuilders.post("/v1/reviews")
                 .contentType(MediaType.APPLICATION_JSON)
