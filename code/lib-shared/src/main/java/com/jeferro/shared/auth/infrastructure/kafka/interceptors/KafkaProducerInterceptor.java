@@ -22,7 +22,7 @@ public class KafkaProducerInterceptor implements ProducerInterceptor<String, Str
         var now = Instant.now();
 
         producerRecord.headers()
-                .add(KafkaHeaders.HEADER_OCCURRED_BY, auth.username().getBytes())
+                .add(KafkaHeaders.HEADER_OCCURRED_BY, auth.getUsername().getBytes())
                 .add(KafkaHeaders.HEADER_OCCURRED_ON, now.toString().getBytes());
 
         return producerRecord;

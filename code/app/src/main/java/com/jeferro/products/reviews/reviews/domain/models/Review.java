@@ -19,22 +19,23 @@ public class Review extends AggregateRoot<ReviewId> {
     private String comment;
 
     public Review(ReviewId id,
-                         Locale locale,
-                         String comment) {
+        String comment,
+                         Locale locale) {
         super(id);
 
         this.locale = locale;
         this.comment = comment;
     }
 
-    public static Review createOf(ReviewId reviewId,
-                                  Locale locale,
-                                  String comment) {
-        ValueValidator.isNotNull(reviewId, "reviewId");
-        ValueValidator.isNotNull(locale, "locale");
+    public static Review createOf(EntityId entityId,
+                                  String comment,
+                                  Auth auth) {
+        ValueValidator.isNotNull(entityId, "entityId");
         ValueValidator.isNotNull(comment, "comment");
+        ValueValidator.isNotNull(auth, "auth");
 
-        var review = new Review(reviewId, locale, comment);
+        var reviewId = ReviewId.createOf(entityId, auth);
+        var review = new Review(reviewId, comment, auth.getLocale());
 
         var event = ReviewCreated.create(review);
         review.record(event);
@@ -42,12 +43,12 @@ public class Review extends AggregateRoot<ReviewId> {
         return review;
     }
 
-    public void update(String comment, Locale locale) {
+    public void update(String comment, Auth auth) {
         ValueValidator.isNotNull(comment, "comment");
         ValueValidator.isNotNull(locale, "locale");
 
         this.comment = comment;
-        this.locale = locale;
+        this.locale = auth.getLocale();
 
         var event = ReviewUpdated.create(this);
         record(event);
@@ -76,7 +77,7 @@ public class Review extends AggregateRoot<ReviewId> {
     }
 
     public void ensureReviewBelongsToUser(Auth auth) {
-        if (auth.username().equals(getUsername())) {
+        if (auth.getUsername().equals(getUsername())) {
             return;
         }
 

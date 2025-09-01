@@ -34,21 +34,22 @@ public class CreateReviewUseCase extends UseCase<CreateReviewParams, Review> {
 
 	ensureReviewDoesNotExists(reviewId);
 
-	return createReview(reviewId, params, auth);
+	return createReview(params, auth);
   }
 
   private void ensureReviewDoesNotExists(ReviewId reviewId) {
 	var review = reviewsRepository.findById(reviewId);
 
-	if(review.isPresent()){
+	if (review.isPresent()) {
 	  throw ReviewAlreadyExistsException.createOf(reviewId);
 	}
   }
 
-  private Review createReview(ReviewId reviewId, CreateReviewParams params, Auth auth) {
-	var review = Review.createOf(reviewId,
-		auth.getLocale(),
-		params.getComment()
+  private Review createReview(CreateReviewParams params, Auth auth) {
+	var review = Review.createOf(
+		params.getEntityId(),
+		params.getComment(),
+		auth
 	);
 
 	reviewsRepository.save(review);

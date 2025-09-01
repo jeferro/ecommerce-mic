@@ -73,7 +73,7 @@ class CreateReviewUseCaseTest {
     }
 
     private static void assertResult(Auth auth, Review result, EntityId entityId, String comment) {
-        assertEquals(auth.username(), result.getUsername());
+        assertEquals(auth.getUsername(), result.getUsername());
         assertEquals(entityId, result.getEntityId());
         assertEquals(comment, result.getComment());
     }

@@ -24,7 +24,7 @@ public class UserAuth extends Auth {
     }
 
     @Override
-    public String username() {
+    public String getUsername() {
         return username;
     }
 

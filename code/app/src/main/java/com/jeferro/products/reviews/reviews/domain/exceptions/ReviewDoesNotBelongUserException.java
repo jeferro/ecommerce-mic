@@ -1,7 +1,6 @@
 package com.jeferro.products.reviews.reviews.domain.exceptions;
 
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
-import com.jeferro.products.shared.domain.exceptions.ProductExceptionCodes;
 import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 
@@ -15,6 +14,6 @@ public class ReviewDoesNotBelongUserException extends ForbiddenException {
 
     public static ReviewDoesNotBelongUserException belongsToOtherUser(ReviewId reviewId, Auth auth) {
         return new ReviewDoesNotBelongUserException(REVIEW_NOT_ALLOWED, "Review not allowed",
-            "Review " + reviewId + " don't belong to user " + auth.username());
+            "Review " + reviewId + " don't belong to user " + auth.getUsername());
     }
 }

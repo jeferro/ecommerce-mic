@@ -14,7 +14,7 @@ public class AnonymousAuth extends Auth {
     }
 
     @Override
-    public String username() {
+    public String getUsername() {
         return "anonymous";
     }
 

@@ -39,7 +39,7 @@ public class ReviewId extends StringIdentifier {
         ValueValidator.isNotNull(entityId, "entityId");
         ValueValidator.isNotNull(auth, "auth");
 
-        String username = auth.username();
+        String username = auth.getUsername();
 
         return new ReviewId(username, entityId);
     }

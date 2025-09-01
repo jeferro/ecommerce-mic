@@ -13,12 +13,12 @@ public abstract class Auth extends ValueObject {
 
     private final Locale locale;
 
-    public abstract String username();
+    public abstract String getUsername();
 
     public abstract boolean hasRoles(Set<String> mandatoryRoles);
 
     @Override
     public String toString() {
-        return username();
+        return getUsername();
     }
 }
