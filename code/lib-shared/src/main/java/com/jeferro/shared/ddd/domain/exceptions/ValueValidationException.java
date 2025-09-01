@@ -6,11 +6,7 @@ public non-sealed class ValueValidationException extends ApplicationException {
         super(code, title, message);
     }
 
-    private ValueValidationException(String message) {
-        super(VALUE_VALIDATION_CODE, "Value validation error", message);
-    }
-
     public static ValueValidationException createOfMessage(String message) {
-        return new ValueValidationException(message);
+        return new ValueValidationException(VALUE_VALIDATION_CODE, "Value validation error", message);
     }
 }

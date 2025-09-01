@@ -3,7 +3,7 @@ package com.jeferro.products.users.users.application.params;
 import com.jeferro.products.users.users.domain.models.User;
 import com.jeferro.products.users.users.domain.models.Username;
 import com.jeferro.shared.ddd.application.params.Params;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 @Getter
@@ -16,8 +16,8 @@ public class SignInParams extends Params<User> {
     public SignInParams(Username username, String password) {
         super();
 
-        ValueValidationUtils.isNotNull(username, "username", this);
-        ValueValidationUtils.isNotNull(username, "username", this);
+        ValueValidator.isNotNull(username, "username");
+        ValueValidator.isNotNull(username, "username");
 
         this.username = username;
         this.password = password;

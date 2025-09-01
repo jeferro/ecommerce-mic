@@ -2,6 +2,7 @@ package com.jeferro.shared.ddd.domain.models.auth;
 
 import lombok.Getter;
 
+import java.util.Locale;
 import java.util.Set;
 
 @Getter
@@ -11,19 +12,19 @@ public class UserAuth extends Auth {
 
     private final Set<String> roles;
 
-    public UserAuth(String username, Set<String> roles) {
-        super();
+    public UserAuth(Locale locale, String username, Set<String> roles) {
+        super(locale);
 
         this.username = username;
         this.roles = roles;
     }
 
-    public static UserAuth create(String username, Set<String> roles) {
-        return new UserAuth(username, roles);
+    public static UserAuth create(Locale locale, String username, Set<String> roles) {
+        return new UserAuth(locale, username, roles);
     }
 
     @Override
-    public String username() {
+    public String getUsername() {
         return username;
     }
 

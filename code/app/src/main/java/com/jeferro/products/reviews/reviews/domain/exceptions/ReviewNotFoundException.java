@@ -7,11 +7,12 @@ import static com.jeferro.products.shared.domain.exceptions.ProductExceptionCode
 
 public class ReviewNotFoundException extends NotFoundException {
 
-    protected ReviewNotFoundException(String message) {
-        super(REVIEW_NOT_FOUND, "Review not found", message);
+    protected ReviewNotFoundException(String code, String title, String message) {
+        super(code, title, message);
     }
 
     public static ReviewNotFoundException createOf(ReviewId reviewId) {
-        return new ReviewNotFoundException("Review " + reviewId + " not found");
+        return new ReviewNotFoundException(REVIEW_NOT_FOUND, "Review not found",
+            "Review " + reviewId + " not found");
     }
 }

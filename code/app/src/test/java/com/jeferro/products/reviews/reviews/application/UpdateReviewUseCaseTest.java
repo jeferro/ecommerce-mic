@@ -7,8 +7,8 @@ import com.jeferro.products.reviews.reviews.domain.exceptions.ReviewNotFoundExce
 import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +43,7 @@ class UpdateReviewUseCaseTest {
                 newComment
         );
         var result = updateReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertResult(johnReviewOfApple, result, newComment);
@@ -64,7 +64,7 @@ class UpdateReviewUseCaseTest {
 
         assertThrows(ReviewNotFoundException.class,
                 () -> updateReviewUseCase.execute(
-                    ContextMother.james(),
+                    AuthMother.james(),
                     params));
     }
 
@@ -80,7 +80,7 @@ class UpdateReviewUseCaseTest {
 
         assertThrows(ReviewDoesNotBelongUserException.class,
                 () -> updateReviewUseCase.execute(
-                    ContextMother.emily(),
+                    AuthMother.emily(),
                     params));
     }
 

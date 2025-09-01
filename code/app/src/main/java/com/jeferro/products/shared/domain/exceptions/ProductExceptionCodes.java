@@ -10,6 +10,7 @@ public interface ProductExceptionCodes {
     String PRODUCT_VERSION_ALREADY_EXISTS = "product-version-already-exists";
 
     // Product Reviews
-    String REVIEW_NOT_FOUND = "product-review-not-found";
-    String REVIEW_ALREADY_EXISTS = "product-review-already-exists";
+    String REVIEW_NOT_ALLOWED = "review-not-allowed";
+    String REVIEW_NOT_FOUND = "review-not-found";
+    String REVIEW_ALREADY_EXISTS = "review-already-exists";
 }

@@ -7,8 +7,8 @@ import com.jeferro.products.products.products.domain.exceptions.ProductVersionNo
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +43,7 @@ class DeleteProductUseCaseTest {
         );
 
         var result = deleteProductUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertEquals(appleV1, result);
@@ -62,7 +62,7 @@ class DeleteProductUseCaseTest {
         );
 
         deleteProductUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         var appleV1Id = ProductVersionMother.appleV1().getVersionId();
@@ -83,7 +83,7 @@ class DeleteProductUseCaseTest {
 
         assertThrows(ProductVersionNotFoundException.class,
                 () -> deleteProductUseCase.execute(
-                    ContextMother.john(),
+                    AuthMother.john(),
                     params));
     }
 

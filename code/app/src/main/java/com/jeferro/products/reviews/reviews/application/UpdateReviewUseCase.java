@@ -5,7 +5,7 @@ import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +27,12 @@ public class UpdateReviewUseCase extends UseCase<UpdateReviewParams, Review> {
     }
 
     @Override
-    public Review execute(Context context, UpdateReviewParams params) {
+    public Review execute(Auth auth, UpdateReviewParams params) {
         var review = ensureReviewExists(params);
 
-        review.ensureReviewBelongsToUser(context.getAuth());
+        review.ensureReviewBelongsToUser(auth);
 
-        return updateReview(context, params, review);
+        return updateReview(auth, params, review);
     }
 
     private Review ensureReviewExists(UpdateReviewParams params) {
@@ -41,12 +41,10 @@ public class UpdateReviewUseCase extends UseCase<UpdateReviewParams, Review> {
         return reviewsRepository.findByIdOrError(reviewId);
     }
 
-    private Review updateReview(Context context, UpdateReviewParams params, Review review) {
-	    var locale = context.getLocale();
-
+    private Review updateReview(Auth auth, UpdateReviewParams params, Review review) {
         var comment = params.getComment();
 
-        review.update(comment, locale);
+        review.update(comment, auth);
 
         reviewsRepository.save(review);
 

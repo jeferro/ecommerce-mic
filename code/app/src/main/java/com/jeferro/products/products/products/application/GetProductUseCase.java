@@ -4,7 +4,7 @@ import com.jeferro.products.products.products.application.params.GetProductParam
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class GetProductUseCase extends UseCase<GetProductParams, ProductVersion>
     }
 
     @Override
-    public ProductVersion execute(Context context, GetProductParams params) {
+    public ProductVersion execute(Auth auth, GetProductParams params) {
         var versionId = params.getVersionId();
 
         return productVersionRepository.findByIdOrError(versionId);

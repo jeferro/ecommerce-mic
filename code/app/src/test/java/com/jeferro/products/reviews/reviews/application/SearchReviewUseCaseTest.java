@@ -1,18 +1,14 @@
 package com.jeferro.products.reviews.reviews.application;
 
-import com.jayway.jsonpath.Criteria;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
 import com.jeferro.products.reviews.reviews.application.params.SearchReviewParams;
 import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.shared.application.ContextMother;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,11 +31,11 @@ class SearchReviewUseCaseTest {
       );
 
         var params = new SearchReviewParams(
-            ReviewFilter.byEntityId(appleEntityId, 0)
+            ReviewFilter.byEntityId(appleEntityId)
         );
 
         var result = searchReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertFalse(result.isEmpty());
@@ -49,15 +45,15 @@ class SearchReviewUseCaseTest {
     void should_returnEmptyList_when_notExist() {
       var appleEntityId = EntityId.createOf(
           "products",
-          ProductCodeMother.apple().getValue()
+          ProductCodeMother.banana().getValue()
       );
 
         var params = new SearchReviewParams(
-            ReviewFilter.byEntityId(appleEntityId, 1)
+            ReviewFilter.byEntityId(appleEntityId)
         );
 
         var result = searchReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertTrue(result.isEmpty());

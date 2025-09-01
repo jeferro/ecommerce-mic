@@ -10,7 +10,7 @@ import com.jeferro.products.products.products.domain.models.filter.ProductVersio
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
     }
 
     @Override
-    public ProductVersion execute(Context context, CreateProductParams params) {
+    public ProductVersion execute(Auth auth, CreateProductParams params) {
         var versionId = params.getVersionId();
         var typeId = params.getTypeId();
         var name = params.getName();

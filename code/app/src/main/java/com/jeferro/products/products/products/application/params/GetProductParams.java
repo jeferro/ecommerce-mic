@@ -3,7 +3,7 @@ package com.jeferro.products.products.products.application.params;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.shared.ddd.application.params.Params;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 @Getter
@@ -14,7 +14,7 @@ public class GetProductParams extends Params<ProductVersion> {
     public GetProductParams(ProductVersionId versionId) {
         super();
 
-        ValueValidationUtils.isNotNull(versionId, "id", this);
+        ValueValidator.isNotNull(versionId, "id");
 
         this.versionId = versionId;
     }

@@ -1,6 +1,5 @@
 package com.jeferro.shared.ddd.application.bus;
 
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
 import lombok.Getter;
 
 @Getter

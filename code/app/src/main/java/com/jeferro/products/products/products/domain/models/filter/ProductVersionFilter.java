@@ -21,8 +21,8 @@ public class ProductVersionFilter extends Filter<ProductVersionOrder> {
 
     private final Instant searchDate;
 
-    public ProductVersionFilter(Integer pageNumber,
-        Integer pageSize,
+    public ProductVersionFilter(int pageNumber,
+        int pageSize,
         ProductVersionOrder order,
         Boolean ascending,
         ProductCode code,
@@ -38,11 +38,11 @@ public class ProductVersionFilter extends Filter<ProductVersionOrder> {
 	}
 
     public static ProductVersionFilter createEmpty() {
-        return new ProductVersionFilter(null, null, NAME, null, null, null, null, null);
+        return new ProductVersionFilter(0, DEFAULT_PAGE_SIZE, NAME, null, null, null, null, null);
     }
 
     public static ProductVersionFilter byCode(ProductCode code) {
-        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, false, code, null, null, null);
+        return new ProductVersionFilter(0, DEFAULT_PAGE_SIZE, START_EFFECTIVE_DATE, false, code, null, null, null);
     }
 
     public static ProductVersionFilter previousProduct(ProductVersionId versionId) {

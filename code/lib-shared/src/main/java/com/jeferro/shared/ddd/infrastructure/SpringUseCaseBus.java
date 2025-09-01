@@ -3,7 +3,7 @@ package com.jeferro.shared.ddd.infrastructure;
 import com.jeferro.shared.auth.infrastructure.ContextManager;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.application.bus.UseCaseBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -11,17 +11,13 @@ import org.springframework.stereotype.Component;
 public class SpringUseCaseBus extends UseCaseBus {
 
     public SpringUseCaseBus(ApplicationContext applicationContext) {
-
         applicationContext.getBeansOfType(UseCase.class)
                 .values()
                 .forEach(useCases::registry);
     }
 
     @Override
-    protected Context createContext() {
-        var auth = ContextManager.getAuth();
-        var locale = ContextManager.getLocale();
-
-        return new Context(auth, locale);
+    protected Auth createAuth() {
+        return ContextManager.getAuth();
     }
 }

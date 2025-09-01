@@ -2,7 +2,7 @@ package com.jeferro.products.shared.application;
 
 import com.jeferro.shared.ddd.application.bus.UseCaseBus;
 import com.jeferro.shared.ddd.application.params.Params;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import jakarta.el.MethodNotFoundException;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class StubUseCaseBus extends UseCaseBus {
     }
 
     @Override
-    protected Context createContext() {
+    protected Auth createAuth() {
         throw new MethodNotFoundException();
     }
 

@@ -6,7 +6,7 @@ import com.jeferro.products.reviews.reviews.domain.events.ReviewUpdated;
 import com.jeferro.products.reviews.reviews.domain.exceptions.ReviewDoesNotBelongUserException;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 import java.util.Locale;
@@ -19,22 +19,23 @@ public class Review extends AggregateRoot<ReviewId> {
     private String comment;
 
     public Review(ReviewId id,
-                         Locale locale,
-                         String comment) {
+        String comment,
+                         Locale locale) {
         super(id);
 
         this.locale = locale;
         this.comment = comment;
     }
 
-    public static Review createOf(ReviewId reviewId,
-                                  Locale locale,
-                                  String comment) {
-        ValueValidationUtils.isNotNull(reviewId, "reviewId", Review.class);
-        ValueValidationUtils.isNotNull(locale, "locale", Review.class);
-        ValueValidationUtils.isNotNull(comment, "comment", Review.class);
+    public static Review createOf(EntityId entityId,
+                                  String comment,
+                                  Auth auth) {
+        ValueValidator.isNotNull(entityId, "entityId");
+        ValueValidator.isNotNull(comment, "comment");
+        ValueValidator.isNotNull(auth, "auth");
 
-        var review = new Review(reviewId, locale, comment);
+        var reviewId = ReviewId.createOf(entityId, auth);
+        var review = new Review(reviewId, comment, auth.getLocale());
 
         var event = ReviewCreated.create(review);
         review.record(event);
@@ -42,12 +43,12 @@ public class Review extends AggregateRoot<ReviewId> {
         return review;
     }
 
-    public void update(String comment, Locale locale) {
-        ValueValidationUtils.isNotNull(comment, "comment", this);
-        ValueValidationUtils.isNotNull(locale, "locale", this);
+    public void update(String comment, Auth auth) {
+        ValueValidator.isNotNull(comment, "comment");
+        ValueValidator.isNotNull(locale, "locale");
 
         this.comment = comment;
-        this.locale = locale;
+        this.locale = auth.getLocale();
 
         var event = ReviewUpdated.create(this);
         record(event);
@@ -76,7 +77,7 @@ public class Review extends AggregateRoot<ReviewId> {
     }
 
     public void ensureReviewBelongsToUser(Auth auth) {
-        if (auth.username().equals(getUsername())) {
+        if (auth.getUsername().equals(getUsername())) {
             return;
         }
 

@@ -4,74 +4,82 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.jeferro.shared.auth.infrastructure.ContextManager;
 import com.jeferro.shared.auth.infrastructure.rest.configurations.RestSecurityProperties;
-import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import com.jeferro.shared.ddd.domain.models.auth.UserAuth;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Component
 public class HeaderJwtDecoder {
 
-    private static final String BEARER_PREFIX = "Bearer ";
+  private static final Logger logger = LoggerFactory.getLogger(HeaderJwtDecoder.class);
 
-    public static final String ROLES_CLAIM = "roles";
+  private static final String BEARER_PREFIX = "Bearer ";
 
-    private final RestSecurityProperties jwtProperties;
+  public static final String ROLES_CLAIM = "roles";
 
-    private final Algorithm hmac512;
+  private final RestSecurityProperties jwtProperties;
 
-    private final JWTVerifier jwtVerifier;
+  private final Algorithm hmac512;
 
-    public HeaderJwtDecoder(RestSecurityProperties restSecurityProperties) {
-        hmac512 = Algorithm.HMAC512(restSecurityProperties.issuer());
-        jwtVerifier = JWT.require(hmac512).build();
+  private final JWTVerifier jwtVerifier;
 
-        this.jwtProperties = restSecurityProperties;
-    }
+  public HeaderJwtDecoder(RestSecurityProperties restSecurityProperties) {
+	this.jwtProperties = restSecurityProperties;
 
-    public boolean belongsToJwt(String header) {
-        return header.startsWith(BEARER_PREFIX);
-    }
+	hmac512 = Algorithm.HMAC512(restSecurityProperties.issuer());
+	jwtVerifier = JWT.require(hmac512).build();
+  }
 
-    public Auth decode(String header) {
-        try {
-            if (header == null
-                    || !belongsToJwt(header)) {
-                return null;
-            }
+  public void decode(HttpServletRequest request) {
+	try {
+	  var header = request.getHeader(AUTHORIZATION);
 
-            var jwtToken = header.substring(BEARER_PREFIX.length());
-            var jwt = jwtVerifier.verify(jwtToken);
+	  if (header == null
+		  || !belongsToJwt(header)) {
+		return;
+	  }
 
-            var username = jwt.getSubject();
-            var roles = new HashSet<>(jwt.getClaim(ROLES_CLAIM)
-                    .asList(String.class));
+	  var jwtToken = header.substring(BEARER_PREFIX.length());
+	  var jwt = jwtVerifier.verify(jwtToken);
 
-            return UserAuth.create(username, roles);
-        } catch (JWTVerificationException cause) {
-            return null;
-        }
-    }
+	  var username = jwt.getSubject();
+	  var roles = new HashSet<>(jwt.getClaim(ROLES_CLAIM)
+		  .asList(String.class));
 
-    public String encode(String username, Set<String> roles) {
-        var issuedAt = Instant.now();
+	  ContextManager.signInFromWeb(request, username, roles);
+	} catch (JWTVerificationException cause) {
+	  logger.error("Error processing request", cause);
+	}
+  }
 
-        var jwtBuilder = JWT.create()
-                .withIssuer(jwtProperties.issuer())
-                .withIssuedAt(issuedAt)
-                .withSubject(username)
-                .withArrayClaim(ROLES_CLAIM, roles.toArray(String[]::new));
+  public String encode(String username, Set<String> roles) {
+	var issuedAt = Instant.now();
 
-        if (jwtProperties.hasDuration()) {
-            var expiresAt = issuedAt.plusMillis(jwtProperties.durationAsMillis());
+	var jwtBuilder = JWT.create()
+		.withIssuer(jwtProperties.issuer())
+		.withIssuedAt(issuedAt)
+		.withSubject(username)
+		.withArrayClaim(ROLES_CLAIM, roles.toArray(String[]::new));
 
-            jwtBuilder.withExpiresAt(expiresAt);
-        }
+	if (jwtProperties.hasDuration()) {
+	  var expiresAt = issuedAt.plusMillis(jwtProperties.durationAsMillis());
 
-        return BEARER_PREFIX + jwtBuilder.sign(hmac512);
-    }
+	  jwtBuilder.withExpiresAt(expiresAt);
+	}
+
+	return BEARER_PREFIX + jwtBuilder.sign(hmac512);
+  }
+
+  private boolean belongsToJwt(String header) {
+	return header.startsWith(BEARER_PREFIX);
+  }
 }

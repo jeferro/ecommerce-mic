@@ -7,8 +7,8 @@ import com.jeferro.products.reviews.reviews.domain.exceptions.ReviewNotFoundExce
 import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +43,7 @@ class DeleteReviewUseCaseTest {
         );
 
         var result = deleteReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertEquals(johnReviewOfApple, result);
@@ -62,7 +62,7 @@ class DeleteReviewUseCaseTest {
 
         assertThrows(ReviewNotFoundException.class,
                 () -> deleteReviewUseCase.execute(
-                    ContextMother.james(),
+                    AuthMother.james(),
                     params));
     }
 
@@ -76,7 +76,7 @@ class DeleteReviewUseCaseTest {
 
         assertThrows(ReviewDoesNotBelongUserException.class,
                 () -> deleteReviewUseCase.execute(
-                    ContextMother.emily(),
+                    AuthMother.emily(),
                     params));
     }
 

@@ -4,7 +4,7 @@ import com.jeferro.products.parametrics.domain.exceptions.ParametricValueNotFoun
 import com.jeferro.products.parametrics.domain.models.values.ParametricValue;
 import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
 import com.jeferro.shared.ddd.domain.models.projection.Projection;
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
@@ -28,8 +28,8 @@ public class Parametric extends Projection<ParametricId> {
     }
 
     public static Parametric createOf(ParametricId id, LocalizedField name, List<ParametricValue> values) {
-        ValueValidationUtils.isNotNull(name, "name", Parametric.class);
-        ValueValidationUtils.isNotEmpty(values, "values", Parametric.class);
+        ValueValidator.isNotNull(name, "name");
+        ValueValidator.isNotEmpty(values, "values");
 
         return new Parametric(id, name, values);
     }

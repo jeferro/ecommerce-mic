@@ -1,6 +1,6 @@
 package com.jeferro.products.users.users.application;
 
-import com.jeferro.products.shared.application.ContextMother;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import com.jeferro.products.users.users.application.params.SignInParams;
 import com.jeferro.products.users.users.domain.models.UserMother;
 import com.jeferro.products.users.users.domain.repositories.UsersInMemoryRepository;
@@ -36,7 +36,7 @@ class SignInUseCaseTest {
         );
 
         var result = signInUseCase.execute(
-            ContextMother.anonymous(),
+            AuthMother.anonymous(),
             params);
 
         assertEquals(john, result);
@@ -52,7 +52,7 @@ class SignInUseCaseTest {
         );
 
         var result = signInUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertEquals(john, result);
@@ -69,7 +69,7 @@ class SignInUseCaseTest {
 
         assertThrows(UnauthorizedException.class,
                 () -> signInUseCase.execute(
-                    ContextMother.anonymous(),
+                    AuthMother.anonymous(),
                     params));
     }
 
@@ -84,7 +84,7 @@ class SignInUseCaseTest {
 
         assertThrows(UnauthorizedException.class,
                 () -> signInUseCase.execute(
-                    ContextMother.anonymous(),
+                    AuthMother.anonymous(),
                     params));
     }
 }

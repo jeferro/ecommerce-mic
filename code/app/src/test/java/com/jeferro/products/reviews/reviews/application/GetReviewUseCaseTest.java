@@ -4,7 +4,7 @@ import com.jeferro.products.reviews.reviews.application.params.GetReviewParams;
 import com.jeferro.products.reviews.reviews.domain.exceptions.ReviewNotFoundException;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class GetReviewUseCaseTest {
         );
 
         var result = getReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertEquals(johnReviewOfApple, result);
@@ -46,7 +46,7 @@ class GetReviewUseCaseTest {
 
         assertThrows(ReviewNotFoundException.class,
                 () -> getReviewUseCase.execute(
-                    ContextMother.james(),
-                        params));
+                    AuthMother.james(),
+                    params));
     }
 }

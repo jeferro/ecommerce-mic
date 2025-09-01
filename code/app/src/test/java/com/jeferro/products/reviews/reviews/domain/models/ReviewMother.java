@@ -15,7 +15,7 @@ public abstract class ReviewMother {
 
         var productReviewId = ReviewId.createOf(entityId, johnAuth);
 
-        return new Review(productReviewId, Locale.US, "Comment about apple");
+        return new Review(productReviewId,"Comment about apple", Locale.US);
     }
 
     public static Review emilyReviewOfApple() {
@@ -26,7 +26,7 @@ public abstract class ReviewMother {
 
         var productReviewId = ReviewId.createOf(entityId, emilyAuth);
 
-        return new Review(productReviewId, Locale.US, "I love apples");
+        return new Review(productReviewId,"I love apples", Locale.US);
     }
 
     public static Review jamesReviewOfApple() {
@@ -37,6 +37,6 @@ public abstract class ReviewMother {
 
         var productReviewId = ReviewId.createOf(entityId, jamesAuth);
 
-        return new Review(productReviewId, Locale.US, "I hate apples");
+        return new Review(productReviewId, "I hate apples", Locale.US);
     }
 }

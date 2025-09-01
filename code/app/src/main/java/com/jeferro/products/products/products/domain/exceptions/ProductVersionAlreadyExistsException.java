@@ -7,11 +7,12 @@ import static com.jeferro.products.shared.domain.exceptions.ProductExceptionCode
 
 public class ProductVersionAlreadyExistsException extends NotFoundException {
 
-    private ProductVersionAlreadyExistsException(String message) {
-        super(PRODUCT_VERSION_ALREADY_EXISTS, "Product already exists", message);
+    protected ProductVersionAlreadyExistsException(String code, String title, String message) {
+        super(code, title, message);
     }
 
     public static ProductVersionAlreadyExistsException createOf(ProductVersionId versionId) {
-        return new ProductVersionAlreadyExistsException("Product '" + versionId + "' already exists");
+        return new ProductVersionAlreadyExistsException(PRODUCT_VERSION_ALREADY_EXISTS, "Product already exists",
+            "Product '" + versionId + "' already exists");
     }
 }

@@ -1,7 +1,7 @@
 package com.jeferro.shared.ddd.application;
 
 import com.jeferro.shared.ddd.application.params.Params;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +17,6 @@ public abstract class UseCase<P extends Params<R>, R> {
 
     public abstract Set<String> getMandatoryUserRoles();
 
-    public abstract R execute(Context context, P params);
+    public abstract R execute(Auth auth, P params);
 
 }

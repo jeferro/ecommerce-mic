@@ -7,7 +7,7 @@ import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,27 +29,27 @@ public class CreateReviewUseCase extends UseCase<CreateReviewParams, Review> {
   }
 
   @Override
-  public Review execute(Context context, CreateReviewParams params) {
-	ReviewId reviewId = ReviewId.createOf(params.getEntityId(),
-		context.getAuth());
+  public Review execute(Auth auth, CreateReviewParams params) {
+	ReviewId reviewId = ReviewId.createOf(params.getEntityId(), auth);
 
 	ensureReviewDoesNotExists(reviewId);
 
-	return createReview(reviewId, params, context);
+	return createReview(params, auth);
   }
 
   private void ensureReviewDoesNotExists(ReviewId reviewId) {
 	var review = reviewsRepository.findById(reviewId);
 
-	if(review.isPresent()){
+	if (review.isPresent()) {
 	  throw ReviewAlreadyExistsException.createOf(reviewId);
 	}
   }
 
-  private Review createReview(ReviewId reviewId, CreateReviewParams params, Context context) {
-	var review = Review.createOf(reviewId,
-		context.getLocale(),
-		params.getComment()
+  private Review createReview(CreateReviewParams params, Auth auth) {
+	var review = Review.createOf(
+		params.getEntityId(),
+		params.getComment(),
+		auth
 	);
 
 	reviewsRepository.save(review);
