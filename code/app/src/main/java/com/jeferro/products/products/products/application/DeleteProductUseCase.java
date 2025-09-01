@@ -7,7 +7,7 @@ import com.jeferro.products.products.products.domain.models.filter.ProductVersio
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +29,7 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVe
     }
 
     @Override
-    public ProductVersion execute(Context context, DeleteProductParams params) {
+    public ProductVersion execute(Auth auth, DeleteProductParams params) {
         var version = ensureProductVersionExists(params);
 
         deleteProductVersion(version);

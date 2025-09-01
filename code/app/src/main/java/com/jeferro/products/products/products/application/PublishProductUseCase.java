@@ -5,7 +5,7 @@ import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class PublishProductUseCase extends UseCase<PublishProductParams, Product
     }
 
     @Override
-    public ProductVersion execute(Context context, PublishProductParams params) {
+    public ProductVersion execute(Auth auth, PublishProductParams params) {
         var version = ensureProductVersionExists(params);
 
         return publishProductVersion(version);

@@ -4,7 +4,7 @@ import com.jeferro.products.products.products.application.params.SearchProductsP
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class SearchProductsUseCaseTest {
         );
 
         var result = searchProductsUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertEquals(3, result.size());
@@ -52,7 +52,7 @@ class SearchProductsUseCaseTest {
         );
 
         var result = searchProductsUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         result.forEach(productVersion -> assertEquals(appleV1.getCode(), productVersion.getCode()));
@@ -67,7 +67,7 @@ class SearchProductsUseCaseTest {
         );
 
         var result = searchProductsUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertTrue(result.isEmpty());

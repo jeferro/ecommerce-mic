@@ -5,7 +5,7 @@ import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class SearchReviewUseCase extends UseCase<SearchReviewParams, PaginatedLi
     }
 
     @Override
-    public PaginatedList<Review> execute(Context context, SearchReviewParams params) {
+    public PaginatedList<Review> execute(Auth auth, SearchReviewParams params) {
         var filter = params.getReviewFilter();
 
         return reviewsRepository.findAll(filter);

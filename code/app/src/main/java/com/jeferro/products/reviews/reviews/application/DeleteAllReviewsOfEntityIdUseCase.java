@@ -6,7 +6,7 @@ import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class DeleteAllReviewsOfEntityIdUseCase extends UseCase<DeleteAllReviewsO
     }
 
     @Override
-    public Void execute(Context context, DeleteAllReviewsOfEntityIdParams params) {
+    public Void execute(Auth auth, DeleteAllReviewsOfEntityIdParams params) {
         var entityId = params.getEntityId();
 
         var criteria = ReviewFilter.byEntityId(entityId);

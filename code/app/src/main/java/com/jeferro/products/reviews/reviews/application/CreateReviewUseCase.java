@@ -7,7 +7,7 @@ import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,13 +29,12 @@ public class CreateReviewUseCase extends UseCase<CreateReviewParams, Review> {
   }
 
   @Override
-  public Review execute(Context context, CreateReviewParams params) {
-	ReviewId reviewId = ReviewId.createOf(params.getEntityId(),
-		context.getAuth());
+  public Review execute(Auth auth, CreateReviewParams params) {
+	ReviewId reviewId = ReviewId.createOf(params.getEntityId(), auth);
 
 	ensureReviewDoesNotExists(reviewId);
 
-	return createReview(reviewId, params, context);
+	return createReview(reviewId, params, auth);
   }
 
   private void ensureReviewDoesNotExists(ReviewId reviewId) {
@@ -46,9 +45,9 @@ public class CreateReviewUseCase extends UseCase<CreateReviewParams, Review> {
 	}
   }
 
-  private Review createReview(ReviewId reviewId, CreateReviewParams params, Context context) {
+  private Review createReview(ReviewId reviewId, CreateReviewParams params, Auth auth) {
 	var review = Review.createOf(reviewId,
-		context.getLocale(),
+		auth.getLocale(),
 		params.getComment()
 	);
 

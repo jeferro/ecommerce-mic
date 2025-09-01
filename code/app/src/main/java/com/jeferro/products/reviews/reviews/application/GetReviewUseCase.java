@@ -4,7 +4,7 @@ import com.jeferro.products.reviews.reviews.application.params.GetReviewParams;
 import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class GetReviewUseCase extends UseCase<GetReviewParams, Review> {
     }
 
     @Override
-    public Review execute(Context context, GetReviewParams params) {
+    public Review execute(Auth auth, GetReviewParams params) {
         var reviewId = params.getReviewId();
 
         return reviewsRepository.findByIdOrError(reviewId);

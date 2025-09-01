@@ -5,7 +5,7 @@ import com.jeferro.products.reviews.reviews.application.params.SearchReviewParam
 import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,7 @@ class SearchReviewUseCaseTest {
         );
 
         var result = searchReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertFalse(result.isEmpty());
@@ -53,7 +53,7 @@ class SearchReviewUseCaseTest {
         );
 
         var result = searchReviewUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertTrue(result.isEmpty());

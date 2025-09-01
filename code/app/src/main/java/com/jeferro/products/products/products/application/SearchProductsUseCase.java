@@ -5,7 +5,7 @@ import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class SearchProductsUseCase extends UseCase<SearchProductsParams, Paginat
     }
 
     @Override
-    public PaginatedList<ProductVersion> execute(Context context, SearchProductsParams params) {
+    public PaginatedList<ProductVersion> execute(Auth auth, SearchProductsParams params) {
         var filter = params.getFilter();
 
         return productVersionRepository.findAll(filter);

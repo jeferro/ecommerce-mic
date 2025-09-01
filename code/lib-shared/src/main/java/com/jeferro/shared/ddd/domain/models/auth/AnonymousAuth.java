@@ -1,15 +1,16 @@
 package com.jeferro.shared.ddd.domain.models.auth;
 
+import java.util.Locale;
 import java.util.Set;
 
 public class AnonymousAuth extends Auth {
 
-    public AnonymousAuth() {
-        super();
+    public AnonymousAuth(Locale locale) {
+        super(locale);
     }
 
-    public static AnonymousAuth create() {
-        return new AnonymousAuth();
+    public static AnonymousAuth create(Locale locale) {
+        return new AnonymousAuth(locale);
     }
 
     @Override

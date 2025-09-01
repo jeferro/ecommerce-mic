@@ -7,8 +7,8 @@ import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +47,7 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
         );
 
         deleteAllReviewsOfEntityIdUseCase.execute(
-            ContextMother.emily(),
+            AuthMother.emily(),
             params);
 
         assertThereAreNotReviewsOfApple();
@@ -67,7 +67,7 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
         );
 
         deleteAllReviewsOfEntityIdUseCase.execute(
-            ContextMother.emily(),
+            AuthMother.emily(),
             params);
 
         assertNoEventsWerePublished();

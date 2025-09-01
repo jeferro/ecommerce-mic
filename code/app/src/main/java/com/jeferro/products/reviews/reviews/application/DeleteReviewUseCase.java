@@ -5,7 +5,7 @@ import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,10 +27,10 @@ public class DeleteReviewUseCase extends UseCase<DeleteReviewParams, Review> {
     }
 
     @Override
-    public Review execute(Context context, DeleteReviewParams params) {
+    public Review execute(Auth auth, DeleteReviewParams params) {
         var review = ensureReviewExists(params);
 
-        review.ensureReviewBelongsToUser(context.getAuth());
+        review.ensureReviewBelongsToUser(auth);
 
         return deleteReview(review);
     }

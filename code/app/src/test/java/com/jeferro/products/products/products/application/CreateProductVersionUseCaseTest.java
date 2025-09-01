@@ -1,8 +1,8 @@
 package com.jeferro.products.products.products.application;
 
+import com.jeferro.products.parametrics.domain.models.ProductTypeMother;
 import com.jeferro.products.parametrics.domain.services.ParametricInMemoryFinder;
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
-import com.jeferro.products.parametrics.domain.models.ProductTypeMother;
 import com.jeferro.products.products.products.application.params.CreateProductParams;
 import com.jeferro.products.products.products.domain.events.ProductVersionCreated;
 import com.jeferro.products.products.products.domain.events.ProductVersionUpdated;
@@ -12,8 +12,8 @@ import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ class CreateProductVersionUseCaseTest {
             pearV2.getName());
 
         var result = createProductUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertNull(result.getEndEffectiveDate());
@@ -79,7 +79,7 @@ class CreateProductVersionUseCaseTest {
             pearV2.getName());
 
         createProductUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         var pearV1Id = ProductVersionMother.pearV1().getVersionId();
@@ -100,7 +100,7 @@ class CreateProductVersionUseCaseTest {
             previousPearV2.getName());
 
         var result = createProductUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertTrue(productsInMemoryRepository.contains(result));
@@ -119,7 +119,7 @@ class CreateProductVersionUseCaseTest {
 
         assertThrows(ProductVersionAlreadyExistsException.class,
             () -> createProductUseCase.execute(
-                ContextMother.john(),
+                AuthMother.john(),
                 params));
     }
 

@@ -8,9 +8,9 @@ import com.jeferro.products.reviews.reviews.domain.models.EntityId;
 import com.jeferro.products.reviews.reviews.domain.models.Review;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
 import com.jeferro.products.shared.domain.events.EventInMemoryBus;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,10 +47,10 @@ class CreateReviewUseCaseTest {
                 comment
         );
 
-        var jamesContext = ContextMother.james();
-        var result = createReviewUseCase.execute(jamesContext, params);
+        var authJames = AuthMother.james();
+        var result = createReviewUseCase.execute(authJames, params);
 
-        assertResult(jamesContext, result, appleEntityId, comment);
+        assertResult(authJames, result, appleEntityId, comment);
 
         assertReviewInDatabase(result);
 
@@ -68,12 +68,12 @@ class CreateReviewUseCaseTest {
 
         assertThrows(ReviewAlreadyExistsException.class,
                 () -> createReviewUseCase.execute(
-                    ContextMother.john(),
+                    AuthMother.john(),
                     params));
     }
 
-    private static void assertResult(Context context, Review result, EntityId entityId, String comment) {
-        assertEquals(context.getAuth().username(), result.getUsername());
+    private static void assertResult(Auth auth, Review result, EntityId entityId, String comment) {
+        assertEquals(auth.username(), result.getUsername());
         assertEquals(entityId, result.getEntityId());
         assertEquals(comment, result.getComment());
     }

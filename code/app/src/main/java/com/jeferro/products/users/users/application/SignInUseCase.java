@@ -7,7 +7,7 @@ import com.jeferro.products.users.users.domain.repositories.UsersRepository;
 import com.jeferro.products.users.users.domain.services.PasswordEncoder;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
-import com.jeferro.shared.ddd.domain.models.context.Context;
+import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class SignInUseCase extends UseCase<SignInParams, User> {
     }
 
     @Override
-    public User execute(Context context, SignInParams params) {
+    public User execute(Auth auth, SignInParams params) {
         var username = params.getUsername();
         var plainPassword = params.getPassword();
 

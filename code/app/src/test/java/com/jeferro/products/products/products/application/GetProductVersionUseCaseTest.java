@@ -4,7 +4,7 @@ import com.jeferro.products.products.products.application.params.GetProductParam
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionInMemoryRepository;
-import com.jeferro.products.shared.application.ContextMother;
+import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class GetProductVersionUseCaseTest {
         );
 
         var result = getProductUseCase.execute(
-            ContextMother.john(),
+            AuthMother.john(),
             params);
 
         assertEquals(appleV1, result);
@@ -47,7 +47,7 @@ class GetProductVersionUseCaseTest {
 
         assertThrows(ProductVersionNotFoundException.class,
                 () -> getProductUseCase.execute(
-                    ContextMother.john(),
+                    AuthMother.john(),
                     params));
     }
 
