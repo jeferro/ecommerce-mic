@@ -34,7 +34,9 @@ class ReviewRestControllerTest extends RestControllerTest {
         stubUseCaseBus.init(productReviews);
 
         String url = "/v1/reviews?"
-            + "entityId=" + johnReviewOfApple.getId();
+            + "pageNumber=1"
+            + "&pageSize=10"
+            + "&entityId=" + johnReviewOfApple.getEntityId();
 
         var requestBuilder = MockMvcRequestBuilders.get(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +53,7 @@ class ReviewRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    void execute_create_product_on_request() throws Exception {
+    void execute_create_review_on_request() throws Exception {
         var johnReviewOfApple = ReviewMother.johnReviewOfApple();
         stubUseCaseBus.init(johnReviewOfApple);
 

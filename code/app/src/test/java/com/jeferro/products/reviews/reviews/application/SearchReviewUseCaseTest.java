@@ -9,7 +9,6 @@ import com.jeferro.products.shared.application.ContextMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,7 +45,7 @@ class SearchReviewUseCaseTest {
     void should_returnEmptyList_when_notExist() {
       var appleEntityId = EntityId.createOf(
           "products",
-          ProductCodeMother.apple().getValue()
+          ProductCodeMother.banana().getValue()
       );
 
         var params = new SearchReviewParams(

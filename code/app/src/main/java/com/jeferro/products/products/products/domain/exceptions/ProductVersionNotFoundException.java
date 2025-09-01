@@ -7,11 +7,12 @@ import static com.jeferro.products.shared.domain.exceptions.ProductExceptionCode
 
 public class ProductVersionNotFoundException extends NotFoundException {
 
-    private ProductVersionNotFoundException(String message) {
-        super(PRODUCT_VERSION_NOT_FOUND, "Product not found", message);
+    protected ProductVersionNotFoundException(String code, String title, String message) {
+        super(code, title, message);
     }
 
     public static ProductVersionNotFoundException createOf(ProductVersionId versionId) {
-        return new ProductVersionNotFoundException("Product '" + versionId + "' not found");
+        return new ProductVersionNotFoundException(PRODUCT_VERSION_NOT_FOUND, "Product not found",
+            "Product '" + versionId + "' not found");
     }
 }
