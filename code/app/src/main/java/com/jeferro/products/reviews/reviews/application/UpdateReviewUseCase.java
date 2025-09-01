@@ -42,11 +42,9 @@ public class UpdateReviewUseCase extends UseCase<UpdateReviewParams, Review> {
     }
 
     private Review updateReview(Auth auth, UpdateReviewParams params, Review review) {
-	    var locale = auth.getLocale();
-
         var comment = params.getComment();
 
-        review.update(comment, locale);
+        review.update(comment, auth);
 
         reviewsRepository.save(review);
 
