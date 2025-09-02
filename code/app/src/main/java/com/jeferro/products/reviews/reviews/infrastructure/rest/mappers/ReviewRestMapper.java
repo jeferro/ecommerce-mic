@@ -31,13 +31,13 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
         ReviewOrderRestDTO order,
         Boolean ascending,
         String entityId) {
-        var filter = toReviewCriteria(pageNumber,
+        var criteria = toReviewCriteria(pageNumber,
             pageSize,
             order,
             ascending,
             entityId);
 
-        return new SearchReviewParams(filter);
+        return new SearchReviewParams(criteria);
     }
 
     protected abstract ReviewCriteria toReviewCriteria(Integer pageNumber,

@@ -26,8 +26,8 @@ public class SearchProductsUseCase extends UseCase<SearchProductsParams, Paginat
 
     @Override
     public PaginatedList<ProductVersion> execute(Auth auth, SearchProductsParams params) {
-        var filter = params.getFilter();
+        var criteria = params.getCriteria();
 
-        return productVersionRepository.findAll(filter);
+        return productVersionRepository.findAll(criteria);
     }
 }

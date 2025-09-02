@@ -1,6 +1,6 @@
 package com.jeferro.products.products.products.infrastructure.mongo.services;
 
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.products.products.products.domain.models.filter.ProductVersionOrder;
 import com.jeferro.shared.ddd.infrastructure.mongo.services.QueryMongoCreator;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -10,42 +10,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductQueryMongoCreator extends QueryMongoCreator<ProductVersionOrder, ProductVersionFilter> {
+public class ProductQueryMongoCreator extends QueryMongoCreator<ProductVersionOrder, ProductVersionCriteria> {
 
     @Override
-    protected List<Criteria> mapFilter(ProductVersionFilter filter) {
-        var criteria = new ArrayList<Criteria>();
+    protected List<Criteria> mapCriteria(ProductVersionCriteria criteria) {
+        var mongoCriteria = new ArrayList<Criteria>();
 
-        if (filter.hasCode()) {
-            Criteria codeCriteria = Criteria.where("code").is(filter.getCode().getValue());
+        if (criteria.hasCode()) {
+            Criteria codeCriteria = Criteria.where("code").is(criteria.getCode().getValue());
 
-            criteria.add(codeCriteria);
+            mongoCriteria.add(codeCriteria);
         }
 
-        if (filter.hasMinEffectiveDate()) {
-            Criteria minEffectiveDateCriteria = Criteria.where("effectiveDate").gt(filter.getMinEffectiveDate());
+        if (criteria.hasMinEffectiveDate()) {
+            Criteria minEffectiveDateCriteria = Criteria.where("effectiveDate").gt(criteria.getMinEffectiveDate());
 
-            criteria.add(minEffectiveDateCriteria);
+            mongoCriteria.add(minEffectiveDateCriteria);
         }
 
-        if (filter.hasMaxEffectiveDate()) {
-            Criteria maxEffectiveDateCriteria = Criteria.where("effectiveDate").lt(filter.getMaxEffectiveDate());
+        if (criteria.hasMaxEffectiveDate()) {
+            Criteria maxEffectiveDateCriteria = Criteria.where("effectiveDate").lt(criteria.getMaxEffectiveDate());
 
-            criteria.add(maxEffectiveDateCriteria);
+            mongoCriteria.add(maxEffectiveDateCriteria);
         }
 
-        if (filter.hasSearchDate()) {
+        if (criteria.hasSearchDate()) {
             Criteria searchDateCriteria = new Criteria().andOperator(
-                Criteria.where("effectiveDate").lte(filter.getSearchDate()),
+                Criteria.where("effectiveDate").lte(criteria.getSearchDate()),
                 new Criteria().orOperator(
                     Criteria.where("endEffectiveDate").is(null),
-                    Criteria.where("endEffectiveDate").gte(filter.getSearchDate())
+                    Criteria.where("endEffectiveDate").gte(criteria.getSearchDate())
                 ));
 
-            criteria.add(searchDateCriteria);
+            mongoCriteria.add(searchDateCriteria);
         }
 
-        return criteria;
+        return mongoCriteria;
     }
 
     @Override

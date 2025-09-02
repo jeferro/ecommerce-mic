@@ -2,7 +2,7 @@ package com.jeferro.products.products.products.domain.models.filter;
 
 import com.jeferro.products.products.products.domain.models.ProductCode;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.shared.ddd.domain.models.filter.Filter;
+import com.jeferro.shared.ddd.domain.models.filter.Criteria;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -11,7 +11,7 @@ import static com.jeferro.products.products.products.domain.models.filter.Produc
 import static com.jeferro.products.products.products.domain.models.filter.ProductVersionOrder.START_EFFECTIVE_DATE;
 
 @Getter
-public class ProductVersionFilter extends Filter<ProductVersionOrder> {
+public class ProductVersionCriteria extends Criteria<ProductVersionOrder> {
 
     private final ProductCode code;
 
@@ -21,7 +21,7 @@ public class ProductVersionFilter extends Filter<ProductVersionOrder> {
 
     private final Instant searchDate;
 
-    public ProductVersionFilter(int pageNumber,
+    public ProductVersionCriteria(int pageNumber,
         int pageSize,
         ProductVersionOrder order,
         Boolean ascending,
@@ -37,20 +37,20 @@ public class ProductVersionFilter extends Filter<ProductVersionOrder> {
 	    this.searchDate = searchDate;
 	}
 
-    public static ProductVersionFilter createEmpty() {
-        return new ProductVersionFilter(0, DEFAULT_PAGE_SIZE, NAME, null, null, null, null, null);
+    public static ProductVersionCriteria createEmpty() {
+        return new ProductVersionCriteria(0, DEFAULT_PAGE_SIZE, NAME, null, null, null, null, null);
     }
 
-    public static ProductVersionFilter byCode(ProductCode code) {
-        return new ProductVersionFilter(0, DEFAULT_PAGE_SIZE, START_EFFECTIVE_DATE, false, code, null, null, null);
+    public static ProductVersionCriteria byCode(ProductCode code) {
+        return new ProductVersionCriteria(0, DEFAULT_PAGE_SIZE, START_EFFECTIVE_DATE, false, code, null, null, null);
     }
 
-    public static ProductVersionFilter previousProduct(ProductVersionId versionId) {
-        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, false, versionId.getCode(), null, versionId.getEffectiveDate(), null);
+    public static ProductVersionCriteria previousProduct(ProductVersionId versionId) {
+        return new ProductVersionCriteria(0, 1, START_EFFECTIVE_DATE, false, versionId.getCode(), null, versionId.getEffectiveDate(), null);
     }
 
-    public static ProductVersionFilter nextProduct(ProductVersionId versionId) {
-        return new ProductVersionFilter(0, 1, START_EFFECTIVE_DATE, true, versionId.getCode(), versionId.getEffectiveDate(), null, null);
+    public static ProductVersionCriteria nextProduct(ProductVersionId versionId) {
+        return new ProductVersionCriteria(0, 1, START_EFFECTIVE_DATE, true, versionId.getCode(), versionId.getEffectiveDate(), null, null);
     }
 
     public boolean hasCode() {

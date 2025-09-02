@@ -10,14 +10,14 @@ import lombok.Getter;
 @Getter
 public class SearchReviewParams extends Params<PaginatedList<Review>> {
 
-    private final ReviewCriteria reviewCriteria;
+    private final ReviewCriteria criteria;
 
-    public SearchReviewParams(ReviewCriteria reviewCriteria) {
+    public SearchReviewParams(ReviewCriteria criteria) {
         super();
 
-        ValueValidator.isNotNull(reviewCriteria, "reviewCriteria");
+        ValueValidator.isNotNull(criteria, "criteria");
 
-        this.reviewCriteria = reviewCriteria;
+        this.criteria = criteria;
     }
 
 }

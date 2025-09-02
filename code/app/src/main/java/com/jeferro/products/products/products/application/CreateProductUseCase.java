@@ -6,7 +6,7 @@ import com.jeferro.products.products.products.application.params.CreateProductPa
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionAlreadyExistsException;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -58,8 +58,8 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
     }
 
     private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) {
-        var previousVersionFilter = ProductVersionFilter.previousProduct(versionId);
-        var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
+        var previousVersionCriteria = ProductVersionCriteria.previousProduct(versionId);
+        var previousVersion = productVersionRepository.findAll(previousVersionCriteria).getFirstOrNull();
 
         if(previousVersion == null){
             return;
@@ -73,8 +73,8 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
     }
 
     private ProductVersion createNewVersion(ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
-        var nextVersionFilter = ProductVersionFilter.nextProduct(versionId);
-        var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
+        var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
+        var nextVersion = productVersionRepository.findAll(nextVersionCriteria).getFirstOrNull();
 
         var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);
 

@@ -13,19 +13,19 @@ import java.util.List;
 public class ReviewQueryMongoCreator extends QueryMongoCreator<ReviewOrder, ReviewCriteria> {
 
   @Override
-  protected List<Criteria> mapFilter(ReviewCriteria reviewCriteria) {
-	var criteria = new ArrayList<Criteria>();
+  protected List<Criteria> mapCriteria(ReviewCriteria criteria) {
+	var mongoCriterias = new ArrayList<Criteria>();
 
-	if (reviewCriteria.hasEntityId()) {
-	  var domainCriteria = new Criteria().andOperator(
-		  Criteria.where("entityId.domain").is(reviewCriteria.getEntityId().getDomain()),
-		  Criteria.where("entityId.id").is(reviewCriteria.getEntityId().getId())
+	if (criteria.hasEntityId()) {
+	  var entityIdCriteria = new Criteria().andOperator(
+		  Criteria.where("entityId.domain").is(criteria.getEntityId().getDomain()),
+		  Criteria.where("entityId.id").is(criteria.getEntityId().getId())
 	  );
 
-	  criteria.add(domainCriteria);
+	  mongoCriterias.add(entityIdCriteria);
 	}
 
-	return criteria;
+	return mongoCriterias;
   }
 
   @Override

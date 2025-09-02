@@ -4,7 +4,7 @@ import com.jeferro.products.generated.rest.v1.dtos.*;
 import com.jeferro.products.products.products.application.params.*;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
@@ -44,7 +44,7 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
 
     @Mapping(target = "minEffectiveDate", ignore = true)
     @Mapping(target = "maxEffectiveDate", ignore = true)
-    protected abstract ProductVersionFilter toProductFilter(Integer pageNumber,
+    protected abstract ProductVersionCriteria toProductFilter(Integer pageNumber,
                                                   Integer pageSize,
                                                   ProductOrderRestDTO order,
                                                   Boolean ascending,
