@@ -1,3 +1,3 @@
-data[0] = SearchProductsParams[criteria=ProductVersionFilter[code=apple,maxEffectiveDate=<null>,minEffectiveDate=<null>,searchDate=<null>,ascending=<null>,order=<null>,pageNumber=0,pageSize=10]]
+data[0] = SearchProductsParams[criteria=ProductVersionCriteria[code=apple,maxEffectiveDate=<null>,minEffectiveDate=<null>,searchDate=<null>,ascending=<null>,order=<null>,pageNumber=0,pageSize=10]]
 data[1] = 200
 data[2] = {"pageNumber":0,"pageSize":2,"totalItems":2,"items":["apple::2025-01-01T09:00:00Z","apple::2025-02-01T09:00:00Z"]}
