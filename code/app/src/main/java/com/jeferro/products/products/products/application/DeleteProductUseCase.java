@@ -3,7 +3,7 @@ package com.jeferro.products.products.products.application;
 import com.jeferro.products.products.products.application.params.DeleteProductParams;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.products.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -40,15 +40,15 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVe
     }
 
     private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
-        var previousVersionFilter = ProductVersionFilter.previousProduct(versionId);
-        var previousVersion = productVersionRepository.findAll(previousVersionFilter).getFirstOrNull();
+        var previousVersionCriteria = ProductVersionCriteria.previousProduct(versionId);
+        var previousVersion = productVersionRepository.findAll(previousVersionCriteria).getFirstOrNull();
 
         if(previousVersion == null){
             return;
         }
 
-        var nextVersionFilter = ProductVersionFilter.nextProduct(versionId);
-        var nextVersion = productVersionRepository.findAll(nextVersionFilter).getFirstOrNull();
+        var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
+        var nextVersion = productVersionRepository.findAll(nextVersionCriteria).getFirstOrNull();
 
         if(nextVersion != null) {
             previousVersion.expireBeforeVersion(nextVersion.getVersionId());

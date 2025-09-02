@@ -2,7 +2,7 @@ package com.jeferro.products.reviews.reviews.domain.repositories;
 
 import com.jeferro.products.reviews.reviews.domain.exceptions.ReviewNotFoundException;
 import com.jeferro.products.reviews.reviews.domain.models.Review;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
@@ -23,5 +23,5 @@ public interface ReviewsRepository {
 
     void deleteAll(PaginatedList<Review> reviews);
 
-    PaginatedList<Review> findAll(ReviewFilter filter);
+    PaginatedList<Review> findAll(ReviewCriteria criteria);
 }

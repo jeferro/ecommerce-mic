@@ -1,7 +1,7 @@
 package com.jeferro.products.products.products.application.params;
 
 import com.jeferro.products.products.products.domain.models.ProductVersion;
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
@@ -10,13 +10,13 @@ import lombok.Getter;
 @Getter
 public class SearchProductsParams extends Params<PaginatedList<ProductVersion>> {
 
-    private final ProductVersionFilter filter;
+    private final ProductVersionCriteria criteria;
 
-    public SearchProductsParams(ProductVersionFilter filter) {
+    public SearchProductsParams(ProductVersionCriteria criteria) {
         super();
 
-        ValueValidator.isNotNull(filter, "filter");
+        ValueValidator.isNotNull(criteria, "criteria");
 
-        this.filter = filter;
+        this.criteria = criteria;
     }
 }

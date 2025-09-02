@@ -3,7 +3,7 @@ package com.jeferro.products.reviews.reviews.application;
 import com.jeferro.products.products.products.domain.models.ProductCodeMother;
 import com.jeferro.products.reviews.reviews.application.params.SearchReviewParams;
 import com.jeferro.products.reviews.reviews.domain.models.EntityId;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsInMemoryRepository;
 import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ class SearchReviewUseCaseTest {
       );
 
         var params = new SearchReviewParams(
-            ReviewFilter.byEntityId(appleEntityId)
+            ReviewCriteria.byEntityId(appleEntityId)
         );
 
         var result = searchReviewUseCase.execute(
@@ -49,7 +49,7 @@ class SearchReviewUseCaseTest {
       );
 
         var params = new SearchReviewParams(
-            ReviewFilter.byEntityId(appleEntityId)
+            ReviewCriteria.byEntityId(appleEntityId)
         );
 
         var result = searchReviewUseCase.execute(

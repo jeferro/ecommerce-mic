@@ -1,6 +1,6 @@
 package com.jeferro.products.reviews.reviews.infrastructure.mongo.services;
 
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewOrder;
 import com.jeferro.shared.ddd.infrastructure.mongo.services.QueryMongoCreator;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -10,22 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ReviewQueryMongoCreator extends QueryMongoCreator<ReviewOrder, ReviewFilter> {
+public class ReviewQueryMongoCreator extends QueryMongoCreator<ReviewOrder, ReviewCriteria> {
 
   @Override
-  protected List<Criteria> mapFilter(ReviewFilter filter) {
-	var criteria = new ArrayList<Criteria>();
+  protected List<Criteria> mapCriteria(ReviewCriteria criteria) {
+	var mongoCriterias = new ArrayList<Criteria>();
 
-	if (filter.hasEntityId()) {
-	  var domainCriteria = new Criteria().andOperator(
-		  Criteria.where("entityId.domain").is(filter.getEntityId().getDomain()),
-		  Criteria.where("entityId.id").is(filter.getEntityId().getId())
+	if (criteria.hasEntityId()) {
+	  var entityIdCriteria = new Criteria().andOperator(
+		  Criteria.where("entityId.domain").is(criteria.getEntityId().getDomain()),
+		  Criteria.where("entityId.id").is(criteria.getEntityId().getId())
 	  );
 
-	  criteria.add(domainCriteria);
+	  mongoCriterias.add(entityIdCriteria);
 	}
 
-	return criteria;
+	return mongoCriterias;
   }
 
   @Override

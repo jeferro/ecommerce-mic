@@ -3,7 +3,7 @@ package com.jeferro.products.products.products.domain.repositories;
 import com.jeferro.products.products.products.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
 import java.util.Optional;
@@ -21,5 +21,5 @@ public interface ProductVersionRepository {
 
     void deleteById(ProductVersionId versionId);
 
-    PaginatedList<ProductVersion> findAll(ProductVersionFilter filter);
+    PaginatedList<ProductVersion> findAll(ProductVersionCriteria filter);
 }

@@ -1,7 +1,7 @@
 package com.jeferro.products.reviews.reviews.domain.repositories;
 
 import com.jeferro.products.reviews.reviews.domain.models.Review;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewMother;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
@@ -20,13 +20,13 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
     }
 
     @Override
-    public PaginatedList<Review> findAll(ReviewFilter filter) {
+    public PaginatedList<Review> findAll(ReviewCriteria criteria) {
         var entities = data.values().stream()
-            .filter(review -> matchCriteria(review, filter))
-            .sorted((r1, r2) -> compareReviews(r1, r2, filter))
+            .filter(review -> matchCriteria(review, criteria))
+            .sorted((r1, r2) -> compareReviews(r1, r2, criteria))
             .toList();
 
-        var paginatedEntities = paginateEntities(entities, filter);
+        var paginatedEntities = paginateEntities(entities, criteria);
 
         return PaginatedList.createOfList(paginatedEntities);
     }
@@ -38,17 +38,17 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
                 .forEach(this::deleteById);
     }
 
-    private boolean matchCriteria(Review review, ReviewFilter filter) {
-        return matchEntityId(review, filter);
+    private boolean matchCriteria(Review review, ReviewCriteria criteria) {
+        return matchEntityId(review, criteria);
     }
 
-    private boolean matchEntityId(Review review, ReviewFilter filter) {
-        return !filter.hasEntityId()
-            || review.getEntityId().equals(filter.getEntityId());
+    private boolean matchEntityId(Review review, ReviewCriteria criteria) {
+        return !criteria.hasEntityId()
+            || review.getEntityId().equals(criteria.getEntityId());
     }
 
-    private int compareReviews(Review r1, Review r2, ReviewFilter filter) {
-        return switch (filter.getOrder()) {
+    private int compareReviews(Review r1, Review r2, ReviewCriteria criteria) {
+        return switch (criteria.getOrder()) {
             case ID -> -1;
         };
     }

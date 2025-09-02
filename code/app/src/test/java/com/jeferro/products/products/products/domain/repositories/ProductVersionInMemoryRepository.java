@@ -3,7 +3,7 @@ package com.jeferro.products.products.products.domain.repositories;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.products.domain.models.filter.ProductVersionFilter;
+import com.jeferro.products.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
@@ -24,7 +24,7 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
   }
 
   @Override
-  public PaginatedList<ProductVersion> findAll(ProductVersionFilter filter) {
+  public PaginatedList<ProductVersion> findAll(ProductVersionCriteria filter) {
 	var entities = data.values().stream()
 		.filter(product -> matchCriteria(filter, product))
 		.sorted((p1, p2) -> compareProducts(p1, p2, filter))
@@ -35,29 +35,29 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
 	return PaginatedList.createOfList(paginatedEntities);
   }
 
-  private boolean matchCriteria(ProductVersionFilter filter, ProductVersion productVersion) {
+  private boolean matchCriteria(ProductVersionCriteria filter, ProductVersion productVersion) {
 	return matchProductCode(productVersion, filter)
 		&& matchMinEffectiveProductCode(productVersion, filter)
 		&& matchMaxEffectiveProductCode(productVersion, filter)
 		&& matchSearchDate(productVersion, filter);
   }
 
-  private boolean matchProductCode(ProductVersion productVersion, ProductVersionFilter filter) {
+  private boolean matchProductCode(ProductVersion productVersion, ProductVersionCriteria filter) {
 	return !filter.hasCode()
 		|| productVersion.getCode().equals(filter.getCode());
   }
 
-  private boolean matchMinEffectiveProductCode(ProductVersion productVersion, ProductVersionFilter filter) {
+  private boolean matchMinEffectiveProductCode(ProductVersion productVersion, ProductVersionCriteria filter) {
 	return !filter.hasMinEffectiveDate()
 		|| productVersion.getEffectiveDate().isAfter(filter.getMinEffectiveDate());
   }
 
-  private boolean matchMaxEffectiveProductCode(ProductVersion productVersion, ProductVersionFilter filter) {
+  private boolean matchMaxEffectiveProductCode(ProductVersion productVersion, ProductVersionCriteria filter) {
 	return !filter.hasMaxEffectiveDate()
 		|| productVersion.getEffectiveDate().isBefore(filter.getMaxEffectiveDate());
   }
 
-  private boolean matchSearchDate(ProductVersion productVersion, ProductVersionFilter filter) {
+  private boolean matchSearchDate(ProductVersion productVersion, ProductVersionCriteria filter) {
 	if(!filter.hasSearchDate()){
 	  return true;
 	}
@@ -70,7 +70,7 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
 			&& (endEffectiveDate == null || endEffectiveDate.isAfter(searchDate) || endEffectiveDate.equals(searchDate));
   }
 
-  private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionFilter filter) {
+  private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionCriteria filter) {
 	return switch (filter.getOrder()) {
 	  case ID, NAME, TYPE_ID -> -1;
 	  case START_EFFECTIVE_DATE -> p2.getEffectiveDate().isAfter(p1.getEffectiveDate()) ? -1 : 1;

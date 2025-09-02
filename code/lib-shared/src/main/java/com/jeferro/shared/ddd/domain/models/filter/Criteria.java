@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public abstract class Filter<Order> extends ValueObject {
+public abstract class Criteria<Order> extends ValueObject {
 
     protected static final int DEFAULT_PAGE_SIZE = 100;
 
