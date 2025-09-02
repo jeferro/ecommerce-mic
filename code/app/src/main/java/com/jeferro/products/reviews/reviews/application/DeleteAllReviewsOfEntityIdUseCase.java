@@ -2,7 +2,7 @@ package com.jeferro.products.reviews.reviews.application;
 
 import com.jeferro.products.reviews.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.reviews.domain.models.Review;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -31,7 +31,7 @@ public class DeleteAllReviewsOfEntityIdUseCase extends UseCase<DeleteAllReviewsO
     public Void execute(Auth auth, DeleteAllReviewsOfEntityIdParams params) {
         var entityId = params.getEntityId();
 
-        var criteria = ReviewFilter.byEntityId(entityId);
+        var criteria = ReviewCriteria.byEntityId(entityId);
         var reviews = reviewsRepository.findAll(criteria);
 
         while(reviews.isNotEmpty()){

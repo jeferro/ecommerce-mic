@@ -1,6 +1,6 @@
 package com.jeferro.products.reviews.reviews.infrastructure.mongo.services;
 
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewOrder;
 import com.jeferro.shared.ddd.infrastructure.mongo.services.QueryMongoCreator;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -10,16 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ReviewQueryMongoCreator extends QueryMongoCreator<ReviewOrder, ReviewFilter> {
+public class ReviewQueryMongoCreator extends QueryMongoCreator<ReviewOrder, ReviewCriteria> {
 
   @Override
-  protected List<Criteria> mapFilter(ReviewFilter filter) {
+  protected List<Criteria> mapFilter(ReviewCriteria reviewCriteria) {
 	var criteria = new ArrayList<Criteria>();
 
-	if (filter.hasEntityId()) {
+	if (reviewCriteria.hasEntityId()) {
 	  var domainCriteria = new Criteria().andOperator(
-		  Criteria.where("entityId.domain").is(filter.getEntityId().getDomain()),
-		  Criteria.where("entityId.id").is(filter.getEntityId().getId())
+		  Criteria.where("entityId.domain").is(reviewCriteria.getEntityId().getDomain()),
+		  Criteria.where("entityId.id").is(reviewCriteria.getEntityId().getId())
 	  );
 
 	  criteria.add(domainCriteria);

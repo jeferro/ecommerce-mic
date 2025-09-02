@@ -1,7 +1,7 @@
 package com.jeferro.products.reviews.reviews.infrastructure.mongo;
 
 import com.jeferro.products.reviews.reviews.domain.models.Review;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.products.reviews.reviews.infrastructure.mongo.daos.ReviewMongoDao;
@@ -39,8 +39,8 @@ public class ReviewMongoRepository implements ReviewsRepository {
     }
 
     @Override
-    public PaginatedList<Review> findAll(ReviewFilter filter) {
-        Query query = reviewQueryMongoCreator.create(filter);
+    public PaginatedList<Review> findAll(ReviewCriteria criteria) {
+        Query query = reviewQueryMongoCreator.create(criteria);
 
         Page<ReviewMongoDTO> page = customMongoTemplate.findPage(query, ReviewMongoDTO.class);
 
@@ -48,7 +48,7 @@ public class ReviewMongoRepository implements ReviewsRepository {
             .map(reviewMongoMapper::toDomain)
             .toList();
 
-        return PaginatedList.createOfFilter(entities, filter, page.getTotalElements());
+        return PaginatedList.createOfFilter(entities, criteria, page.getTotalElements());
     }
 
     @Override

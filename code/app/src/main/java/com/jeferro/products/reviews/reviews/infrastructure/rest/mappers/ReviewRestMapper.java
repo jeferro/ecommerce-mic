@@ -11,7 +11,7 @@ import com.jeferro.products.reviews.reviews.application.params.GetReviewParams;
 import com.jeferro.products.reviews.reviews.application.params.SearchReviewParams;
 import com.jeferro.products.reviews.reviews.application.params.UpdateReviewParams;
 import com.jeferro.products.reviews.reviews.domain.models.Review;
-import com.jeferro.products.reviews.reviews.domain.models.ReviewFilter;
+import com.jeferro.products.reviews.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.reviews.domain.models.ReviewId;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
@@ -31,7 +31,7 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
         ReviewOrderRestDTO order,
         Boolean ascending,
         String entityId) {
-        var filter = toReviewFilter(pageNumber,
+        var filter = toReviewCriteria(pageNumber,
             pageSize,
             order,
             ascending,
@@ -40,7 +40,7 @@ public abstract class ReviewRestMapper extends AggregateRestMapper<Review, Revie
         return new SearchReviewParams(filter);
     }
 
-    protected abstract ReviewFilter toReviewFilter(Integer pageNumber,
+    protected abstract ReviewCriteria toReviewCriteria(Integer pageNumber,
         Integer pageSize,
         ReviewOrderRestDTO order,
         Boolean ascending,

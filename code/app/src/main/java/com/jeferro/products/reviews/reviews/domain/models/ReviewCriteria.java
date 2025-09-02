@@ -6,11 +6,11 @@ import lombok.Getter;
 import static com.jeferro.products.reviews.reviews.domain.models.ReviewOrder.ID;
 
 @Getter
-public class ReviewFilter extends Filter<ReviewOrder> {
+public class ReviewCriteria extends Filter<ReviewOrder> {
 
     private final EntityId entityId;
 
-    public ReviewFilter(Integer pageNumber,
+    public ReviewCriteria(Integer pageNumber,
         Integer pageSize,
         ReviewOrder order,
         Boolean ascending,
@@ -20,8 +20,8 @@ public class ReviewFilter extends Filter<ReviewOrder> {
         this.entityId = entityId;
 	}
 
-    public static ReviewFilter byEntityId(EntityId entityId) {
-        return new ReviewFilter(0, DEFAULT_PAGE_SIZE, ID, null, entityId);
+    public static ReviewCriteria byEntityId(EntityId entityId) {
+        return new ReviewCriteria(0, DEFAULT_PAGE_SIZE, ID, null, entityId);
     }
 
   public boolean hasEntityId() {
