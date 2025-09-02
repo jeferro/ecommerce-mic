@@ -26,7 +26,7 @@ public class SearchReviewUseCase extends UseCase<SearchReviewParams, PaginatedLi
 
     @Override
     public PaginatedList<Review> execute(Auth auth, SearchReviewParams params) {
-        var filter = params.getReviewFilter();
+        var filter = params.getReviewCriteria();
 
         return reviewsRepository.findAll(filter);
     }
