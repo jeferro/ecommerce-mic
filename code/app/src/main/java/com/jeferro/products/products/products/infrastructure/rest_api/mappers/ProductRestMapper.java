@@ -1,6 +1,7 @@
 package com.jeferro.products.products.products.infrastructure.rest_api.mappers;
 
-import com.jeferro.products.generated.rest.v1.dtos.*;
+import com.jeferro.products.products.infrastructure.rest_api.dtos.dtos.ProductVersionRestDTO;
+import com.jeferro.products.products.products.infrastructure.rest_api.*;
 import com.jeferro.products.products.products.application.params.*;
 import com.jeferro.products.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.products.domain.models.ProductVersionId;
