@@ -1,7 +1,7 @@
-package com.jeferro.products.products.products.infrastructure.adapters.rest;
+package com.jeferro.products.products.products.infrastructure.adapters.rest_api;
 
 import com.jeferro.products.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.products.infrastructure.rest.ProductVersionRestController;
+import com.jeferro.products.products.products.infrastructure.rest_api.ProductVersionRestController;
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.products.shared.infrastructure.adapters.utils.ApprovalUtils;

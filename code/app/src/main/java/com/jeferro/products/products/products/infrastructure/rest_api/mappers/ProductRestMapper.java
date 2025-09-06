@@ -1,4 +1,4 @@
-package com.jeferro.products.products.products.infrastructure.rest.mappers;
+package com.jeferro.products.products.products.infrastructure.rest_api.mappers;
 
 import com.jeferro.products.generated.rest.v1.dtos.*;
 import com.jeferro.products.products.products.application.params.*;

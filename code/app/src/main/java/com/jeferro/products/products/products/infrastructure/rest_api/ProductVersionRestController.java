@@ -1,4 +1,4 @@
-package com.jeferro.products.products.products.infrastructure.rest;
+package com.jeferro.products.products.products.infrastructure.rest_api;
 
 import com.jeferro.products.generated.rest.v1.apis.ProductVersionsApi;
 import com.jeferro.products.generated.rest.v1.dtos.CreateProductVersionInputRestDTO;
@@ -7,7 +7,7 @@ import com.jeferro.products.generated.rest.v1.dtos.ProductVersionListRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.ProductVersionSummaryListRestDTO;
 import com.jeferro.products.generated.rest.v1.dtos.UpdateProductVersionInputRestDTO;
-import com.jeferro.products.products.products.infrastructure.rest.mappers.ProductRestMapper;
+import com.jeferro.products.products.products.infrastructure.rest_api.mappers.ProductRestMapper;
 import com.jeferro.shared.ddd.application.bus.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
