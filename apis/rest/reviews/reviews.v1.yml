@@ -1,0 +1,259 @@
+openapi: "3.0.0"
+
+info:
+  version: 1.0.0
+  title: Review Rest API
+  description: API rest of reviews
+
+servers:
+  - url: http://localhost:8080
+    description: Local
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Reviews
+    description: Section of the reviews
+
+paths:
+  /v1/reviews:
+    post:
+      operationId: create-review
+      summary: Create review
+      description: Create review
+      tags:
+        - Reviews
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReviewInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+    get:
+      operationId: search-reviews
+      summary: Search reviews
+      description: Search reviews
+      tags:
+        - Reviews
+      parameters:
+        - name: pageNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Number of the page
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Size of the page
+        - name: order
+          in: query
+          schema:
+            $ref: '#/components/schemas/ReviewOrder'
+          description: Order of the result
+          required: false
+        - name: ascending
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Return data using ascending order
+        - name: entityId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Identifier of the entity
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewList'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+  /v1/reviews/{reviewId}:
+    get:
+      operationId: get-review
+      summary: Get review
+      description: Get review
+      tags:
+        - Reviews
+      parameters:
+        - $ref: '#/components/parameters/reviewIdPath'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+    patch:
+      operationId: update-review
+      summary: Update review
+      description: Update review
+      tags:
+        - Reviews
+      parameters:
+        - $ref: '#/components/parameters/reviewIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReviewInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+    delete:
+      operationId: delete-review
+      summary: Delete review
+      description: Delete review
+      tags:
+        - Reviews
+      parameters:
+        - $ref: '#/components/parameters/reviewIdPath'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT security
+
+  parameters:
+    reviewIdPath:
+      name: reviewId
+      in: path
+      description: Review id
+      required: true
+      schema:
+        type: string
+      example: 'john::products:apple'
+
+  schemas:
+    ReviewOrder:
+      type: string
+      description: Order of the review listing
+      enum:
+        - 'ID'
+      x-enum-varnames:
+        - ID
+
+    CreateReviewInput:
+      type: object
+      description: Create review input
+      required:
+        - entityId
+        - comment
+      properties:
+        entityId:
+          type: string
+          description: Identifier of the entity to review
+          example: 'products::apple'
+        comment:
+          type: string
+          description: Comment of the review
+          example: 'One comment of the product'
+
+    UpdateReviewInput:
+      type: object
+      description: Update review input
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+          description: Comment of the review
+          example: 'One comment of the product'
+
+    Review:
+      type: object
+      description: Review
+      required:
+        - id
+        - username
+        - entityId
+        - locale
+        - comment
+      properties:
+        id:
+          type: string
+          description: Identifier of the entity
+          example: 'john::products::apple'
+        username:
+          type: string
+          description: Username of the review
+          example: 'john'
+        entityId:
+          type: string
+          description: Identifier of the entity
+          example: 'products::apple'
+        locale:
+          type: string
+          description: Localization of the review
+          example: 'en-US'
+        comment:
+          type: string
+          description: Comment of the review
+          example: 'One comment of the product'
+
+    ReviewList:
+      type: object
+      required:
+        - pageNumber
+        - pageSize
+        - totalItems
+        - items
+      properties:
+        pageNumber:
+          type: integer
+          description: Number of total pages
+        pageSize:
+          type: integer
+          description: Size of each page
+        totalItems:
+          type: integer
+          description: Number of total items
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+
+

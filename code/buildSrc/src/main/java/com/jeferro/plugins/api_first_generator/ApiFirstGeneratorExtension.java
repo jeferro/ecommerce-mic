@@ -1,13 +1,12 @@
 package com.jeferro.plugins.api_first_generator;
 
 import java.io.File;
+import java.util.List;
 
 public class ApiFirstGeneratorExtension {
 
-    public String basePackage;
+    public File buildDir;
 
-    public File specFile;
-
-    public File targetDir;
+    public List<ApiFirstGeneratorSpec> specs;
 
 }

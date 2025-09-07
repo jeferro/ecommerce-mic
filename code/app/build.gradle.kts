@@ -1,3 +1,5 @@
+import com.jeferro.plugins.api_first_generator.ApiFirstGeneratorSpec
+
 plugins {
     id("java-library")
     id("org.springframework.boot")
@@ -44,9 +46,24 @@ tasks.withType<JavaCompile> {
 
 // Rest
 apiFirstGenerator {
-    basePackage = "com.jeferro.products.products.infrastructure.rest_api.dtos"
-    specFile = file("${projectDir}/../../apis/rest/v1/openapi.yml")
-    targetDir = file("${projectDir}/build/generated-resources/rest/v1")
+    buildDir = file("${projectDir}/build/generated-resources/")
+    specs = listOf(
+        ApiFirstGeneratorSpec().apply {
+            name = "users-v1"
+            basePackage = "com.jeferro.products.users.infrastructure.rest_api"
+            specFile = file("${projectDir}/../../apis/rest/users/users.v1.yml")
+        },
+        ApiFirstGeneratorSpec().apply {
+            name = "products-v1"
+            basePackage = "com.jeferro.products.products.infrastructure.rest_api"
+            specFile = file("${projectDir}/../../apis/rest/products/products.v1.yml")
+        },
+        ApiFirstGeneratorSpec().apply {
+            name = "reviews-v1"
+            basePackage = "com.jeferro.products.reviews.infrastructure.rest_api"
+            specFile = file("${projectDir}/../../apis/rest/reviews/reviews.v1.yml")
+        }
+    )
 }
 
 
