@@ -1,6 +1,6 @@
 package com.jeferro.products.reviews.infrastructure.products_kafka;
 
-import com.jeferro.products.generated.kafka.v1.dtos.ProductDeletedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedAvroDTO;
 import com.jeferro.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.infrastructure.products_kafka.mappers.ReviewKafkaMapper;
 import com.jeferro.shared.ddd.application.bus.UseCaseBus;

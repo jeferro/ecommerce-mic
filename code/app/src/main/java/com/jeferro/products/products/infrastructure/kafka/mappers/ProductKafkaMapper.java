@@ -1,16 +1,16 @@
 package com.jeferro.products.products.infrastructure.kafka.mappers;
 
-import com.jeferro.products.generated.kafka.v1.dtos.ProductCreatedAvroDTO;
-import com.jeferro.products.generated.kafka.v1.dtos.ProductDeletedAvroDTO;
-import com.jeferro.products.generated.kafka.v1.dtos.ProductPublishedAvroDTO;
-import com.jeferro.products.generated.kafka.v1.dtos.ProductUnpublishedAvroDTO;
-import com.jeferro.products.generated.kafka.v1.dtos.ProductUpdatedAvroDTO;
 import com.jeferro.products.products.domain.events.ProductVersionCreated;
 import com.jeferro.products.products.domain.events.ProductVersionDeleted;
 import com.jeferro.products.products.domain.events.ProductVersionEvent;
 import com.jeferro.products.products.domain.events.ProductVersionPublished;
 import com.jeferro.products.products.domain.events.ProductVersionUnpublished;
 import com.jeferro.products.products.domain.events.ProductVersionUpdated;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductCreatedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductPublishedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUnpublishedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUpdatedAvroDTO;
 import com.jeferro.shared.mappers.EventMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
