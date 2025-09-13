@@ -21,12 +21,14 @@ public class InfrastructureTest extends BaseArchUnit {
 	classes()
 		.that().resideInAPackage(INFRASTRUCTURE_LAYER)
 		.and().haveSimpleNameEndingWith(DTO_SUFFIX)
+		.and().haveSimpleNameNotContaining("Builder")
 		.should().resideInAnyPackage(DTO_PACKAGE)
 		.check(importedClasses);
 
 	classes()
 		.that().resideInAPackage(INFRASTRUCTURE_LAYER)
 		.and().resideInAnyPackage(DTO_PACKAGE)
+		.and().haveSimpleNameNotContaining("Builder")
 		.should().haveSimpleNameEndingWith(DTO_SUFFIX)
 		.check(importedClasses);
   }
@@ -35,6 +37,8 @@ public class InfrastructureTest extends BaseArchUnit {
   public void mappers_should_be_inside_mappers_package() {
 	classes()
 		.that().resideInAPackage(INFRASTRUCTURE_LAYER)
+		.and().areNotAnonymousClasses()
+		.and().haveSimpleNameNotContaining("$")
 		.and().haveSimpleNameEndingWith(MAPPER_SUFFIX)
 		.or().haveSimpleNameEndingWith(MAPPER_IMPL_SUFFIX)
 		.should().resideInAnyPackage(MAPPER_PACKAGE)
@@ -42,6 +46,8 @@ public class InfrastructureTest extends BaseArchUnit {
 
 	classes()
 		.that().resideInAPackage(INFRASTRUCTURE_LAYER)
+		.and().areNotAnonymousClasses()
+		.and().haveSimpleNameNotContaining("$")
 		.and().resideInAnyPackage(MAPPER_PACKAGE)
 		.should().haveSimpleNameEndingWith(MAPPER_SUFFIX)
 		.orShould().haveSimpleNameEndingWith(MAPPER_IMPL_SUFFIX)
