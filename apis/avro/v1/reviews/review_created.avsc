@@ -1,5 +1,5 @@
 {
-  "namespace": "com.jeferro.products.generated.kafka.v1.dtos",
+  "namespace": "com.jeferro.products.reviews.infrastructure.kafka.dtos",
   "type": "record",
   "name": "ReviewCreatedAvroDTO",
   "fields": [
@@ -15,7 +15,7 @@
     },
     {
       "name": "entityId",
-      "type": "EntityId",
+      "type": "EntityIdAvroDTO",
       "doc": "Identifier of the entity"
     },
     {

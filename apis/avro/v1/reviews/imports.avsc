@@ -1,7 +1,7 @@
 [
   {
-    "namespace": "com.jeferro.products.generated.kafka.v1.dtos",
-    "name": "EntityId",
+    "namespace": "com.jeferro.products.reviews.infrastructure.kafka.dtos",
+    "name": "EntityIdAvroDTO",
     "type": "record",
     "fields": [
       {
