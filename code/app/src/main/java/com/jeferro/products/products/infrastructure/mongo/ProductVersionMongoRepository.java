@@ -5,17 +5,11 @@ import com.jeferro.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.products.products.infrastructure.mongo.daos.ProductsMongoDao;
-import com.jeferro.products.products.infrastructure.mongo.dtos.ProductVersionMongoDTO;
 import com.jeferro.products.products.infrastructure.mongo.mappers.ProductMongoMapper;
-import com.jeferro.products.products.infrastructure.mongo.services.ProductQueryMongoCreator;
-import com.jeferro.shared.auth.infrastructure.mongo.services.CustomMongoTemplate;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -25,10 +19,6 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
     private final ProductMongoMapper productMongoMapper = ProductMongoMapper.INSTANCE;
 
     private final ProductsMongoDao productsMongoDao;
-
-    private final ProductQueryMongoCreator productQueryMongoCreator;
-
-    private final CustomMongoTemplate customMongoTemplate;
 
     @Override
     public void save(ProductVersion productVersion) {
@@ -54,14 +44,8 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
 
     @Override
     public PaginatedList<ProductVersion> findAll(ProductVersionCriteria criteria) {
-        Query query = productQueryMongoCreator.create(criteria);
+        var page = productsMongoDao.findAllByCriteria(criteria);
 
-        Page<ProductVersionMongoDTO> page = customMongoTemplate.findPage(query, ProductVersionMongoDTO.class);
-
-        List<ProductVersion> entities = page.getContent().stream()
-                .map(productMongoMapper::toDomain)
-                .toList();
-
-        return PaginatedList.createOfFilter(entities, criteria, page.getTotalElements());
+        return productMongoMapper.toDomain(page);
     }
 }

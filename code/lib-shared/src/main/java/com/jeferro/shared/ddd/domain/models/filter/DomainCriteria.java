@@ -27,8 +27,4 @@ public abstract class DomainCriteria<Order> extends ValueObject {
     public void nextPage() {
         pageNumber = pageNumber + 1;
     }
-
-    private boolean hasOrder() {
-        return order != null;
-    }
 }
