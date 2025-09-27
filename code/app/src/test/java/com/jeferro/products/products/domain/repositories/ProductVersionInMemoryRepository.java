@@ -88,7 +88,7 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
 
   private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionCriteria filter) {
 	return switch (filter.getOrder()) {
-	  case ID, NAME, TYPE_ID -> -1;
+	  case ID, NAME -> -1;
 	  case START_EFFECTIVE_DATE -> p2.getEffectiveDate().isAfter(p1.getEffectiveDate()) ? -1 : 1;
 	};
   }

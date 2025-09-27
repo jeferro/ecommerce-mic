@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductsMongoDao extends MongoDao<ProductVersionMongoDTO, String, ProductVersionCriteria> {
+public class ProductVersionsMongoDao extends MongoDao<ProductVersionMongoDTO, String, ProductVersionCriteria> {
 
-  protected ProductsMongoDao(MongoTemplate mongoTemplate) {
+  protected ProductVersionsMongoDao(MongoTemplate mongoTemplate) {
 	super(mongoTemplate);
   }
 
@@ -61,7 +61,6 @@ public class ProductsMongoDao extends MongoDao<ProductVersionMongoDTO, String, P
   @Override
   protected String mapOrder(ProductVersionCriteria domainCriteria) {
 	return switch (domainCriteria.getOrder()) {
-	  case TYPE_ID -> "typeId";
 	  case NAME -> "name";
 	  case START_EFFECTIVE_DATE -> "effectiveDate";
 	  default -> "_id";

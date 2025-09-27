@@ -1,7 +1,6 @@
 package com.jeferro.products.products.infrastructure.rest_api;
 
 import com.jeferro.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.infrastructure.rest_api.ProductVersionRestController;
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.products.shared.infrastructure.adapters.utils.ApprovalUtils;
@@ -31,7 +30,14 @@ class ProductVersionRestControllerTest extends RestControllerTest {
         );
         stubUseCaseBus.init(products);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/products?pageNumber=0&pageSize=10&&order=NAME&ascending=true&name=apple")
+        var url = "/v1/products?"
+            + "pageNumber=0"
+            + "&pageSize=10"
+            + "&order=NAME"
+            + "&ascending=true"
+            + "&name=apple";
+
+        var requestBuilder = MockMvcRequestBuilders.get(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
                 .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);

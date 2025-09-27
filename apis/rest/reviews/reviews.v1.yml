@@ -49,22 +49,22 @@ paths:
       parameters:
         - name: pageNumber
           in: query
-          required: false
+          required: true
           schema:
             type: integer
           description: Number of the page
         - name: pageSize
           in: query
-          required: false
+          required: true
           schema:
             type: integer
           description: Size of the page
         - name: order
           in: query
+          required: true
           schema:
             $ref: '#/components/schemas/ReviewOrder'
           description: Order of the result
-          required: false
         - name: ascending
           in: query
           required: false

@@ -20,6 +20,7 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
         super(id);
 
         this.name = name;
+        this.status = status;
     }
 
     @Override
