@@ -2,7 +2,7 @@ package com.jeferro.products.shared.domain.repositories;
 
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
-import com.jeferro.shared.ddd.domain.models.filter.Criteria;
+import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 
 import java.util.*;
 
@@ -46,8 +46,8 @@ public abstract class InMemoryRepository<Aggregate extends AggregateRoot<Id>, Id
         return aggregate.equals(saved);
     }
 
-    protected List<Aggregate> paginateEntities(List<Aggregate> entities, Criteria<?> criteria) {
-        int initialIndex = criteria.getPageNumber() * criteria.getPageSize();
+    protected List<Aggregate> paginateEntities(List<Aggregate> entities, DomainCriteria<?> domainCriteria) {
+        int initialIndex = domainCriteria.getPageNumber() * domainCriteria.getPageSize();
         int maxIndex = entities.size() - 1;
 
         if (initialIndex > maxIndex) {

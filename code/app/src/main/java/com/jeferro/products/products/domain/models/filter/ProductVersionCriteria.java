@@ -2,7 +2,7 @@ package com.jeferro.products.products.domain.models.filter;
 
 import com.jeferro.products.products.domain.models.ProductCode;
 import com.jeferro.products.products.domain.models.ProductVersionId;
-import com.jeferro.shared.ddd.domain.models.filter.Criteria;
+import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -11,7 +11,7 @@ import static com.jeferro.products.products.domain.models.filter.ProductVersionO
 import static com.jeferro.products.products.domain.models.filter.ProductVersionOrder.START_EFFECTIVE_DATE;
 
 @Getter
-public class ProductVersionCriteria extends Criteria<ProductVersionOrder> {
+public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> {
 
     private final ProductCode code;
 

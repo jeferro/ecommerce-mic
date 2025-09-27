@@ -1,6 +1,6 @@
 package com.jeferro.shared.ddd.infrastructure.mongo.services;
 
-import com.jeferro.shared.ddd.domain.models.filter.Criteria;
+import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
-public abstract class QueryMongoCreator<Order, C extends Criteria<Order>> {
+public abstract class QueryMongoCreator<Order, C extends DomainCriteria<Order>> {
 
     public Query create(C filter) {
         var query = createQuery(filter);

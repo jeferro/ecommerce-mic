@@ -1,12 +1,12 @@
 package com.jeferro.products.reviews.domain.models;
 
-import com.jeferro.shared.ddd.domain.models.filter.Criteria;
+import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import lombok.Getter;
 
 import static com.jeferro.products.reviews.domain.models.ReviewOrder.ID;
 
 @Getter
-public class ReviewCriteria extends Criteria<ReviewOrder> {
+public class ReviewCriteria extends DomainCriteria<ReviewOrder> {
 
     private final EntityId entityId;
 
