@@ -1,7 +1,7 @@
 package com.jeferro.products.reviews.domain.repositories;
 
 import com.jeferro.products.reviews.domain.models.Review;
-import com.jeferro.products.reviews.domain.models.ReviewCriteria;
+import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.ReviewMother;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;

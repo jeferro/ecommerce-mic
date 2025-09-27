@@ -3,7 +3,8 @@ package com.jeferro.products.products.domain.repositories;
 import com.jeferro.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.domain.models.filter.ProductVersionCriteria;
+import com.jeferro.products.products.domain.models.ProductVersionSummary;
+import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
@@ -33,6 +34,21 @@ public class ProductVersionInMemoryRepository extends InMemoryRepository<Product
 	var paginatedEntities = paginateEntities(entities, filter);
 
 	return PaginatedList.createOfList(paginatedEntities);
+  }
+
+  @Override
+  public PaginatedList<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
+	var entities = findAll(criteria).stream()
+		.map(this::mapProductVersionSummary)
+		.toList();
+
+	return PaginatedList.createOfList(entities);
+  }
+
+  private ProductVersionSummary mapProductVersionSummary(ProductVersion productVersion) {
+	return new ProductVersionSummary(productVersion.getId(),
+		productVersion.getName(),
+		productVersion.getStatus());
   }
 
   private boolean matchCriteria(ProductVersionCriteria filter, ProductVersion productVersion) {

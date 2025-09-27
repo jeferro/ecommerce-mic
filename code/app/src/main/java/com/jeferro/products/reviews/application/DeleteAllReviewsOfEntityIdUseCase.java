@@ -2,7 +2,7 @@ package com.jeferro.products.reviews.application;
 
 import com.jeferro.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.domain.models.Review;
-import com.jeferro.products.reviews.domain.models.ReviewCriteria;
+import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;

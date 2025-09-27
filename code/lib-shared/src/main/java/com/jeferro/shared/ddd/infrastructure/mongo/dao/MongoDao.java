@@ -73,6 +73,26 @@ public abstract class MongoDao<DTO,
 	return new PageImpl<>(entities, pageable, count);
   }
 
+  public <Summary> Page<Summary> findAllByCriteria(C criteria, Class<Summary> entityClass, List<String> projections) {
+	var query = mapCriteriaToQuery(criteria);
+
+	long count = mongoTemplate.count(query, entityClass);
+
+	var pageable = mapCriteriaToPageable(criteria);
+	query.with(pageable);
+
+	var sort = mapCriteriaToSort(criteria);
+	query.with(sort);
+
+	var fields = query.fields();
+
+	projections.forEach(fields::include);
+
+	List<Summary> entities = mongoTemplate.find(query, entityClass);
+
+	return new PageImpl<>(entities, pageable, count);
+  }
+
   private Query mapCriteriaToQuery(C domainCriteria) {
 	Query query = new Query();
 

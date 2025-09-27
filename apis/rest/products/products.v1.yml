@@ -344,10 +344,6 @@ components:
           format: date-time
           description: Effective date of the product
           example: '2025-08-01T09:00:00Z'
-        typeId:
-          type: string
-          description: Identifier of the product type
-          example: 'fruit'
         name:
           type: object
           additionalProperties:

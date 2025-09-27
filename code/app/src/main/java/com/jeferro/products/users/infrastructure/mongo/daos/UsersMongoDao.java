@@ -1,6 +1,6 @@
 package com.jeferro.products.users.infrastructure.mongo.daos;
 
-import com.jeferro.products.users.domain.models.UserCriteria;
+import com.jeferro.products.users.domain.models.criteria.UserCriteria;
 import com.jeferro.products.users.infrastructure.mongo.dtos.UserMongoDTO;
 import com.jeferro.shared.ddd.infrastructure.mongo.dao.MongoDao;
 import org.springframework.data.mongodb.core.MongoTemplate;

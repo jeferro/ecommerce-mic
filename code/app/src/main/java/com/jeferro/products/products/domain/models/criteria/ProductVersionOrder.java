@@ -1,4 +1,4 @@
-package com.jeferro.products.products.domain.models.filter;
+package com.jeferro.products.products.domain.models.criteria;
 
 public enum ProductVersionOrder {
     ID,

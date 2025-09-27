@@ -26,18 +26,18 @@ public class ProductVersionRestController implements ProductVersionsApi {
         Boolean ascending, OffsetDateTime searchDate) {
         var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, null, searchDate);
 
-        var productVersions = useCaseBus.execute(params);
+        var productVersionSummaries = useCaseBus.execute(params);
 
-        return productRestMapper.toSummaryDTO(productVersions);
+        return productRestMapper.toSummaryDTO(productVersionSummaries);
     }
 
     @Override
     public ProductVersionListRestDTO searchProductVersionIds(String productCode, Integer pageNumber, Integer pageSize) {
         var params = productRestMapper.toSearchProductsParams(pageNumber, pageSize, null, null,  productCode, null);
 
-        var productVersions = useCaseBus.execute(params);
+        var productVersionSummaries = useCaseBus.execute(params);
 
-        return productRestMapper.toVersionListDTO(productVersions);
+        return productRestMapper.toVersionListDTO(productVersionSummaries);
     }
 
     @Override

@@ -1,6 +1,6 @@
-package com.jeferro.products.users.domain.models;
+package com.jeferro.products.users.domain.models.criteria;
 
-import com.jeferro.products.reviews.domain.models.ReviewOrder;
+import com.jeferro.products.reviews.domain.models.criteria.ReviewOrder;
 import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import lombok.Getter;
 

@@ -2,7 +2,7 @@ package com.jeferro.products.products.application;
 
 import com.jeferro.products.products.application.params.SearchProductsParams;
 import com.jeferro.products.products.domain.models.ProductVersionMother;
-import com.jeferro.products.products.domain.models.filter.ProductVersionCriteria;
+import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.products.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
