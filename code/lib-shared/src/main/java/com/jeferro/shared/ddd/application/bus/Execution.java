@@ -2,7 +2,7 @@ package com.jeferro.shared.ddd.application.bus;
 
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.exceptions.ApplicationException;
-import com.jeferro.shared.ddd.domain.exceptions.InternalError;
+import com.jeferro.shared.ddd.domain.exceptions.InternalException;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
@@ -78,6 +78,6 @@ public class Execution<P extends Params<R>, R> {
 	  throw cause;
 	}
 
-	throw InternalError.createOf(lastAttempt.getCause());
+	throw InternalException.createOf(lastAttempt.getCause());
   }
 }

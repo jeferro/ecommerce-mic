@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public sealed abstract class ApplicationException extends RuntimeException
-	permits ForbiddenException, NotFoundException, UnauthorizedException, ValueValidationException, InternalError {
+	permits ForbiddenException, NotFoundException, UnauthorizedException, ValueValidationException, InternalException {
 
     protected static final String VALUE_VALIDATION_CODE = "value-validation";
 

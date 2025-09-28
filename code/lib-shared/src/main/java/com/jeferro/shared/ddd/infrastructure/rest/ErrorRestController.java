@@ -1,7 +1,7 @@
 package com.jeferro.shared.ddd.infrastructure.rest;
 
 import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
-import com.jeferro.shared.ddd.domain.exceptions.InternalError;
+import com.jeferro.shared.ddd.domain.exceptions.InternalException;
 import com.jeferro.shared.ddd.domain.exceptions.NotFoundException;
 import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
@@ -65,7 +65,7 @@ public class ErrorRestController {
             Exception.class
     })
     public ResponseEntity<ProblemDetail> handleException(Exception cause) {
-        if(!(cause instanceof InternalError)) {
+        if(!(cause instanceof InternalException)) {
             logger.error("Catch an unknown exception", cause);
         }
 
