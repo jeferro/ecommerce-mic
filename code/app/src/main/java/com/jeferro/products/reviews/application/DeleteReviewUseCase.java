@@ -44,7 +44,7 @@ public class DeleteReviewUseCase extends UseCase<DeleteReviewParams, Review> {
     private Review deleteReview(Review review) {
 	    review.deleteByUser();
 
-        reviewsRepository.deleteById(review.getId());
+        reviewsRepository.delete(review);
 
         eventBus.sendAll(review);
 

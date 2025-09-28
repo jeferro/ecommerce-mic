@@ -19,7 +19,7 @@ public interface ReviewsRepository {
                 .orElseThrow(() -> ReviewNotFoundException.createOf(reviewId));
     }
 
-    void deleteById(ReviewId reviewId);
+    void delete(Review review);
 
     void deleteAll(PaginatedList<Review> reviews);
 

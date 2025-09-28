@@ -37,13 +37,8 @@ public abstract class MongoDao<DTO,
 	return Optional.ofNullable(dto);
   }
 
-  public void deleteById(ID id) {
-	var idCriteria = Criteria.where("_id").is(id);
-
-	var query = new Query();
-	query.addCriteria(idCriteria);
-
-	mongoTemplate.remove(query);
+  public void delete(DTO dto) {
+	mongoTemplate.remove(dto);
   }
 
   public void deleteAllById(Iterable<ID> ids) {

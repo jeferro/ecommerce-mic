@@ -37,10 +37,10 @@ public class ReviewMongoRepository implements ReviewsRepository {
     }
 
     @Override
-    public void deleteById(ReviewId reviewId) {
-        var productReviewIdDto = reviewMongoMapper.toDTO(reviewId);
+    public void delete(Review review) {
+        var productReviewDto = reviewMongoMapper.toDTO(review);
 
-        reviewMongoDao.deleteById(productReviewIdDto);
+        reviewMongoDao.delete(productReviewDto);
     }
 
     @Override

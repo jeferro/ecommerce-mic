@@ -38,10 +38,10 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
     }
 
     @Override
-    public void deleteById(ProductVersionId versionId) {
-        var versionIdDto = productMongoMapper.toDTO(versionId);
+    public void delete(ProductVersion version) {
+        var versionDto = productMongoMapper.toDTO(version);
 
-        productVersionsMongoDao.deleteById(versionIdDto);
+        productVersionsMongoDao.delete(versionDto);
     }
 
     @Override

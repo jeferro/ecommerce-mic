@@ -71,7 +71,7 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVe
     private void deleteProductVersion(ProductVersion version) {
         version.delete();
 
-        productVersionRepository.deleteById(version.getVersionId());
+        productVersionRepository.delete(version);
 
         eventBus.sendAll(version);
     }

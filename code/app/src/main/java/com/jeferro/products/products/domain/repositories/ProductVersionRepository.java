@@ -20,7 +20,7 @@ public interface ProductVersionRepository {
                 .orElseThrow(() -> ProductVersionNotFoundException.createOf(versionId));
     }
 
-    void deleteById(ProductVersionId versionId);
+    void delete(ProductVersion version);
 
     PaginatedList<ProductVersion> findAll(ProductVersionCriteria filter);
 

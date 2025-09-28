@@ -28,8 +28,8 @@ public abstract class InMemoryRepository<Aggregate extends AggregateRoot<Id>, Id
         return Optional.of(product);
     }
 
-    public void deleteById(Id versionId) {
-        data.remove(versionId);
+    public void delete(Aggregate aggregate) {
+        data.remove(aggregate.getId());
     }
 
     public boolean isEmpty() {
