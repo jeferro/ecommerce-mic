@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.time.Instant;
 
 public abstract class UseCaseBus {
 
@@ -22,82 +21,112 @@ public abstract class UseCaseBus {
     }
 
     public <R> R execute(Params<R> params) {
-        Instant startAt = Instant.now();
+        return executeWithRetry(params, 1);
+    }
 
-        Auth auth = null;
-        UseCase<Params<R>, R> useCase = null;
+    public <R> R executeWithRetry(Params<R> params, int retries) {
+        Auth auth = createAuth();
 
-        try {
-            auth = createAuth();
-            useCase = useCases.findByParams(params);
+        UseCase<Params<R>, R> useCase = fidUseCaseOrError(params, auth, retries);
 
-            ensurePermissions(auth, useCase);
+        ensurePermissions(params, auth, retries, useCase);
 
-            R result = useCase.execute(auth, params);
+        var execution = Execution.create(auth, params, retries);
 
-            logSuccessExecution(startAt, auth, useCase, params, result);
+        while(!execution.isEnded()){
+            try {
+                execution.startAttempt();
 
-            return result;
-        } catch (Exception cause) {
-            logErrorExecution(startAt, auth, useCase, params, cause);
+                R result = useCase.execute(auth, params);
 
-            throw cause;
+                execution.endAttemptSuccessfully(result);
+            }
+            catch (RuntimeException cause){
+                execution.endAttemptWithError(cause);
+            }
         }
+
+        logExecution(execution);
+
+        return execution.getResultOrError();
     }
 
     protected abstract Auth createAuth();
 
-    private void ensurePermissions(Auth auth, UseCase<?, ?> useCase) {
+    private <R> UseCase<Params<R>, R> fidUseCaseOrError(Params<R> params, Auth auth, int retries) {
+        UseCase<Params<R>, R> useCase = useCases.findByParams(params);
+
+        if( useCase == null){
+            var useCaseNotFoundError = UseCaseNotFoundException.createOfNotFound(params);
+
+            logPreviousError(auth, params, retries, useCaseNotFoundError);
+
+            throw useCaseNotFoundError;
+        }
+
+        return useCase;
+    }
+
+    private <R> void ensurePermissions(Params<R> params, Auth auth, int retries, UseCase<Params<R>, R> useCase) {
         var mandatoryRoles = useCase.getMandatoryUserRoles();
 
         if (!auth.hasRoles(mandatoryRoles)) {
-            throw ForbiddenException.createOf(auth, mandatoryRoles);
+            var forbiddenError = ForbiddenException.createOf(auth, mandatoryRoles);
+
+            logPreviousError(auth, params, retries, forbiddenError);
+
+            throw forbiddenError;
         }
     }
 
-    private void logSuccessExecution(
-            Instant startAt,
-            Auth auth,
-            UseCase<?, ?> useCase,
-            Params<?> params,
-            Object result
-    ) {
-        var useCaseName = useCase.getClass().getSimpleName();
-        var duration = calculateDuration(startAt);
+    private <R> void logExecution(Execution<Params<R>, R> execution) {
+        execution.getAttempts().forEach(attempt -> logAttempt(execution, attempt));
+    }
 
+    private <R> void logAttempt(Execution<Params<R>, R> execution, ExecutionAttempt<R> attempt) {
+        if (attempt.isError()){
+            logError(attempt.getDuration(),
+                execution.getAuth(),
+                execution.getParams(),
+                attempt.getNumAttempt(),
+                execution.getRetries(),
+                attempt.getCause());
+        }
+        else{
+            logSuccessAttempt(execution, attempt);
+        }
+    }
+
+    private <R> void logSuccessAttempt(Execution<Params<R>, R> execution, ExecutionAttempt<R> attempt) {
         logger.info("""
                 \n\t Duration: {}\s
                 \t Auth: {}\s
-                \t Use case: {}\s
                 \t Params: {}\s
+                \t Attempt: [{} / {}]\s
                 \t Result: {}\s
-                """, duration, auth, useCaseName, params, result);
+                """, attempt.getDuration(),
+            execution.getAuth(),
+            execution.getParams(),
+            attempt.getNumAttempt(),
+            execution.getRetries(),
+            attempt.getResult());
     }
 
-    private void logErrorExecution(
-            Instant startAt,
-            Auth auth,
-            UseCase<?, ?> useCase,
-            Params<?> params,
-            Exception cause
-    ) {
-        var useCaseName = useCase != null
-                ? useCase.getClass().getSimpleName()
-                : "--";
-
-        var duration = calculateDuration(startAt);
-
+    private <R> void logPreviousError(Auth auth, Params<R> params, int retries, Exception cause) {
         logger.error("""
                 \n\t Duration: {}\s
                 \t Auth: {}\s
-                \t Use case: {}\s
-                \t Params: {}
-                """, duration, auth, useCaseName, params, cause);
+                \t Params: {}\s
+                \t Attempt: [{} / {}]\s
+                """, null, auth, 0, retries, params, cause);
     }
 
-    private Duration calculateDuration(Instant startAt) {
-        Instant endAt = Instant.now();
-
-        return Duration.between(startAt, endAt);
+    private <R> void logError(Duration duration, Auth auth, Params<R> params, int numAttempt, int retries, Exception cause) {
+        logger.error("""
+                \n\t Duration: {}\s
+                \t Auth: {}\s
+                \t Params: {}\s
+                \t Attempt: [{} / {}]\s
+                """, duration, auth, numAttempt, retries, params, cause);
     }
 }

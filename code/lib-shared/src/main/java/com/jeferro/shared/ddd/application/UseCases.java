@@ -31,10 +31,8 @@ public class UseCases {
     public <R> UseCase<Params<R>, R> findByParams(Params<R> params) {
         Class<?> paramsClass = params.getClass();
 
-        if (!useCases.containsKey(paramsClass)) {
-            throw UseCaseNotFoundException.createOfNotFound(paramsClass);
-        }
-
-        return (UseCase<Params<R>, R>) useCases.get(paramsClass);
+        return useCases.containsKey(paramsClass)
+            ? (UseCase<Params<R>, R>) useCases.get(paramsClass)
+            : null;
     }
 }

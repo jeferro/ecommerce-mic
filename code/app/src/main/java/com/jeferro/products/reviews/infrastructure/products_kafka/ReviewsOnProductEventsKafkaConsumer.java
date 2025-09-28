@@ -31,7 +31,7 @@ public class ReviewsOnProductEventsKafkaConsumer {
                 reviewKafkaMapper.toDomain("products", productDeletedAvroDTO.getVersionId())
         );
 
-        useCaseBus.execute(params);
+        useCaseBus.executeWithRetry(params, 3);
     }
 
     @KafkaHandler(isDefault = true)
