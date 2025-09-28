@@ -9,7 +9,9 @@ public class UseCaseNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public static <T> UseCaseNotFoundException createOfNotFound(Class<T> paramsClazz){
-        return new UseCaseNotFoundException("Use case not found for params: " + paramsClazz.getSimpleName());
+    public static <T> UseCaseNotFoundException createOfNotFound(T params){
+        var paramsClass = params.getClass();
+
+        return new UseCaseNotFoundException("Use case not found for params: " + paramsClass.getSimpleName());
     }
 }

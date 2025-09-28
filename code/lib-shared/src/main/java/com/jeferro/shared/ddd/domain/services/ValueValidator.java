@@ -13,6 +13,12 @@ public class ValueValidator {
         }
     }
 
+    public static <T> void isPositive(int value, String attributeName) {
+        if (value < 0 || value == 0) {
+            throw ValueValidationException.createOfMessage(attributeName + " is negative value: " + value);
+        }
+    }
+
     public static <T> void isNotBlank(String value, String attributeName) {
         if (value == null || value.isBlank()) {
 		  throw ValueValidationException.createOfMessage(attributeName + " is null or blank");
