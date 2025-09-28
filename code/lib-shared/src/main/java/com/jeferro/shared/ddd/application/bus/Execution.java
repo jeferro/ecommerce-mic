@@ -69,7 +69,7 @@ public class Execution<P extends Params<R>, R> {
 	var lastAttempt = attempts.getLast();
 
 	if (lastAttempt.isSuccess()) {
-	  return (R) lastAttempt.getResult();
+	  return lastAttempt.getResult();
 	}
 
 	var cause = lastAttempt.getCause();
