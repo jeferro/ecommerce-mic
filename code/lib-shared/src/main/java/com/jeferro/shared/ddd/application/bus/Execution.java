@@ -1,6 +1,8 @@
 package com.jeferro.shared.ddd.application.bus;
 
 import com.jeferro.shared.ddd.application.params.Params;
+import com.jeferro.shared.ddd.domain.exceptions.ApplicationException;
+import com.jeferro.shared.ddd.domain.exceptions.InternalError;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
@@ -22,47 +24,60 @@ public class Execution<P extends Params<R>, R> {
   private final List<ExecutionAttempt<R>> attempts;
 
   public static <P extends Params<R>, R> Execution<P, R> create(Auth auth, P params, int retries) {
-    ValueValidator.isPositive(retries, "retries");
+	ValueValidator.isPositive(retries, "retries");
 
-    List<ExecutionAttempt<R>> attempts = new ArrayList<>();
+	List<ExecutionAttempt<R>> attempts = new ArrayList<>();
 
-    return new Execution<>(auth, params, retries, attempts);
+	return new Execution<>(auth, params, retries, attempts);
   }
 
   public void startAttempt() {
-    var numAttempt = attempts.size() + 1;
+	var numAttempt = attempts.size() + 1;
 
-    var attempt = ExecutionAttempt.<R>create(numAttempt);
+	var attempt = ExecutionAttempt.<R>create(numAttempt);
 
-    attempts.add(attempt);
+	attempts.add(attempt);
   }
 
   public void endAttemptSuccessfully(R result) {
-    var lastAttempt = attempts.getLast();
+	var lastAttempt = attempts.getLast();
 
-    lastAttempt.markAsSuccess(result);
+	lastAttempt.markAsSuccess(result);
   }
 
   public void endAttemptWithError(RuntimeException cause) {
-    var lastAttempt = attempts.getLast();
+	var lastAttempt = attempts.getLast();
 
-    lastAttempt.markAsError(cause);
+	lastAttempt.markAsError(cause);
   }
 
   public boolean isEnded() {
-    var lastAttempt = attempts.getLast();
+	if (attempts.isEmpty()) {
+	  return false;
+	}
 
-    return lastAttempt.isError()
-      && attempts.size() >= retries;
+	if (attempts.size() == retries) {
+	  return true;
+	}
+
+	var lastAttempt = attempts.getLast();
+
+	return lastAttempt.isSuccess();
   }
 
   public R getResultOrError() {
-    var lastAttempt = attempts.getLast();
+	var lastAttempt = attempts.getLast();
 
-    if(lastAttempt.isError()){
-      throw lastAttempt.getCause();
-    }
+	if (lastAttempt.isSuccess()) {
+	  return (R) lastAttempt.getResult();
+	}
 
-    return (R) lastAttempt.getResult();
+	var cause = lastAttempt.getCause();
+
+	if (cause instanceof ApplicationException) {
+	  throw cause;
+	}
+
+	throw InternalError.createOf(lastAttempt.getCause());
   }
 }

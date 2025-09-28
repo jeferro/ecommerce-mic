@@ -103,8 +103,8 @@ public abstract class UseCaseBus {
                 \t Auth: {}\s
                 \t Params: {}\s
                 \t Attempt: [{} / {}]\s
-                \t Result: {}\s
-                """, attempt.getDuration(),
+                \t Result: {}""",
+            attempt.getDuration(),
             execution.getAuth(),
             execution.getParams(),
             attempt.getNumAttempt(),
@@ -113,12 +113,7 @@ public abstract class UseCaseBus {
     }
 
     private <R> void logPreviousError(Auth auth, Params<R> params, int retries, Exception cause) {
-        logger.error("""
-                \n\t Duration: {}\s
-                \t Auth: {}\s
-                \t Params: {}\s
-                \t Attempt: [{} / {}]\s
-                """, null, auth, 0, retries, params, cause);
+        logError(null, auth, params, 0, retries, cause);
     }
 
     private <R> void logError(Duration duration, Auth auth, Params<R> params, int numAttempt, int retries, Exception cause) {
@@ -126,7 +121,7 @@ public abstract class UseCaseBus {
                 \n\t Duration: {}\s
                 \t Auth: {}\s
                 \t Params: {}\s
-                \t Attempt: [{} / {}]\s
-                """, duration, auth, numAttempt, retries, params, cause);
+                \t Attempt: [{} / {}]""",
+            duration, auth, params, numAttempt, retries, cause);
     }
 }

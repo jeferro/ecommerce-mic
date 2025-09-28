@@ -42,6 +42,10 @@ public class ExecutionAttempt<R> {
     return Duration.between(startAt, endAt);
   }
 
+  public boolean isSuccess() {
+    return result != null;
+  }
+
   public boolean isError() {
     return cause != null;
   }
