@@ -1,11 +1,10 @@
 package com.jeferro.products.reviews.domain.repositories;
 
 import com.jeferro.products.reviews.domain.models.Review;
-import com.jeferro.products.reviews.domain.models.ReviewCriteria;
 import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.ReviewMother;
+import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
-import com.jeferro.shared.ddd.domain.models.aggregates.Entity;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
 public class ReviewsInMemoryRepository extends InMemoryRepository<Review, ReviewId>
@@ -33,9 +32,7 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
 
     @Override
     public void deleteAll(PaginatedList<Review> reviews) {
-        reviews.stream()
-                .map(Entity::getId)
-                .forEach(this::deleteById);
+        reviews.forEach(this::delete);
     }
 
     private boolean matchCriteria(Review review, ReviewCriteria criteria) {

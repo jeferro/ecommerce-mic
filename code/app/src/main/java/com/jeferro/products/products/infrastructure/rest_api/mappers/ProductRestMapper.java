@@ -7,15 +7,16 @@ import com.jeferro.products.products.application.params.PublishProductParams;
 import com.jeferro.products.products.application.params.SearchProductsParams;
 import com.jeferro.products.products.application.params.UnpublishProductParams;
 import com.jeferro.products.products.application.params.UpdateProductParams;
+import com.jeferro.products.products.domain.models.ProductVersion;
+import com.jeferro.products.products.domain.models.ProductVersionId;
+import com.jeferro.products.products.domain.models.ProductVersionSummary;
+import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.CreateProductVersionInputRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductOrderRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersionListRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersionRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersionSummaryListRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.UpdateProductVersionInputRestDTO;
-import com.jeferro.products.products.domain.models.ProductVersion;
-import com.jeferro.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.domain.models.filter.ProductVersionCriteria;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateRestMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
@@ -30,13 +31,13 @@ public abstract class ProductRestMapper extends AggregateRestMapper<ProductVersi
 
     public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
 
-    public abstract ProductVersionSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersion> productVersions);
+    public abstract ProductVersionSummaryListRestDTO toSummaryDTO(PaginatedList<ProductVersionSummary> productVersions);
 
-    public String toVersionItemDTO(ProductVersion productVersion) {
+    public String toVersionItemDTO(ProductVersionSummary productVersion) {
         return productVersion.getVersionId().getValue();
     }
 
-    public abstract ProductVersionListRestDTO toVersionListDTO(PaginatedList<ProductVersion> productVersions);
+    public abstract ProductVersionListRestDTO toVersionListDTO(PaginatedList<ProductVersionSummary> productVersions);
 
     public ProductVersionId toDomain(String productCode, String effectiveDate) {
         return new ProductVersionId(productCode + "::" + effectiveDate);

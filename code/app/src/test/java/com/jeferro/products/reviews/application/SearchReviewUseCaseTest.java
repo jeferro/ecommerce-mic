@@ -3,7 +3,7 @@ package com.jeferro.products.reviews.application;
 import com.jeferro.products.products.domain.models.ProductCodeMother;
 import com.jeferro.products.reviews.application.params.SearchReviewParams;
 import com.jeferro.products.reviews.domain.models.EntityId;
-import com.jeferro.products.reviews.domain.models.ReviewCriteria;
+import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.reviews.domain.repositories.ReviewsInMemoryRepository;
 import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;

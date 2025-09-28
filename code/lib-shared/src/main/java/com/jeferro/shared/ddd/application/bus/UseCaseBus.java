@@ -25,21 +25,21 @@ public abstract class UseCaseBus {
         Instant startAt = Instant.now();
 
         Auth auth = null;
-        UseCase<Params<R>, R> useCae = null;
+        UseCase<Params<R>, R> useCase = null;
 
         try {
             auth = createAuth();
-            useCae = useCases.findByParams(params);
+            useCase = useCases.findByParams(params);
 
-            ensurePermissions(auth, useCae);
+            ensurePermissions(auth, useCase);
 
-            R result = useCae.execute(auth, params);
+            R result = useCase.execute(auth, params);
 
-            logSuccessExecution(startAt, auth, useCae, params, result);
+            logSuccessExecution(startAt, auth, useCase, params, result);
 
             return result;
         } catch (Exception cause) {
-            logErrorExecution(startAt, auth, useCae, params, cause);
+            logErrorExecution(startAt, auth, useCase, params, cause);
 
             throw cause;
         }

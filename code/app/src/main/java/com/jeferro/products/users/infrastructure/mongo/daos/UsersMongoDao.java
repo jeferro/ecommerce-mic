@@ -1,11 +1,35 @@
 package com.jeferro.products.users.infrastructure.mongo.daos;
 
+import com.jeferro.products.users.domain.models.criteria.UserCriteria;
 import com.jeferro.products.users.infrastructure.mongo.dtos.UserMongoDTO;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import com.jeferro.shared.ddd.infrastructure.mongo.dao.MongoDao;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.stereotype.Component;
 
-@Repository
-public interface UsersMongoDao extends MongoRepository<UserMongoDTO, String> {
+import java.util.List;
 
+@Component
+public class UsersMongoDao extends MongoDao<UserMongoDTO, String, UserCriteria> {
 
+  protected UsersMongoDao(MongoTemplate mongoTemplate) {
+	super(mongoTemplate);
+  }
+
+  @Override
+  public Class<UserMongoDTO> getEntityClass() {
+	return UserMongoDTO.class;
+  }
+
+  @Override
+  protected List<Criteria> mapCriteria(UserCriteria domainCriteria) {
+	return List.of();
+  }
+
+  @Override
+  protected String mapOrder(UserCriteria domainCriteria) {
+	return switch (domainCriteria.getOrder()){
+	  default -> "_id";
+	};
+  }
 }

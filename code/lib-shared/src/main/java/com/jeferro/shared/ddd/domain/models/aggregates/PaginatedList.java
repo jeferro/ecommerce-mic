@@ -1,6 +1,6 @@
 package com.jeferro.shared.ddd.domain.models.aggregates;
 
-import com.jeferro.shared.ddd.domain.models.filter.Criteria;
+import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import com.jeferro.shared.ddd.domain.models.value_objects.ValueObject;
 import lombok.Getter;
 
@@ -42,17 +42,6 @@ public class PaginatedList<T> extends ValueObject implements Collection<T> {
         long totalItems = items.size();
 
         return new PaginatedList<T>(items, 0, pageSize, totalItems);
-    }
-
-    public static <T> PaginatedList<T> createOfFilter(List<T> items, Criteria<?> criteria, long totalItems) {
-        items = items != null
-                ? new ArrayList<>(items)
-                : new ArrayList<>();
-
-        return new PaginatedList<T>(items,
-                criteria.getPageNumber(),
-                criteria.getPageSize(),
-                totalItems);
     }
 
     @Override

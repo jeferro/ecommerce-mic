@@ -35,6 +35,7 @@ class ReviewRestControllerTest extends RestControllerTest {
         String url = "/v1/reviews?"
             + "pageNumber=1"
             + "&pageSize=10"
+            + "&order=ID"
             + "&entityId=" + johnReviewOfApple.getEntityId();
 
         var requestBuilder = MockMvcRequestBuilders.get(url)

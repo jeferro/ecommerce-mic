@@ -3,7 +3,7 @@ package com.jeferro.products.products.application;
 import com.jeferro.products.products.application.params.DeleteProductParams;
 import com.jeferro.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.domain.models.filter.ProductVersionCriteria;
+import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
@@ -71,7 +71,7 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVe
     private void deleteProductVersion(ProductVersion version) {
         version.delete();
 
-        productVersionRepository.deleteById(version.getVersionId());
+        productVersionRepository.delete(version);
 
         eventBus.sendAll(version);
     }

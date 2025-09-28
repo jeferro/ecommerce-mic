@@ -1,10 +1,12 @@
 package com.jeferro.shared.mappers;
 
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
+import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.springframework.data.domain.Page;
 
 import java.util.Map;
 
@@ -25,6 +27,14 @@ public abstract class AggregateMongoMapper<Aggregate extends AggregateRoot<Ident
 
     @Mapping(target = "id", qualifiedByName = "idToDTO")
     public abstract DTO toDTO(Aggregate entity);
+
+    public PaginatedList<Aggregate> toDomain(Page<DTO> page) {
+        var entities = page.getContent().stream()
+            .map(this::toDomain)
+            .toList();
+
+        return new PaginatedList<>(entities, page.getNumber(), page.getSize(), page.getTotalElements());
+    }
 
     protected LocalizedField toDomain(Map<String, String> values) {
         return new LocalizedField(values);

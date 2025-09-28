@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public abstract class Criteria<Order> extends ValueObject {
+public abstract class DomainCriteria<Order> extends ValueObject {
 
     protected static final int DEFAULT_PAGE_SIZE = 100;
 
@@ -26,9 +26,5 @@ public abstract class Criteria<Order> extends ValueObject {
 
     public void nextPage() {
         pageNumber = pageNumber + 1;
-    }
-
-    private boolean hasOrder() {
-        return order != null;
     }
 }

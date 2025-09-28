@@ -8,7 +8,6 @@ import com.jeferro.products.products.domain.events.ProductVersionUnpublished;
 import com.jeferro.products.products.domain.events.ProductVersionUpdated;
 import com.jeferro.products.products.domain.models.status.ProductStatus;
 import com.jeferro.products.products.domain.services.InstantTruncator;
-import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
@@ -20,13 +19,9 @@ import static com.jeferro.products.products.domain.models.status.ProductStatus.U
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Getter
-public class ProductVersion extends AggregateRoot<ProductVersionId> {
-
-    private LocalizedField name;
+public class ProductVersion extends ProductVersionSummary {
 
     private final ParametricValueId typeId;
-
-    private ProductStatus status;
 
     private Instant endEffectiveDate;
 
@@ -35,11 +30,9 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
                    ParametricValueId typeId,
                    Instant endEffectiveDate,
                    ProductStatus status) {
-        super(id);
+        super(id, name, status);
 
-        this.name = name;
         this.typeId = typeId;
-        this.status = status;
         this.endEffectiveDate = endEffectiveDate;
     }
 
@@ -124,16 +117,6 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
         record(event);
     }
 
-    @Override
-    @Deprecated
-    public ProductVersionId getId() {
-        return id;
-    }
-
-    public ProductVersionId getVersionId() {
-        return id;
-    }
-
     public boolean isPublished() {
         return PUBLISHED.equals(status);
     }
@@ -148,13 +131,5 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
     private Boolean isAfter(Instant effectiveDate) {
         return getEffectiveDate().isAfter(effectiveDate);
-    }
-
-    public ProductCode getCode() {
-        return id.getCode();
-    }
-
-    public Instant getEffectiveDate() {
-        return id.getEffectiveDate();
     }
 }

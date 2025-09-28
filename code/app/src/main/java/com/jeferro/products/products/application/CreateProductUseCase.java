@@ -6,7 +6,7 @@ import com.jeferro.products.products.application.params.CreateProductParams;
 import com.jeferro.products.products.domain.exceptions.ProductVersionAlreadyExistsException;
 import com.jeferro.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.domain.models.ProductVersionId;
-import com.jeferro.products.products.domain.models.filter.ProductVersionCriteria;
+import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;

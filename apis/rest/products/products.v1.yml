@@ -27,22 +27,22 @@ paths:
       parameters:
         - name: pageNumber
           in: query
-          required: false
+          required: true
           schema:
             type: integer
           description: Number of the page
         - name: pageSize
           in: query
-          required: false
+          required: true
           schema:
             type: integer
           description: Size of the page
         - name: order
           in: query
+          required: true
           schema:
             $ref: '#/components/schemas/ProductOrder'
           description: Order of the result
-          required: false
         - name: ascending
           in: query
           required: false
@@ -261,11 +261,9 @@ components:
       enum:
         - 'ID'
         - 'NAME'
-        - 'TYPE_ID'
       x-enum-varnames:
         - ID
         - NAME
-        - TYPE_ID
 
     ProductStatus:
       type: string
@@ -344,10 +342,6 @@ components:
           format: date-time
           description: Effective date of the product
           example: '2025-08-01T09:00:00Z'
-        typeId:
-          type: string
-          description: Identifier of the product type
-          example: 'fruit'
         name:
           type: object
           additionalProperties:
