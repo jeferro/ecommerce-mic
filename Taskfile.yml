@@ -54,6 +54,8 @@ tasks:
       - echo "✅ Project built successfully"
       - echo ""
 
+      - task: format-code
+
   test:
     desc: "Test project"
     silent: true
@@ -70,7 +72,7 @@ tasks:
     dir: "{{.CODE_DIR}}"
     cmds:
       - echo "## Lint project..."
-      - gradle check -x test
+      - gradle spotlessCheck
       - echo "✅ Project linted successfully"
       - echo ""
 
@@ -81,3 +83,14 @@ tasks:
     cmds:
       - echo "## Starting project..."
       - gradle bootRun
+
+  format-code:
+    desc: "Format code of the project"
+    silent: true
+    internal: true
+    dir: "{{.CODE_DIR}}"
+    cmds:
+      - echo "## Formatting project..."
+      - gradle spotlessApply
+      - echo "✅ Project formatted successfully"
+      - echo ""

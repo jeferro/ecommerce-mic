@@ -37,6 +37,10 @@ tasks.withType<JavaCompile> {
     )
 }
 
+tasks.withType<Checkstyle> {
+    exclude("**/generated/**", "**/generated-resources/**", "**/build/**")
+}
+
 
 // Rest
 apiFirstGenerator {

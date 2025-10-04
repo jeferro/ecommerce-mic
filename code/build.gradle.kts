@@ -1,6 +1,6 @@
 plugins {
     id("java-library")
-    id("checkstyle")
+    id("com.diffplug.spotless") version Versions.spotless
     id("jacoco")
     id("org.springframework.boot") version Versions.spring_boot apply false
     id("io.spring.dependency-management") version Versions.spring_dependency_management apply false
@@ -35,12 +35,13 @@ allprojects {
 
 subprojects {
     // Checkstyle
-    apply(plugin = "checkstyle")
+    apply(plugin = "com.diffplug.spotless")
 
-    checkstyle {
-        toolVersion = Versions.checkstyle
-        configFile = file("${rootDir}/../config/checkstyle/checkstyle-java-google-style.xml")
-
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        java {
+            googleJavaFormat("1.17.0")
+            target("src/**/*.java")
+        }
     }
 
     // Jacoco
