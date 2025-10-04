@@ -39,7 +39,7 @@ subprojects {
 
     checkstyle {
         toolVersion = Versions.checkstyle
-        configFile = file("config/checkstyle/checkstyle-java-google-style.xml")
+        configFile = file("${rootDir}config/checkstyle/checkstyle-java-google-style.xml")
     }
 
     tasks.named("check") {
