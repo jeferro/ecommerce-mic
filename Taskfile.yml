@@ -70,7 +70,7 @@ tasks:
     dir: "{{.CODE_DIR}}"
     cmds:
       - echo "## Lint project..."
-      - gradle check
+      - gradle check -x test
       - echo "✅ Project linted successfully"
       - echo ""
 

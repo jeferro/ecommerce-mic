@@ -39,11 +39,8 @@ subprojects {
 
     checkstyle {
         toolVersion = Versions.checkstyle
-        configFile = file("${rootDir}config/checkstyle/checkstyle-java-google-style.xml")
-    }
+        configFile = file("${rootDir}/../config/checkstyle/checkstyle-java-google-style.xml")
 
-    tasks.named("check") {
-        dependsOn("checkstyleMain", "checkstyleTest")
     }
 
     // Jacoco
