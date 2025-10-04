@@ -7,18 +7,15 @@ on:
       - opened
       - synchronize
       - reopened
-    paths:
-      - code/**
-      - apis/**
+#    paths:
+#      - code/**
+#      - apis/**
 
 jobs:
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    env:
-      # disable default JVM in container
-      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,15 +26,15 @@ jobs:
       - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
+      - name: Check java version
+        run: java -version
+
       - name: Build
         run: task build
 
   test:
     name: Test
     runs-on: ubuntu-latest
-    env:
-      # disable default JVM in container
-      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
