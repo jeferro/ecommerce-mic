@@ -7,9 +7,9 @@ on:
       - opened
       - synchronize
       - reopened
-    paths:
-      - code/**
-      - apis/**
+#    paths:
+#      - code/**
+#      - apis/**
 
 jobs:
 
