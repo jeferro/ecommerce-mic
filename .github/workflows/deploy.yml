@@ -22,7 +22,10 @@ jobs:
   release-version:
     name: Release version
     if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == 'main') && (github.head_ref == 'develop' || startsWith(github.head_ref , 'hotfix')) }}
-    runs-on: ubuntu:24.04
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -85,7 +88,10 @@ jobs:
     name: Build
     needs: [release-version]
     if: always()
-    runs-on: ubuntu:24.04
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -109,7 +115,10 @@ jobs:
     name: Publish Jar
     needs: [build]
     if: always()
-    runs-on: ubuntu:24.04
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -134,7 +143,10 @@ jobs:
     name: Publish Docker
     needs: [build]
     if: always()
-    runs-on: ubuntu:24.04
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -181,7 +193,10 @@ jobs:
     name: Deploy
     needs: [publish-docker]
     if: always()
-    runs-on: ubuntu:24.04
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
