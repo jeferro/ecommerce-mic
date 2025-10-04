@@ -1,5 +1,6 @@
 plugins {
     id("java-library")
+    id("checkstyle")
     id("jacoco")
     id("org.springframework.boot") version Versions.spring_boot apply false
     id("io.spring.dependency-management") version Versions.spring_dependency_management apply false
@@ -31,6 +32,18 @@ subprojects {
     // Java
     tasks.withType<Test> {
         useJUnitPlatform()
+    }
+
+    // Checkstyle
+    apply(plugin = "checkstyle")
+
+    checkstyle {
+        toolVersion = Versions.checkstyle
+        configFile = file("config/checkstyle/checkstyle-java-google-style.xml")
+    }
+
+    tasks.named("check") {
+        dependsOn("checkstyleMain", "checkstyleTest")
     }
 
     // Jacoco
