@@ -20,6 +20,4 @@ public interface Versions {
     String approval_tests = "24.2.0";
 
     String arch_unit = "1.4.1";
-
-    String checkstyle = "10.12.4";
 }
