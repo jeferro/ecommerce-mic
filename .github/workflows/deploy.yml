@@ -23,6 +23,9 @@ jobs:
     name: Release version
     if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == 'main') && (github.head_ref == 'develop' || startsWith(github.head_ref , 'hotfix')) }}
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,19 +89,21 @@ jobs:
     needs: [release-version]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install asdf
+      - name: Install Task
+        uses: go-task/setup-task@v1
+
+      - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
       - name: Build
-        working-directory: code
-        run: gradle build -x test
-        env:
-          # disable default JVM in container
-          JAVA_HOME: ""
+        run: task build
 
       - name: Upload compiled output in artifact
         uses: actions/upload-artifact@v4
@@ -111,12 +116,12 @@ jobs:
     needs: [build]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install asdf
-        uses: ./.github/actions/asdf-install
 
       - name: Download compiled output from artifact
         uses: actions/download-artifact@v4
@@ -139,6 +144,9 @@ jobs:
     needs: [build]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -186,6 +194,9 @@ jobs:
     needs: [publish-docker]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4

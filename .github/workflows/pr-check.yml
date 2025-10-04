@@ -16,33 +16,40 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install asdf
+      - name: Install Task
+        uses: go-task/setup-task@v1
+
+      - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
+      - name: Check Java version
+        run: java -version
+
       - name: Build
-        working-directory: code
-        run: gradle build -x test
-        env:
-          # disable default JVM in container
-          JAVA_HOME: ""
+        run: task build
 
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install asdf
+      - name: Install Task
+        uses: go-task/setup-task@v1
+
+      - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
       - name: Test
-        working-directory: code
-        run: gradle test
-        env:
-          # disable default JVM in container
-          JAVA_HOME: ""
+        run: task build

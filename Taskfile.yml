@@ -1,0 +1,73 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  CODE_DIR: code
+  DOCKER_DIR: docker
+
+tasks:
+  install:
+    desc: "Install project"
+    silent: true
+    cmds:
+      - echo "## Installing ASDF plugins..."
+      - asdf plugin add java || true
+      - asdf plugin add gradle || true
+      - echo "✅ Asdf plugins installed successfully"
+      - echo ""
+
+      - echo "## Installing ASDF tools..."
+      - asdf install
+      - echo "✅ Asdf tools installed successfully"
+      - echo ""
+
+      - task: build
+
+  env-start:
+    desc: "Start environment"
+    silent: true
+    dir: "{{.DOCKER_DIR}}"
+    cmds:
+      - echo "## Starting environment..."
+      - docker compose up -d
+      - echo "✅ Environment started successfully"
+      - echo ""
+
+  env-stop:
+    desc: "Stop environment"
+    silent: true
+    dir: "{{.DOCKER_DIR}}"
+    cmds:
+      - echo "## Stopping environment..."
+      - docker compose down -v
+      - echo "✅ Environment stopped successfully"
+      - echo ""
+
+  build:
+    desc: "Build project"
+    silent: true
+    dir: "{{.CODE_DIR}}"
+    cmds:
+      - echo "## Building project..."
+      - gradle clean build -x test
+      - echo "✅ Project built successfully"
+      - echo ""
+
+  test:
+    desc: "Test project"
+    silent: true
+    dir: "{{.CODE_DIR}}"
+    cmds:
+      - echo "## Testing project..."
+      - gradle test
+      - echo "✅ Project test successfully"
+      - echo ""
+
+  start:
+    desc: "Start project"
+    silent: true
+    dir: "{{.CODE_DIR}}"
+    cmds:
+      - echo "## Starting project..."
+      - gradle bootRun
