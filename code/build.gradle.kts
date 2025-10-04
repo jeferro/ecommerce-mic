@@ -10,8 +10,6 @@ plugins {
 
 
 allprojects {
-    apply(plugin = "java")
-
     repositories {
         mavenCentral()
         mavenLocal()
@@ -20,20 +18,22 @@ allprojects {
         }
     }
 
+    // Java
+    apply(plugin = "java")
+
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(21)
         }
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 
 subprojects {
-    // Java
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
-
     // Checkstyle
     apply(plugin = "checkstyle")
 
