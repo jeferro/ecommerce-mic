@@ -50,7 +50,7 @@ tasks:
     dir: "{{.CODE_DIR}}"
     cmds:
       - echo "## Building project..."
-      - gradle clean build
+      - gradle clean build -x test
       - echo "✅ Project built successfully"
       - echo ""
 

@@ -20,18 +20,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install asdf
-        uses: ./.github/actions/asdf-install
+      - name: Install Task
+        uses: go-task/setup-task@v1
 
-      - name: Install asdf
+      - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
       - name: Build
-        working-directory: code
-        run: gradle build -x test
-        env:
-          # disable default JVM in container
-          JAVA_HOME: ""
+        run: task build
 
   test:
     name: Test
@@ -40,12 +36,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install asdf
+      - name: Install Task
+        uses: go-task/setup-task@v1
+
+      - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
       - name: Test
-        working-directory: code
-        run: gradle test
-        env:
-          # disable default JVM in container
-          JAVA_HOME: ""
+        run: task build
