@@ -13,17 +13,17 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductMongoMapper extends AggregateMongoMapper<ProductVersion, ProductVersionId, ProductVersionMongoDTO> {
+public abstract class ProductMongoMapper
+    extends AggregateMongoMapper<ProductVersion, ProductVersionId, ProductVersionMongoDTO> {
 
-    public static final ProductMongoMapper INSTANCE = Mappers.getMapper(ProductMongoMapper.class);
+  public static final ProductMongoMapper INSTANCE = Mappers.getMapper(ProductMongoMapper.class);
 
-    public abstract ProductVersionSummary toDomain(ProductVersionSummaryMongoDTO dto);
+  public abstract ProductVersionSummary toDomain(ProductVersionSummaryMongoDTO dto);
 
-    public PaginatedList<ProductVersionSummary> toDomainSummary(Page<ProductVersionSummaryMongoDTO> page) {
-        var entities = page.getContent().stream()
-            .map(this::toDomain)
-            .toList();
+  public PaginatedList<ProductVersionSummary> toDomainSummary(
+      Page<ProductVersionSummaryMongoDTO> page) {
+    var entities = page.getContent().stream().map(this::toDomain).toList();
 
-        return new PaginatedList<>(entities, page.getNumber(), page.getSize(), page.getTotalElements());
-    }
+    return new PaginatedList<>(entities, page.getNumber(), page.getSize(), page.getTotalElements());
+  }
 }

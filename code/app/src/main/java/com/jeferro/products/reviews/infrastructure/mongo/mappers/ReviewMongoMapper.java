@@ -9,7 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ReviewMongoMapper extends AggregateMongoMapper<Review, ReviewId, ReviewMongoDTO> {
+public abstract class ReviewMongoMapper
+    extends AggregateMongoMapper<Review, ReviewId, ReviewMongoDTO> {
 
-    public static final ReviewMongoMapper INSTANCE = Mappers.getMapper(ReviewMongoMapper.class);
+  public static final ReviewMongoMapper INSTANCE = Mappers.getMapper(ReviewMongoMapper.class);
 }

@@ -1,5 +1,8 @@
 package com.jeferro.products.products.application;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.jeferro.products.products.application.params.SearchProductsParams;
 import com.jeferro.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
@@ -8,68 +11,53 @@ import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class SearchProductsUseCaseTest {
 
-    private ProductVersionInMemoryRepository productsInMemoryRepository;
+  private ProductVersionInMemoryRepository productsInMemoryRepository;
 
-    private SearchProductsUseCase searchProductsUseCase;
+  private SearchProductsUseCase searchProductsUseCase;
 
-    @BeforeEach
-    void beforeEach() {
-        productsInMemoryRepository = new ProductVersionInMemoryRepository();
+  @BeforeEach
+  void beforeEach() {
+    productsInMemoryRepository = new ProductVersionInMemoryRepository();
 
-        searchProductsUseCase = new SearchProductsUseCase(productsInMemoryRepository);
-    }
+    searchProductsUseCase = new SearchProductsUseCase(productsInMemoryRepository);
+  }
 
-    @Test
-    void should_returnProducts_when_exist() {
-        var params = new SearchProductsParams(
-                ProductVersionCriteria.createEmpty()
-        );
+  @Test
+  void should_returnProducts_when_exist() {
+    var params = new SearchProductsParams(ProductVersionCriteria.createEmpty());
 
-        var result = searchProductsUseCase.execute(
-            AuthMother.john(),
-            params);
+    var result = searchProductsUseCase.execute(AuthMother.john(), params);
 
-        assertEquals(3, result.size());
+    assertEquals(3, result.size());
 
-        var appleV1Summary = ProductVersionMother.appleV1Summary();
-        assertTrue(result.contains(appleV1Summary));
+    var appleV1Summary = ProductVersionMother.appleV1Summary();
+    assertTrue(result.contains(appleV1Summary));
 
-        var pearV1Summary = ProductVersionMother.pearV1Summary();
-        assertTrue(result.contains(pearV1Summary));
-    }
+    var pearV1Summary = ProductVersionMother.pearV1Summary();
+    assertTrue(result.contains(pearV1Summary));
+  }
 
-    @Test
-    void should_returnFilteredProduct_when_exist() {
-        var appleV1 = ProductVersionMother.appleV1();
+  @Test
+  void should_returnFilteredProduct_when_exist() {
+    var appleV1 = ProductVersionMother.appleV1();
 
-        var params = new SearchProductsParams(
-                ProductVersionCriteria.byCode(appleV1.getCode())
-        );
+    var params = new SearchProductsParams(ProductVersionCriteria.byCode(appleV1.getCode()));
 
-        var result = searchProductsUseCase.execute(
-            AuthMother.john(),
-            params);
+    var result = searchProductsUseCase.execute(AuthMother.john(), params);
 
-        result.forEach(productVersion -> assertEquals(appleV1.getCode(), productVersion.getCode()));
-    }
+    result.forEach(productVersion -> assertEquals(appleV1.getCode(), productVersion.getCode()));
+  }
 
-    @Test
-    void should_returnEmptyList_when_productsNotExist() {
-      productsInMemoryRepository.clear();
+  @Test
+  void should_returnEmptyList_when_productsNotExist() {
+    productsInMemoryRepository.clear();
 
-        var params = new SearchProductsParams(
-                ProductVersionCriteria.createEmpty()
-        );
+    var params = new SearchProductsParams(ProductVersionCriteria.createEmpty());
 
-        var result = searchProductsUseCase.execute(
-            AuthMother.john(),
-            params);
+    var result = searchProductsUseCase.execute(AuthMother.john(), params);
 
-        assertTrue(result.isEmpty());
-    }
+    assertTrue(result.isEmpty());
+  }
 }

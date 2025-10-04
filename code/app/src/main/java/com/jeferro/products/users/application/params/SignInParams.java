@@ -9,17 +9,17 @@ import lombok.Getter;
 @Getter
 public class SignInParams extends Params<User> {
 
-    private final Username username;
+  private final Username username;
 
-    private final String password;
+  private final String password;
 
-    public SignInParams(Username username, String password) {
-        super();
+  public SignInParams(Username username, String password) {
+    super();
 
-        ValueValidator.isNotNull(username, "username");
-        ValueValidator.isNotNull(username, "username");
+    ValueValidator.isNotNull(username, "username");
+    ValueValidator.isNotNull(username, "username");
 
-        this.username = username;
-        this.password = password;
-    }
+    this.username = username;
+    this.password = password;
+  }
 }

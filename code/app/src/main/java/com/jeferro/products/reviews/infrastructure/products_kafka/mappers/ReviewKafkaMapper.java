@@ -10,11 +10,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper(config = MapstructConfig.class)
 public abstract class ReviewKafkaMapper extends EventMapper<ReviewEvent> {
 
-    public static final ReviewKafkaMapper INSTANCE = Mappers.getMapper(ReviewKafkaMapper.class);
+  public static final ReviewKafkaMapper INSTANCE = Mappers.getMapper(ReviewKafkaMapper.class);
 
-    public EntityId toDomain(String domain, String id){
-        return EntityId.createOf(domain, id);
-    }
-
-
+  public EntityId toDomain(String domain, String id) {
+    return EntityId.createOf(domain, id);
+  }
 }

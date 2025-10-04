@@ -7,17 +7,14 @@ import lombok.Getter;
 @Getter
 public class ParametricValue extends Projection<ParametricValueId> {
 
-    private final LocalizedField name;
+  private final LocalizedField name;
 
-    private final String value;
+  private final String value;
 
-    public ParametricValue(
-            ParametricValueId id,
-            LocalizedField name,
-            String value) {
-        super(id);
+  public ParametricValue(ParametricValueId id, LocalizedField name, String value) {
+    super(id);
 
-        this.name = name;
-        this.value = value;
-    }
+    this.name = name;
+    this.value = value;
+  }
 }

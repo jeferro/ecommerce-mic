@@ -17,129 +17,129 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @WebMvcTest(ReviewRestController.class)
 class ReviewRestControllerTest extends RestControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private StubUseCaseBus stubUseCaseBus;
+  @Autowired private StubUseCaseBus stubUseCaseBus;
 
-    @Test
-    void execute_search_reviews_on_request() throws Exception {
-        Review johnReviewOfApple = ReviewMother.johnReviewOfApple();
-        var productReviews = PaginatedList.createOfItems(
-            johnReviewOfApple,
-            ReviewMother.emilyReviewOfApple()
-        );
-        stubUseCaseBus.init(productReviews);
+  @Test
+  void execute_search_reviews_on_request() throws Exception {
+    Review johnReviewOfApple = ReviewMother.johnReviewOfApple();
+    var productReviews =
+        PaginatedList.createOfItems(johnReviewOfApple, ReviewMother.emilyReviewOfApple());
+    stubUseCaseBus.init(productReviews);
 
-        String url = "/v1/reviews?"
+    String url =
+        "/v1/reviews?"
             + "pageNumber=1"
             + "&pageSize=10"
             + "&order=ID"
-            + "&entityId=" + johnReviewOfApple.getEntityId();
+            + "&entityId="
+            + johnReviewOfApple.getEntityId();
 
-        var requestBuilder = MockMvcRequestBuilders.get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
-                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
+    var requestBuilder =
+        MockMvcRequestBuilders.get(url)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
+            .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
 
-        var response = mockMvc.perform(requestBuilder)
-                .andReturn()
-                .getResponse();
+    var response = mockMvc.perform(requestBuilder).andReturn().getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
-                response.getStatus(),
-                response.getContentAsString());
-    }
+    ApprovalUtils.verifyAll(
+        stubUseCaseBus.getFirstParamsOrError(),
+        response.getStatus(),
+        response.getContentAsString());
+  }
 
-    @Test
-    void execute_create_review_on_request() throws Exception {
-        var johnReviewOfApple = ReviewMother.johnReviewOfApple();
-        stubUseCaseBus.init(johnReviewOfApple);
+  @Test
+  void execute_create_review_on_request() throws Exception {
+    var johnReviewOfApple = ReviewMother.johnReviewOfApple();
+    stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestContent = """
+    var requestContent =
+        """
                 {
                   "entityId": "%s",
                   "comment": "%s"
                 }"""
-                .formatted(johnReviewOfApple.getEntityId(), johnReviewOfApple.getComment());
+            .formatted(johnReviewOfApple.getEntityId(), johnReviewOfApple.getComment());
 
-        var requestBuilder = MockMvcRequestBuilders.post("/v1/reviews")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
-                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
-                .content(requestContent);
+    var requestBuilder =
+        MockMvcRequestBuilders.post("/v1/reviews")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
+            .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
+            .content(requestContent);
 
-        var response = mockMvc.perform(requestBuilder)
-                .andReturn()
-                .getResponse();
+    var response = mockMvc.perform(requestBuilder).andReturn().getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
-                response.getStatus(),
-                response.getContentAsString());
-    }
+    ApprovalUtils.verifyAll(
+        stubUseCaseBus.getFirstParamsOrError(),
+        response.getStatus(),
+        response.getContentAsString());
+  }
 
-    @Test
-    void execute_get_review_on_request() throws Exception {
-        var johnReviewOfApple = ReviewMother.johnReviewOfApple();
-        stubUseCaseBus.init(johnReviewOfApple);
+  @Test
+  void execute_get_review_on_request() throws Exception {
+    var johnReviewOfApple = ReviewMother.johnReviewOfApple();
+    stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestBuilder = MockMvcRequestBuilders.get("/v1/reviews/" + johnReviewOfApple.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
-                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
+    var requestBuilder =
+        MockMvcRequestBuilders.get("/v1/reviews/" + johnReviewOfApple.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
+            .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
 
-        var response = mockMvc.perform(requestBuilder)
-                .andReturn()
-                .getResponse();
+    var response = mockMvc.perform(requestBuilder).andReturn().getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
-                response.getStatus(),
-                response.getContentAsString());
-    }
+    ApprovalUtils.verifyAll(
+        stubUseCaseBus.getFirstParamsOrError(),
+        response.getStatus(),
+        response.getContentAsString());
+  }
 
-    @Test
-    void execute_update_review_on_request() throws Exception {
-        var johnReviewOfApple = ReviewMother.johnReviewOfApple();
-        stubUseCaseBus.init(johnReviewOfApple);
+  @Test
+  void execute_update_review_on_request() throws Exception {
+    var johnReviewOfApple = ReviewMother.johnReviewOfApple();
+    stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestContent = """
+    var requestContent =
+        """
                 {
                   "comment": "%s"
                 }"""
-                .formatted(johnReviewOfApple.getComment());
+            .formatted(johnReviewOfApple.getComment());
 
-        var requestBuilder = MockMvcRequestBuilders.patch("/v1/reviews/" + johnReviewOfApple.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
-                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
-                .content(requestContent);
+    var requestBuilder =
+        MockMvcRequestBuilders.patch("/v1/reviews/" + johnReviewOfApple.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
+            .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
+            .content(requestContent);
 
-        var response = mockMvc.perform(requestBuilder)
-                .andReturn()
-                .getResponse();
+    var response = mockMvc.perform(requestBuilder).andReturn().getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
-                response.getStatus(),
-                response.getContentAsString());
-    }
+    ApprovalUtils.verifyAll(
+        stubUseCaseBus.getFirstParamsOrError(),
+        response.getStatus(),
+        response.getContentAsString());
+  }
 
-    @Test
-    void execute_delete_review_on_request() throws Exception {
-        var johnReviewOfApple = ReviewMother.johnReviewOfApple();
-        stubUseCaseBus.init(johnReviewOfApple);
+  @Test
+  void execute_delete_review_on_request() throws Exception {
+    var johnReviewOfApple = ReviewMother.johnReviewOfApple();
+    stubUseCaseBus.init(johnReviewOfApple);
 
-        var requestBuilder = MockMvcRequestBuilders.delete("/v1/reviews/" + johnReviewOfApple.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
-                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
+    var requestBuilder =
+        MockMvcRequestBuilders.delete("/v1/reviews/" + johnReviewOfApple.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
+            .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
 
-        var response = mockMvc.perform(requestBuilder)
-                .andReturn()
-                .getResponse();
+    var response = mockMvc.perform(requestBuilder).andReturn().getResponse();
 
-        ApprovalUtils.verifyAll(stubUseCaseBus.getFirstParamsOrError(),
-                response.getStatus(),
-                response.getContentAsString());
-    }
+    ApprovalUtils.verifyAll(
+        stubUseCaseBus.getFirstParamsOrError(),
+        response.getStatus(),
+        response.getContentAsString());
+  }
 }

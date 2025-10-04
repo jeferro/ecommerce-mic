@@ -7,80 +7,75 @@ import com.jeferro.products.reviews.domain.exceptions.ReviewDoesNotBelongUserExc
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
-import lombok.Getter;
-
 import java.util.Locale;
+import lombok.Getter;
 
 @Getter
 public class Review extends AggregateRoot<ReviewId> {
 
-    private Locale locale;
+  private Locale locale;
 
-    private String comment;
+  private String comment;
 
-    public Review(ReviewId id,
-        String comment,
-                         Locale locale) {
-        super(id);
+  public Review(ReviewId id, String comment, Locale locale) {
+    super(id);
 
-        this.locale = locale;
-        this.comment = comment;
+    this.locale = locale;
+    this.comment = comment;
+  }
+
+  public static Review createOf(EntityId entityId, String comment, Auth auth) {
+    ValueValidator.isNotNull(entityId, "entityId");
+    ValueValidator.isNotNull(comment, "comment");
+    ValueValidator.isNotNull(auth, "auth");
+
+    var reviewId = ReviewId.createOf(entityId, auth);
+    var review = new Review(reviewId, comment, auth.getLocale());
+
+    var event = ReviewCreated.create(review);
+    review.record(event);
+
+    return review;
+  }
+
+  public void update(String comment, Auth auth) {
+    ValueValidator.isNotNull(comment, "comment");
+    ValueValidator.isNotNull(locale, "locale");
+
+    this.comment = comment;
+    this.locale = auth.getLocale();
+
+    var event = ReviewUpdated.create(this);
+    record(event);
+  }
+
+  public void deleteByUser() {
+    var event = ReviewDeleted.create(this);
+    record(event);
+  }
+
+  public void deleteBySystem() {
+    var event = ReviewDeleted.create(this);
+    record(event);
+  }
+
+  public String getUsername() {
+    return id.getUsername();
+  }
+
+  public EntityId getEntityId() {
+    return id.getEntityId();
+  }
+
+  public String getDomain() {
+    return id.getEntityId().getDomain();
+  }
+
+  public void ensureReviewBelongsToUser(Auth auth) {
+    if (auth.getUsername().equals(getUsername())) {
+      return;
     }
 
-    public static Review createOf(EntityId entityId,
-                                  String comment,
-                                  Auth auth) {
-        ValueValidator.isNotNull(entityId, "entityId");
-        ValueValidator.isNotNull(comment, "comment");
-        ValueValidator.isNotNull(auth, "auth");
-
-        var reviewId = ReviewId.createOf(entityId, auth);
-        var review = new Review(reviewId, comment, auth.getLocale());
-
-        var event = ReviewCreated.create(review);
-        review.record(event);
-
-        return review;
-    }
-
-    public void update(String comment, Auth auth) {
-        ValueValidator.isNotNull(comment, "comment");
-        ValueValidator.isNotNull(locale, "locale");
-
-        this.comment = comment;
-        this.locale = auth.getLocale();
-
-        var event = ReviewUpdated.create(this);
-        record(event);
-    }
-
-    public void deleteByUser() {
-        var event = ReviewDeleted.create(this);
-        record(event);
-    }
-
-    public void deleteBySystem() {
-        var event = ReviewDeleted.create(this);
-        record(event);
-    }
-
-    public String getUsername() {
-        return id.getUsername();
-    }
-
-    public EntityId getEntityId() {
-        return id.getEntityId();
-    }
-
-    public String getDomain() {
-        return id.getEntityId().getDomain();
-    }
-
-    public void ensureReviewBelongsToUser(Auth auth) {
-        if (auth.getUsername().equals(getUsername())) {
-            return;
-        }
-
-        throw ReviewDoesNotBelongUserException.belongsToOtherUser(getId(), auth);
-    }
+    throw ReviewDoesNotBelongUserException.belongsToOtherUser(getId(), auth);
+  }
 }

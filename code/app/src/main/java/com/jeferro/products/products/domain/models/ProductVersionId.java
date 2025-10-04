@@ -4,9 +4,8 @@ import com.jeferro.products.products.domain.services.InstantTruncator;
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
-import lombok.Getter;
-
 import java.time.Instant;
+import lombok.Getter;
 
 @Getter
 public class ProductVersionId extends StringIdentifier {
@@ -18,31 +17,31 @@ public class ProductVersionId extends StringIdentifier {
   private final Instant effectiveDate;
 
   public ProductVersionId(String value) {
-	super(value);
+    super(value);
 
-	var split = value.split(SEPARATOR);
+    var split = value.split(SEPARATOR);
 
-	if( split.length != 2 ) {
-	  throw ValueValidationException.createOfMessage("Incorrect format " + value);
-	}
+    if (split.length != 2) {
+      throw ValueValidationException.createOfMessage("Incorrect format " + value);
+    }
 
-	this.code = new ProductCode(split[0]);
-	this.effectiveDate = Instant.parse(split[1]);
+    this.code = new ProductCode(split[0]);
+    this.effectiveDate = Instant.parse(split[1]);
   }
 
   private ProductVersionId(ProductCode code, Instant effectiveDate) {
-	super(code + SEPARATOR + effectiveDate);
+    super(code + SEPARATOR + effectiveDate);
 
-	this.code = code;
-	this.effectiveDate = effectiveDate;
+    this.code = code;
+    this.effectiveDate = effectiveDate;
   }
 
   public static ProductVersionId createOf(ProductCode code, Instant effectiveDate) {
-	ValueValidator.isNotNull(code, "code");
-	ValueValidator.isNotNull(effectiveDate, "effectiveDate");
+    ValueValidator.isNotNull(code, "code");
+    ValueValidator.isNotNull(effectiveDate, "effectiveDate");
 
-	var truncatedEffectiveDate = InstantTruncator.trunkToSeconds(effectiveDate);
+    var truncatedEffectiveDate = InstantTruncator.trunkToSeconds(effectiveDate);
 
-	return new ProductVersionId(code, truncatedEffectiveDate);
+    return new ProductVersionId(code, truncatedEffectiveDate);
   }
 }

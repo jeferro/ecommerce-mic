@@ -9,24 +9,23 @@ import lombok.Getter;
 @Getter
 public class ProductVersionDeleted extends ProductVersionEvent {
 
-    private final LocalizedField name;
+  private final LocalizedField name;
 
-    private final ProductStatus status;
+  private final ProductStatus status;
 
-    private ProductVersionDeleted(ProductVersionId versionId,
-                           LocalizedField name,
-                           ProductStatus status) {
-        super(versionId);
+  private ProductVersionDeleted(
+      ProductVersionId versionId, LocalizedField name, ProductStatus status) {
+    super(versionId);
 
-        this.name = name;
-        this.status = status;
-    }
+    this.name = name;
+    this.status = status;
+  }
 
-    public static ProductVersionDeleted create(ProductVersion productVersion) {
-        var versionId = productVersion.getVersionId();
-        var name = productVersion.getName();
-        var status = productVersion.getStatus();
+  public static ProductVersionDeleted create(ProductVersion productVersion) {
+    var versionId = productVersion.getVersionId();
+    var name = productVersion.getName();
+    var status = productVersion.getStatus();
 
-        return new ProductVersionDeleted(versionId, name, status);
-    }
+    return new ProductVersionDeleted(versionId, name, status);
+  }
 }

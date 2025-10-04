@@ -10,14 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringUseCaseBus extends UseCaseBus {
 
-    public SpringUseCaseBus(ApplicationContext applicationContext) {
-        applicationContext.getBeansOfType(UseCase.class)
-                .values()
-                .forEach(useCases::registry);
-    }
+  public SpringUseCaseBus(ApplicationContext applicationContext) {
+    applicationContext.getBeansOfType(UseCase.class).values().forEach(useCases::registry);
+  }
 
-    @Override
-    protected Auth createAuth() {
-        return ContextManager.getAuth();
-    }
+  @Override
+  protected Auth createAuth() {
+    return ContextManager.getAuth();
+  }
 }

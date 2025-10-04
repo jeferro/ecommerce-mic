@@ -1,10 +1,9 @@
 package com.jeferro.shared.ddd.application.bus;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.time.Duration;
 import java.time.Instant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor

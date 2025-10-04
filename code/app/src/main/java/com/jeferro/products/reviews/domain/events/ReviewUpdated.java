@@ -2,31 +2,28 @@ package com.jeferro.products.reviews.domain.events;
 
 import com.jeferro.products.reviews.domain.models.Review;
 import com.jeferro.products.reviews.domain.models.ReviewId;
-import lombok.Getter;
-
 import java.util.Locale;
+import lombok.Getter;
 
 @Getter
 public class ReviewUpdated extends ReviewEvent {
 
-    private final Locale locale;
+  private final Locale locale;
 
-    private final String comment;
+  private final String comment;
 
-    private ReviewUpdated(ReviewId reviewId,
-                                 Locale locale,
-                                 String comment) {
-        super(reviewId);
+  private ReviewUpdated(ReviewId reviewId, Locale locale, String comment) {
+    super(reviewId);
 
-        this.locale = locale;
-        this.comment = comment;
-    }
+    this.locale = locale;
+    this.comment = comment;
+  }
 
-    public static ReviewUpdated create(Review review) {
-        var reviewId = review.getId();
-        var locale = review.getLocale();
-        var comment = review.getComment();
+  public static ReviewUpdated create(Review review) {
+    var reviewId = review.getId();
+    var locale = review.getLocale();
+    var comment = review.getComment();
 
-        return new ReviewUpdated(reviewId, locale, comment);
-    }
+    return new ReviewUpdated(reviewId, locale, comment);
+  }
 }

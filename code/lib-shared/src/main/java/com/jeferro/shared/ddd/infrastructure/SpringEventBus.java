@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringEventBus extends EventBus {
 
-    public SpringEventBus(ApplicationContext applicationContext) {
-        applicationContext.getBeansOfType(EventBusProducer.class)
-                .values()
-                .forEach(this::registryProducer);
-    }
+  public SpringEventBus(ApplicationContext applicationContext) {
+    applicationContext
+        .getBeansOfType(EventBusProducer.class)
+        .values()
+        .forEach(this::registryProducer);
+  }
 }

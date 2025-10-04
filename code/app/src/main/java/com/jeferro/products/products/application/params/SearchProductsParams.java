@@ -10,13 +10,13 @@ import lombok.Getter;
 @Getter
 public class SearchProductsParams extends Params<PaginatedList<ProductVersionSummary>> {
 
-    private final ProductVersionCriteria criteria;
+  private final ProductVersionCriteria criteria;
 
-    public SearchProductsParams(ProductVersionCriteria criteria) {
-        super();
+  public SearchProductsParams(ProductVersionCriteria criteria) {
+    super();
 
-        ValueValidator.isNotNull(criteria, "criteria");
+    ValueValidator.isNotNull(criteria, "criteria");
 
-        this.criteria = criteria;
-    }
+    this.criteria = criteria;
+  }
 }

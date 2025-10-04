@@ -9,18 +9,17 @@ import lombok.Getter;
 @Getter
 public class CreateReviewParams extends Params<Review> {
 
-    private final EntityId entityId;
+  private final EntityId entityId;
 
-    private final String comment;
+  private final String comment;
 
-    public CreateReviewParams(EntityId entityId, String comment) {
-        super();
+  public CreateReviewParams(EntityId entityId, String comment) {
+    super();
 
-        ValueValidator.isNotNull(entityId, "entityId");
-        ValueValidator.isNotNull(comment, "comment");
+    ValueValidator.isNotNull(entityId, "entityId");
+    ValueValidator.isNotNull(comment, "comment");
 
-        this.entityId = entityId;
-        this.comment = comment;
-    }
-
+    this.entityId = entityId;
+    this.comment = comment;
+  }
 }

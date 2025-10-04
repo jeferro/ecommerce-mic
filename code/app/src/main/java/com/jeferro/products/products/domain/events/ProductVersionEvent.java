@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public abstract class ProductVersionEvent extends Event {
 
-    private final ProductVersionId versionId;
+  private final ProductVersionId versionId;
 
-    protected ProductVersionEvent(ProductVersionId versionId) {
-        super();
+  protected ProductVersionEvent(ProductVersionId versionId) {
+    super();
 
-        this.versionId = versionId;
-    }
+    this.versionId = versionId;
+  }
 }

@@ -4,7 +4,7 @@ import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 
 public class ProductCode extends StringIdentifier {
 
-    public ProductCode(String value) {
-        super(value);
-    }
+  public ProductCode(String value) {
+    super(value);
+  }
 }

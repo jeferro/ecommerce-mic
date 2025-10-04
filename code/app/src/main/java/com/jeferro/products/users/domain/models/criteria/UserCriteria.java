@@ -7,10 +7,7 @@ import lombok.Getter;
 @Getter
 public class UserCriteria extends DomainCriteria<ReviewOrder> {
 
-    public UserCriteria(Integer pageNumber,
-        Integer pageSize,
-        ReviewOrder order,
-        Boolean ascending) {
-        super(pageNumber, pageSize, order, ascending);
-	}
+  public UserCriteria(Integer pageNumber, Integer pageSize, ReviewOrder order, Boolean ascending) {
+    super(pageNumber, pageSize, order, ascending);
+  }
 }

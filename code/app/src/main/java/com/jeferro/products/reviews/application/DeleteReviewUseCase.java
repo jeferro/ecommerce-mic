@@ -1,53 +1,52 @@
 package com.jeferro.products.reviews.application;
 
+import static com.jeferro.products.shared.application.Roles.USER;
+
 import com.jeferro.products.reviews.application.params.DeleteReviewParams;
 import com.jeferro.products.reviews.domain.models.Review;
 import com.jeferro.products.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
-
-import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
 public class DeleteReviewUseCase extends UseCase<DeleteReviewParams, Review> {
 
-    private final ReviewsRepository reviewsRepository;
+  private final ReviewsRepository reviewsRepository;
 
-    private final EventBus eventBus;
+  private final EventBus eventBus;
 
-    @Override
-    public Set<String> getMandatoryUserRoles() {
-        return Set.of(USER);
-    }
+  @Override
+  public Set<String> getMandatoryUserRoles() {
+    return Set.of(USER);
+  }
 
-    @Override
-    public Review execute(Auth auth, DeleteReviewParams params) {
-        var review = ensureReviewExists(params);
+  @Override
+  public Review execute(Auth auth, DeleteReviewParams params) {
+    var review = ensureReviewExists(params);
 
-        review.ensureReviewBelongsToUser(auth);
+    review.ensureReviewBelongsToUser(auth);
 
-        return deleteReview(review);
-    }
+    return deleteReview(review);
+  }
 
-    private Review ensureReviewExists(DeleteReviewParams params) {
-        var reviewId = params.getReviewId();
+  private Review ensureReviewExists(DeleteReviewParams params) {
+    var reviewId = params.getReviewId();
 
-        return reviewsRepository.findByIdOrError(reviewId);
-    }
+    return reviewsRepository.findByIdOrError(reviewId);
+  }
 
-    private Review deleteReview(Review review) {
-	    review.deleteByUser();
+  private Review deleteReview(Review review) {
+    review.deleteByUser();
 
-        reviewsRepository.delete(review);
+    reviewsRepository.delete(review);
 
-        eventBus.sendAll(review);
+    eventBus.sendAll(review);
 
-        return review;
-    }
+    return review;
+  }
 }

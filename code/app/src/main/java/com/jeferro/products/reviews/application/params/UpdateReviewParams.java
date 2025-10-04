@@ -9,18 +9,17 @@ import lombok.Getter;
 @Getter
 public class UpdateReviewParams extends Params<Review> {
 
-    private final ReviewId reviewId;
+  private final ReviewId reviewId;
 
-    private final String comment;
+  private final String comment;
 
-    public UpdateReviewParams(ReviewId reviewId, String comment) {
-        super();
+  public UpdateReviewParams(ReviewId reviewId, String comment) {
+    super();
 
-        ValueValidator.isNotNull(reviewId, "reviewId");
-        ValueValidator.isNotNull(comment, "comment");
+    ValueValidator.isNotNull(reviewId, "reviewId");
+    ValueValidator.isNotNull(comment, "comment");
 
-        this.reviewId = reviewId;
-        this.comment = comment;
-    }
-
+    this.reviewId = reviewId;
+    this.comment = comment;
+  }
 }

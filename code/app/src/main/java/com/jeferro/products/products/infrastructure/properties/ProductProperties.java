@@ -10,6 +10,4 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Configuration
 @ConfigurationProperties("application.configs")
-public class ProductProperties extends ProductsConfig {
-
-}
+public class ProductProperties extends ProductsConfig {}

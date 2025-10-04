@@ -18,6 +18,6 @@ public abstract class BaseArchUnit {
 
   @BeforeAll
   public static void setUp() {
-	importedClasses = new ClassFileImporter().importPackages(BASE_PACKAGE);
+    importedClasses = new ClassFileImporter().importPackages(BASE_PACKAGE);
   }
 }

@@ -8,19 +8,19 @@ import java.time.format.DateTimeFormatter;
 public abstract class InstantUtils {
 
   public static String toString(Instant date, String pattern) {
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
-	var zonedDateTime = date.atZone(ZoneId.of("UTC"));
+    var zonedDateTime = date.atZone(ZoneId.of("UTC"));
 
-	return zonedDateTime.format(formatter);
+    return zonedDateTime.format(formatter);
   }
 
   public static Instant parse(String date, String pattern) {
-	var zoneId = ZoneId.of("UTC");
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    var zoneId = ZoneId.of("UTC");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
-	var localDateTime = LocalDateTime.parse(date, formatter);
+    var localDateTime = LocalDateTime.parse(date, formatter);
 
-	return localDateTime.atZone(zoneId).toInstant();
+    return localDateTime.atZone(zoneId).toInstant();
   }
 }
