@@ -21,6 +21,24 @@ task install
 ~~~
 
 
+## Build
+
+Execute below command to build project:
+
+~~~bash
+task build
+~~~~
+
+
+## Test
+
+Execute below command to execute test:
+
+~~~bash
+task test
+~~~~
+
+
 ## Execute
 
 Before execute project, we need to start environment:
@@ -36,12 +54,3 @@ task start
 ~~~
 
 After that, Kafka UI is running locally: http://localhost:9021/
-
-
-## Test
-
-Execute below command to execute test:
-
-~~~bash
-task test
-~~~~
