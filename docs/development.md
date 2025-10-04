@@ -20,6 +20,10 @@ We should install project environment:
 task install
 ~~~
 
+Before develop, we should configure style code in IntelliJ. We should 
+import the style "config/intellij-java-google-style" in `Settings -> Editor 
+-> Code Style -> Java -> Scheme`
+
 
 ## Build
 
