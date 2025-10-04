@@ -10,6 +10,7 @@ on:
       - develop
 
 env:
+  runner: "ubuntu:24.04"
   git_user_name: "github-actions[bot]"
   git_user_email: "github-actions[bot]@users.noreply.github.com"
   was_merged: ${{ github.event.pull_request.merged == 'true' }}
@@ -22,7 +23,7 @@ jobs:
   release-version:
     name: Release version
     if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == 'main') && (github.head_ref == 'develop' || startsWith(github.head_ref , 'hotfix')) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -85,7 +86,7 @@ jobs:
     name: Build
     needs: [release-version]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -109,7 +110,7 @@ jobs:
     name: Publish Jar
     needs: [build]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -134,7 +135,7 @@ jobs:
     name: Publish Docker
     needs: [build]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -181,7 +182,7 @@ jobs:
     name: Deploy
     needs: [publish-docker]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

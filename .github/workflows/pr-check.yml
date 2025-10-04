@@ -12,7 +12,7 @@ on:
 #      - apis/**
 
 env:
-  runner: "ubuntu:24.04"
+  runner: ubuntu:24.04
 
 jobs:
 
