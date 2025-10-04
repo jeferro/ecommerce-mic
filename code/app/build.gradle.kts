@@ -7,7 +7,6 @@ plugins {
     id("com.jeferro.plugins.avro-generator")
     id("com.jeferro.plugins.api-first-generator")
     id("jacoco")
-
 }
 
 dependencies {

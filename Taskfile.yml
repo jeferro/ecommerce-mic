@@ -64,6 +64,16 @@ tasks:
       - echo "✅ Project test successfully"
       - echo ""
 
+  lint:
+    desc: "Lint project"
+    silent: true
+    dir: "{{.CODE_DIR}}"
+    cmds:
+      - echo "## Lint project..."
+      - gradle check
+      - echo "✅ Project linted successfully"
+      - echo ""
+
   start:
     desc: "Start project"
     silent: true
