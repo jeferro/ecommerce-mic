@@ -8,7 +8,6 @@ plugins {
 
 
 allprojects {
-    apply(plugin = "java")
 
     repositories {
         mavenCentral()
@@ -18,15 +17,19 @@ allprojects {
         }
     }
 
+
+}
+
+
+subprojects {
+    apply(plugin = "java")
+
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(21)
         }
     }
-}
 
-
-subprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
