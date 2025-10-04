@@ -18,7 +18,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: {{env.runner}}
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
 
   test:
     name: Test
-    runs-on: {{env.runner}}
+    runs-on: ${{ env.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
