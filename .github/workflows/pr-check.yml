@@ -11,14 +11,11 @@ on:
 #      - code/**
 #      - apis/**
 
-env:
-  runner: ubuntu:24.04
-
 jobs:
 
   build:
     name: Build
-    runs-on: ${{ env.runner }}
+    runs-on: ubuntu:24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,7 +34,7 @@ jobs:
 
   test:
     name: Test
-    runs-on: ${{ env.runner }}
+    runs-on: ubuntu:24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
