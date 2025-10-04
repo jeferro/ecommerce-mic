@@ -26,6 +26,9 @@ jobs:
       - name: Install ASDF
         uses: ./.github/actions/asdf-install
 
+      - name: Version
+        run: java -version
+
       - name: Build
         run: task build
 
