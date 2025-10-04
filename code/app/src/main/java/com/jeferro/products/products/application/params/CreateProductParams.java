@@ -17,17 +17,16 @@ public class CreateProductParams extends Params<ProductVersion> {
 
   private final LocalizedField name;
 
-  public CreateProductParams(ProductVersionId versionId,
-	  ParametricValueId typeId,
-	  LocalizedField name) {
-	super();
+  public CreateProductParams(
+      ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
+    super();
 
-	ValueValidator.isNotNull(versionId, "versionId");
-	ValueValidator.isNotNull(typeId, "typeId");
-	ValueValidator.isNotNull(name, "name");
+    ValueValidator.isNotNull(versionId, "versionId");
+    ValueValidator.isNotNull(typeId, "typeId");
+    ValueValidator.isNotNull(name, "name");
 
-	this.versionId = versionId;
-	this.typeId = typeId;
-	this.name = name;
+    this.versionId = versionId;
+    this.typeId = typeId;
+    this.name = name;
   }
 }

@@ -14,56 +14,58 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReviewRestController implements ReviewsApi {
 
-    private final ReviewRestMapper reviewRestMapper = ReviewRestMapper.INSTANCE;
+  private final ReviewRestMapper reviewRestMapper = ReviewRestMapper.INSTANCE;
 
-    private final UseCaseBus useCaseBus;
+  private final UseCaseBus useCaseBus;
 
-    @Override
-    public ReviewListRestDTO searchReviews(Integer pageNumber, Integer pageSize, ReviewOrderRestDTO order, Boolean ascending, String entityId) {
-        var params = reviewRestMapper.toSearchProductsParams(pageNumber,
-            pageSize,
-            order,
-            ascending,
-            entityId);
+  @Override
+  public ReviewListRestDTO searchReviews(
+      Integer pageNumber,
+      Integer pageSize,
+      ReviewOrderRestDTO order,
+      Boolean ascending,
+      String entityId) {
+    var params =
+        reviewRestMapper.toSearchProductsParams(pageNumber, pageSize, order, ascending, entityId);
 
-        var reviews = useCaseBus.execute(params);
+    var reviews = useCaseBus.execute(params);
 
-        return reviewRestMapper.toSummaryListDTO(reviews);
-    }
+    return reviewRestMapper.toSummaryListDTO(reviews);
+  }
 
-    @Override
-    public ReviewRestDTO createReview(CreateReviewInputRestDTO inputRestDTO) {
-        var params = reviewRestMapper.toCreateReviewParams(inputRestDTO);
+  @Override
+  public ReviewRestDTO createReview(CreateReviewInputRestDTO inputRestDTO) {
+    var params = reviewRestMapper.toCreateReviewParams(inputRestDTO);
 
-        var reviews = useCaseBus.execute(params);
+    var reviews = useCaseBus.execute(params);
 
-        return reviewRestMapper.toDTO(reviews);
-    }
+    return reviewRestMapper.toDTO(reviews);
+  }
 
-    @Override
-    public ReviewRestDTO getReview(String reviewId) {
-        var params = reviewRestMapper.toGetReviewParams(reviewId);
+  @Override
+  public ReviewRestDTO getReview(String reviewId) {
+    var params = reviewRestMapper.toGetReviewParams(reviewId);
 
-        var reviews = useCaseBus.execute(params);
+    var reviews = useCaseBus.execute(params);
 
-        return reviewRestMapper.toDTO(reviews);
-    }
+    return reviewRestMapper.toDTO(reviews);
+  }
 
-    @Override
-    public ReviewRestDTO updateReview(String reviewId, UpdateReviewInputRestDTO inputRestDTO) {
-        var params = reviewRestMapper.toUpdateReviewParams(reviewId, inputRestDTO);
+  @Override
+  public ReviewRestDTO updateReview(String reviewId, UpdateReviewInputRestDTO inputRestDTO) {
+    var params = reviewRestMapper.toUpdateReviewParams(reviewId, inputRestDTO);
 
-        var review = useCaseBus.execute(params);
+    var review = useCaseBus.execute(params);
 
-        return reviewRestMapper.toDTO(review);
-    }
+    return reviewRestMapper.toDTO(review);
+  }
 
-    @Override
-    public ReviewRestDTO deleteReview(String reviewId) {
-        var params = reviewRestMapper.toDeleteReviewParams(reviewId);
+  @Override
+  public ReviewRestDTO deleteReview(String reviewId) {
+    var params = reviewRestMapper.toDeleteReviewParams(reviewId);
 
-        var review = useCaseBus.execute(params);
+    var review = useCaseBus.execute(params);
 
-        return reviewRestMapper.toDTO(review);
-    }
+    return reviewRestMapper.toDTO(review);
+  }
 }

@@ -1,52 +1,51 @@
 package com.jeferro.shared.ddd.domain.models.projection;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+
 import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
-
 @Getter
 public class Projection<ID extends Identifier> {
 
-    protected final ID id;
+  protected final ID id;
 
-    public Projection(ID id) {
-        this.id = id;
+  public Projection(ID id) {
+    this.id = id;
+  }
+
+  public boolean hasSameId(ID otherId) {
+    return id.equals(otherId);
+  }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == null) {
+      return false;
     }
 
-    public boolean hasSameId(ID otherId) {
-        return id.equals(otherId);
+    if (this == other) {
+      return true;
     }
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+    if (getClass() != other.getClass()) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) {
-            return false;
-        }
+    var otherProjection = (Projection<ID>) other;
 
-        if (this == other) {
-            return true;
-        }
+    return hasSameId(otherProjection.id);
+  }
 
-        if (getClass() != other.getClass()) {
-            return false;
-        }
-
-        var otherProjection = (Projection<ID>) other;
-
-        return hasSameId(otherProjection.id);
-
-    }
-
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, SHORT_PREFIX_STYLE);
-    }
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this, SHORT_PREFIX_STYLE);
+  }
 }

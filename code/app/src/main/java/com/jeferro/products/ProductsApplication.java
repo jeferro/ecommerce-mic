@@ -8,8 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan(basePackages = {"com.jeferro.shared.*", "com.jeferro.products.*"})
 public class ProductsApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ProductsApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(ProductsApplication.class, args);
+  }
 }

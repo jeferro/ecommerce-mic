@@ -11,9 +11,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper(config = MapstructConfig.class)
 public abstract class AuthRestMapper {
 
-    public static final AuthRestMapper INSTANCE = Mappers.getMapper(AuthRestMapper.class);
+  public static final AuthRestMapper INSTANCE = Mappers.getMapper(AuthRestMapper.class);
 
-    public abstract SignInParams toSignInParams(SignInInputRestDTO inputRestDTO);
+  public abstract SignInParams toSignInParams(SignInInputRestDTO inputRestDTO);
 
-    public abstract AuthRestDTO toDTO(User user);
+  public abstract AuthRestDTO toDTO(User user);
 }

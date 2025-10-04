@@ -12,11 +12,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @Configuration
 public class MongoConfiguration {
 
-    @Bean
-    @Primary
-    public MongoTemplate mongoTemplate(MongoDatabaseFactory mongoDatabaseFactory,
-                                       MongoAuditorAware mongoAuditorAware,
-                                       MongoFieldManager mongoFieldManager) {
-        return new CustomMongoTemplate(mongoDatabaseFactory, mongoAuditorAware, mongoFieldManager);
-    }
+  @Bean
+  @Primary
+  public MongoTemplate mongoTemplate(
+      MongoDatabaseFactory mongoDatabaseFactory,
+      MongoAuditorAware mongoAuditorAware,
+      MongoFieldManager mongoFieldManager) {
+    return new CustomMongoTemplate(mongoDatabaseFactory, mongoAuditorAware, mongoFieldManager);
+  }
 }

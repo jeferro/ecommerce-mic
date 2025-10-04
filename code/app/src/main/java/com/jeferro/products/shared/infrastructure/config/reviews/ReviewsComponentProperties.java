@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("components.reviews")
 public class ReviewsComponentProperties {
 
-    private String productsTopic;
+  private String productsTopic;
 
-    private String productReviewsTopic;
+  private String productReviewsTopic;
 
-    private String productReviewsConsumerGroupId;
+  private String productReviewsConsumerGroupId;
 }

@@ -16,3 +16,9 @@ runs:
     - name: Install tools from asdf
       if: steps.asdf-cache.outputs.cache-hit != 'true'
       uses: asdf-vm/actions/install@v4
+
+    - name: Add asdf to PATH
+      shell: bash
+      run: |
+        echo "$HOME/.asdf/bin" >> $GITHUB_PATH
+        echo "$HOME/.asdf/shims" >> $GITHUB_PATH

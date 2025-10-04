@@ -5,13 +5,13 @@ import com.jeferro.products.reviews.domain.models.ReviewId;
 
 public class ReviewDeleted extends ReviewEvent {
 
-    private ReviewDeleted(ReviewId reviewId) {
-        super(reviewId);
-    }
+  private ReviewDeleted(ReviewId reviewId) {
+    super(reviewId);
+  }
 
-    public static ReviewDeleted create(Review review) {
-        var reviewId = review.getId();
+  public static ReviewDeleted create(Review review) {
+    var reviewId = review.getId();
 
-        return new ReviewDeleted(reviewId);
-    }
+    return new ReviewDeleted(reviewId);
+  }
 }

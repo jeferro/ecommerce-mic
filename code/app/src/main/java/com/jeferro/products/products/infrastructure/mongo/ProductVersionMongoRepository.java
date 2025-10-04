@@ -9,54 +9,52 @@ import com.jeferro.products.products.infrastructure.mongo.daos.ProductVersionsMo
 import com.jeferro.products.products.infrastructure.mongo.dtos.ProductVersionSummaryMongoDTO;
 import com.jeferro.products.products.infrastructure.mongo.mappers.ProductMongoMapper;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class ProductVersionMongoRepository implements ProductVersionRepository {
 
-    private final ProductMongoMapper productMongoMapper = ProductMongoMapper.INSTANCE;
+  private final ProductMongoMapper productMongoMapper = ProductMongoMapper.INSTANCE;
 
-    private final ProductVersionsMongoDao productVersionsMongoDao;
+  private final ProductVersionsMongoDao productVersionsMongoDao;
 
-    @Override
-    public void save(ProductVersion productVersion) {
-        var dto = productMongoMapper.toDTO(productVersion);
+  @Override
+  public void save(ProductVersion productVersion) {
+    var dto = productMongoMapper.toDTO(productVersion);
 
-        productVersionsMongoDao.save(dto);
-    }
+    productVersionsMongoDao.save(dto);
+  }
 
-    @Override
-    public Optional<ProductVersion> findById(ProductVersionId versionId) {
-        var versionIdDto = productMongoMapper.toDTO(versionId);
+  @Override
+  public Optional<ProductVersion> findById(ProductVersionId versionId) {
+    var versionIdDto = productMongoMapper.toDTO(versionId);
 
-        return productVersionsMongoDao.findById(versionIdDto)
-                .map(productMongoMapper::toDomain);
-    }
+    return productVersionsMongoDao.findById(versionIdDto).map(productMongoMapper::toDomain);
+  }
 
-    @Override
-    public void delete(ProductVersion version) {
-        var versionDto = productMongoMapper.toDTO(version);
+  @Override
+  public void delete(ProductVersion version) {
+    var versionDto = productMongoMapper.toDTO(version);
 
-        productVersionsMongoDao.delete(versionDto);
-    }
+    productVersionsMongoDao.delete(versionDto);
+  }
 
-    @Override
-    public PaginatedList<ProductVersion> findAll(ProductVersionCriteria criteria) {
-        var page = productVersionsMongoDao.findAllByCriteria(criteria);
+  @Override
+  public PaginatedList<ProductVersion> findAll(ProductVersionCriteria criteria) {
+    var page = productVersionsMongoDao.findAllByCriteria(criteria);
 
-        return productMongoMapper.toDomain(page);
-    }
+    return productMongoMapper.toDomain(page);
+  }
 
-    @Override
-    public PaginatedList<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
-        var page = productVersionsMongoDao.findAllByCriteria(criteria,
-            ProductVersionSummaryMongoDTO.class,
-            ProductVersionSummaryMongoDTO.FIELDS);
+  @Override
+  public PaginatedList<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
+    var page =
+        productVersionsMongoDao.findAllByCriteria(
+            criteria, ProductVersionSummaryMongoDTO.class, ProductVersionSummaryMongoDTO.FIELDS);
 
-	  return productMongoMapper.toDomainSummary(page);
-    }
+    return productMongoMapper.toDomainSummary(page);
+  }
 }

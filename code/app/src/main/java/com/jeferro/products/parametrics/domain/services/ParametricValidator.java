@@ -9,17 +9,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ParametricValidator {
 
-    private final ParametricFinder parametricFinder;
+  private final ParametricFinder parametricFinder;
 
-    public void validateProductType(ParametricValueId productTypeValueId) {
-        var productTypeId = ParametricId.createOf("product-types");
+  public void validateProductType(ParametricValueId productTypeValueId) {
+    var productTypeId = ParametricId.createOf("product-types");
 
-        findAndValidateParametricValue(productTypeId, productTypeValueId);
-    }
+    findAndValidateParametricValue(productTypeId, productTypeValueId);
+  }
 
-    private void findAndValidateParametricValue(ParametricId parametricId, ParametricValueId parametricValueId) {
-        var parametric = parametricFinder.findByIdOrError(parametricId);
+  private void findAndValidateParametricValue(
+      ParametricId parametricId, ParametricValueId parametricValueId) {
+    var parametric = parametricFinder.findByIdOrError(parametricId);
 
-        parametric.validate(parametricValueId);
-    }
+    parametric.validate(parametricValueId);
+  }
 }

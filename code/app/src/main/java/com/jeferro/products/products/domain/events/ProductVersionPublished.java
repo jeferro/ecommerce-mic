@@ -5,13 +5,13 @@ import com.jeferro.products.products.domain.models.ProductVersionId;
 
 public class ProductVersionPublished extends ProductVersionEvent {
 
-    private ProductVersionPublished(ProductVersionId versionId) {
-        super(versionId);
-    }
+  private ProductVersionPublished(ProductVersionId versionId) {
+    super(versionId);
+  }
 
-    public static ProductVersionPublished create(ProductVersion productVersion) {
-        var versionId = productVersion.getVersionId();
+  public static ProductVersionPublished create(ProductVersion productVersion) {
+    var versionId = productVersion.getVersionId();
 
-        return new ProductVersionPublished(versionId);
-    }
+    return new ProductVersionPublished(versionId);
+  }
 }

@@ -1,32 +1,31 @@
 package com.jeferro.products.products.application;
 
+import static com.jeferro.products.shared.application.Roles.USER;
+
 import com.jeferro.products.products.application.params.GetProductParams;
 import com.jeferro.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.domain.repositories.ProductVersionRepository;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
-
-import static com.jeferro.products.shared.application.Roles.USER;
 
 @Component
 @RequiredArgsConstructor
 public class GetProductUseCase extends UseCase<GetProductParams, ProductVersion> {
 
-    private final ProductVersionRepository productVersionRepository;
+  private final ProductVersionRepository productVersionRepository;
 
-    @Override
-    public Set<String> getMandatoryUserRoles() {
-        return Set.of(USER);
-    }
+  @Override
+  public Set<String> getMandatoryUserRoles() {
+    return Set.of(USER);
+  }
 
-    @Override
-    public ProductVersion execute(Auth auth, GetProductParams params) {
-        var versionId = params.getVersionId();
+  @Override
+  public ProductVersion execute(Auth auth, GetProductParams params) {
+    var versionId = params.getVersionId();
 
-        return productVersionRepository.findByIdOrError(versionId);
-    }
+    return productVersionRepository.findByIdOrError(versionId);
+  }
 }

@@ -8,19 +8,19 @@ import lombok.Getter;
 @Getter
 public abstract class ReviewEvent extends Event {
 
-    private final ReviewId reviewId;
+  private final ReviewId reviewId;
 
-    protected ReviewEvent(ReviewId reviewId) {
-        super();
+  protected ReviewEvent(ReviewId reviewId) {
+    super();
 
-        this.reviewId = reviewId;
-    }
+    this.reviewId = reviewId;
+  }
 
-    public EntityId getEntityId() {
-        return reviewId.getEntityId();
-    }
+  public EntityId getEntityId() {
+    return reviewId.getEntityId();
+  }
 
-    public String getUsername() {
-        return reviewId.getUsername();
-    }
+  public String getUsername() {
+    return reviewId.getUsername();
+  }
 }

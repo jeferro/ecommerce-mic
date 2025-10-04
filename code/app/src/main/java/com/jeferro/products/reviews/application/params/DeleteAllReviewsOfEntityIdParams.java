@@ -8,14 +8,13 @@ import lombok.Getter;
 @Getter
 public class DeleteAllReviewsOfEntityIdParams extends Params<Void> {
 
-    private final EntityId entityId;
+  private final EntityId entityId;
 
-    public DeleteAllReviewsOfEntityIdParams(EntityId entityId) {
-        super();
+  public DeleteAllReviewsOfEntityIdParams(EntityId entityId) {
+    super();
 
-        ValueValidator.isNotNull(entityId, "entityId");
+    ValueValidator.isNotNull(entityId, "entityId");
 
-        this.entityId = entityId;
-    }
-
+    this.entityId = entityId;
+  }
 }

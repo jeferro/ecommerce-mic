@@ -8,36 +8,36 @@ import lombok.Getter;
 @Getter
 public class EntityId extends StringIdentifier {
 
-    private static final String SEPARATOR = "::";
+  private static final String SEPARATOR = "::";
 
-    private final String domain;
+  private final String domain;
 
-    private final String id;
+  private final String id;
 
-    public EntityId(String value) {
-        super(value);
+  public EntityId(String value) {
+    super(value);
 
-	    var split = value.split(SEPARATOR);
+    var split = value.split(SEPARATOR);
 
-        if( split.length != 2 ) {
-            throw ValueValidationException.createOfMessage("Incorrect format " + value);
-        }
-
-        this.domain = split[0];
-        this.id = split[1];
+    if (split.length != 2) {
+      throw ValueValidationException.createOfMessage("Incorrect format " + value);
     }
 
-    private EntityId(String domain, String id) {
-        super(domain + SEPARATOR + id);
+    this.domain = split[0];
+    this.id = split[1];
+  }
 
-	    this.domain = domain;
-	    this.id = id;
-    }
+  private EntityId(String domain, String id) {
+    super(domain + SEPARATOR + id);
 
-    public static EntityId createOf(String domain, String id) {
-        ValueValidator.isNotNull(domain, "domain");
-        ValueValidator.isNotNull(id, "id");
+    this.domain = domain;
+    this.id = id;
+  }
 
-        return new EntityId(domain, id);
-    }
+  public static EntityId createOf(String domain, String id) {
+    ValueValidator.isNotNull(domain, "domain");
+    ValueValidator.isNotNull(id, "id");
+
+    return new EntityId(domain, id);
+  }
 }

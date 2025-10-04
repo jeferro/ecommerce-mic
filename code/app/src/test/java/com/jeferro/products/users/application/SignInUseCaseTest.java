@@ -1,5 +1,8 @@
 package com.jeferro.products.users.application;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.jeferro.products.shared.domain.models.auth.AuthMother;
 import com.jeferro.products.users.application.params.SignInParams;
 import com.jeferro.products.users.domain.models.UserMother;
@@ -9,82 +12,59 @@ import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 class SignInUseCaseTest {
 
-    private UsersInMemoryRepository usersInMemoryRepository;
+  private UsersInMemoryRepository usersInMemoryRepository;
 
-    private SignInUseCase signInUseCase;
+  private SignInUseCase signInUseCase;
 
-    @BeforeEach
-    void beforeEach() {
-        usersInMemoryRepository = new UsersInMemoryRepository();
-        var fakePasswordEncoder = new FakePasswordEncoder();
+  @BeforeEach
+  void beforeEach() {
+    usersInMemoryRepository = new UsersInMemoryRepository();
+    var fakePasswordEncoder = new FakePasswordEncoder();
 
-        signInUseCase = new SignInUseCase(usersInMemoryRepository, fakePasswordEncoder);
-    }
+    signInUseCase = new SignInUseCase(usersInMemoryRepository, fakePasswordEncoder);
+  }
 
-    @Test
-    void givenOneUser_whenSignIn_thenReturnsUser() {
-        var john = UserMother.john();
+  @Test
+  void givenOneUser_whenSignIn_thenReturnsUser() {
+    var john = UserMother.john();
 
-        var params = new SignInParams(
-                john.getUsername(),
-                john.getEncodedPassword()
-        );
+    var params = new SignInParams(john.getUsername(), john.getEncodedPassword());
 
-        var result = signInUseCase.execute(
-            AuthMother.anonymous(),
-            params);
+    var result = signInUseCase.execute(AuthMother.anonymous(), params);
 
-        assertEquals(john, result);
-    }
+    assertEquals(john, result);
+  }
 
-    @Test
-    void givenAnAuthenticatedUser_whenSignIn_thenReturnsUser() {
-        var john = UserMother.john();
+  @Test
+  void givenAnAuthenticatedUser_whenSignIn_thenReturnsUser() {
+    var john = UserMother.john();
 
-        var params = new SignInParams(
-                john.getUsername(),
-                john.getEncodedPassword()
-        );
+    var params = new SignInParams(john.getUsername(), john.getEncodedPassword());
 
-        var result = signInUseCase.execute(
-            AuthMother.john(),
-            params);
+    var result = signInUseCase.execute(AuthMother.john(), params);
 
-        assertEquals(john, result);
-    }
+    assertEquals(john, result);
+  }
 
-    @Test
-    void givenUnknownUsers_whenSignIn_thenThrowsUnauthorizedException() {
-        var unknown = UserMother.unknown();
+  @Test
+  void givenUnknownUsers_whenSignIn_thenThrowsUnauthorizedException() {
+    var unknown = UserMother.unknown();
 
-        var params = new SignInParams(
-                unknown.getUsername(),
-                unknown.getEncodedPassword()
-        );
+    var params = new SignInParams(unknown.getUsername(), unknown.getEncodedPassword());
 
-        assertThrows(UnauthorizedException.class,
-                () -> signInUseCase.execute(
-                    AuthMother.anonymous(),
-                    params));
-    }
+    assertThrows(
+        UnauthorizedException.class, () -> signInUseCase.execute(AuthMother.anonymous(), params));
+  }
 
-    @Test
-    void givenWrongCredentials_whenSignIn_thenThrowsUnauthorizedException() {
-        var john = UserMother.john();
+  @Test
+  void givenWrongCredentials_whenSignIn_thenThrowsUnauthorizedException() {
+    var john = UserMother.john();
 
-        var params = new SignInParams(
-                john.getUsername(),
-                "wrong-password"
-        );
+    var params = new SignInParams(john.getUsername(), "wrong-password");
 
-        assertThrows(UnauthorizedException.class,
-                () -> signInUseCase.execute(
-                    AuthMother.anonymous(),
-                    params));
-    }
+    assertThrows(
+        UnauthorizedException.class, () -> signInUseCase.execute(AuthMother.anonymous(), params));
+  }
 }

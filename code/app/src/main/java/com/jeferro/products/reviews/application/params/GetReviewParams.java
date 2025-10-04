@@ -9,14 +9,13 @@ import lombok.Getter;
 @Getter
 public class GetReviewParams extends Params<Review> {
 
-    private final ReviewId reviewId;
+  private final ReviewId reviewId;
 
-    public GetReviewParams(ReviewId reviewId) {
-        super();
+  public GetReviewParams(ReviewId reviewId) {
+    super();
 
-        ValueValidator.isNotNull(reviewId, "reviewId");
+    ValueValidator.isNotNull(reviewId, "reviewId");
 
-        this.reviewId = reviewId;
-    }
-
+    this.reviewId = reviewId;
+  }
 }
