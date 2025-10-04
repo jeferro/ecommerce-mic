@@ -23,6 +23,9 @@ jobs:
       - name: Install asdf
         uses: ./.github/actions/asdf-install
 
+      - name: Install asdf
+        uses: ./.github/actions/asdf-install
+
       - name: Build
         working-directory: code
         run: gradle build -x test

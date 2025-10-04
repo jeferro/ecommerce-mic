@@ -6,39 +6,42 @@
 
 We need the next tools to develop application:
 
-* [ASDF](https://asdf-vm.com/):
-
+* [ASDF](https://asdf-vm.com/)
+* [Task](https://taskfile.dev)
+* Docker
 * Docker compose
 
-Then, we install tools:
+
+## Installation
+
+We should install project environment:
 
 ~~~bash
-asdf plugin-add java
-asdf plugin-add gradle
-asdf install
-~~~~
-
-And compile project:
-
-~~~bash
-cd code
-gradle build test
-~~~~
+task install
+~~~
 
 
+## Execute
 
-## Run locally
-
-We need start docker containers:
+Before execute project, we need to start environment:
 
 ~~~bash
-docker compose up -d
+task env-start
+~~~
+
+Then we can use below command to execute project:
+
+~~~bash
+task start
 ~~~
 
 After that, Kafka UI is running locally: http://localhost:9021/
 
-And then run application:
+
+## Test
+
+Execute below command to execute test:
 
 ~~~bash
-gradle bootRun
-~~~
+task test
+~~~~
