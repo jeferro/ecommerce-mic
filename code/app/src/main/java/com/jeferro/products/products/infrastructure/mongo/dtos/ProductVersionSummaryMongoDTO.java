@@ -1,9 +1,10 @@
 package com.jeferro.products.products.infrastructure.mongo.dtos;
 
-import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
+import com.jeferro.shared.auth.infrastructure.mongo.dtos.MetadataMongoDTO;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,23 +12,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "products")
 public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
 
+  public static final List<String> FIELDS = List.of("name", "status");
+
   private final String id;
 
   private final Map<String, String> name;
 
   private final ProductStatusMongoDTO status;
 
-  public ProductVersionSummaryMongoDTO(Instant createdAt,
-      String createdBy,
-      Instant updatedAt,
-      String updatedBy,
-      String id,
+  public ProductVersionSummaryMongoDTO(String id,
       Map<String, String> name,
-      ProductStatusMongoDTO status) {
-    super(createdAt,
-        createdBy,
-        updatedAt,
-        updatedBy);
+      ProductStatusMongoDTO status,
+      MetadataMongoDTO metadataMongoDTO) {
+    super(metadataMongoDTO);
     this.id = id;
     this.name = name;
     this.status = status;

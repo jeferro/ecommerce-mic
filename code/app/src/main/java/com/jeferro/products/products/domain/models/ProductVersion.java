@@ -12,6 +12,7 @@ import com.jeferro.products.products.domain.events.ProductVersionUnpublished;
 import com.jeferro.products.products.domain.events.ProductVersionUpdated;
 import com.jeferro.products.products.domain.models.status.ProductStatus;
 import com.jeferro.products.products.domain.services.InstantTruncator;
+import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import java.time.Instant;
@@ -29,8 +30,9 @@ public class ProductVersion extends ProductVersionSummary {
       LocalizedField name,
       ParametricValueId typeId,
       Instant endEffectiveDate,
-      ProductStatus status) {
-    super(id, name, status);
+      ProductStatus status,
+      Metadata metadata) {
+    super(id, name, status, metadata);
 
     this.typeId = typeId;
     this.endEffectiveDate = endEffectiveDate;
@@ -63,7 +65,8 @@ public class ProductVersion extends ProductVersionSummary {
             name,
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
-            UNPUBLISHED);
+            UNPUBLISHED,
+            null);
 
     var event = ProductVersionCreated.create(product);
     product.record(event);

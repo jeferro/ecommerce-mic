@@ -5,6 +5,7 @@ import com.jeferro.products.reviews.domain.events.ReviewDeleted;
 import com.jeferro.products.reviews.domain.events.ReviewUpdated;
 import com.jeferro.products.reviews.domain.exceptions.ReviewDoesNotBelongUserException;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
+import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import java.util.Locale;
@@ -17,8 +18,8 @@ public class Review extends AggregateRoot<ReviewId> {
 
   private String comment;
 
-  public Review(ReviewId id, String comment, Locale locale) {
-    super(id);
+  public Review(ReviewId id, String comment, Locale locale, Metadata metadata) {
+    super(id, metadata);
 
     this.locale = locale;
     this.comment = comment;
@@ -30,7 +31,7 @@ public class Review extends AggregateRoot<ReviewId> {
     ValueValidator.isNotNull(auth, "auth");
 
     var reviewId = ReviewId.createOf(entityId, auth);
-    var review = new Review(reviewId, comment, auth.getLocale());
+    var review = new Review(reviewId, comment, auth.getLocale(), null);
 
     var event = ReviewCreated.create(review);
     review.record(event);

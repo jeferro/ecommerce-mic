@@ -1,5 +1,7 @@
 package com.jeferro.shared.mongo;
 
+import com.jeferro.shared.auth.infrastructure.ContextManager;
+import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
 import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-public abstract class MongoDao<DTO, ID, C extends DomainCriteria<?>> {
+public abstract class MongoDao<DTO extends AuditedMongoDTO, ID, C extends DomainCriteria<?>> {
 
   private final MongoTemplate mongoTemplate;
 
@@ -23,6 +25,9 @@ public abstract class MongoDao<DTO, ID, C extends DomainCriteria<?>> {
   public abstract Class<DTO> getEntityClass();
 
   public void save(DTO dto) {
+    var username = ContextManager.getAuth().getUsername();
+    dto.markAsSavedBy(username);
+
     mongoTemplate.save(dto);
   }
 
