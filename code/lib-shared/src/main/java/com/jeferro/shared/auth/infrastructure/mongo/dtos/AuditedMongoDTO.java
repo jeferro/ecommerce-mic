@@ -2,6 +2,7 @@ package com.jeferro.shared.auth.infrastructure.mongo.dtos;
 
 import java.time.Instant;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;

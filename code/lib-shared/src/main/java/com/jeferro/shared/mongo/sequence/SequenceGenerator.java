@@ -32,7 +32,7 @@ public class SequenceGenerator {
 
     var sequence = mongoTemplate.findAndModify(query, update, options, SequenceMongoDocument.class);
 
-    var value = sequence != null ? sequence.value() : "1";
+    var value = sequence != null ? sequence.getValue() : "1";
 
     return StringUtils.leftPad(value, 7, '0');
   }
