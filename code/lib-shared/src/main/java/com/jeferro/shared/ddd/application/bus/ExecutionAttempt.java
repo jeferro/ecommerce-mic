@@ -42,7 +42,7 @@ public class ExecutionAttempt<R> {
   }
 
   public boolean isSuccess() {
-    return result != null;
+    return cause == null;
   }
 
   public boolean isError() {

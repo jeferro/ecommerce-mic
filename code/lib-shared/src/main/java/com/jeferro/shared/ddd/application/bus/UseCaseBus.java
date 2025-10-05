@@ -1,11 +1,12 @@
 package com.jeferro.shared.ddd.application.bus;
 
+import java.time.Duration;
+
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.application.UseCases;
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,8 @@ public abstract class UseCaseBus {
     return executeWithRetry(params, 1);
   }
 
-  public <R> R executeWithRetry(Params<R> params, int retries) {
+  public <R> R executeWithRetry(Params<R> params,
+      int retries) {
     Auth auth = createAuth();
 
     UseCase<Params<R>, R> useCase = fidUseCaseOrError(params, auth, retries);
@@ -51,7 +53,9 @@ public abstract class UseCaseBus {
 
   protected abstract Auth createAuth();
 
-  private <R> UseCase<Params<R>, R> fidUseCaseOrError(Params<R> params, Auth auth, int retries) {
+  private <R> UseCase<Params<R>, R> fidUseCaseOrError(Params<R> params,
+      Auth auth,
+      int retries) {
     UseCase<Params<R>, R> useCase = useCases.findByParams(params);
 
     if (useCase == null) {
@@ -66,7 +70,10 @@ public abstract class UseCaseBus {
   }
 
   private <R> void ensurePermissions(
-      Params<R> params, Auth auth, int retries, UseCase<Params<R>, R> useCase) {
+      Params<R> params,
+      Auth auth,
+      int retries,
+      UseCase<Params<R>, R> useCase) {
     var mandatoryRoles = useCase.getMandatoryUserRoles();
 
     if (!auth.hasRoles(mandatoryRoles)) {
@@ -82,7 +89,8 @@ public abstract class UseCaseBus {
     execution.getAttempts().forEach(attempt -> logAttempt(execution, attempt));
   }
 
-  private <R> void logAttempt(Execution<Params<R>, R> execution, ExecutionAttempt<R> attempt) {
+  private <R> void logAttempt(Execution<Params<R>, R> execution,
+      ExecutionAttempt<R> attempt) {
     if (attempt.isError()) {
       logError(
           attempt.getDuration(),
@@ -97,23 +105,26 @@ public abstract class UseCaseBus {
   }
 
   private <R> void logSuccessAttempt(
-      Execution<Params<R>, R> execution, ExecutionAttempt<R> attempt) {
+      Execution<Params<R>, R> execution,
+      ExecutionAttempt<R> attempt) {
     logger.info(
-        """
-                \n\t Duration: {}\s
-                \t Auth: {}\s
-                \t Params: {}\s
-                \t Attempt: [{} / {}]\s
-                \t Result: {}""",
-        attempt.getDuration(),
-        execution.getAuth(),
+        "\n\t Params: {}"
+            + "\n\t Attempt: [{} / {}]"
+            + "\n\t Duration: {}"
+            + "\n\t Auth: {}"
+            + "\n\t Result: {}",
         execution.getParams(),
         attempt.getNumAttempt(),
         execution.getRetries(),
+        attempt.getDuration(),
+        execution.getAuth(),
         attempt.getResult());
   }
 
-  private <R> void logPreviousError(Auth auth, Params<R> params, int retries, Exception cause) {
+  private <R> void logPreviousError(Auth auth,
+      Params<R> params,
+      int retries,
+      Exception cause) {
     logError(null, auth, params, 0, retries, cause);
   }
 
@@ -125,16 +136,15 @@ public abstract class UseCaseBus {
       int retries,
       Exception cause) {
     logger.error(
-        """
-                \n\t Duration: {}\s
-                \t Auth: {}\s
-                \t Params: {}\s
-                \t Attempt: [{} / {}]""",
-        duration,
-        auth,
+        "\n\t Params: {}"
+            + "\n\t Attempt: [{} / {}]"
+            + "\n\t Duration: {}"
+            + "\n\t Auth: {}",
         params,
         numAttempt,
         retries,
+        duration,
+        auth,
         cause);
   }
 }
