@@ -54,10 +54,6 @@ subprojects {
         }
     }
 
-    tasks.named("check") {
-        dependsOn("spotlessApply")
-    }
-
     // Jacoco
     apply(plugin = "jacoco")
 
