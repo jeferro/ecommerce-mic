@@ -47,7 +47,7 @@ subprojects {
     // Checkstyle
     apply(plugin = "com.diffplug.spotless")
 
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    spotless {
         java {
             googleJavaFormat(Versions.google_java_format)
             target("src/**/*.java")
@@ -55,7 +55,7 @@ subprojects {
     }
 
     tasks.named("check") {
-        dependsOn("spotlessApply")
+        dependsOn("spotlessApply", "spotlessCheck")
     }
 
     // Jacoco
