@@ -11,7 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @RequiredArgsConstructor
-public abstract class AuditedDocument {
+public abstract class AuditedMongoDTO {
 
 	@CreatedDate
 	private final Instant createdAt;
