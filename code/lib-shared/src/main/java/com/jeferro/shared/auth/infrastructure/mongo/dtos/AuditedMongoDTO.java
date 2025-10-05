@@ -1,17 +1,17 @@
 package com.jeferro.shared.auth.infrastructure.mongo.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public abstract class AuditedMongoDTO {
 
-  private final MetadataMongoDTO metadata;
+  private MetadataMongoDTO metadata;
 
   public void markAsSavedBy(String username) {
-    if (metadata.isNew()) {
-      metadata.markAsCreatedBy(username);
+    if (metadata == null) {
+      metadata = MetadataMongoDTO.createOfUser(username);
       return;
     }
 

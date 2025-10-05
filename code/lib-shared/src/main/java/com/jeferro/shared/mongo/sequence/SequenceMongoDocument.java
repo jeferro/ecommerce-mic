@@ -13,8 +13,8 @@ public class SequenceMongoDocument extends AuditedMongoDTO {
 
   private final String value;
 
-  public SequenceMongoDocument(String id, String value, MetadataMongoDTO metadataMongoDTO) {
-    super(metadataMongoDTO);
+  public SequenceMongoDocument(String id, String value, MetadataMongoDTO metadata) {
+    super(metadata);
     this.id = id;
     this.value = value;
   }

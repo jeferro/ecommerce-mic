@@ -3,6 +3,7 @@ package com.jeferro.products.arch_units;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
+import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import org.junit.jupiter.api.Test;
 
 public class DomainTest extends BaseArchUnit {
@@ -44,6 +45,18 @@ public class DomainTest extends BaseArchUnit {
         .haveSimpleNameEndingWith(EXCEPTION_SUFFIX)
         .orShould()
         .haveSimpleNameEndingWith(EXCEPTION_CODES_SUFFIX)
+        .check(importedClasses);
+  }
+
+  @Test
+  public void no_classes_should_instantiate_metadata() {
+    noClasses()
+        .that()
+        .resideInAPackage(DOMAIN_LAYER).and()
+        .doNotHaveSimpleName(Metadata.class.getSimpleName())
+        .should()
+        .accessClassesThat()
+        .areAssignableTo(Metadata.class)
         .check(importedClasses);
   }
 }
