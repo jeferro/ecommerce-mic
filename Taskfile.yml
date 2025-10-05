@@ -74,6 +74,16 @@ tasks:
       - echo "✅ Project linted successfully"
       - echo ""
 
+  format-code:
+    desc: "Format code"
+    silent: true
+    dir: "{{.CODE_DIR}}"
+    cmds:
+      - echo "## Formatting code..."
+      - gradle spotlessApply
+      - echo "✅ Code formated successfully"
+      - echo ""
+
   start:
     desc: "Start project"
     silent: true

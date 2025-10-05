@@ -52,7 +52,8 @@ public class DomainTest extends BaseArchUnit {
   public void no_classes_should_instantiate_metadata() {
     noClasses()
         .that()
-        .resideInAPackage(DOMAIN_LAYER).and()
+        .resideInAPackage(DOMAIN_LAYER)
+        .and()
         .doNotHaveSimpleName(Metadata.class.getSimpleName())
         .should()
         .accessClassesThat()
