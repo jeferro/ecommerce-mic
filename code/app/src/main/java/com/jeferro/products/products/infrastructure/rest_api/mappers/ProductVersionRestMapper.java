@@ -26,10 +26,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
-public abstract class ProductRestMapper
+public abstract class ProductVersionRestMapper
     extends AggregateRestMapper<ProductVersion, ProductVersionId, ProductVersionRestDTO> {
 
-  public static final ProductRestMapper INSTANCE = Mappers.getMapper(ProductRestMapper.class);
+  public static final ProductVersionRestMapper INSTANCE = Mappers.getMapper(ProductVersionRestMapper.class);
 
   public abstract ProductVersionSummaryListRestDTO toSummaryDTO(
       PaginatedList<ProductVersionSummary> productVersions);

@@ -3,10 +3,11 @@ package com.jeferro.products.products.domain.models.criteria;
 import static com.jeferro.products.products.domain.models.criteria.ProductVersionOrder.NAME;
 import static com.jeferro.products.products.domain.models.criteria.ProductVersionOrder.START_EFFECTIVE_DATE;
 
+import java.time.Instant;
+
 import com.jeferro.products.products.domain.models.ProductCode;
 import com.jeferro.products.products.domain.models.ProductVersionId;
 import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
-import java.time.Instant;
 import lombok.Getter;
 
 @Getter
