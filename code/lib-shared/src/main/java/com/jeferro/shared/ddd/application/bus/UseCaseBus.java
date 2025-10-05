@@ -99,17 +99,12 @@ public abstract class UseCaseBus {
   private <R> void logSuccessAttempt(
       Execution<Params<R>, R> execution, ExecutionAttempt<R> attempt) {
     logger.info(
-        """
-                \n\t Duration: {}\s
-                \t Auth: {}\s
-                \t Params: {}\s
-                \t Attempt: [{} / {}]\s
-                \t Result: {}""",
-        attempt.getDuration(),
-        execution.getAuth(),
+        "\n\t Params: {} \n\t Attempt: [{} / {}] \n\t Duration: {} \n\t Auth: {} \n\t Result: {}",
         execution.getParams(),
         attempt.getNumAttempt(),
         execution.getRetries(),
+        attempt.getDuration(),
+        execution.getAuth(),
         attempt.getResult());
   }
 
@@ -125,16 +120,12 @@ public abstract class UseCaseBus {
       int retries,
       Exception cause) {
     logger.error(
-        """
-                \n\t Duration: {}\s
-                \t Auth: {}\s
-                \t Params: {}\s
-                \t Attempt: [{} / {}]""",
-        duration,
-        auth,
+        "\n\t Params: {} \n\t Attempt: [{} / {}] \n\t Duration: {} \n\t Auth: {}",
         params,
         numAttempt,
         retries,
+        duration,
+        auth,
         cause);
   }
 }
