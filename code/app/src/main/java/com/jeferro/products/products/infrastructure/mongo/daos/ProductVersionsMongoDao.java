@@ -2,7 +2,7 @@ package com.jeferro.products.products.infrastructure.mongo.daos;
 
 import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.products.infrastructure.mongo.dtos.ProductVersionMongoDTO;
-import com.jeferro.shared.ddd.infrastructure.mongo.dao.MongoDao;
+import com.jeferro.shared.mongo.MongoDao;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.mongodb.core.MongoTemplate;

@@ -23,6 +23,6 @@ public class ProductEventKafkaProducer implements EventBusProducer<ProductVersio
     String key = event.getVersionId().toString();
     var data = productKafkaMapper.toDTO(event);
 
-    kafkaTemplate.send(productsComponentProperties.getProductsTopic(), key, data);
+    kafkaTemplate.send(productsComponentProperties.getTopic(), key, data);
   }
 }

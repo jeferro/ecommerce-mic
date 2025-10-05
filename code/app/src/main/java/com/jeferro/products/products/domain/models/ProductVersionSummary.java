@@ -2,6 +2,7 @@ package com.jeferro.products.products.domain.models;
 
 import com.jeferro.products.products.domain.models.status.ProductStatus;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
+import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import java.time.Instant;
 import lombok.Getter;
@@ -13,8 +14,9 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
   protected ProductStatus status;
 
-  public ProductVersionSummary(ProductVersionId id, LocalizedField name, ProductStatus status) {
-    super(id);
+  public ProductVersionSummary(
+      ProductVersionId id, LocalizedField name, ProductStatus status, Metadata metadata) {
+    super(id, metadata);
 
     this.name = name;
     this.status = status;
