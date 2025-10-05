@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductVersionRestController implements ProductVersionsApi {
 
-  private final ProductVersionRestMapper productVersionRestMapper = ProductVersionRestMapper.INSTANCE;
+  private final ProductVersionRestMapper productVersionRestMapper =
+      ProductVersionRestMapper.INSTANCE;
 
   private final UseCaseBus useCaseBus;
 
