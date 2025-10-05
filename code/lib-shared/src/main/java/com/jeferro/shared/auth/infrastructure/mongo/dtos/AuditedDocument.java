@@ -1,4 +1,4 @@
-package com.jeferro.shared.mongo.audition;
+package com.jeferro.shared.auth.infrastructure.mongo.dtos;
 
 import java.time.Instant;
 
@@ -13,15 +13,15 @@ import org.springframework.data.annotation.LastModifiedDate;
 @RequiredArgsConstructor
 public abstract class AuditedDocument {
 
-  @CreatedDate
-  private final Instant createdAt;
+	@CreatedDate
+	private final Instant createdAt;
 
-  @CreatedBy
-  private final String createdBy;
+	@CreatedBy
+	private final String createdBy;
 
-  @LastModifiedDate
-  private final Instant updatedAt;
+	@LastModifiedDate
+	private final Instant updatedAt;
 
-  @LastModifiedBy
-  private final String updatedBy;
+	@LastModifiedBy
+	private final String updatedBy;
 }
