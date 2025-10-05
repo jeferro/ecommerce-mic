@@ -24,7 +24,7 @@ dependencies {
     api("org.springframework.kafka", "spring-kafka", Versions.spring_kafka)
 
     api("org.apache.avro", "avro", Versions.avro)
-    api("org.apache.commons", "commons-compress", "1.25.0")
+    api("org.apache.commons", "commons-compress", Versions.commons_compress)
     implementation("io.confluent", "kafka-avro-serializer", Versions.kafka_avro_serializer)
 }
 

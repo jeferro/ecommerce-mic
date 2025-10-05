@@ -26,7 +26,7 @@ subprojects {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
+            languageVersion = JavaLanguageVersion.of(Versions.java)
         }
     }
 
@@ -54,10 +54,6 @@ subprojects {
         }
     }
 
-    tasks.named("check") {
-        dependsOn("spotlessApply", "spotlessCheck")
-    }
-
     // Jacoco
     apply(plugin = "jacoco")
 
@@ -69,7 +65,7 @@ subprojects {
         afterEvaluate {
             classDirectories.setFrom(
                 files(classDirectories.files.map {
-                    fileTree(it).apply {
+                    fileTree().apply {
                         exclude(
                             "**/Application*",
                             "**/*Configuration*",
