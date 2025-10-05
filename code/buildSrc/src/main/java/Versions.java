@@ -30,7 +30,7 @@ public interface Versions {
 
   String spotless = "8.0.0";
 
-  String google_java_format = "1.17.0";
+  String google_java_format = "1.29.0";
 
   String commons_compress = "1.28.0";
 }
