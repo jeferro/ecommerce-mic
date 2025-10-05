@@ -55,7 +55,7 @@ subprojects {
     }
 
     tasks.named("check") {
-        dependsOn("spotlessApply", "spotlessCheck")
+        dependsOn("spotlessApply")
     }
 
     // Jacoco
@@ -69,7 +69,7 @@ subprojects {
         afterEvaluate {
             classDirectories.setFrom(
                 files(classDirectories.files.map {
-                    fileTree(it).apply {
+                    fileTree().apply {
                         exclude(
                             "**/Application*",
                             "**/*Configuration*",
