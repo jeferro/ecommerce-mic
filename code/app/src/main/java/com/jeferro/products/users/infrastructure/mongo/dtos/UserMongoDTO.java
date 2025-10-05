@@ -1,8 +1,9 @@
 package com.jeferro.products.users.infrastructure.mongo.dtos;
 
+import java.util.Set;
+
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.MetadataMongoDTO;
-import java.util.Set;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,7 +18,10 @@ public class UserMongoDTO extends AuditedMongoDTO {
   private final Set<String> roles;
 
   public UserMongoDTO(
-      String id, String encodedPassword, Set<String> roles, MetadataMongoDTO metadata) {
+      String id,
+      String encodedPassword,
+      Set<String> roles,
+      MetadataMongoDTO metadata) {
     super(metadata);
     this.id = id;
     this.encodedPassword = encodedPassword;

@@ -10,7 +10,8 @@ public abstract class AuditedMongoDTO {
   private MetadataMongoDTO metadata;
 
   public void markAsSavedBy(String username) {
-    if (metadata == null) {
+    if (metadata == null
+        || metadata.isNew()) {
       metadata = MetadataMongoDTO.createOfUser(username);
       return;
     }

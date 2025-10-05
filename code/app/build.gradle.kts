@@ -24,12 +24,16 @@ dependencies {
     implementation("org.openapitools", "jackson-databind-nullable", Versions.jackson_databind_nullable)
 }
 
+// Java
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-parameters")
+}
+
+
 
 // Mapstruct
 tasks.withType<JavaCompile> {
-    options.compilerArgs = listOf(
-        "-Amapstruct.unmappedTargetPolicy=ERROR",
-    )
+    options.compilerArgs.add("-Amapstruct.unmappedTargetPolicy=ERROR")
 }
 
 tasks.withType<Checkstyle> {

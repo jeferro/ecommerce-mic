@@ -27,4 +27,8 @@ public class MetadataMongoDTO {
     updatedAt = Instant.now();
     updatedBy = username;
   }
+
+  public boolean isNew() {
+    return createdAt == null;
+  }
 }
