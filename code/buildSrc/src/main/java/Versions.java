@@ -1,6 +1,6 @@
 public interface Versions {
 
-  int java = 21;
+  int java = 25;
 
   String spring_boot = "3.5.6";
 
