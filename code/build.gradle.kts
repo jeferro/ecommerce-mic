@@ -1,5 +1,5 @@
 plugins {
-    id("java-library")
+    id("java")
     id("com.diffplug.spotless") version Versions.spotless
     id("jacoco")
     id("org.springframework.boot") version Versions.spring_boot apply false
@@ -17,7 +17,10 @@ allprojects {
             url = uri("https://packages.confluent.io/maven/")
         }
     }
+}
 
+
+subprojects {
     // Java
     apply(plugin = "java")
 
@@ -27,19 +30,26 @@ allprojects {
         }
     }
 
+    dependencies {
+        implementation("org.apache.commons", "commons-lang3", Versions.commons_lang3)
+
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
+
+        implementation("org.mapstruct", "mapstruct", Versions.mapstruct)
+        annotationProcessor("org.mapstruct", "mapstruct-processor", Versions.mapstruct)
+    }
+
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-}
 
-
-subprojects {
     // Checkstyle
     apply(plugin = "com.diffplug.spotless")
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         java {
-            googleJavaFormat("1.17.0")
+            googleJavaFormat(Versions.google_java_format)
             target("src/**/*.java")
         }
     }

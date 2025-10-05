@@ -7,15 +7,6 @@ plugins {
 }
 
 dependencies {
-    // General
-    api("org.apache.commons", "commons-lang3", Versions.commons_lang3)
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-
-    api("org.mapstruct", "mapstruct", Versions.mapstruct)
-    annotationProcessor("org.mapstruct", "mapstruct-processor", Versions.mapstruct)
-
     // Spring
     implementation("org.springframework.boot", "spring-boot-starter")
     api("org.springframework.boot", "spring-boot-starter-security")

@@ -12,11 +12,6 @@ dependencies {
     // General
     implementation(project(":lib-shared"))
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-
-    annotationProcessor("org.mapstruct", "mapstruct-processor", Versions.mapstruct)
-
     testImplementation("com.approvaltests", "approvaltests", Versions.approval_tests)
 
     // Test
