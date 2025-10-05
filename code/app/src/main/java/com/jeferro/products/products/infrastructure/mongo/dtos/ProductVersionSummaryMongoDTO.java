@@ -1,10 +1,9 @@
 package com.jeferro.products.products.infrastructure.mongo.dtos;
 
-import java.util.List;
-import java.util.Map;
-
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.MetadataMongoDTO;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +19,8 @@ public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
 
   private final ProductStatusMongoDTO status;
 
-  public ProductVersionSummaryMongoDTO(String id,
+  public ProductVersionSummaryMongoDTO(
+      String id,
       Map<String, String> name,
       ProductStatusMongoDTO status,
       MetadataMongoDTO metadataMongoDTO) {

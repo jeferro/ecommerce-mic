@@ -1,10 +1,8 @@
 package com.jeferro.shared.auth.infrastructure.mongo.dtos;
 
 import java.time.Instant;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 @AllArgsConstructor

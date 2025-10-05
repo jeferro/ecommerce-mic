@@ -19,7 +19,8 @@ public class ReviewMongoDTO extends AuditedMongoDTO {
 
   private final String comment;
 
-  public ReviewMongoDTO(String id,
+  public ReviewMongoDTO(
+      String id,
       String username,
       EntityIdMongoDTO entityId,
       String locale,

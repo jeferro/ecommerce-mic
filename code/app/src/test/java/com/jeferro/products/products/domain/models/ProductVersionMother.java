@@ -1,14 +1,12 @@
 package com.jeferro.products.products.domain.models;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 import static com.jeferro.products.products.domain.models.status.ProductStatus.PUBLISHED;
 import static com.jeferro.products.products.domain.models.status.ProductStatus.UNPUBLISHED;
-
-import java.time.Instant;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.jeferro.products.parametrics.domain.models.ProductTypeMother;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
+import java.time.Instant;
 
 public class ProductVersionMother {
 
@@ -32,7 +30,8 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Apple v1", "es-ES", "Manzana v1");
 
-    return new ProductVersion(productId, name, fruitId, APPLE_V2_EFFECTIVE_DATE.minus(1, SECONDS), UNPUBLISHED, null);
+    return new ProductVersion(
+        productId, name, fruitId, APPLE_V2_EFFECTIVE_DATE.minus(1, SECONDS), UNPUBLISHED, null);
   }
 
   public static ProductVersion appleV2() {

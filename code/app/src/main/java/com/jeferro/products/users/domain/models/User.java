@@ -1,9 +1,8 @@
 package com.jeferro.products.users.domain.models;
 
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
-import java.util.Set;
-
 import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
+import java.util.Set;
 import lombok.Getter;
 
 @Getter

@@ -1,10 +1,9 @@
 package com.jeferro.products.products.infrastructure.mongo.dtos;
 
-import java.time.Instant;
-import java.util.Map;
-
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.MetadataMongoDTO;
+import java.time.Instant;
+import java.util.Map;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 

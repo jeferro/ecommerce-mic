@@ -10,12 +10,11 @@ public abstract class AuditedMongoDTO {
   private final MetadataMongoDTO metadata;
 
   public void markAsSavedBy(String username) {
-    if (metadata.isNew()){
+    if (metadata.isNew()) {
       metadata.markAsCreatedBy(username);
       return;
     }
 
     metadata.markAsUpdateBy(username);
-
   }
 }

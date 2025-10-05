@@ -45,7 +45,8 @@ public class ProductVersionInMemoryRepository
   }
 
   private ProductVersionSummary mapProductVersionSummary(ProductVersion productVersion) {
-    return new ProductVersionSummary(productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
+    return new ProductVersionSummary(
+        productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
   }
 
   private boolean matchCriteria(ProductVersionCriteria filter, ProductVersion productVersion) {

@@ -14,7 +14,8 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
   protected ProductStatus status;
 
-  public ProductVersionSummary(ProductVersionId id, LocalizedField name, ProductStatus status, Metadata metadata) {
+  public ProductVersionSummary(
+      ProductVersionId id, LocalizedField name, ProductStatus status, Metadata metadata) {
     super(id, metadata);
 
     this.name = name;
