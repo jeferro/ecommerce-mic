@@ -4,7 +4,7 @@ import com.jeferro.products.reviews.domain.exceptions.ReviewNotFoundException;
 import com.jeferro.products.reviews.domain.models.Review;
 import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
+import java.util.List;
 import java.util.Optional;
 
 public interface ReviewsRepository {
@@ -19,7 +19,9 @@ public interface ReviewsRepository {
 
   void delete(Review review);
 
-  void deleteAll(PaginatedList<Review> reviews);
+  void deleteAll(List<Review> reviews);
 
-  PaginatedList<Review> findAll(ReviewCriteria criteria);
+  List<Review> findAll(ReviewCriteria criteria);
+
+  long count(ReviewCriteria criteria);
 }

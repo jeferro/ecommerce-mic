@@ -58,12 +58,14 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
 
   private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) {
     var previousVersionCriteria = ProductVersionCriteria.previousProduct(versionId);
-    var previousVersion =
-        productVersionRepository.findAll(previousVersionCriteria).getFirstOrNull();
 
-    if (previousVersion == null) {
+    var previousVersionOpt = productVersionRepository.findOne(previousVersionCriteria);
+
+    if (previousVersionOpt.isEmpty()) {
       return;
     }
+
+    var previousVersion = previousVersionOpt.get();
 
     previousVersion.expireBeforeVersion(versionId);
 
@@ -75,7 +77,8 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
   private ProductVersion createNewVersion(
       ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
     var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
-    var nextVersion = productVersionRepository.findAll(nextVersionCriteria).getFirstOrNull();
+
+    var nextVersion = productVersionRepository.findOne(nextVersionCriteria).orElse(null);
 
     var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);
 

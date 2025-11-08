@@ -3,12 +3,15 @@ package com.jeferro.products.reviews.application;
 import static com.jeferro.products.shared.application.Roles.ADMIN;
 
 import com.jeferro.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
-import com.jeferro.products.reviews.domain.models.Review;
+import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.reviews.domain.repositories.ReviewsRepository;
+import com.jeferro.products.shared.domain.utils.PageUtils;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +19,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DeleteAllReviewsOfEntityIdUseCase
-    extends UseCase<DeleteAllReviewsOfEntityIdParams, Void> {
+    extends UseCase<DeleteAllReviewsOfEntityIdParams, List<ReviewId>> {
+
+  private static final int PAGE_SIZE = 100;
 
   private final ReviewsRepository reviewsRepository;
 
@@ -28,23 +33,31 @@ public class DeleteAllReviewsOfEntityIdUseCase
   }
 
   @Override
-  public Void execute(Auth auth, DeleteAllReviewsOfEntityIdParams params) {
+  public List<ReviewId> execute(Auth auth, DeleteAllReviewsOfEntityIdParams params) {
     var entityId = params.getEntityId();
+    var criteria = ReviewCriteria.byEntityId(entityId, PAGE_SIZE);
 
-    var criteria = ReviewCriteria.byEntityId(entityId);
-    var reviews = reviewsRepository.findAll(criteria);
+    var totalReviews = reviewsRepository.count(criteria);
+    var totalPages = PageUtils.calculateTotalPages(totalReviews, PAGE_SIZE);
 
-    while (reviews.isNotEmpty()) {
-      reviews.forEach(Review::deleteBySystem);
+    var removedReviewIds = new ArrayList<ReviewId>();
+
+    for (int i = 0; i < totalPages; i++) {
+      var reviews = reviewsRepository.findAll(criteria);
+
+      reviews.forEach(
+          review -> {
+            review.deleteBySystem();
+            removedReviewIds.add(review.getId());
+          });
 
       reviewsRepository.deleteAll(reviews);
 
       eventBus.sendAll(reviews);
 
       criteria.nextPage();
-      reviews = reviewsRepository.findAll(criteria);
     }
 
-    return null;
+    return removedReviewIds;
   }
 }

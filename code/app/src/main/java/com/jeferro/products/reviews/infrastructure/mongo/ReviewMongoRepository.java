@@ -7,7 +7,7 @@ import com.jeferro.products.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.products.reviews.infrastructure.mongo.daos.ReviewMongoDao;
 import com.jeferro.products.reviews.infrastructure.mongo.mappers.ReviewMongoMapper;
 import com.jeferro.shared.ddd.domain.models.aggregates.Entity;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class ReviewMongoRepository implements ReviewsRepository {
   }
 
   @Override
-  public void deleteAll(PaginatedList<Review> reviews) {
+  public void deleteAll(List<Review> reviews) {
     var productReviewIds =
         reviews.stream().map(Entity::getId).map(reviewMongoMapper::toDTO).toList();
 
@@ -50,9 +50,14 @@ public class ReviewMongoRepository implements ReviewsRepository {
   }
 
   @Override
-  public PaginatedList<Review> findAll(ReviewCriteria criteria) {
-    var page = reviewMongoDao.findAllByCriteria(criteria);
+  public List<Review> findAll(ReviewCriteria criteria) {
+    var page = reviewMongoDao.findAll(criteria);
 
     return reviewMongoMapper.toDomain(page);
+  }
+
+  @Override
+  public long count(ReviewCriteria criteria) {
+    return reviewMongoDao.count(criteria);
   }
 }

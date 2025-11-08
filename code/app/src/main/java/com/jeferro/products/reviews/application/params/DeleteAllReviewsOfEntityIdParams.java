@@ -1,12 +1,14 @@
 package com.jeferro.products.reviews.application.params;
 
 import com.jeferro.products.reviews.domain.models.EntityId;
+import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class DeleteAllReviewsOfEntityIdParams extends Params<Void> {
+public class DeleteAllReviewsOfEntityIdParams extends Params<List<ReviewId>> {
 
   private final EntityId entityId;
 

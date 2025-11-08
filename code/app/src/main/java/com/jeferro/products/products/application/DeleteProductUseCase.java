@@ -40,17 +40,19 @@ public class DeleteProductUseCase extends UseCase<DeleteProductParams, ProductVe
 
   private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
     var previousVersionCriteria = ProductVersionCriteria.previousProduct(versionId);
-    var previousVersion =
-        productVersionRepository.findAll(previousVersionCriteria).getFirstOrNull();
+    var previousVersionOpt = productVersionRepository.findOne(previousVersionCriteria);
 
-    if (previousVersion == null) {
+    if (previousVersionOpt.isEmpty()) {
       return;
     }
 
-    var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
-    var nextVersion = productVersionRepository.findAll(nextVersionCriteria).getFirstOrNull();
+    var previousVersion = previousVersionOpt.get();
 
-    if (nextVersion != null) {
+    var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
+    var nextVersionOpt = productVersionRepository.findOne(nextVersionCriteria);
+
+    if (nextVersionOpt.isPresent()) {
+      var nextVersion = nextVersionOpt.get();
       previousVersion.expireBeforeVersion(nextVersion.getVersionId());
     } else {
       previousVersion.notExpire();

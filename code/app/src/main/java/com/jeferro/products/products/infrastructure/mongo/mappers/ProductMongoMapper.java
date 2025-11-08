@@ -5,12 +5,11 @@ import com.jeferro.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.domain.models.ProductVersionSummary;
 import com.jeferro.products.products.infrastructure.mongo.dtos.ProductVersionMongoDTO;
 import com.jeferro.products.products.infrastructure.mongo.dtos.ProductVersionSummaryMongoDTO;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregateMongoMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Page;
 
 @Mapper(config = MapstructConfig.class)
 public abstract class ProductMongoMapper
@@ -20,10 +19,7 @@ public abstract class ProductMongoMapper
 
   public abstract ProductVersionSummary toDomain(ProductVersionSummaryMongoDTO dto);
 
-  public PaginatedList<ProductVersionSummary> toDomainSummary(
-      Page<ProductVersionSummaryMongoDTO> page) {
-    var entities = page.getContent().stream().map(this::toDomain).toList();
-
-    return new PaginatedList<>(entities, page.getNumber(), page.getSize(), page.getTotalElements());
+  public List<ProductVersionSummary> toDomainSummary(List<ProductVersionSummaryMongoDTO> elements) {
+    return elements.stream().map(this::toDomain).toList();
   }
 }

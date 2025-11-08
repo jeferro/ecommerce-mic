@@ -2,7 +2,6 @@ package com.jeferro.shared.ddd.domain.events;
 
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -14,8 +13,7 @@ public abstract class EventBus {
 
   private final Map<Class<Event>, List<EventBusProducer<?>>> producers = new HashMap<>();
 
-  public <I extends Identifier, E extends AggregateRoot<I>> void sendAll(
-      PaginatedList<E> aggregateRoots) {
+  public <I extends Identifier, E extends AggregateRoot<I>> void sendAll(List<E> aggregateRoots) {
     aggregateRoots.forEach(this::sendAll);
   }
 

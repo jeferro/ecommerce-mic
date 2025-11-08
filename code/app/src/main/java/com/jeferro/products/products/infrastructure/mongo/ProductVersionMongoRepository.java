@@ -8,7 +8,7 @@ import com.jeferro.products.products.domain.repositories.ProductVersionRepositor
 import com.jeferro.products.products.infrastructure.mongo.daos.ProductVersionsMongoDao;
 import com.jeferro.products.products.infrastructure.mongo.dtos.ProductVersionSummaryMongoDTO;
 import com.jeferro.products.products.infrastructure.mongo.mappers.ProductMongoMapper;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -43,16 +43,21 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
   }
 
   @Override
-  public PaginatedList<ProductVersion> findAll(ProductVersionCriteria criteria) {
-    var page = productVersionsMongoDao.findAllByCriteria(criteria);
+  public List<ProductVersion> findAll(ProductVersionCriteria criteria) {
+    var page = productVersionsMongoDao.findAll(criteria);
 
     return productMongoMapper.toDomain(page);
   }
 
   @Override
-  public PaginatedList<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
+  public long count(ProductVersionCriteria criteria) {
+    return productVersionsMongoDao.count(criteria);
+  }
+
+  @Override
+  public List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
     var page =
-        productVersionsMongoDao.findAllByCriteria(
+        productVersionsMongoDao.findAll(
             criteria, ProductVersionSummaryMongoDTO.class, ProductVersionSummaryMongoDTO.FIELDS);
 
     return productMongoMapper.toDomainSummary(page);

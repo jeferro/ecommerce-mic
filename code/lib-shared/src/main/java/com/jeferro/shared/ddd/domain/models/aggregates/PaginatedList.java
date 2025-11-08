@@ -1,5 +1,6 @@
 package com.jeferro.shared.ddd.domain.models.aggregates;
 
+import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import com.jeferro.shared.ddd.domain.models.value_objects.ValueObject;
 import java.util.*;
 import java.util.function.Function;
@@ -38,6 +39,12 @@ public class PaginatedList<T> extends ValueObject implements Collection<T> {
     long totalItems = items.size();
 
     return new PaginatedList<T>(items, 0, pageSize, totalItems);
+  }
+
+  public static <T> PaginatedList<T> createOfCriteria(
+      DomainCriteria<?> criteria, List<T> items, long totalElements) {
+    return new PaginatedList<>(
+        items, criteria.getPageNumber(), criteria.getPageSize(), totalElements);
   }
 
   @Override
