@@ -14,8 +14,7 @@ public abstract class EventBus {
 
   private final Map<Class<Event>, List<EventBusProducer<?>>> producers = new HashMap<>();
 
-  public <I extends Identifier, E extends AggregateRoot<I>> void sendAll(
-      PaginatedList<E> aggregateRoots) {
+  public <I extends Identifier, E extends AggregateRoot<I>> void sendAll(List<E> aggregateRoots) {
     aggregateRoots.forEach(this::sendAll);
   }
 

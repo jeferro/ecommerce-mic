@@ -1,5 +1,6 @@
 package com.jeferro.products.shared.domain.repositories;
 
+import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
 import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;

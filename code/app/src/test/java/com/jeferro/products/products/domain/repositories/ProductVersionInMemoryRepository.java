@@ -1,13 +1,14 @@
 package com.jeferro.products.products.domain.repositories;
 
+import java.time.Instant;
+import java.util.List;
+
 import com.jeferro.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.domain.models.ProductVersionSummary;
 import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
-import java.time.Instant;
 
 public class ProductVersionInMemoryRepository
     extends InMemoryRepository<ProductVersion, ProductVersionId>
@@ -25,28 +26,30 @@ public class ProductVersionInMemoryRepository
   }
 
   @Override
-  public PaginatedList<ProductVersion> findAll(ProductVersionCriteria filter) {
+  public List<ProductVersion> findAll(ProductVersionCriteria criteria) {
     var entities =
         data.values().stream()
-            .filter(product -> matchCriteria(filter, product))
-            .sorted((p1, p2) -> compareProducts(p1, p2, filter))
+            .filter(product -> matchCriteria(criteria, product))
+            .sorted((p1, p2) -> compareProducts(p1, p2, criteria))
             .toList();
 
-    var paginatedEntities = paginateEntities(entities, filter);
-
-    return PaginatedList.createOfList(paginatedEntities);
+    return paginateEntities(entities, criteria);
   }
 
-  @Override
-  public PaginatedList<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
-    var entities = findAll(criteria).stream().map(this::mapProductVersionSummary).toList();
+	@Override
+	public long count(ProductVersionCriteria criteria) {
+		return findAll(criteria).size();
+	}
 
-    return PaginatedList.createOfList(entities);
+	@Override
+  public List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
+    return findAll(criteria).stream()
+				.map(this::mapProductVersionSummary)
+				.toList();
   }
 
   private ProductVersionSummary mapProductVersionSummary(ProductVersion productVersion) {
-    return new ProductVersionSummary(
-        productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
+    return new ProductVersionSummary(productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
   }
 
   private boolean matchCriteria(ProductVersionCriteria filter, ProductVersion productVersion) {

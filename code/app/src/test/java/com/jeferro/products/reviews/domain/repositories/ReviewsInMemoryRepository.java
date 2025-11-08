@@ -1,11 +1,12 @@
 package com.jeferro.products.reviews.domain.repositories;
 
+import java.util.List;
+
 import com.jeferro.products.reviews.domain.models.Review;
 import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 
 public class ReviewsInMemoryRepository extends InMemoryRepository<Review, ReviewId>
     implements ReviewsRepository {
@@ -19,20 +20,22 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
   }
 
   @Override
-  public PaginatedList<Review> findAll(ReviewCriteria criteria) {
-    var entities =
-        data.values().stream()
+  public List<Review> findAll(ReviewCriteria criteria) {
+    var entities = data.values().stream()
             .filter(review -> matchCriteria(review, criteria))
             .sorted((r1, r2) -> compareReviews(r1, r2, criteria))
             .toList();
 
-    var paginatedEntities = paginateEntities(entities, criteria);
-
-    return PaginatedList.createOfList(paginatedEntities);
+    return paginateEntities(entities, criteria);
   }
 
-  @Override
-  public void deleteAll(PaginatedList<Review> reviews) {
+	@Override
+	public long count(ReviewCriteria criteria) {
+		return findAll(criteria).size();
+	}
+
+	@Override
+  public void deleteAll(List<Review> reviews) {
     reviews.forEach(this::delete);
   }
 

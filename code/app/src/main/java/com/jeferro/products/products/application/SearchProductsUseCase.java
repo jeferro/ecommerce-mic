@@ -5,6 +5,7 @@ import static com.jeferro.products.shared.application.Roles.USER;
 import com.jeferro.products.products.application.params.SearchProductsParams;
 import com.jeferro.products.products.domain.models.ProductVersionSummary;
 import com.jeferro.products.products.domain.repositories.ProductVersionRepository;
+import com.jeferro.products.shared.domain.utils.FutureUtils;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
@@ -14,8 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SearchProductsUseCase
-    extends UseCase<SearchProductsParams, PaginatedList<ProductVersionSummary>> {
+public class SearchProductsUseCase extends UseCase<SearchProductsParams, PaginatedList<ProductVersionSummary>> {
 
   private final ProductVersionRepository productVersionRepository;
 
@@ -28,6 +28,10 @@ public class SearchProductsUseCase
   public PaginatedList<ProductVersionSummary> execute(Auth auth, SearchProductsParams params) {
     var criteria = params.getCriteria();
 
-    return productVersionRepository.findAllSummary(criteria);
+    return FutureUtils.executeInParallel(
+        () -> productVersionRepository.findAllSummary(criteria),
+        () -> productVersionRepository.count(criteria),
+        (summaries, totalReviews) -> PaginatedList.createOfCriteria(criteria, summaries, totalReviews)
+    );
   }
 }
