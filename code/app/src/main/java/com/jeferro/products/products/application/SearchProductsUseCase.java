@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SearchProductsUseCase extends UseCase<SearchProductsParams, PaginatedList<ProductVersionSummary>> {
+public class SearchProductsUseCase
+    extends UseCase<SearchProductsParams, PaginatedList<ProductVersionSummary>> {
 
   private final ProductVersionRepository productVersionRepository;
 
@@ -31,7 +32,7 @@ public class SearchProductsUseCase extends UseCase<SearchProductsParams, Paginat
     return FutureUtils.executeInParallel(
         () -> productVersionRepository.findAllSummary(criteria),
         () -> productVersionRepository.count(criteria),
-        (summaries, totalReviews) -> PaginatedList.createOfCriteria(criteria, summaries, totalReviews)
-    );
+        (summaries, totalReviews) ->
+            PaginatedList.createOfCriteria(criteria, summaries, totalReviews));
   }
 }

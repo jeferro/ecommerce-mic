@@ -1,12 +1,11 @@
 package com.jeferro.products.reviews.domain.repositories;
 
-import java.util.List;
-
 import com.jeferro.products.reviews.domain.models.Review;
 import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.ReviewMother;
 import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
+import java.util.List;
 
 public class ReviewsInMemoryRepository extends InMemoryRepository<Review, ReviewId>
     implements ReviewsRepository {
@@ -21,7 +20,8 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
 
   @Override
   public List<Review> findAll(ReviewCriteria criteria) {
-    var entities = data.values().stream()
+    var entities =
+        data.values().stream()
             .filter(review -> matchCriteria(review, criteria))
             .sorted((r1, r2) -> compareReviews(r1, r2, criteria))
             .toList();
@@ -29,12 +29,12 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
     return paginateEntities(entities, criteria);
   }
 
-	@Override
-	public long count(ReviewCriteria criteria) {
-		return findAll(criteria).size();
-	}
+  @Override
+  public long count(ReviewCriteria criteria) {
+    return findAll(criteria).size();
+  }
 
-	@Override
+  @Override
   public void deleteAll(List<Review> reviews) {
     reviews.forEach(this::delete);
   }

@@ -12,11 +12,7 @@ public class ReviewCriteria extends DomainCriteria<ReviewOrder> {
   private final EntityId entityId;
 
   public ReviewCriteria(
-      int pageNumber,
-      int pageSize,
-      ReviewOrder order,
-      Boolean ascending,
-      EntityId entityId) {
+      int pageNumber, int pageSize, ReviewOrder order, Boolean ascending, EntityId entityId) {
     super(pageNumber, pageSize, order, ascending);
 
     this.entityId = entityId;

@@ -28,10 +28,9 @@ public class SearchReviewUseCase extends UseCase<SearchReviewParams, PaginatedLi
   public PaginatedList<Review> execute(Auth auth, SearchReviewParams params) {
     var criteria = params.getCriteria();
 
-		return FutureUtils.executeInParallel(
-				() -> reviewsRepository.findAll(criteria),
-				() -> reviewsRepository.count(criteria),
-				(reviews, totalReviews) -> PaginatedList.createOfCriteria(criteria, reviews, totalReviews)
-		);
+    return FutureUtils.executeInParallel(
+        () -> reviewsRepository.findAll(criteria),
+        () -> reviewsRepository.count(criteria),
+        (reviews, totalReviews) -> PaginatedList.createOfCriteria(criteria, reviews, totalReviews));
   }
 }

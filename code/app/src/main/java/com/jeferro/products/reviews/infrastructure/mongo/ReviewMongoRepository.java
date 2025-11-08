@@ -1,8 +1,5 @@
 package com.jeferro.products.reviews.infrastructure.mongo;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.jeferro.products.reviews.domain.models.Review;
 import com.jeferro.products.reviews.domain.models.ReviewId;
 import com.jeferro.products.reviews.domain.models.criteria.ReviewCriteria;
@@ -10,6 +7,8 @@ import com.jeferro.products.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.products.reviews.infrastructure.mongo.daos.ReviewMongoDao;
 import com.jeferro.products.reviews.infrastructure.mongo.mappers.ReviewMongoMapper;
 import com.jeferro.shared.ddd.domain.models.aggregates.Entity;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,10 +43,8 @@ public class ReviewMongoRepository implements ReviewsRepository {
 
   @Override
   public void deleteAll(List<Review> reviews) {
-    var productReviewIds = reviews.stream()
-				.map(Entity::getId)
-				.map(reviewMongoMapper::toDTO)
-				.toList();
+    var productReviewIds =
+        reviews.stream().map(Entity::getId).map(reviewMongoMapper::toDTO).toList();
 
     reviewMongoDao.deleteAllById(productReviewIds);
   }
@@ -59,8 +56,8 @@ public class ReviewMongoRepository implements ReviewsRepository {
     return reviewMongoMapper.toDomain(page);
   }
 
-	@Override
-	public long count(ReviewCriteria criteria) {
-		return reviewMongoDao.count(criteria);
-	}
+  @Override
+  public long count(ReviewCriteria criteria) {
+    return reviewMongoDao.count(criteria);
+  }
 }

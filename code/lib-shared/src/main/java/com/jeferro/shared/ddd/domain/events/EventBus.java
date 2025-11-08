@@ -2,7 +2,6 @@ package com.jeferro.shared.ddd.domain.events;
 
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
-import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;

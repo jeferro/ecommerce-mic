@@ -41,9 +41,11 @@ public class PaginatedList<T> extends ValueObject implements Collection<T> {
     return new PaginatedList<T>(items, 0, pageSize, totalItems);
   }
 
-	public static <T> PaginatedList<T> createOfCriteria(DomainCriteria<?> criteria, List<T> items, long totalElements) {
-		return new PaginatedList<>(items, criteria.getPageNumber(), criteria.getPageSize(), totalElements);
-	}
+  public static <T> PaginatedList<T> createOfCriteria(
+      DomainCriteria<?> criteria, List<T> items, long totalElements) {
+    return new PaginatedList<>(
+        items, criteria.getPageNumber(), criteria.getPageSize(), totalElements);
+  }
 
   @Override
   public boolean isEmpty() {

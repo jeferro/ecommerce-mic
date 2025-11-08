@@ -1,14 +1,13 @@
 package com.jeferro.products.products.domain.repositories;
 
-import java.time.Instant;
-import java.util.List;
-
 import com.jeferro.products.products.domain.models.ProductVersion;
 import com.jeferro.products.products.domain.models.ProductVersionId;
 import com.jeferro.products.products.domain.models.ProductVersionMother;
 import com.jeferro.products.products.domain.models.ProductVersionSummary;
 import com.jeferro.products.products.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.products.shared.domain.repositories.InMemoryRepository;
+import java.time.Instant;
+import java.util.List;
 
 public class ProductVersionInMemoryRepository
     extends InMemoryRepository<ProductVersion, ProductVersionId>
@@ -36,20 +35,19 @@ public class ProductVersionInMemoryRepository
     return paginateEntities(entities, criteria);
   }
 
-	@Override
-	public long count(ProductVersionCriteria criteria) {
-		return findAll(criteria).size();
-	}
+  @Override
+  public long count(ProductVersionCriteria criteria) {
+    return findAll(criteria).size();
+  }
 
-	@Override
+  @Override
   public List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
-    return findAll(criteria).stream()
-				.map(this::mapProductVersionSummary)
-				.toList();
+    return findAll(criteria).stream().map(this::mapProductVersionSummary).toList();
   }
 
   private ProductVersionSummary mapProductVersionSummary(ProductVersion productVersion) {
-    return new ProductVersionSummary(productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
+    return new ProductVersionSummary(
+        productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
   }
 
   private boolean matchCriteria(ProductVersionCriteria filter, ProductVersion productVersion) {

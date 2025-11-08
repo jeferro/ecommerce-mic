@@ -2,8 +2,6 @@ package com.jeferro.products.products.application;
 
 import static com.jeferro.products.shared.application.Roles.USER;
 
-import java.util.Set;
-
 import com.jeferro.products.parametrics.domain.models.values.ParametricValueId;
 import com.jeferro.products.parametrics.domain.services.ParametricValidator;
 import com.jeferro.products.products.application.params.CreateProductParams;
@@ -16,6 +14,7 @@ import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -75,11 +74,11 @@ public class CreateProductUseCase extends UseCase<CreateProductParams, ProductVe
     eventBus.sendAll(previousVersion);
   }
 
-  private ProductVersion createNewVersion(ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
+  private ProductVersion createNewVersion(
+      ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
     var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
 
-    var nextVersion = productVersionRepository.findOne(nextVersionCriteria)
-        .orElse(null);
+    var nextVersion = productVersionRepository.findOne(nextVersionCriteria).orElse(null);
 
     var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);
 

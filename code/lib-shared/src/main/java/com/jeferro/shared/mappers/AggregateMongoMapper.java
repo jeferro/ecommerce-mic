@@ -1,11 +1,10 @@
 package com.jeferro.shared.mappers;
 
-import java.util.List;
-import java.util.Map;
-
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.StringIdentifier;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
+import java.util.List;
+import java.util.Map;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 

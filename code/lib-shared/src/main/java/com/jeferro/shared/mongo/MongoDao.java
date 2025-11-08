@@ -1,11 +1,10 @@
 package com.jeferro.shared.mongo;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.jeferro.shared.auth.infrastructure.ContextManager;
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
 import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
+import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -57,24 +56,25 @@ public abstract class MongoDao<DTO extends AuditedMongoDTO, ID, C extends Domain
     return findAll(criteria, entityClass, List.of());
   }
 
-  public <Summary> List<Summary> findAll(C criteria, Class<Summary> entityClass, List<String> projections) {
-		var query = createDataQuery(criteria);
+  public <Summary> List<Summary> findAll(
+      C criteria, Class<Summary> entityClass, List<String> projections) {
+    var query = createDataQuery(criteria);
 
-		if(ObjectUtils.isNotEmpty(projections)){
-			var fields = query.fields();
-			projections.forEach(fields::include);
-		}
+    if (ObjectUtils.isNotEmpty(projections)) {
+      var fields = query.fields();
+      projections.forEach(fields::include);
+    }
 
-		return mongoTemplate.find(query, entityClass);
+    return mongoTemplate.find(query, entityClass);
   }
 
-	public long count(C criteria) {
-		var entityClass = getEntityClass();
+  public long count(C criteria) {
+    var entityClass = getEntityClass();
 
-		var countQuery = createCountQuery(criteria);
+    var countQuery = createCountQuery(criteria);
 
-		return mongoTemplate.count(countQuery, entityClass);
-	}
+    return mongoTemplate.count(countQuery, entityClass);
+  }
 
   private Query createCountQuery(C criteria) {
     var countQuery = new Query();
@@ -84,23 +84,23 @@ public abstract class MongoDao<DTO extends AuditedMongoDTO, ID, C extends Domain
     return countQuery;
   }
 
-	private Query createDataQuery(C criteria) {
-		var dataQuery = new Query();
+  private Query createDataQuery(C criteria) {
+    var dataQuery = new Query();
 
-		mapCriteria(criteria).forEach(dataQuery::addCriteria);
+    mapCriteria(criteria).forEach(dataQuery::addCriteria);
 
-		var sortBy = mapOrder(criteria);
-		var sortDirection = criteria.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC;
-		var sort = Sort.by(sortDirection, sortBy);
-		dataQuery.with(sort);
+    var sortBy = mapOrder(criteria);
+    var sortDirection = criteria.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC;
+    var sort = Sort.by(sortDirection, sortBy);
+    dataQuery.with(sort);
 
-		int pageNumber = criteria.getPageNumber();
-		int pageSize = criteria.getPageSize();
-		var pageable = PageRequest.of(pageNumber, pageSize);
-		dataQuery.with(pageable);
+    int pageNumber = criteria.getPageNumber();
+    int pageSize = criteria.getPageSize();
+    var pageable = PageRequest.of(pageNumber, pageSize);
+    dataQuery.with(pageable);
 
-		return dataQuery;
-	}
+    return dataQuery;
+  }
 
   protected abstract List<Criteria> mapCriteria(C domainCriteria);
 
