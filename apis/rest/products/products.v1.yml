@@ -318,6 +318,8 @@ components:
             en: 'Apple'
         status:
           $ref: '#/components/schemas/ProductStatus'
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
 
     ProductVersionSummary:
       type: object

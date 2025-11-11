@@ -33,6 +33,11 @@ paths:
       responses:
         '200':
           description: Ok
+          headers:
+            Authorization:
+              description: Token to future requests
+              schema:
+                type: string
           content:
             application/json:
               schema:

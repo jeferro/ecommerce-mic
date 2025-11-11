@@ -233,6 +233,8 @@ components:
           type: string
           description: Comment of the review
           example: 'One comment of the product'
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
 
     ReviewList:
       type: object
