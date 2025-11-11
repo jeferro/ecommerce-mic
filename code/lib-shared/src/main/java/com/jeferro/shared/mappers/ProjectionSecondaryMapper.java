@@ -14,7 +14,7 @@ public abstract class ProjectionSecondaryMapper<
   public abstract Identifier toDomain(String value);
 
   public String toDTO(Identifier id) {
-    return id.getValue();
+    return id.toString();
   }
 
   @Mapping(target = "id", qualifiedByName = "idToDomain")

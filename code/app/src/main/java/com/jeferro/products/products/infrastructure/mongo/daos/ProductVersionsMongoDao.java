@@ -27,7 +27,7 @@ public class ProductVersionsMongoDao
     var mongoCriteria = new ArrayList<Criteria>();
 
     if (domainCriteria.hasCode()) {
-      Criteria codeCriteria = Criteria.where("code").is(domainCriteria.getCode().getValue());
+      Criteria codeCriteria = Criteria.where("code").is(domainCriteria.getCode().toString());
 
       mongoCriteria.add(codeCriteria);
     }

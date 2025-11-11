@@ -7,7 +7,7 @@ import java.util.Locale;
 public abstract class ReviewMother {
 
   public static Review johnReviewOfApple() {
-    var entityId = EntityId.createOf("products", ProductCodeMother.apple().getValue());
+    var entityId = EntityId.createOf("products", ProductCodeMother.apple().toString());
     var johnAuth = AuthMother.john();
 
     var productReviewId = ReviewId.createOf(entityId, johnAuth);
@@ -16,7 +16,7 @@ public abstract class ReviewMother {
   }
 
   public static Review emilyReviewOfApple() {
-    var entityId = EntityId.createOf("products", ProductCodeMother.apple().getValue());
+    var entityId = EntityId.createOf("products", ProductCodeMother.apple().toString());
     var emilyAuth = AuthMother.emily();
 
     var productReviewId = ReviewId.createOf(entityId, emilyAuth);
@@ -25,7 +25,7 @@ public abstract class ReviewMother {
   }
 
   public static Review jamesReviewOfApple() {
-    var entityId = EntityId.createOf("products", ProductCodeMother.apple().getValue());
+    var entityId = EntityId.createOf("products", ProductCodeMother.apple().toString());
     var jamesAuth = AuthMother.james();
 
     var productReviewId = ReviewId.createOf(entityId, jamesAuth);

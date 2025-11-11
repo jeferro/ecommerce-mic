@@ -26,7 +26,7 @@ public class AuthenticationsRestController implements AuthenticationApi {
 
     var user = useCaseBus.execute(params);
 
-    var token = headerJwtDecoder.encode(user.getUsername().getValue(), user.getRoles());
+    var token = headerJwtDecoder.encode(user.getUsername().toString(), user.getRoles());
 
     return authRestMapper.toDTO(user, token);
   }

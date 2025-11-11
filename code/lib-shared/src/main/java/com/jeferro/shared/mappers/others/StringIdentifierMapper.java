@@ -9,7 +9,7 @@ import org.mapstruct.TargetType;
 public interface StringIdentifierMapper {
 
   static <V extends StringIdentifier> String toDTO(V valueObject) {
-    return valueObject == null ? null : valueObject.getValue();
+    return valueObject == null ? null : valueObject.toString();
   }
 
   static <V extends StringIdentifier> V toDomain(

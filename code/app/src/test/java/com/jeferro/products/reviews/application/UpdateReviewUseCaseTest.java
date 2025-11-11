@@ -87,6 +87,6 @@ class UpdateReviewUseCaseTest {
       fail();
     }
 
-    assertEquals(result.getId(), event.get().getReviewId());
+    assertEquals(result.getId(), event.get().getEntityId());
   }
 }

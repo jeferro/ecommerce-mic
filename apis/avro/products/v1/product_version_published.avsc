@@ -4,14 +4,19 @@
   "name": "ProductPublishedV1AvroDTO",
   "fields": [
     {
-      "name": "eventId",
+      "name": "id",
       "type": "string",
       "doc": "Identifier of the event"
     },
     {
-      "name": "versionId",
+      "name": "sentAt",
       "type": "string",
-      "doc": "Identifier of the product version updated"
+      "doc": "Date when the event was sent"
+    },
+    {
+      "name": "entity",
+      "type": "ProductVersionV1AvroDTO",
+      "doc": "Product version published"
     }
   ]
 }

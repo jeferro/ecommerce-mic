@@ -16,7 +16,7 @@ public abstract class AggregateSecondaryMapper<
 
   @Named("idToDTO")
   public String toDTO(Identifier id) {
-    return id.getValue();
+    return id.toString();
   }
 
   @Mapping(target = "id", qualifiedByName = "idToDomain")

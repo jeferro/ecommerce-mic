@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @KafkaListener(
-    topics = "${components.products.topic}",
-    groupId = "${components.reviews.reviews-on-product-events-consumer-group-id}")
+	topics = "${components.products.topic}",
+	groupId = "${components.reviews.reviews-on-product-events-consumer-group-id}")
 public class ReviewsOnProductEventsKafkaConsumer {
 
   private static final Logger logger =
-      LoggerFactory.getLogger(ReviewsOnProductEventsKafkaConsumer.class);
+	  LoggerFactory.getLogger(ReviewsOnProductEventsKafkaConsumer.class);
 
   private final ReviewKafkaMapper reviewKafkaMapper = ReviewKafkaMapper.INSTANCE;
 
@@ -27,15 +27,15 @@ public class ReviewsOnProductEventsKafkaConsumer {
 
   @KafkaHandler
   protected void consume(ProductDeletedV1AvroDTO productDeletedAvroDTO) {
-    var params =
-        new DeleteAllReviewsOfEntityIdParams(
-            reviewKafkaMapper.toDomain("apis/avro/products", productDeletedAvroDTO.getVersionId()));
+    var params = new DeleteAllReviewsOfEntityIdParams(
+		reviewKafkaMapper.toDomain("products", productDeletedAvroDTO.getEntity().getId())
+	);
 
-    useCaseBus.executeWithRetry(params, 3);
+	useCaseBus.executeWithRetry(params, 3);
   }
 
   @KafkaHandler(isDefault = true)
   protected void consume(Object eventAvroDTO) {
-    logger.debug("Ignoring event {}", eventAvroDTO);
+	logger.debug("Ignoring event {}", eventAvroDTO);
   }
 }

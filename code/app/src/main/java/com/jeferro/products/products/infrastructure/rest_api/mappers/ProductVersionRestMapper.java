@@ -36,7 +36,7 @@ public abstract class ProductVersionRestMapper
       PaginatedList<ProductVersionSummary> productVersions);
 
   public String toVersionItemDTO(ProductVersionSummary productVersion) {
-    return productVersion.getVersionId().getValue();
+    return productVersion.getVersionId().toString();
   }
 
   public abstract ProductVersionListRestDTO toVersionListDTO(

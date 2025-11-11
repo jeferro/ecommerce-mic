@@ -1,0 +1,53 @@
+[
+  {
+    "namespace": "com.jeferro.products.products.infrastructure.kafka.dtos",
+    "name": "ProductStatusV1AvroDTO",
+    "type": "enum",
+    "default": "UNKNOWN",
+    "symbols": [
+      "UNKNOWN",
+      "PUBLISHED",
+      "UNPUBLISHED"
+    ]
+  },
+  {
+    "namespace": "com.jeferro.products.products.infrastructure.kafka.dtos",
+    "name": "ProductVersionV1AvroDTO",
+    "type": "record",
+    "fields": [
+      {
+        "name": "id",
+        "type": "string",
+        "doc": "Identifier of the product version"
+      },
+      {
+        "name": "effectiveDate",
+        "type": "string",
+        "doc": "Date from which the version is effective"
+      },
+      {
+        "name": "endEffectiveDate",
+        "type": "string",
+        "doc": "Date until the version is effective (not including)"
+      },
+      {
+        "name": "typeId",
+        "type": "string",
+        "doc": "Type of product"
+      },
+      {
+        "name": "name",
+        "type": {
+          "type": "map",
+          "values": "string"
+        },
+        "doc": "Name of the product"
+      },
+      {
+        "name": "status",
+        "type": "ProductStatusV1AvroDTO",
+        "doc": "Status of the product"
+      }
+    ]
+  }
+]

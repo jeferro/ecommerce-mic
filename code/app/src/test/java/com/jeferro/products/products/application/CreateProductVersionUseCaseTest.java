@@ -115,7 +115,7 @@ class CreateProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(result.getVersionId(), event.get().getVersionId());
+    assertEquals(result.getVersionId(), event.get().getEntityId());
   }
 
   private void assertProductUpdatedWasPublished(ProductVersion previous) {
@@ -125,7 +125,7 @@ class CreateProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(previous.getVersionId(), event.get().getVersionId());
+    assertEquals(previous.getVersionId(), event.get().getEntityId());
   }
 
   private void assertEndEffectiveDateOfPreviousVersion(ProductVersion result) {

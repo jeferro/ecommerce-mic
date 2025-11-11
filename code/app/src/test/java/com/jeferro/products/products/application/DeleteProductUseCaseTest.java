@@ -89,7 +89,7 @@ class DeleteProductUseCaseTest {
       fail();
     }
 
-    assertEquals(productVersion.getVersionId(), event.get().getVersionId());
+    assertEquals(productVersion.getVersionId(), event.get().getEntityId());
   }
 
   private void assertProductUpdatedWasPublished(ProductVersion previousVersion) {
@@ -99,6 +99,6 @@ class DeleteProductUseCaseTest {
       fail();
     }
 
-    assertEquals(previousVersion.getVersionId(), event.get().getVersionId());
+    assertEquals(previousVersion.getVersionId(), event.get().getEntityId());
   }
 }

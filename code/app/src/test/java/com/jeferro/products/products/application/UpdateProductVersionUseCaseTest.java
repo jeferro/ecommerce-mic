@@ -72,6 +72,6 @@ class UpdateProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(productVersion.getVersionId(), event.get().getVersionId());
+    assertEquals(productVersion.getVersionId(), event.get().getEntityId());
   }
 }

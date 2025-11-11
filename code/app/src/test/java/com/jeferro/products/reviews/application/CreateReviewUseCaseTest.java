@@ -37,7 +37,7 @@ class CreateReviewUseCaseTest {
 
   @Test
   void should_createReview_when_reviewNotExist() {
-    var appleEntityId = EntityId.createOf("products", ProductCodeMother.apple().getValue());
+    var appleEntityId = EntityId.createOf("products", ProductCodeMother.apple().toString());
     var comment = "New comment about product";
     var params = new CreateReviewParams(appleEntityId, comment);
 
@@ -79,6 +79,6 @@ class CreateReviewUseCaseTest {
       fail();
     }
 
-    assertEquals(result.getId(), event.get().getReviewId());
+    assertEquals(result.getId(), event.get().getEntityId());
   }
 }

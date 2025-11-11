@@ -14,6 +14,7 @@ import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUpdatedV1A
 import com.jeferro.shared.mappers.EventMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
@@ -33,13 +34,18 @@ public abstract class ProductKafkaMapper extends EventMapper<ProductVersionEvent
     };
   }
 
+  @Mapping(target = "entityBuilder", ignore = true)
   protected abstract ProductCreatedV1AvroDTO toDTO(ProductVersionCreated entity);
 
+  @Mapping(target = "entityBuilder", ignore = true)
   protected abstract ProductUpdatedV1AvroDTO toDTO(ProductVersionUpdated entity);
 
+  @Mapping(target = "entityBuilder", ignore = true)
   protected abstract ProductPublishedV1AvroDTO toDTO(ProductVersionPublished entity);
 
+  @Mapping(target = "entityBuilder", ignore = true)
   protected abstract ProductUnpublishedV1AvroDTO toDTO(ProductVersionUnpublished entity);
 
+  @Mapping(target = "entityBuilder", ignore = true)
   protected abstract ProductDeletedV1AvroDTO toDTO(ProductVersionDeleted entity);
 }

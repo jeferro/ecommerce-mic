@@ -20,7 +20,7 @@ public class ProductEventKafkaProducer implements EventBusProducer<ProductVersio
 
   @Override
   public void send(ProductVersionEvent event) {
-    String key = event.getVersionId().toString();
+    String key = event.getEntityId().toString();
     var data = productKafkaMapper.toDTO(event);
 
     kafkaTemplate.send(productsComponentProperties.getTopic(), key, data);

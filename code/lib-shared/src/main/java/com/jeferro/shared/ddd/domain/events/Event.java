@@ -1,50 +1,29 @@
 package com.jeferro.shared.ddd.domain.events;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
-
+import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
+import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
+import com.jeferro.shared.ddd.domain.models.value_objects.ValueObject;
 import lombok.Getter;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.time.Instant;
 
 @Getter
-public abstract class Event {
+public abstract class Event<A extends AggregateRoot<I>, I extends Identifier> extends ValueObject {
 
-  protected final EventId eventId;
+  private final EventId id;
 
-  public Event() {
-    this.eventId = EventId.create();
+  private final Instant sentAt;
+
+  protected final A entity;
+
+  public Event(A entity) {
+    this.id = EventId.create();
+    this.sentAt = Instant.now();
+
+    this.entity = entity;
   }
 
-  public boolean hasSameId(EventId otherId) {
-    return eventId.equals(otherId);
-  }
-
-  @Override
-  public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this);
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    if (other == null) {
-      return false;
-    }
-
-    if (this == other) {
-      return true;
-    }
-
-    if (getClass() != other.getClass()) {
-      return false;
-    }
-
-    var otherProjection = (Event) other;
-
-    return hasSameId(otherProjection.eventId);
-  }
-
-  @Override
-  public String toString() {
-    return ReflectionToStringBuilder.toString(this, SHORT_PREFIX_STYLE);
+  public I getEntityId() {
+    return entity.getId();
   }
 }

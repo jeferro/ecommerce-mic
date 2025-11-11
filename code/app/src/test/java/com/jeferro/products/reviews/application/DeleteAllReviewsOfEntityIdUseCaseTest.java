@@ -37,7 +37,7 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
 
   @Test
   void should_deleteAllReviews_when_productHaveReviews() {
-    var appleEntityId = EntityId.createOf("products", ProductCodeMother.apple().getValue());
+    var appleEntityId = EntityId.createOf("products", ProductCodeMother.apple().toString());
 
     var params = new DeleteAllReviewsOfEntityIdParams(appleEntityId);
 
@@ -50,7 +50,7 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
 
   @Test
   void should_notDeleteReviews_when_productNotHaveReviews() {
-    var pearEntityId = EntityId.createOf("products", ProductCodeMother.pear().getValue());
+    var pearEntityId = EntityId.createOf("products", ProductCodeMother.pear().toString());
 
     var params = new DeleteAllReviewsOfEntityIdParams(pearEntityId);
 
@@ -71,7 +71,7 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
           assertInstanceOf(ReviewDeleted.class, event);
 
           ReviewDeleted reviewDeleted = (ReviewDeleted) event;
-          notifiedReviewIds.add(reviewDeleted.getReviewId());
+          notifiedReviewIds.add(reviewDeleted.getEntityId());
         });
 
     var johnReviewOfApple = ReviewMother.johnReviewOfApple();
