@@ -33,11 +33,6 @@ paths:
       responses:
         '200':
           description: Ok
-          headers:
-            Authorization:
-              description: Token to future requests
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -76,12 +71,16 @@ components:
       description: Authentication information
       required:
         - username
+        - token
         - roles
       properties:
         username:
           type: string
           description: Identifier of user
           example: 'one-user'
+        token:
+          type: string
+          description: Authentication token
         roles:
           type: array
           items:
