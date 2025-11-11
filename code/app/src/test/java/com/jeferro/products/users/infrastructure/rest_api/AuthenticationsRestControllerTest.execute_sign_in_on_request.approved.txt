@@ -1,3 +1,3 @@
 data[0] = SignInParams[password=plain-password,username=john]
 data[1] = 200
-data[2] = {"username":"john","roles":["user"]}
+data[2] = {"username":"john","token":"Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9kdWN0cyIsImlhdCI6MTc2Mjg5NTYwMSwic3ViIjoiam9obiIsInJvbGVzIjpbInVzZXIiXX0.TQZbu_rUWMPj-Ixclo1qKg2uo6VZMiVqVTAhYgzngVr7MpW1QrEt3LMG3CuMktzx56-OUFDyRQKrb7x_Ec-6xw","roles":["user"]}
