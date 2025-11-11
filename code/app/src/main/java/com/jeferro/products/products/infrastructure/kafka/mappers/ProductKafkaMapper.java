@@ -6,11 +6,11 @@ import com.jeferro.products.products.domain.events.ProductVersionEvent;
 import com.jeferro.products.products.domain.events.ProductVersionPublished;
 import com.jeferro.products.products.domain.events.ProductVersionUnpublished;
 import com.jeferro.products.products.domain.events.ProductVersionUpdated;
-import com.jeferro.products.products.infrastructure.kafka.dtos.ProductCreatedAvroDTO;
-import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedAvroDTO;
-import com.jeferro.products.products.infrastructure.kafka.dtos.ProductPublishedAvroDTO;
-import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUnpublishedAvroDTO;
-import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUpdatedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductCreatedV1AvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedV1AvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductPublishedV1AvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUnpublishedV1AvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductUpdatedV1AvroDTO;
 import com.jeferro.shared.mappers.EventMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
@@ -33,13 +33,13 @@ public abstract class ProductKafkaMapper extends EventMapper<ProductVersionEvent
     };
   }
 
-  protected abstract ProductCreatedAvroDTO toDTO(ProductVersionCreated entity);
+  protected abstract ProductCreatedV1AvroDTO toDTO(ProductVersionCreated entity);
 
-  protected abstract ProductUpdatedAvroDTO toDTO(ProductVersionUpdated entity);
+  protected abstract ProductUpdatedV1AvroDTO toDTO(ProductVersionUpdated entity);
 
-  protected abstract ProductPublishedAvroDTO toDTO(ProductVersionPublished entity);
+  protected abstract ProductPublishedV1AvroDTO toDTO(ProductVersionPublished entity);
 
-  protected abstract ProductUnpublishedAvroDTO toDTO(ProductVersionUnpublished entity);
+  protected abstract ProductUnpublishedV1AvroDTO toDTO(ProductVersionUnpublished entity);
 
-  protected abstract ProductDeletedAvroDTO toDTO(ProductVersionDeleted entity);
+  protected abstract ProductDeletedV1AvroDTO toDTO(ProductVersionDeleted entity);
 }

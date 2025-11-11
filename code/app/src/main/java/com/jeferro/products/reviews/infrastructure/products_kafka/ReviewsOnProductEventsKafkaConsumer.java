@@ -1,6 +1,6 @@
 package com.jeferro.products.reviews.infrastructure.products_kafka;
 
-import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedAvroDTO;
+import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedV1AvroDTO;
 import com.jeferro.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.infrastructure.products_kafka.mappers.ReviewKafkaMapper;
 import com.jeferro.shared.ddd.application.UseCaseBus;
@@ -26,10 +26,10 @@ public class ReviewsOnProductEventsKafkaConsumer {
   private final UseCaseBus useCaseBus;
 
   @KafkaHandler
-  protected void consume(ProductDeletedAvroDTO productDeletedAvroDTO) {
+  protected void consume(ProductDeletedV1AvroDTO productDeletedAvroDTO) {
     var params =
         new DeleteAllReviewsOfEntityIdParams(
-            reviewKafkaMapper.toDomain("products", productDeletedAvroDTO.getVersionId()));
+            reviewKafkaMapper.toDomain("apis/avro/products", productDeletedAvroDTO.getVersionId()));
 
     useCaseBus.executeWithRetry(params, 3);
   }

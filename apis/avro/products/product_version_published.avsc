@@ -1,7 +1,7 @@
 {
   "namespace": "com.jeferro.products.products.infrastructure.kafka.dtos",
   "type": "record",
-  "name": "ProductPublishedAvroDTO",
+  "name": "ProductPublishedV1AvroDTO",
   "fields": [
     {
       "name": "eventId",

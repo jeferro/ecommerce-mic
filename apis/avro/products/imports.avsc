@@ -1,7 +1,7 @@
 [
     {
       "namespace": "com.jeferro.products.products.infrastructure.kafka.dtos",
-      "name": "ProductStatusAvroDTO",
+      "name": "ProductStatusV1AvroDTO",
       "type": "enum",
       "default": "UNKNOWN",
       "symbols" : [

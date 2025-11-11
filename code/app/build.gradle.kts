@@ -66,8 +66,8 @@ apiFirstGenerator {
 
 // Avro
 avroGenerator {
-    schemaDir = file("${projectDir}/../../apis/avro/v1")
-    targetDir = file("${projectDir}/build/generated/sources/avro/v1")
+    schemaDir = file("${projectDir}/../../apis/avro")
+    targetDir = file("${projectDir}/build/generated/sources/avro")
 }
 
 
