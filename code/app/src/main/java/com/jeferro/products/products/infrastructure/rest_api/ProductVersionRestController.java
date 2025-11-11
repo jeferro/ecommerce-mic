@@ -7,7 +7,7 @@ import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersion
 import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersionSummaryListRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.UpdateProductVersionInputRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.mappers.ProductVersionRestMapper;
-import com.jeferro.shared.ddd.application.bus.UseCaseBus;
+import com.jeferro.shared.ddd.application.UseCaseBus;
 import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

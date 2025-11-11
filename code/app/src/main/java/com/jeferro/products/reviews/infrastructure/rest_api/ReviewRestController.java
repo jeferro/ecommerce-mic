@@ -6,7 +6,7 @@ import com.jeferro.products.reviews.infrastructure.rest_api.dtos.ReviewOrderRest
 import com.jeferro.products.reviews.infrastructure.rest_api.dtos.ReviewRestDTO;
 import com.jeferro.products.reviews.infrastructure.rest_api.dtos.UpdateReviewInputRestDTO;
 import com.jeferro.products.reviews.infrastructure.rest_api.mappers.ReviewRestMapper;
-import com.jeferro.shared.ddd.application.bus.UseCaseBus;
+import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 

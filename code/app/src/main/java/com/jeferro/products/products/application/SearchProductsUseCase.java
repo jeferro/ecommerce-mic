@@ -5,7 +5,7 @@ import static com.jeferro.products.shared.application.Roles.USER;
 import com.jeferro.products.products.application.params.SearchProductsParams;
 import com.jeferro.products.products.domain.models.ProductVersionSummary;
 import com.jeferro.products.products.domain.repositories.ProductVersionRepository;
-import com.jeferro.products.shared.domain.utils.FutureUtils;
+import com.jeferro.shared.utils.FutureUtils;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;

@@ -1,4 +1,4 @@
-package com.jeferro.shared.ddd.application.bus;
+package com.jeferro.shared.ddd.application.exceptions;
 
 import lombok.Getter;
 

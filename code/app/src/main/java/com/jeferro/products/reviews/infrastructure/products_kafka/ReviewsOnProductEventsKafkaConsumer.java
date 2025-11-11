@@ -3,7 +3,7 @@ package com.jeferro.products.reviews.infrastructure.products_kafka;
 import com.jeferro.products.products.infrastructure.kafka.dtos.ProductDeletedAvroDTO;
 import com.jeferro.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.products.reviews.infrastructure.products_kafka.mappers.ReviewKafkaMapper;
-import com.jeferro.shared.ddd.application.bus.UseCaseBus;
+import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

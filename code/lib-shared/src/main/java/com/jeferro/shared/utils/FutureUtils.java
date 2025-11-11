@@ -1,6 +1,7 @@
-package com.jeferro.products.shared.domain.utils;
+package com.jeferro.shared.utils;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -14,5 +15,13 @@ public abstract class FutureUtils {
     CompletableFuture.allOf(fn1Future, fn2Future).join();
 
     return combiner.apply(fn1Future.join(), fn2Future.join());
+  }
+
+  public static <T> T supplyAsyncOrError(Supplier<T> supplier) throws Throwable {
+    try {
+      return CompletableFuture.supplyAsync(supplier).get();
+    } catch (ExecutionException executionException) {
+      throw executionException.getCause();
+    }
   }
 }

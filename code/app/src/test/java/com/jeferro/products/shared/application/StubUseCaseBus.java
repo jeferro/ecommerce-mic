@@ -1,6 +1,6 @@
 package com.jeferro.products.shared.application;
 
-import com.jeferro.shared.ddd.application.bus.UseCaseBus;
+import com.jeferro.shared.ddd.application.UseCaseBus;
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import jakarta.el.MethodNotFoundException;

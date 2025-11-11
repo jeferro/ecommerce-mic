@@ -4,7 +4,7 @@ import com.jeferro.products.users.infrastructure.rest_api.dtos.AuthRestDTO;
 import com.jeferro.products.users.infrastructure.rest_api.dtos.SignInInputRestDTO;
 import com.jeferro.products.users.infrastructure.rest_api.mappers.AuthRestMapper;
 import com.jeferro.shared.auth.infrastructure.rest.jwt.HeaderJwtDecoder;
-import com.jeferro.shared.ddd.application.bus.UseCaseBus;
+import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
