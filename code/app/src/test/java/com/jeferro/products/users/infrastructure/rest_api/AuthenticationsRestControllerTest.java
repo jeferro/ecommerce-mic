@@ -2,7 +2,7 @@ package com.jeferro.products.users.infrastructure.rest_api;
 
 import com.jeferro.products.shared.application.StubUseCaseBus;
 import com.jeferro.products.shared.infrastructure.adapters.rest.RestControllerTest;
-import com.jeferro.products.shared.infrastructure.adapters.utils.ApprovalUtils;
+import com.jeferro.products.users.application.params.SignInParams;
 import com.jeferro.products.users.domain.models.UserMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @WebMvcTest(AuthenticationsRestController.class)
 class AuthenticationsRestControllerTest extends RestControllerTest {
@@ -38,11 +41,15 @@ class AuthenticationsRestControllerTest extends RestControllerTest {
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .content(requestContent);
 
-    var response = mockMvc.perform(requestBuilder).andReturn().getResponse();
+    var response = mockMvc.perform(requestBuilder)
+        .andReturn()
+        .getResponse();
 
-    ApprovalUtils.verifyAll(
-        stubUseCaseBus.getFirstParamsOrError(),
-        response.getStatus(),
-        response.getContentAsString());
+    assertEquals(200, response.getStatus());
+
+    var params = (SignInParams) stubUseCaseBus.getFirstParamsOrError();
+    assertInstanceOf(SignInParams.class, params);
+    assertEquals(user.getUsername(), params.getUsername());
+    assertEquals("plain-password", params.getPassword());
   }
 }
