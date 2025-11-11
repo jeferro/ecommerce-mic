@@ -35,8 +35,7 @@ class AuthenticationsRestControllerTest extends RestControllerTest {
                 }"""
             .formatted(user.getUsername());
 
-    var requestBuilder =
-        MockMvcRequestBuilders.post("/v1/authentications")
+    var requestBuilder = MockMvcRequestBuilders.post("/v1/authentications")
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .content(requestContent);
