@@ -8,7 +8,7 @@ import java.util.Map;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-public abstract class AggregateMongoMapper<
+public abstract class AggregateSecondaryMapper<
     Aggregate extends AggregateRoot<Identifier>, Identifier extends StringIdentifier, DTO> {
 
   @Named("idToDomain")

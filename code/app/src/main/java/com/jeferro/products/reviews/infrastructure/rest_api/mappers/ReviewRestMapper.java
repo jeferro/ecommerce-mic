@@ -14,14 +14,14 @@ import com.jeferro.products.reviews.infrastructure.rest_api.dtos.ReviewOrderRest
 import com.jeferro.products.reviews.infrastructure.rest_api.dtos.ReviewRestDTO;
 import com.jeferro.products.reviews.infrastructure.rest_api.dtos.UpdateReviewInputRestDTO;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
-import com.jeferro.shared.mappers.AggregateRestMapper;
+import com.jeferro.shared.mappers.AggregatePrimaryMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
 public abstract class ReviewRestMapper
-    extends AggregateRestMapper<Review, ReviewId, ReviewRestDTO> {
+    extends AggregatePrimaryMapper<Review, ReviewId, ReviewRestDTO> {
 
   public static final ReviewRestMapper INSTANCE = Mappers.getMapper(ReviewRestMapper.class);
 

@@ -18,7 +18,7 @@ import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersion
 import com.jeferro.products.products.infrastructure.rest_api.dtos.ProductVersionSummaryListRestDTO;
 import com.jeferro.products.products.infrastructure.rest_api.dtos.UpdateProductVersionInputRestDTO;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
-import com.jeferro.shared.mappers.AggregateRestMapper;
+import com.jeferro.shared.mappers.AggregatePrimaryMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import java.time.OffsetDateTime;
 import org.mapstruct.Mapper;
@@ -27,7 +27,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
 public abstract class ProductVersionRestMapper
-    extends AggregateRestMapper<ProductVersion, ProductVersionId, ProductVersionRestDTO> {
+    extends AggregatePrimaryMapper<ProductVersion, ProductVersionId, ProductVersionRestDTO> {
 
   public static final ProductVersionRestMapper INSTANCE =
       Mappers.getMapper(ProductVersionRestMapper.class);

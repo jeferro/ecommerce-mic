@@ -11,7 +11,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AggregateRestMapper<
+public abstract class AggregatePrimaryMapper<
     Aggregate extends AggregateRoot<Identifier>, Identifier extends StringIdentifier, DTO> {
 
   public abstract DTO toDTO(Aggregate entity);
