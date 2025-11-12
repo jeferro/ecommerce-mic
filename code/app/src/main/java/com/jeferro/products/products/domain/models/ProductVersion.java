@@ -12,6 +12,7 @@ import com.jeferro.products.products.domain.events.ProductVersionUnpublished;
 import com.jeferro.products.products.domain.events.ProductVersionUpdated;
 import com.jeferro.products.products.domain.models.status.ProductStatus;
 import com.jeferro.products.products.domain.services.InstantTruncator;
+import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
@@ -19,7 +20,11 @@ import java.time.Instant;
 import lombok.Getter;
 
 @Getter
-public class ProductVersion extends ProductVersionSummary {
+public class ProductVersion extends AggregateRoot<ProductVersionId> {
+
+  protected LocalizedField name;
+
+  protected ProductStatus status;
 
   private final ParametricValueId typeId;
 
@@ -32,8 +37,10 @@ public class ProductVersion extends ProductVersionSummary {
       Instant endEffectiveDate,
       ProductStatus status,
       Metadata metadata) {
-    super(id, name, status, metadata);
+    super(id, metadata);
 
+    this.name = name;
+    this.status = status;
     this.typeId = typeId;
     this.endEffectiveDate = endEffectiveDate;
   }
@@ -56,8 +63,9 @@ public class ProductVersion extends ProductVersionSummary {
           "Next product version is before than new product version");
     }
 
-    var endEffectiveDate =
-        nextVersion != null ? nextVersion.getEffectiveDate().minus(1, SECONDS) : null;
+    var endEffectiveDate = nextVersion != null
+        ? nextVersion.getEffectiveDate().minus(1, SECONDS)
+        : null;
 
     var product =
         new ProductVersion(
@@ -124,6 +132,16 @@ public class ProductVersion extends ProductVersionSummary {
     record(event);
   }
 
+  @Override
+  @Deprecated
+  public ProductVersionId getId() {
+    return id;
+  }
+
+  public ProductVersionId getVersionId() {
+    return id;
+  }
+
   public boolean isPublished() {
     return PUBLISHED.equals(status);
   }
@@ -133,10 +151,14 @@ public class ProductVersion extends ProductVersionSummary {
   }
 
   public boolean hasSameCode(ProductCode code) {
-    return getCode().equals(code);
+    return id.getCode().equals(code);
   }
 
   private Boolean isAfter(Instant effectiveDate) {
-    return getEffectiveDate().isAfter(effectiveDate);
+    return id.getEffectiveDate().isAfter(effectiveDate);
+  }
+
+  public Instant getEffectiveDate() {
+    return id.getEffectiveDate();
   }
 }
