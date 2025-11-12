@@ -27,7 +27,13 @@ public class UsersMongoDao extends MongoDao<UserMongoDTO, String, UserCriteria> 
 
   @Override
   protected String mapOrder(UserCriteria domainCriteria) {
-    return switch (domainCriteria.getOrder()) {
+    var order = domainCriteria.getOrder();
+
+    if(order == null){
+      return "_id";
+    }
+
+    return switch (order) {
       default -> "_id";
     };
   }

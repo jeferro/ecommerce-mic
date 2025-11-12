@@ -64,7 +64,13 @@ public class ProductVersionsMongoDao
 
   @Override
   protected String mapOrder(ProductVersionCriteria domainCriteria) {
-    return switch (domainCriteria.getOrder()) {
+    var order = domainCriteria.getOrder();
+
+    if(order == null){
+      return "_id";
+    }
+
+    return switch (order) {
       case NAME -> "name";
       case START_EFFECTIVE_DATE -> "effectiveDate";
       default -> "_id";

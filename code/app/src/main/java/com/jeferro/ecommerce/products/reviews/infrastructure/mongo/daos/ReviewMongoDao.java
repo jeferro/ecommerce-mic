@@ -40,7 +40,13 @@ public class ReviewMongoDao extends MongoDao<ReviewMongoDTO, String, ReviewCrite
 
   @Override
   protected String mapOrder(ReviewCriteria domainCriteria) {
-    return switch (domainCriteria.getOrder()) {
+    var order = domainCriteria.getOrder();
+
+    if(order == null){
+      return "_id";
+    }
+
+    return switch (order) {
       default -> "_id";
     };
   }

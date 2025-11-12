@@ -88,8 +88,14 @@ public class ProductVersionInMemoryRepository
             || endEffectiveDate.equals(searchDate));
   }
 
-  private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionCriteria filter) {
-    return switch (filter.getOrder()) {
+  private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionCriteria criteria) {
+    var order = criteria.getOrder();
+
+    if(order == null){
+      return -1;
+    }
+
+    return switch (order) {
       case ID, NAME -> -1;
       case START_EFFECTIVE_DATE -> p2.getEffectiveDate().isAfter(p1.getEffectiveDate()) ? -1 : 1;
     };

@@ -48,6 +48,12 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
   }
 
   private int compareReviews(Review r1, Review r2, ReviewCriteria criteria) {
+    var order = criteria.getOrder();
+
+    if(order == null){
+      return -1;
+    }
+
     return switch (criteria.getOrder()) {
 	  default -> -1;
 	};
