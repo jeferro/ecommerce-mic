@@ -49,7 +49,7 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
 
   private int compareReviews(Review r1, Review r2, ReviewCriteria criteria) {
     return switch (criteria.getOrder()) {
-      case ID -> -1;
-    };
+	  default -> -1;
+	};
   }
 }

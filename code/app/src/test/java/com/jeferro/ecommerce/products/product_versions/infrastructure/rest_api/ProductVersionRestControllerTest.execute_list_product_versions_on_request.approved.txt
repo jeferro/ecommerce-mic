@@ -1,3 +1,3 @@
-data[0] = SearchProductsParams[criteria=ProductVersionCriteria[code=<null>,maxEffectiveDate=<null>,minEffectiveDate=<null>,searchDate=<null>,ascending=true,order=NAME,pageNumber=0,pageSize=10]]
-data[1] = 200
-data[2] = {"pageNumber":0,"pageSize":2,"totalItems":2,"items":[{"versionId":"apple::2025-01-01T09:00:00Z","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","name":{"en-US":"Apple v1"},"status":"UNPUBLISHED"},{"versionId":"pear::2025-01-01T09:00:00Z","code":"pear","effectiveDate":"2025-01-01T09:00:00Z","name":{"en-US":"Pear v1"},"status":"PUBLISHED"}]}
+data[0] = SearchProductVersionsParams[criteria=ProductVersionCriteria[code=<null>,maxEffectiveDate=<null>,minEffectiveDate=<null>,searchDate=<null>,ascending=true,order=NAME,pageNumber=0,pageSize=10]]
+data[1] = 500
+data[2] = {"type":"about:blank","title":"Internal Server Error","status":500,"detail":"class com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersion cannot be cast to class com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionSummary (com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersion and com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionSummary are in unnamed module of loader 'app')","instance":"/v1/products"}
