@@ -29,7 +29,7 @@ public class SearchProductsUseCase
   public PaginatedList<ProductVersionSummary> execute(Auth auth, SearchProductsParams params) {
     var criteria = params.getCriteria();
 
-    return FutureUtils.executeInParallel(
+    return FutureUtils.async(
         () -> productVersionRepository.findAllSummary(criteria),
         () -> productVersionRepository.count(criteria),
         (summaries, totalReviews) ->

@@ -18,7 +18,7 @@ public class ExecutionAttempt<R> {
 
   private R result;
 
-  private Exception cause;
+  private Throwable cause;
 
   public static <R> ExecutionAttempt<R> createOfSuccess(int numAttempt, Instant startAt, R result) {
 	var endAt = Instant.now();
@@ -26,7 +26,7 @@ public class ExecutionAttempt<R> {
 	return new ExecutionAttempt<>(numAttempt, startAt, endAt, result, null);
   }
 
-  public static <R> ExecutionAttempt<R> createOfError(int numAttempt, Instant startAt, Exception cause) {
+  public static <R> ExecutionAttempt<R> createOfError(int numAttempt, Instant startAt, Throwable cause) {
 	var endAt = Instant.now();
 
 	return new ExecutionAttempt<>(numAttempt, startAt, endAt, null, cause);
