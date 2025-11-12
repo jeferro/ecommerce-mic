@@ -47,17 +47,17 @@ apiFirstGenerator {
     specs = listOf(
         ApiFirstGeneratorSpec().apply {
             name = "users-v1"
-            basePackage = "com.jeferro.products.users.infrastructure.rest_api"
+            basePackage = "com.jeferro.ecommerce.users.users.infrastructure.rest_api"
             specFile = file("${projectDir}/../../apis/rest/users/users.v1.yml")
         },
         ApiFirstGeneratorSpec().apply {
             name = "products-v1"
-            basePackage = "com.jeferro.products.products.infrastructure.rest_api"
-            specFile = file("${projectDir}/../../apis/rest/products/products.v1.yml")
+            basePackage = "com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api"
+            specFile = file("${projectDir}/../../apis/rest/product_versions/product_versions.v1.yml")
         },
         ApiFirstGeneratorSpec().apply {
             name = "reviews-v1"
-            basePackage = "com.jeferro.products.reviews.infrastructure.rest_api"
+            basePackage = "com.jeferro.ecommerce.products.reviews.infrastructure.rest_api"
             specFile = file("${projectDir}/../../apis/rest/reviews/reviews.v1.yml")
         }
     )
