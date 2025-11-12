@@ -27,14 +27,14 @@ public class DeleteReviewUseCase extends UseCase<DeleteReviewParams, Review> {
 
   @Override
   public Review execute(Auth auth, DeleteReviewParams params) {
-    var review = ensureReviewExists(params);
+    var review = findReviewOrError(params);
 
     review.ensureReviewBelongsToUser(auth);
 
     return deleteReview(review);
   }
 
-  private Review ensureReviewExists(DeleteReviewParams params) {
+  private Review findReviewOrError(DeleteReviewParams params) {
     var reviewId = params.getReviewId();
 
     return reviewsRepository.findByIdOrError(reviewId);

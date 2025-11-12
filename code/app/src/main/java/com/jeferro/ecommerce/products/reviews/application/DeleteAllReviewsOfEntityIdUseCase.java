@@ -1,25 +1,24 @@
 package com.jeferro.ecommerce.products.reviews.application;
 
-import static com.jeferro.ecommerce.shared.domain.models.Roles.ADMIN;
-
 import com.jeferro.ecommerce.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
-import com.jeferro.ecommerce.products.reviews.domain.models.ReviewId;
+import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.criteria.ReviewCriteria;
 import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsRepository;
 import com.jeferro.ecommerce.shared.domain.utils.PageUtils;
 import com.jeferro.shared.ddd.application.UseCase;
 import com.jeferro.shared.ddd.domain.events.EventBus;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.stream.IntStream;
+
+import static com.jeferro.ecommerce.shared.domain.models.Roles.ADMIN;
+
 @Component
 @RequiredArgsConstructor
-public class DeleteAllReviewsOfEntityIdUseCase
-    extends UseCase<DeleteAllReviewsOfEntityIdParams, List<ReviewId>> {
+public class DeleteAllReviewsOfEntityIdUseCase extends UseCase<DeleteAllReviewsOfEntityIdParams, Void> {
 
   private static final int PAGE_SIZE = 100;
 
@@ -33,31 +32,36 @@ public class DeleteAllReviewsOfEntityIdUseCase
   }
 
   @Override
-  public List<ReviewId> execute(Auth auth, DeleteAllReviewsOfEntityIdParams params) {
-    var entityId = params.getEntityId();
-    var criteria = ReviewCriteria.byEntityId(entityId, PAGE_SIZE);
+  public Void execute(Auth auth, DeleteAllReviewsOfEntityIdParams params) {
+    var totalPages = calculateTotalPages(params);
 
-    var totalReviews = reviewsRepository.count(criteria);
-    var totalPages = PageUtils.calculateTotalPages(totalReviews, PAGE_SIZE);
+    IntStream.range(0, totalPages)
+        .parallel()
+        .forEach(pageNumber -> deleteReviewsOnPage(params, pageNumber));
 
-    var removedReviewIds = new ArrayList<ReviewId>();
+    return null;
+  }
 
-    for (int i = 0; i < totalPages; i++) {
-      var reviews = reviewsRepository.findAll(criteria);
+  private int calculateTotalPages(DeleteAllReviewsOfEntityIdParams params) {
+    var allByEntityIdCriteria = ReviewCriteria.allByEntityId(params.getEntityId());
 
-      reviews.forEach(
-          review -> {
-            review.deleteBySystem();
-            removedReviewIds.add(review.getId());
-          });
+    var totalReviews = reviewsRepository.count(allByEntityIdCriteria);
 
-      reviewsRepository.deleteAll(reviews);
+	return PageUtils.calculateTotalPages(totalReviews, PAGE_SIZE);
+  }
 
-      eventBus.sendAll(reviews);
+  private void deleteReviewsOnPage(DeleteAllReviewsOfEntityIdParams params, int pageNumber) {
+    var byEntityIdPageCriteria = ReviewCriteria.byEntityIdPage(
+        params.getEntityId(),
+        pageNumber,
+        PAGE_SIZE);
 
-      criteria.nextPage();
-    }
+    var reviews = reviewsRepository.findAll(byEntityIdPageCriteria);
 
-    return removedReviewIds;
+    reviews.forEach(Review::deleteBySystem);
+
+    reviewsRepository.deleteAll(reviews);
+
+    eventBus.sendAll(reviews);
   }
 }

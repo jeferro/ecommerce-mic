@@ -21,8 +21,8 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
   private final Instant searchDate;
 
   public ProductVersionCriteria(
-      int pageNumber,
-      int pageSize,
+      Integer pageNumber,
+      Integer pageSize,
       ProductVersionOrder order,
       Boolean ascending,
       ProductCode code,
@@ -37,16 +37,16 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
     this.searchDate = searchDate;
   }
 
-  public static ProductVersionCriteria createEmpty() {
-    return new ProductVersionCriteria(0, DEFAULT_PAGE_SIZE, NAME, null, null, null, null, null);
+  public static ProductVersionCriteria allPage() {
+    return new ProductVersionCriteria(0, null, NAME, null, null, null, null, null);
   }
 
-  public static ProductVersionCriteria byCode(ProductCode code) {
+  public static ProductVersionCriteria byCodePage(ProductCode code) {
     return new ProductVersionCriteria(
-        0, DEFAULT_PAGE_SIZE, START_EFFECTIVE_DATE, false, code, null, null, null);
+        0, null, START_EFFECTIVE_DATE, false, code, null, null, null);
   }
 
-  public static ProductVersionCriteria previousProduct(ProductVersionId versionId) {
+  public static ProductVersionCriteria previousProductVersion(ProductVersionId versionId) {
     return new ProductVersionCriteria(
         0,
         1,
@@ -58,7 +58,7 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
         null);
   }
 
-  public static ProductVersionCriteria nextProduct(ProductVersionId versionId) {
+  public static ProductVersionCriteria nextProductVersion(ProductVersionId versionId) {
     return new ProductVersionCriteria(
         0,
         1,

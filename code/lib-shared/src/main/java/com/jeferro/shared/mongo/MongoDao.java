@@ -94,8 +94,8 @@ public abstract class MongoDao<DTO extends AuditedMongoDTO, ID, C extends Domain
     var sort = Sort.by(sortDirection, sortBy);
     dataQuery.with(sort);
 
-    int pageNumber = criteria.getPageNumber();
-    int pageSize = criteria.getPageSize();
+    var pageNumber = criteria.getPageNumber();
+    var pageSize = criteria.getPageSize();
     var pageable = PageRequest.of(pageNumber, pageSize);
     dataQuery.with(pageable);
 

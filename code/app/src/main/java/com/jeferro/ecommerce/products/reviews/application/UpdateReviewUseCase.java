@@ -27,14 +27,14 @@ public class UpdateReviewUseCase extends UseCase<UpdateReviewParams, Review> {
 
   @Override
   public Review execute(Auth auth, UpdateReviewParams params) {
-    var review = ensureReviewExists(params);
+    var review = findReviewOrError(params);
 
     review.ensureReviewBelongsToUser(auth);
 
     return updateReview(auth, params, review);
   }
 
-  private Review ensureReviewExists(UpdateReviewParams params) {
+  private Review findReviewOrError(UpdateReviewParams params) {
     var reviewId = params.getReviewId();
 
     return reviewsRepository.findByIdOrError(reviewId);

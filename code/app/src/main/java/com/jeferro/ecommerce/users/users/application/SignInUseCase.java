@@ -2,7 +2,6 @@ package com.jeferro.ecommerce.users.users.application;
 
 import com.jeferro.ecommerce.users.users.application.params.SignInParams;
 import com.jeferro.ecommerce.users.users.domain.models.User;
-import com.jeferro.ecommerce.users.users.domain.models.Username;
 import com.jeferro.ecommerce.users.users.domain.repositories.UsersRepository;
 import com.jeferro.ecommerce.users.users.domain.services.PasswordEncoder;
 import com.jeferro.shared.ddd.application.UseCase;
@@ -27,25 +26,27 @@ public class SignInUseCase extends UseCase<SignInParams, User> {
 
   @Override
   public User execute(Auth auth, SignInParams params) {
-    var username = params.getUsername();
-    var plainPassword = params.getPassword();
+    var user = findUserOrError(params);
 
-    var user = ensureUserExists(username);
-
-    ensurePasswordIsCorrect(plainPassword, user);
+    ensurePasswordIsCorrect(params, user);
 
     return user;
   }
 
-  private User ensureUserExists(Username username) {
-    return usersRepository.findById(username).orElseThrow(UnauthorizedException::createOf);
+  private User findUserOrError(SignInParams params) {
+    var username = params.getUsername();
+
+    return usersRepository.findById(username)
+        .orElseThrow(UnauthorizedException::createOfUserNotFound);
   }
 
-  private void ensurePasswordIsCorrect(String plainPassword, User user) {
+  private void ensurePasswordIsCorrect(SignInParams params, User user) {
+    var plainPassword = params.getPassword();
+
     var matches = passwordEncoder.matches(plainPassword, user.getEncodedPassword());
 
     if (!matches) {
-      throw UnauthorizedException.createOf();
+      throw UnauthorizedException.createOfWrongPassword();
     }
   }
 }

@@ -26,7 +26,7 @@ class SearchProductVersionsUseCaseTest {
 
   @Test
   void should_returnProducts_when_exist() {
-    var params = new SearchProductVersionsParams(ProductVersionCriteria.createEmpty());
+    var params = new SearchProductVersionsParams(ProductVersionCriteria.allPage());
 
     var result = searchProductVersionsUseCase.execute(AuthMother.john(), params);
 
@@ -43,7 +43,7 @@ class SearchProductVersionsUseCaseTest {
   void should_returnFilteredProduct_when_exist() {
     var appleV1 = ProductVersionMother.appleV1();
 
-    var params = new SearchProductVersionsParams(ProductVersionCriteria.byCode(appleV1.getCode()));
+    var params = new SearchProductVersionsParams(ProductVersionCriteria.byCodePage(appleV1.getCode()));
 
     var result = searchProductVersionsUseCase.execute(AuthMother.john(), params);
 
@@ -54,7 +54,7 @@ class SearchProductVersionsUseCaseTest {
   void should_returnEmptyList_when_productsNotExist() {
     productsInMemoryRepository.clear();
 
-    var params = new SearchProductVersionsParams(ProductVersionCriteria.createEmpty());
+    var params = new SearchProductVersionsParams(ProductVersionCriteria.allPage());
 
     var result = searchProductVersionsUseCase.execute(AuthMother.john(), params);
 

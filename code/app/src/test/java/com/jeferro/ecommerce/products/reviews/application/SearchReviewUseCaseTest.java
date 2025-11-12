@@ -27,7 +27,7 @@ class SearchReviewUseCaseTest {
   void should_returnListOfReviews_when_exist() {
     var appleEntityId = EntityId.createOf("products", ProductCodeMother.apple().toString());
 
-    var params = new SearchReviewParams(ReviewCriteria.byEntityId(appleEntityId, 100));
+    var params = new SearchReviewParams(ReviewCriteria.allByEntityId(appleEntityId, 100));
 
     var result = searchReviewUseCase.execute(AuthMother.john(), params);
 
@@ -38,7 +38,7 @@ class SearchReviewUseCaseTest {
   void should_returnEmptyList_when_notExist() {
     var appleEntityId = EntityId.createOf("products", ProductCodeMother.banana().toString());
 
-    var params = new SearchReviewParams(ReviewCriteria.byEntityId(appleEntityId, 100));
+    var params = new SearchReviewParams(ReviewCriteria.allByEntityId(appleEntityId, 100));
 
     var result = searchReviewUseCase.execute(AuthMother.john(), params);
 

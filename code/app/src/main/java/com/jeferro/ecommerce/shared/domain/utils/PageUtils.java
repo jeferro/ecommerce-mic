@@ -2,11 +2,11 @@ package com.jeferro.ecommerce.shared.domain.utils;
 
 public abstract class PageUtils {
 
-  public static long calculateTotalPages(long totalElements, int pageSize) {
-    if (totalElements % pageSize == 0) {
-      return totalElements / pageSize;
-    }
+  public static int calculateTotalPages(long totalElements, int pageSize) {
+    var numPages = totalElements % pageSize == 0
+        ? totalElements / pageSize
+        : (totalElements / pageSize) + 1;
 
-    return totalElements / pageSize + 1;
+    return (int) numPages;
   }
 }

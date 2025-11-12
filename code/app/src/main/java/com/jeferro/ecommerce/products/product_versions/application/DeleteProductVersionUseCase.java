@@ -29,7 +29,7 @@ public class DeleteProductVersionUseCase extends UseCase<DeleteProductVersionPar
 
   @Override
   public ProductVersion execute(Auth auth, DeleteProductVersionParams params) {
-    var version = ensureProductVersionExists(params);
+    var version = findProductVersionOfError(params);
 
     deleteProductVersion(version);
 
@@ -38,8 +38,22 @@ public class DeleteProductVersionUseCase extends UseCase<DeleteProductVersionPar
     return version;
   }
 
+  private ProductVersion findProductVersionOfError(DeleteProductVersionParams params) {
+    var versionId = params.getVersionId();
+
+    return productVersionRepository.findByIdOrError(versionId);
+  }
+
+  private void deleteProductVersion(ProductVersion version) {
+    version.delete();
+
+    productVersionRepository.delete(version);
+
+    eventBus.sendAll(version);
+  }
+
   private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
-    var previousVersionCriteria = ProductVersionCriteria.previousProduct(versionId);
+    var previousVersionCriteria = ProductVersionCriteria.previousProductVersion(versionId);
     var previousVersionOpt = productVersionRepository.findOne(previousVersionCriteria);
 
     if (previousVersionOpt.isEmpty()) {
@@ -48,7 +62,7 @@ public class DeleteProductVersionUseCase extends UseCase<DeleteProductVersionPar
 
     var previousVersion = previousVersionOpt.get();
 
-    var nextVersionCriteria = ProductVersionCriteria.nextProduct(versionId);
+    var nextVersionCriteria = ProductVersionCriteria.nextProductVersion(versionId);
     var nextVersionOpt = productVersionRepository.findOne(nextVersionCriteria);
 
     if (nextVersionOpt.isPresent()) {
@@ -61,19 +75,5 @@ public class DeleteProductVersionUseCase extends UseCase<DeleteProductVersionPar
     productVersionRepository.save(previousVersion);
 
     eventBus.sendAll(previousVersion);
-  }
-
-  private ProductVersion ensureProductVersionExists(DeleteProductVersionParams params) {
-    var versionId = params.getVersionId();
-
-    return productVersionRepository.findByIdOrError(versionId);
-  }
-
-  private void deleteProductVersion(ProductVersion version) {
-    version.delete();
-
-    productVersionRepository.delete(version);
-
-    eventBus.sendAll(version);
   }
 }

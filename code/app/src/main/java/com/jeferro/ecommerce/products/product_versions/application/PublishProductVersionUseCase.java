@@ -27,12 +27,12 @@ public class PublishProductVersionUseCase extends UseCase<PublishProductVersionP
 
   @Override
   public ProductVersion execute(Auth auth, PublishProductVersionParams params) {
-    var version = ensureProductVersionExists(params);
+    var version = findProductVersionOfError(params);
 
     return publishProductVersion(version);
   }
 
-  private ProductVersion ensureProductVersionExists(PublishProductVersionParams params) {
+  private ProductVersion findProductVersionOfError(PublishProductVersionParams params) {
     var versionId = params.getVersionId();
 
     return productVersionRepository.findByIdOrError(versionId);

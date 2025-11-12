@@ -27,12 +27,12 @@ public class UnpublishProductVersionUseCase extends UseCase<UnpublishProductVers
 
   @Override
   public ProductVersion execute(Auth auth, UnpublishProductVersionParams params) {
-    var version = ensureProductVersionExists(params);
+    var version = findProductVersionOfError(params);
 
     return unpublishProductVersion(version);
   }
 
-  private ProductVersion ensureProductVersionExists(UnpublishProductVersionParams params) {
+  private ProductVersion findProductVersionOfError(UnpublishProductVersionParams params) {
     var versionId = params.getVersionId();
 
     return productVersionRepository.findByIdOrError(versionId);
