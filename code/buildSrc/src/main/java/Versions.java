@@ -28,9 +28,5 @@ public interface Versions {
 
   String arch_unit = "1.4.1";
 
-  String spotless = "8.0.0";
-
-  String google_java_format = "1.29.0";
-
   String commons_compress = "1.28.0";
 }

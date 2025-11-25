@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("com.diffplug.spotless") version Versions.spotless
     id("jacoco")
     id("org.springframework.boot") version Versions.spring_boot apply false
     id("io.spring.dependency-management") version Versions.spring_dependency_management apply false
@@ -42,16 +41,6 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
-    }
-
-    // Checkstyle
-    apply(plugin = "com.diffplug.spotless")
-
-    spotless {
-        java {
-            googleJavaFormat(Versions.google_java_format)
-            target("src/**/*.java")
-        }
     }
 
     // Jacoco
