@@ -38,7 +38,7 @@ class DeleteProductVersionUseCaseTest {
   void should_deleteProductVersion_when_exists() {
     var appleV1 = ProductVersionMother.appleV1();
 
-    var params = new DeleteProductVersionParams(appleV1.getVersionId());
+    var params = new DeleteProductVersionParams(appleV1.getId());
 
     var result = deleteProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -53,11 +53,11 @@ class DeleteProductVersionUseCaseTest {
   void should_setEndEffectiveDateOfPreviousVersion_when_previousVersionExists() {
     var appleV2 = ProductVersionMother.appleV2();
 
-    var params = new DeleteProductVersionParams(appleV2.getVersionId());
+    var params = new DeleteProductVersionParams(appleV2.getId());
 
     deleteProductVersionUseCase.execute(AuthMother.john(), params);
 
-    var appleV1Id = ProductVersionMother.appleV1().getVersionId();
+    var appleV1Id = ProductVersionMother.appleV1().getId();
     var appleV1 = productsInMemoryRepository.findByIdOrError(appleV1Id);
 
     assertNull(appleV1.getEndEffectiveDate());
@@ -69,7 +69,7 @@ class DeleteProductVersionUseCaseTest {
   void should_failedAsUnknownProductVersion_when_notExist() {
     var bananaV1 = ProductVersionMother.bananaV1();
 
-    var params = new DeleteProductVersionParams(bananaV1.getVersionId());
+    var params = new DeleteProductVersionParams(bananaV1.getId());
 
     assertThrows(
         ProductVersionNotFoundException.class,
@@ -77,7 +77,7 @@ class DeleteProductVersionUseCaseTest {
   }
 
   private void assertProductDoesNotExistInDatabase(ProductVersion appleV1) {
-    var product = productsInMemoryRepository.findById(appleV1.getVersionId());
+    var product = productsInMemoryRepository.findById(appleV1.getId());
 
     assertTrue(product.isEmpty());
   }
@@ -89,7 +89,7 @@ class DeleteProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(productVersion.getVersionId(), event.get().getEntityId());
+    assertEquals(productVersion.getId(), event.get().getEntityId());
   }
 
   private void assertProductUpdatedWasPublished(ProductVersion previousVersion) {
@@ -99,6 +99,6 @@ class DeleteProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(previousVersion.getVersionId(), event.get().getEntityId());
+    assertEquals(previousVersion.getId(), event.get().getEntityId());
   }
 }

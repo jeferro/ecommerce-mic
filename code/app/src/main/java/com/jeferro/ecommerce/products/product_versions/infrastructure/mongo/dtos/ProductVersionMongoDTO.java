@@ -33,8 +33,9 @@ public class ProductVersionMongoDTO extends AuditedMongoDTO {
       String typeId,
       ProductStatusMongoDTO status,
       Map<String, String> name,
+      String version,
       MetadataMongoDTO metadata) {
-    super(metadata);
+    super(version, metadata);
     this.id = id;
     this.code = code;
     this.effectiveDate = effectiveDate;

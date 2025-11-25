@@ -24,8 +24,8 @@ public class GetProductVersionUseCase extends UseCase<GetProductVersionParams, P
 
   @Override
   public ProductVersion execute(Auth auth, GetProductVersionParams params) {
-    var versionId = params.getVersionId();
+    var productVersionId = params.getProductVersionId();
 
-    return productVersionRepository.findByIdOrError(versionId);
+    return productVersionRepository.findByIdOrError(productVersionId);
   }
 }

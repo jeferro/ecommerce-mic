@@ -29,51 +29,51 @@ public class DeleteProductVersionUseCase extends UseCase<DeleteProductVersionPar
 
   @Override
   public ProductVersion execute(Auth auth, DeleteProductVersionParams params) {
-    var version = findProductVersionOfError(params);
+    var productVersion = findProductVersionOfError(params);
 
-    deleteProductVersion(version);
+    deleteProductVersion(productVersion);
 
-    setEndEffectiveDateOfPreviousVersion(version.getVersionId());
+    setEndEffectiveDateOfPreviousVersion(productVersion.getId());
 
-    return version;
+    return productVersion;
   }
 
   private ProductVersion findProductVersionOfError(DeleteProductVersionParams params) {
-    var versionId = params.getVersionId();
+    var productVersionId = params.getProductVersionId();
 
-    return productVersionRepository.findByIdOrError(versionId);
+    return productVersionRepository.findByIdOrError(productVersionId);
   }
 
-  private void deleteProductVersion(ProductVersion version) {
-    version.delete();
+  private void deleteProductVersion(ProductVersion productVersion) {
+    productVersion.delete();
 
-    productVersionRepository.delete(version);
+    productVersionRepository.delete(productVersion);
 
-    eventBus.sendAll(version);
+    eventBus.sendAll(productVersion);
   }
 
   private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
-    var previousVersionCriteria = ProductVersionCriteria.previousProductVersion(versionId);
-    var previousVersionOpt = productVersionRepository.findOne(previousVersionCriteria);
+    var previousProductVersionCriteria = ProductVersionCriteria.previousProductVersion(versionId);
+    var previousProductVersionOpt = productVersionRepository.findOne(previousProductVersionCriteria);
 
-    if (previousVersionOpt.isEmpty()) {
+    if (previousProductVersionOpt.isEmpty()) {
       return;
     }
 
-    var previousVersion = previousVersionOpt.get();
+    var previousProductVersion = previousProductVersionOpt.get();
 
     var nextVersionCriteria = ProductVersionCriteria.nextProductVersion(versionId);
     var nextVersionOpt = productVersionRepository.findOne(nextVersionCriteria);
 
     if (nextVersionOpt.isPresent()) {
       var nextVersion = nextVersionOpt.get();
-      previousVersion.expireBeforeVersion(nextVersion.getVersionId());
+      previousProductVersion.expireBeforeVersion(nextVersion.getId());
     } else {
-      previousVersion.notExpire();
+      previousProductVersion.notExpire();
     }
 
-    productVersionRepository.save(previousVersion);
+    productVersionRepository.save(previousProductVersion);
 
-    eventBus.sendAll(previousVersion);
+    eventBus.sendAll(previousProductVersion);
   }
 }

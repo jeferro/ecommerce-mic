@@ -13,6 +13,7 @@ import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVers
 import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
+import com.jeferro.shared.ddd.domain.exceptions.IncorrectVersionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ class PublishProductVersionUseCaseTest {
   void should_publishProductVersion_when_exists() {
     var appleV1 = ProductVersionMother.appleV1();
 
-    var params = new PublishProductVersionParams(appleV1.getVersionId());
+    var params = new PublishProductVersionParams(appleV1.getId(), appleV1.getVersion());
 
     var result = publishProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -51,10 +52,22 @@ class PublishProductVersionUseCaseTest {
   void should_failedAsUnknownProductVersion_when_notExist() {
     var bananaV1 = ProductVersionMother.bananaV1();
 
-    var params = new PublishProductVersionParams(bananaV1.getVersionId());
+    var params = new PublishProductVersionParams(bananaV1.getId(), bananaV1.getVersion());
 
     assertThrows(
         ProductVersionNotFoundException.class,
+        () -> publishProductVersionUseCase.execute(AuthMother.john(), params));
+  }
+
+  @Test
+  void should_failedAsIncorrectVersion_when_versionIsPrevious() {
+    var appleV1 = ProductVersionMother.appleV1();
+    var previousVersion = "v0";
+
+    var params = new PublishProductVersionParams(appleV1.getId(), previousVersion);
+
+    assertThrows(
+        IncorrectVersionException.class,
         () -> publishProductVersionUseCase.execute(AuthMother.john(), params));
   }
 
@@ -69,6 +82,6 @@ class PublishProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(productVersion.getVersionId(), event.get().getEntityId());
+    assertEquals(productVersion.getId(), event.get().getEntityId());
   }
 }

@@ -13,9 +13,11 @@ import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVers
 import com.jeferro.ecommerce.products.product_versions.domain.models.criteria.ProductVersionCriteria;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.CreateProductVersionInputRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductOrderRestDTO;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionListRestDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionIdListRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionSummaryListRestDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.PublishProductVersionInputRestDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.UnpublishProductVersionInputRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.UpdateProductVersionInputRestDTO;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregatePrimaryMapper;
@@ -39,7 +41,7 @@ public abstract class ProductVersionRestMapper
     return productVersion.getVersionId().toString();
   }
 
-  public abstract ProductVersionListRestDTO toVersionListDTO(
+  public abstract ProductVersionIdListRestDTO toVersionListDTO(
       PaginatedList<ProductVersionSummary> productVersions);
 
   public ProductVersionId toDomain(String productCode, String effectiveDate) {
@@ -69,17 +71,19 @@ public abstract class ProductVersionRestMapper
       OffsetDateTime searchDate);
 
   public abstract CreateProductVersionParams toCreateProductParams(
-      ProductVersionId versionId, CreateProductVersionInputRestDTO productInputRestDTO);
+      ProductVersionId productVersionId, CreateProductVersionInputRestDTO createProductVersionInputRestDTO);
 
-  public abstract GetProductVersionParams toGetProductParams(ProductVersionId versionId);
+  public abstract GetProductVersionParams toGetProductParams(ProductVersionId productVersionId);
 
-  @Mapping(target = "name", source = "inputRestDTO.name")
+  @Mapping(target = "name", source = "updateProductVersionInputRestDTO.name")
   public abstract UpdateProductVersionParams toUpdateProductParams(
-      ProductVersionId versionId, UpdateProductVersionInputRestDTO inputRestDTO);
+      ProductVersionId productVersionId, UpdateProductVersionInputRestDTO updateProductVersionInputRestDTO);
 
-  public abstract PublishProductVersionParams toPublishProductParams(ProductVersionId versionId);
+  public abstract PublishProductVersionParams toPublishProductParams(ProductVersionId productVersionId,
+      PublishProductVersionInputRestDTO publishProductVersionInputRestDTO);
 
-  public abstract UnpublishProductVersionParams toUnpublishProductParams(ProductVersionId versionId);
+  public abstract UnpublishProductVersionParams toUnpublishProductParams(ProductVersionId productVersionId,
+      UnpublishProductVersionInputRestDTO unpublishProductVersionInputRestDTO);
 
-  public abstract DeleteProductVersionParams toDeleteProductParams(ProductVersionId versionId);
+  public abstract DeleteProductVersionParams toDeleteProductParams(ProductVersionId productVersionId);
 }

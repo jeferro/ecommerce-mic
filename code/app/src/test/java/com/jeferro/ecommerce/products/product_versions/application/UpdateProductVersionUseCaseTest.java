@@ -13,6 +13,7 @@ import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVers
 import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionInMemoryRepository;
 import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
+import com.jeferro.shared.ddd.domain.exceptions.IncorrectVersionException;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class UpdateProductVersionUseCaseTest {
     var appleV1 = ProductVersionMother.appleV1();
 
     var newName = LocalizedField.createOf("en-US", "new product name");
-    var params = new UpdateProductVersionParams(appleV1.getVersionId(), newName);
+    var params = new UpdateProductVersionParams(appleV1.getId(), newName, appleV1.getVersion());
 
     var result = updateProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -54,10 +55,24 @@ class UpdateProductVersionUseCaseTest {
     var bananaV1 = ProductVersionMother.bananaV1();
 
     var newName = LocalizedField.createOf("en-US", "new product name");
-    var params = new UpdateProductVersionParams(bananaV1.getVersionId(), newName);
+    var params = new UpdateProductVersionParams(bananaV1.getId(), newName, bananaV1.getVersion());
 
     assertThrows(
         ProductVersionNotFoundException.class,
+        () -> updateProductVersionUseCase.execute(AuthMother.john(), params));
+  }
+
+  @Test
+  void should_failedAsIncorrectVersion_when_versionIsPrevious() {
+    var appleV1 = ProductVersionMother.appleV1();
+    var previousVersion = "v0";
+
+
+    var newName = LocalizedField.createOf("en-US", "new product name");
+    var params = new UpdateProductVersionParams(appleV1.getId(), newName, previousVersion);
+
+    assertThrows(
+        IncorrectVersionException.class,
         () -> updateProductVersionUseCase.execute(AuthMother.john(), params));
   }
 
@@ -72,6 +87,6 @@ class UpdateProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(productVersion.getVersionId(), event.get().getEntityId());
+    assertEquals(productVersion.getId(), event.get().getEntityId());
   }
 }

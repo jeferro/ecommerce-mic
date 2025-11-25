@@ -12,6 +12,7 @@ db['product_versions'].insertMany([
           "es-ES": "Manzana",
         },
         status: "UNPUBLISHED",
+        version: "1",
         metadata: {
             createdBy: 'user',
             createdAt: now,
@@ -30,6 +31,7 @@ db['product_versions'].insertMany([
           "es-ES": "Manzana",
         },
         status: "PUBLISHED",
+        version: "1",
         metadata: {
             createdBy: 'user',
             createdAt: now,
@@ -48,6 +50,7 @@ db['product_versions'].insertMany([
           "es-ES": "Kiwi",
         },
         status: "PUBLISHED",
+        version: "1",
         metadata: {
             createdBy: 'user',
             createdAt: now,
@@ -66,6 +69,7 @@ db['product_versions'].insertMany([
           "es-ES": "Banana",
         },
         status: "UNPUBLISHED",
+        version: "1",
         metadata: {
             createdBy: 'user',
             createdAt: now,

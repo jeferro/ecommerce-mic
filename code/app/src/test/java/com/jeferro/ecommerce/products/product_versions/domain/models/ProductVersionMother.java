@@ -19,7 +19,7 @@ public class ProductVersionMother {
 
     var name = LocalizedField.createOf("en-US", "Apple v1", "es-ES", "Manzana v1");
 
-    return new ProductVersionSummary(productId, name, UNPUBLISHED, null);
+    return new ProductVersionSummary(productId, name, UNPUBLISHED, "v1", null);
   }
 
   public static ProductVersion appleV1() {
@@ -31,7 +31,7 @@ public class ProductVersionMother {
     var name = LocalizedField.createOf("en-US", "Apple v1", "es-ES", "Manzana v1");
 
     return new ProductVersion(
-        productId, name, fruitId, APPLE_V2_EFFECTIVE_DATE.minus(1, SECONDS), UNPUBLISHED, null);
+        productId, name, fruitId, APPLE_V2_EFFECTIVE_DATE.minus(1, SECONDS), UNPUBLISHED, "v1", null);
   }
 
   public static ProductVersion appleV2() {
@@ -41,7 +41,7 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Apple v2", "es-ES", "Manzana v2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v2", null);
   }
 
   public static ProductVersion pearV1() {
@@ -52,7 +52,7 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Pear v1", "es-ES", "Pera v1");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v1", null);
   }
 
   public static ProductVersionSummary pearV1Summary() {
@@ -62,7 +62,7 @@ public class ProductVersionMother {
 
     var name = LocalizedField.createOf("en-US", "Pear v1", "es-ES", "Pera v1");
 
-    return new ProductVersionSummary(productId, name, PUBLISHED, null);
+    return new ProductVersionSummary(productId, name, PUBLISHED, "v1", null);
   }
 
   public static ProductVersion bananaV1() {
@@ -73,6 +73,6 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Banana", "es-ES", "Plátano");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v1",null);
   }
 }

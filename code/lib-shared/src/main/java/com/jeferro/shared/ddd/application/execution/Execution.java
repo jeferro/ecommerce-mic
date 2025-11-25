@@ -6,13 +6,11 @@ import com.jeferro.shared.ddd.domain.exceptions.ApplicationException;
 import com.jeferro.shared.ddd.domain.exceptions.InternalException;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
+import lombok.Getter;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.jeferro.shared.utils.FutureUtils;
-import lombok.Getter;
 
 @Getter
 public class Execution<P extends Params<R>, R> {
@@ -59,7 +57,7 @@ public class Execution<P extends Params<R>, R> {
     var numAttempt = attempts.size() + 1;
 
     try {
-      var result = FutureUtils.async(() -> useCase.execute(auth, params) );
+      var result = useCase.execute(auth, params);
 
       return ExecutionAttempt.createOfSuccess(numAttempt, startAt, result);
     }

@@ -38,7 +38,7 @@ class UpdateReviewUseCaseTest {
     var johnReviewOfApple = ReviewMother.johnReviewOfApple();
 
     var newComment = "New comment about apple";
-    var params = new UpdateReviewParams(johnReviewOfApple.getId(), newComment);
+    var params = new UpdateReviewParams(johnReviewOfApple.getId(), newComment, johnReviewOfApple.getVersion());
     var result = updateReviewUseCase.execute(AuthMother.john(), params);
 
     assertResult(johnReviewOfApple, result, newComment);
@@ -52,7 +52,7 @@ class UpdateReviewUseCaseTest {
   void should_failedAsReviewNotFound_when_notExist() {
     var jamesReviewOfApple = ReviewMother.jamesReviewOfApple();
     var newComment = "New comment about apple";
-    var params = new UpdateReviewParams(jamesReviewOfApple.getId(), newComment);
+    var params = new UpdateReviewParams(jamesReviewOfApple.getId(), newComment, jamesReviewOfApple.getVersion());
 
     assertThrows(
         ReviewNotFoundException.class,
@@ -64,7 +64,7 @@ class UpdateReviewUseCaseTest {
     var johnReviewOfApple = ReviewMother.johnReviewOfApple();
 
     var newComment = "New comment about apple";
-    var params = new UpdateReviewParams(johnReviewOfApple.getId(), newComment);
+    var params = new UpdateReviewParams(johnReviewOfApple.getId(), newComment, johnReviewOfApple.getVersion());
 
     assertThrows(
         ReviewDoesNotBelongUserException.class,

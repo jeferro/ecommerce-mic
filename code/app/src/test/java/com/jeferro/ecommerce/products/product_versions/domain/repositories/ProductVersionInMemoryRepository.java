@@ -15,13 +15,13 @@ public class ProductVersionInMemoryRepository
 
   public ProductVersionInMemoryRepository() {
     var appleV1 = ProductVersionMother.appleV1();
-    data.put(appleV1.getVersionId(), appleV1);
+    data.put(appleV1.getId(), appleV1);
 
     var appleV2 = ProductVersionMother.appleV2();
-    data.put(appleV2.getVersionId(), appleV2);
+    data.put(appleV2.getId(), appleV2);
 
     var pearV1 = ProductVersionMother.pearV1();
-    data.put(pearV1.getVersionId(), pearV1);
+    data.put(pearV1.getId(), pearV1);
   }
 
   @Override
@@ -46,8 +46,7 @@ public class ProductVersionInMemoryRepository
   }
 
   private ProductVersionSummary mapProductVersionSummary(ProductVersion productVersion) {
-    return new ProductVersionSummary(
-        productVersion.getId(), productVersion.getName(), productVersion.getStatus(), null);
+    return new ProductVersionSummary(productVersion.getId(), productVersion.getName(), productVersion.getStatus(), "v1", null);
   }
 
   private boolean matchCriteria(ProductVersionCriteria filter, ProductVersion productVersion) {

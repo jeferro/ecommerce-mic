@@ -2,9 +2,11 @@ package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api;
 
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.CreateProductVersionInputRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductOrderRestDTO;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionListRestDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionIdListRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.ProductVersionSummaryListRestDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.PublishProductVersionInputRestDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.UnpublishProductVersionInputRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.UpdateProductVersionInputRestDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.mappers.ProductVersionRestMapper;
 import com.jeferro.shared.ddd.application.UseCaseBus;
@@ -38,10 +40,9 @@ public class ProductVersionRestController implements ProductVersionsApi {
   }
 
   @Override
-  public ProductVersionListRestDTO searchProductVersionIds(
+  public ProductVersionIdListRestDTO searchProductVersionIds(
       String productCode, Integer pageNumber, Integer pageSize) {
-    var params =
-        productVersionRestMapper.toSearchProductsParams(
+    var params = productVersionRestMapper.toSearchProductsParams(
             pageNumber, pageSize, ProductOrderRestDTO.ID, true, productCode, null);
 
     var productVersionSummaries = useCaseBus.execute(params);
@@ -54,8 +55,7 @@ public class ProductVersionRestController implements ProductVersionsApi {
       String productCode,
       String effectiveDate,
       CreateProductVersionInputRestDTO createProductVersionInputRestDTO) {
-    var params =
-        productVersionRestMapper.toCreateProductParams(
+    var params = productVersionRestMapper.toCreateProductParams(
             productVersionRestMapper.toDomain(productCode, effectiveDate),
             createProductVersionInputRestDTO);
 
@@ -66,8 +66,7 @@ public class ProductVersionRestController implements ProductVersionsApi {
 
   @Override
   public ProductVersionRestDTO getProductVersion(String productCode, String effectiveDate) {
-    var params =
-        productVersionRestMapper.toGetProductParams(
+    var params = productVersionRestMapper.toGetProductParams(
             productVersionRestMapper.toDomain(productCode, effectiveDate));
 
     var productVersion = useCaseBus.execute(params);
@@ -80,8 +79,7 @@ public class ProductVersionRestController implements ProductVersionsApi {
       String productCode,
       String effectiveDate,
       UpdateProductVersionInputRestDTO updateProductVersionInputRestDTO) {
-    var params =
-        productVersionRestMapper.toUpdateProductParams(
+    var params = productVersionRestMapper.toUpdateProductParams(
             productVersionRestMapper.toDomain(productCode, effectiveDate),
             updateProductVersionInputRestDTO);
 
@@ -91,10 +89,11 @@ public class ProductVersionRestController implements ProductVersionsApi {
   }
 
   @Override
-  public ProductVersionRestDTO publishProductVersion(String productCode, String effectiveDate) {
-    var params =
-        productVersionRestMapper.toPublishProductParams(
-            productVersionRestMapper.toDomain(productCode, effectiveDate));
+  public ProductVersionRestDTO publishProductVersion(String productCode, String effectiveDate,
+      PublishProductVersionInputRestDTO publishProductVersionInputRestDTO) {
+    var params = productVersionRestMapper.toPublishProductParams(
+        productVersionRestMapper.toDomain(productCode, effectiveDate),
+        publishProductVersionInputRestDTO);
 
     var productVersion = useCaseBus.execute(params);
 
@@ -102,10 +101,11 @@ public class ProductVersionRestController implements ProductVersionsApi {
   }
 
   @Override
-  public ProductVersionRestDTO unpublishProductVersion(String productCode, String effectiveDate) {
-    var params =
-        productVersionRestMapper.toUnpublishProductParams(
-            productVersionRestMapper.toDomain(productCode, effectiveDate));
+  public ProductVersionRestDTO unpublishProductVersion(String productCode, String effectiveDate,
+      UnpublishProductVersionInputRestDTO unpublishProductVersionInputRestDTO) {
+    var params = productVersionRestMapper.toUnpublishProductParams(
+        productVersionRestMapper.toDomain(productCode, effectiveDate),
+        unpublishProductVersionInputRestDTO);
 
     var productVersion = useCaseBus.execute(params);
 

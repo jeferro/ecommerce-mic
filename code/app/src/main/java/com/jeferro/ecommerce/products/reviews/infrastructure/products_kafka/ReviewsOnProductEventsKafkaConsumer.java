@@ -1,7 +1,6 @@
 package com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka;
 
 import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos.ProductDeletedV1AvroDTO;
-import com.jeferro.ecommerce.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka.mappers.ReviewKafkaMapper;
 import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +25,9 @@ public class ReviewsOnProductEventsKafkaConsumer {
 
   @KafkaHandler
   protected void consume(ProductDeletedV1AvroDTO productDeletedAvroDTO) {
-    var params = new DeleteAllReviewsOfEntityIdParams(
-		reviewKafkaMapper.toDomain("products", productDeletedAvroDTO.getEntity().getId())
-	);
+	var params = reviewKafkaMapper.toDeleteAllReviewsOfEntityIdParams("products", productDeletedAvroDTO.getEntity());
 
-	useCaseBus.executeWithRetry(params, 3);
+	useCaseBus.executeWithRetry(params);
   }
 
   @KafkaHandler(isDefault = true)

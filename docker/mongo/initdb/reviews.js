@@ -10,6 +10,7 @@ db['reviews'].insertMany([
         },
         locale: "en-US",
         comment: "Apple is so good",
+        version: "1",
         metadata: {
             createdBy: 'user',
             createdAt: now,
@@ -26,6 +27,7 @@ db['reviews'].insertMany([
         },
         locale: "en-US",
         comment: "I prefer bananas",
+        version: "1",
         metadata: {
             createdBy: 'admin',
             createdAt: now,
@@ -42,6 +44,7 @@ db['reviews'].insertMany([
         },
         locale: "en-US",
         comment: "Love kiwis",
+        version: "1",
         metadata: {
             createdBy: 'user',
             createdAt: now,

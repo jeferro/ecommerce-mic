@@ -10,17 +10,21 @@ import lombok.Getter;
 @Getter
 public class UpdateProductVersionParams extends Params<ProductVersion> {
 
-  private final ProductVersionId versionId;
+  private final ProductVersionId productVersionId;
 
   private final LocalizedField name;
 
-  public UpdateProductVersionParams(ProductVersionId versionId, LocalizedField name) {
+  private final String version;
+
+  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, String version) {
     super();
 
-    ValueValidator.isNotNull(versionId, "id");
+    ValueValidator.isNotNull(productVersionId, "productVersionId");
     ValueValidator.isNotNull(name, "name");
+    ValueValidator.isNotNull(version, "version");
 
-    this.versionId = versionId;
+    this.productVersionId = productVersionId;
     this.name = name;
+    this.version = version;
   }
 }

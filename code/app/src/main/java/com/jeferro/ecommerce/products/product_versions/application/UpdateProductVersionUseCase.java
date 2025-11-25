@@ -27,26 +27,27 @@ public class UpdateProductVersionUseCase extends UseCase<UpdateProductVersionPar
 
   @Override
   public ProductVersion execute(Auth auth, UpdateProductVersionParams params) {
-    var version = findProductVersionOfError(params);
+    var productVersion = findProductVersionOfError(params);
 
-    return updateProductVersion(params, version);
+    return updateProductVersion(params, productVersion);
   }
 
   private ProductVersion findProductVersionOfError(UpdateProductVersionParams params) {
-    var versionId = params.getVersionId();
+    var productVersionId = params.getProductVersionId();
 
-    return productVersionRepository.findByIdOrError(versionId);
+    return productVersionRepository.findByIdOrError(productVersionId);
   }
 
-  private ProductVersion updateProductVersion(UpdateProductVersionParams params, ProductVersion version) {
+  private ProductVersion updateProductVersion(UpdateProductVersionParams params, ProductVersion productVersion) {
     var name = params.getName();
+    var version = params.getVersion();
 
-    version.update(name);
+    productVersion.update(name, version);
 
-    productVersionRepository.save(version);
+    productVersionRepository.save(productVersion);
 
-    eventBus.sendAll(version);
+    eventBus.sendAll(productVersion);
 
-    return version;
+    return productVersion;
   }
 }

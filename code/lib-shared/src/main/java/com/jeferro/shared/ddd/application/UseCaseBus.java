@@ -34,7 +34,11 @@ public abstract class UseCaseBus {
 	return executeWithRetry(params, 1);
   }
 
-  public <R> R executeWithRetry(Params<R> params, int retries) {
+  public <R> R executeWithRetry(Params<R> params) {
+	return executeWithRetry(params, 3);
+  }
+
+  protected <R> R executeWithRetry(Params<R> params, int retries) {
 	Auth auth = createAuth();
 
 	try {

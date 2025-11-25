@@ -27,7 +27,7 @@ class GetProductVersionUseCaseTest {
   void should_returnProductVersion_when_exists() {
     var appleV1 = ProductVersionMother.appleV1();
 
-    var params = new GetProductVersionParams(appleV1.getVersionId());
+    var params = new GetProductVersionParams(appleV1.getId());
 
     var result = getProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -38,7 +38,7 @@ class GetProductVersionUseCaseTest {
   void should_failedAsUnknownProductVersion_when_notExist() {
     var bananaV1 = ProductVersionMother.bananaV1();
 
-    var params = new GetProductVersionParams(bananaV1.getVersionId());
+    var params = new GetProductVersionParams(bananaV1.getId());
 
     assertThrows(
         ProductVersionNotFoundException.class,

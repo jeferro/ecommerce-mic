@@ -23,8 +23,9 @@ public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
       String id,
       Map<String, String> name,
       ProductStatusMongoDTO status,
+      String version,
       MetadataMongoDTO metadata) {
-    super(metadata);
+    super(version, metadata);
     this.id = id;
     this.name = name;
     this.status = status;

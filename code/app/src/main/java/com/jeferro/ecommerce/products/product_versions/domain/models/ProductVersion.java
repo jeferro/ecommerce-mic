@@ -30,14 +30,14 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
   private Instant endEffectiveDate;
 
-  public ProductVersion(
-      ProductVersionId id,
+  public ProductVersion(ProductVersionId id,
       LocalizedField name,
       ParametricValueId typeId,
       Instant endEffectiveDate,
       ProductStatus status,
+      String version,
       Metadata metadata) {
-    super(id, metadata);
+    super(id, version, metadata);
 
     this.name = name;
     this.status = status;
@@ -68,12 +68,12 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
         : null;
 
     var product =
-        new ProductVersion(
-            versionId,
+        new ProductVersion(versionId,
             name,
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
             UNPUBLISHED,
+            null,
             null);
 
     var event = ProductVersionCreated.create(product);
@@ -82,8 +82,10 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     return product;
   }
 
-  public void update(LocalizedField name) {
+  public void update(LocalizedField name, String version) {
     ValueValidator.isNotNull(name, "name");
+
+    ensureSameVersion(version);
 
     this.name = name;
 
@@ -91,7 +93,9 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     record(event);
   }
 
-  public void publish() {
+  public void publish(String version) {
+    ensureSameVersion(version);
+
     if (PUBLISHED.equals(status)) {
       return;
     }
@@ -102,7 +106,9 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     record(event);
   }
 
-  public void unpublish() {
+  public void unpublish(String version) {
+    ensureSameVersion(version);
+
     if (UNPUBLISHED.equals(status)) {
       return;
     }
@@ -130,16 +136,6 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
     var event = ProductVersionUpdated.create(this);
     record(event);
-  }
-
-  @Override
-  @Deprecated
-  public ProductVersionId getId() {
-    return id;
-  }
-
-  public ProductVersionId getVersionId() {
-    return id;
   }
 
   public boolean isPublished() {

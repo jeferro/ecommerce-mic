@@ -93,7 +93,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductVersionList'
+                $ref: '#/components/schemas/ProductVersionIdList'
         default:
           $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
 
@@ -196,6 +196,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/productCodePath'
         - $ref: '#/components/parameters/effectiveDatePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishProductVersionInput'
       responses:
         '200':
           description: Ok
@@ -216,6 +222,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/productCodePath'
         - $ref: '#/components/parameters/effectiveDatePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnpublishProductVersionInput'
       responses:
         '200':
           description: Ok
@@ -279,14 +291,16 @@ components:
       type: object
       description: Product version
       required:
-        - versionId
+        - id
         - code
         - effectiveDate
         - typeId
         - name
         - status
+        - version
+        - metadata
       properties:
-        versionId:
+        id:
           type: string
           description: Identifier of product version
           example: '123456789::2025-08-01_09:00:00'
@@ -318,6 +332,10 @@ components:
             en: 'Apple'
         status:
           $ref: '#/components/schemas/ProductStatus'
+        version:
+          type: string
+          description: Version of the entity
+          example: '1'
         metadata:
           $ref: '../shared.yml#/components/schemas/Metadata'
 
@@ -325,13 +343,15 @@ components:
       type: object
       description: Summary of product version
       required:
-        - versionId
+        - id
         - code
         - effectiveDate
         - name
         - status
+        - version
+        - metadata
       properties:
-        versionId:
+        id:
           type: string
           description: Identifier of the product version
           example: '123456789::2025-08-01_09:00:00'
@@ -354,6 +374,12 @@ components:
             en: 'Apple'
         status:
           $ref: '#/components/schemas/ProductStatus'
+        version:
+          type: string
+          description: Version of the entity
+          example: '1'
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
 
     ProductVersionSummaryList:
       type: object
@@ -377,7 +403,7 @@ components:
           items:
             $ref: '#/components/schemas/ProductVersionSummary'
 
-    ProductVersionList:
+    ProductVersionIdList:
       type: object
       required:
         - pageNumber
@@ -421,9 +447,10 @@ components:
 
     UpdateProductVersionInput:
       type: object
-      description: Input to product version
+      description: Input to update a product version
       required:
         - name
+        - version
       properties:
         name:
           type: object
@@ -433,5 +460,31 @@ components:
           example:
             es_ES: 'Manzana'
             en_US: 'Apple'
+        version:
+          type: string
+          description: Version of the entity to update
+          example: "1"
+
+    PublishProductVersionInput:
+      type: object
+      description: Input to publish a product version
+      required:
+        - version
+      properties:
+        version:
+          type: string
+          description: Version of the entity to update
+          example: "1"
+
+    UnpublishProductVersionInput:
+      type: object
+      description: Input to unpublish a product version
+      required:
+        - version
+      properties:
+        version:
+          type: string
+          description: Version of the entity to update
+          example: "1"
 
 

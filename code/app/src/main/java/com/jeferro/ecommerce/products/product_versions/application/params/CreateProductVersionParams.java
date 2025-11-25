@@ -11,21 +11,20 @@ import lombok.Getter;
 @Getter
 public class CreateProductVersionParams extends Params<ProductVersion> {
 
-  private final ProductVersionId versionId;
+  private final ProductVersionId productVersionId;
 
   private final ParametricValueId typeId;
 
   private final LocalizedField name;
 
-  public CreateProductVersionParams(
-      ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
+  public CreateProductVersionParams(ProductVersionId productVersionId, ParametricValueId typeId, LocalizedField name) {
     super();
 
-    ValueValidator.isNotNull(versionId, "versionId");
+    ValueValidator.isNotNull(productVersionId, "productVersionId");
     ValueValidator.isNotNull(typeId, "typeId");
     ValueValidator.isNotNull(name, "name");
 
-    this.versionId = versionId;
+    this.productVersionId = productVersionId;
     this.typeId = typeId;
     this.name = name;
   }

@@ -9,13 +9,13 @@ import lombok.Getter;
 @Getter
 public class GetProductVersionParams extends Params<ProductVersion> {
 
-  private final ProductVersionId versionId;
+  private final ProductVersionId productVersionId;
 
-  public GetProductVersionParams(ProductVersionId versionId) {
+  public GetProductVersionParams(ProductVersionId productVersionId) {
     super();
 
-    ValueValidator.isNotNull(versionId, "id");
+    ValueValidator.isNotNull(productVersionId, "productVersionId");
 
-    this.versionId = versionId;
+    this.productVersionId = productVersionId;
   }
 }

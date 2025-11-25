@@ -13,13 +13,17 @@ public class UpdateReviewParams extends Params<Review> {
 
   private final String comment;
 
-  public UpdateReviewParams(ReviewId reviewId, String comment) {
+  private final String version;
+
+  public UpdateReviewParams(ReviewId reviewId, String comment, String version) {
     super();
 
     ValueValidator.isNotNull(reviewId, "reviewId");
     ValueValidator.isNotNull(comment, "comment");
+    ValueValidator.isNotNull(version, "version");
 
     this.reviewId = reviewId;
     this.comment = comment;
+    this.version = version;
   }
 }

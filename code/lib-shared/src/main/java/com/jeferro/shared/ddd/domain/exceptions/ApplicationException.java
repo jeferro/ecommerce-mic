@@ -13,6 +13,8 @@ public abstract sealed class ApplicationException extends RuntimeException
 
   protected static final String VALUE_VALIDATION_CODE = "value-validation";
 
+  protected static final String INCORRECT_VERSION_CODE = "incorrect-version";
+
   protected static final String FORBIDDEN_CODE = "forbidden";
 
   protected static final String INTERNAL_ERROR_CODE = "internal";

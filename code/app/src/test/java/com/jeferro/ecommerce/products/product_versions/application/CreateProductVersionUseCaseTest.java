@@ -53,7 +53,7 @@ class CreateProductVersionUseCaseTest {
     var pearV2 = pearV2();
 
     var params =
-        new CreateProductVersionParams(pearV2.getVersionId(), pearV2.getTypeId(), pearV2.getName());
+        new CreateProductVersionParams(pearV2.getId(), pearV2.getTypeId(), pearV2.getName());
 
     var result = createProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -69,11 +69,11 @@ class CreateProductVersionUseCaseTest {
     var pearV2 = pearV2();
 
     var params =
-        new CreateProductVersionParams(pearV2.getVersionId(), pearV2.getTypeId(), pearV2.getName());
+        new CreateProductVersionParams(pearV2.getId(), pearV2.getTypeId(), pearV2.getName());
 
     createProductVersionUseCase.execute(AuthMother.john(), params);
 
-    var pearV1Id = ProductVersionMother.pearV1().getVersionId();
+    var pearV1Id = ProductVersionMother.pearV1().getId();
     var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
 
     assertEquals(
@@ -88,7 +88,7 @@ class CreateProductVersionUseCaseTest {
 
     var params =
         new CreateProductVersionParams(
-            previousPearV2.getVersionId(), previousPearV2.getTypeId(), previousPearV2.getName());
+            previousPearV2.getId(), previousPearV2.getTypeId(), previousPearV2.getName());
 
     var result = createProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -102,7 +102,7 @@ class CreateProductVersionUseCaseTest {
     var pearV1 = ProductVersionMother.pearV1();
 
     var params =
-        new CreateProductVersionParams(pearV1.getVersionId(), pearV1.getTypeId(), pearV1.getName());
+        new CreateProductVersionParams(pearV1.getId(), pearV1.getTypeId(), pearV1.getName());
 
     assertThrows(
         ProductVersionAlreadyExistsException.class,
@@ -116,7 +116,7 @@ class CreateProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(result.getVersionId(), event.get().getEntityId());
+    assertEquals(result.getId(), event.get().getEntityId());
   }
 
   private void assertProductUpdatedWasPublished(ProductVersion previous) {
@@ -126,11 +126,11 @@ class CreateProductVersionUseCaseTest {
       fail();
     }
 
-    assertEquals(previous.getVersionId(), event.get().getEntityId());
+    assertEquals(previous.getId(), event.get().getEntityId());
   }
 
   private void assertEndEffectiveDateOfPreviousVersion(ProductVersion result) {
-    var pearV1Id = ProductVersionMother.pearV1().getVersionId();
+    var pearV1Id = ProductVersionMother.pearV1().getId();
     var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
 
     assertEquals(
@@ -148,7 +148,7 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v2", null);
   }
 
   public ProductVersion previousPearV2() {
@@ -162,6 +162,6 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v2", null);
   }
 }

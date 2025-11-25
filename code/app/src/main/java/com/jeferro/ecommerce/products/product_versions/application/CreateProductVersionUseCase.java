@@ -35,17 +35,17 @@ public class CreateProductVersionUseCase extends UseCase<CreateProductVersionPar
 
   @Override
   public ProductVersion execute(Auth auth, CreateProductVersionParams params) {
-    var versionId = params.getVersionId();
+    var productVersionId = params.getProductVersionId();
     var typeId = params.getTypeId();
     var name = params.getName();
 
-    ensureProductVersionNotExist(versionId);
+    ensureProductVersionNotExist(productVersionId);
 
     parametricValidator.validateProductType(typeId);
 
-    setEndEffectiveDateOfPreviousProduct(versionId);
+    setEndEffectiveDateOfPreviousProduct(productVersionId);
 
-    return createNewVersion(versionId, typeId, name);
+    return createNewVersion(productVersionId, typeId, name);
   }
 
   private void ensureProductVersionNotExist(ProductVersionId versionId) {
@@ -65,21 +65,21 @@ public class CreateProductVersionUseCase extends UseCase<CreateProductVersionPar
       return;
     }
 
-    var previousVersion = previousVersionOpt.get();
+    var previousProductVersion = previousVersionOpt.get();
 
-    previousVersion.expireBeforeVersion(versionId);
+    previousProductVersion.expireBeforeVersion(versionId);
 
-    productVersionRepository.save(previousVersion);
+    productVersionRepository.save(previousProductVersion);
 
-    eventBus.sendAll(previousVersion);
+    eventBus.sendAll(previousProductVersion);
   }
 
   private ProductVersion createNewVersion(ProductVersionId versionId, ParametricValueId typeId, LocalizedField name) {
     var nextVersionCriteria = ProductVersionCriteria.nextProductVersion(versionId);
 
-    var nextVersion = productVersionRepository.findOne(nextVersionCriteria).orElse(null);
+    var nextProductVersion = productVersionRepository.findOne(nextVersionCriteria).orElse(null);
 
-    var newVersion = ProductVersion.create(versionId, typeId, name, nextVersion);
+    var newVersion = ProductVersion.create(versionId, typeId, name, nextProductVersion);
 
     productVersionRepository.save(newVersion);
 

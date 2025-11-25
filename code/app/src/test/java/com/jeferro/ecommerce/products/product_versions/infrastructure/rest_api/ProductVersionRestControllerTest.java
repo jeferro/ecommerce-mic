@@ -34,8 +34,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
             + "&ascending=true"
             + "&name=apple";
 
-    var requestBuilder =
-        MockMvcRequestBuilders.get(url)
+    var requestBuilder = MockMvcRequestBuilders.get(url)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -58,8 +57,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
 
     String url = "/v1/products/" + appleV1.getCode() + "/versions?pageNumber=0&pageSize=10";
 
-    var requestBuilder =
-        MockMvcRequestBuilders.get(url)
+    var requestBuilder = MockMvcRequestBuilders.get(url)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -87,12 +85,11 @@ class ProductVersionRestControllerTest extends RestControllerTest {
                     "es-ES": "Manzana"
                   }
                 }"""
-            .formatted(appleV1.getVersionId(), appleV1.getTypeId());
+            .formatted(appleV1.getId(), appleV1.getTypeId());
 
     var url = "/v1/products/" + appleV1.getCode() + "/versions/" + appleV1.getEffectiveDate();
 
-    var requestBuilder =
-        MockMvcRequestBuilders.post(url)
+    var requestBuilder = MockMvcRequestBuilders.post(url)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -113,8 +110,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
 
     var url = "/v1/products/" + appleV1.getCode() + "/versions/" + appleV1.getEffectiveDate();
 
-    var requestBuilder =
-        MockMvcRequestBuilders.get(url)
+    var requestBuilder = MockMvcRequestBuilders.get(url)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);
@@ -137,14 +133,14 @@ class ProductVersionRestControllerTest extends RestControllerTest {
                 {
                   "name": {
                     "en-US": "%s"
-                  }
+                  },
+                  "version": "%s"
                 }"""
-            .formatted(appleV1.getName());
+            .formatted(appleV1.getName(), appleV1.getVersion());
 
     var url = "/v1/products/" + appleV1.getCode() + "/versions/" + appleV1.getEffectiveDate();
 
-    var requestBuilder =
-        MockMvcRequestBuilders.patch(url)
+    var requestBuilder = MockMvcRequestBuilders.patch(url)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN)
@@ -165,8 +161,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
 
     var url = "/v1/products/" + appleV1.getCode() + "/versions/" + appleV1.getEffectiveDate();
 
-    var requestBuilder =
-        MockMvcRequestBuilders.delete(url)
+    var requestBuilder = MockMvcRequestBuilders.delete(url)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_EN)
             .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_USER_TOKEN);

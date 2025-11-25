@@ -2,10 +2,14 @@ package com.jeferro.shared.auth.infrastructure.mongo.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.data.annotation.Version;
 
 @Getter
 @AllArgsConstructor
 public abstract class AuditedMongoDTO {
+
+  @Version
+  private String version;
 
   private MetadataMongoDTO metadata;
 

@@ -12,8 +12,8 @@ public class User extends AggregateRoot<Username> {
 
   private final Set<String> roles;
 
-  public User(Username id, String encodedPassword, Set<String> roles, Metadata metadata) {
-    super(id, metadata);
+  public User(Username id, String encodedPassword, Set<String> roles, String version, Metadata metadata) {
+    super(id, version, metadata);
 
     this.encodedPassword = encodedPassword;
     this.roles = roles;

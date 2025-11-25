@@ -3,18 +3,29 @@ package com.jeferro.shared.ddd.domain.models.aggregates;
 import com.jeferro.shared.ddd.domain.events.Event;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jeferro.shared.ddd.domain.exceptions.IncorrectVersionException;
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.EqualsExclude;
 import org.apache.commons.lang3.builder.ToStringExclude;
 
 public class AggregateRoot<ID extends Identifier> extends Entity<ID> {
 
-  @Getter private final Metadata metadata;
+  @Getter
+  private final String version;
 
-  @ToStringExclude @EqualsExclude private final List<Event> events;
+  @Getter
+  private final Metadata metadata;
 
-  public AggregateRoot(ID id, Metadata metadata) {
+  @ToStringExclude
+  @EqualsExclude
+  private final List<Event> events;
+
+  public AggregateRoot(ID id, String version, Metadata metadata) {
     super(id);
+
+    this.version = version;
     this.metadata = metadata;
 
     events = new ArrayList<>();
@@ -30,5 +41,11 @@ public class AggregateRoot<ID extends Identifier> extends Entity<ID> {
     this.events.clear();
 
     return domainEvents;
+  }
+
+  protected void ensureSameVersion(String version) {
+    if(ObjectUtils.notEqual(this.version, version)){
+      throw IncorrectVersionException.createOfIncorrectVersion();
+    }
   }
 }
