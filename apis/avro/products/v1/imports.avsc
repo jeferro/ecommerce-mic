@@ -27,7 +27,8 @@
       },
       {
         "name": "endEffectiveDate",
-        "type": "string",
+        "type": ["null", "string"],
+        "default": null,
         "doc": "Date until the version is effective (not including)"
       },
       {

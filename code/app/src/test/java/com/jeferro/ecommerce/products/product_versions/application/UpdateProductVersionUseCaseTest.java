@@ -65,7 +65,7 @@ class UpdateProductVersionUseCaseTest {
   @Test
   void should_failedAsIncorrectVersion_when_versionIsPrevious() {
     var appleV1 = ProductVersionMother.appleV1();
-    var previousVersion = "v0";
+    var previousVersion = 0;
 
 
     var newName = LocalizedField.createOf("en-US", "new product name");

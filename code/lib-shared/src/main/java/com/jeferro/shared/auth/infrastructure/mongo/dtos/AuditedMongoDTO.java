@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Version;
 public abstract class AuditedMongoDTO {
 
   @Version
-  private String version;
+  private int version;
 
   private MetadataMongoDTO metadata;
 

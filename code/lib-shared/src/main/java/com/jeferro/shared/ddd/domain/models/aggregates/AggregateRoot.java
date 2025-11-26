@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringExclude;
 public class AggregateRoot<ID extends Identifier> extends Entity<ID> {
 
   @Getter
-  private final String version;
+  private int version;
 
   @Getter
   private final Metadata metadata;
@@ -22,7 +22,7 @@ public class AggregateRoot<ID extends Identifier> extends Entity<ID> {
   @EqualsExclude
   private final List<Event> events;
 
-  public AggregateRoot(ID id, String version, Metadata metadata) {
+  public AggregateRoot(ID id, int version, Metadata metadata) {
     super(id);
 
     this.version = version;
@@ -43,9 +43,11 @@ public class AggregateRoot<ID extends Identifier> extends Entity<ID> {
     return domainEvents;
   }
 
-  protected void ensureSameVersion(String version) {
-    if(ObjectUtils.notEqual(this.version, version)){
+  protected void increaseVersion(int currentVersion) {
+    if(ObjectUtils.notEqual(version, currentVersion)){
       throw IncorrectVersionException.createOfIncorrectVersion();
     }
+
+    version++;
   }
 }

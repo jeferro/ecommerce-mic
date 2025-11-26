@@ -14,8 +14,9 @@ components:
           description: Date when entity was created
           example: '2025-08-15T09:00:00Z'
         createdBy:
-          type: integer
+          type: string
           description: User who creates the entity
+          example: 'user'
         updatedAt:
           type: string
           format: date-time
@@ -24,6 +25,7 @@ components:
         updatedBy:
           type: string
           description: Last user who updates the entity
+          example: 'user'
 
     ProblemDetailsTypes:
       type: string

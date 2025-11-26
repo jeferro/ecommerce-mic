@@ -8,10 +8,11 @@ import com.jeferro.ecommerce.products.product_versions.domain.repositories.Produ
 import com.jeferro.ecommerce.products.product_versions.infrastructure.mongo.daos.ProductVersionsMongoDao;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.mongo.dtos.ProductVersionSummaryMongoDTO;
 import com.jeferro.ecommerce.products.product_versions.infrastructure.mongo.mappers.ProductVersionMongoMapper;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -23,43 +24,41 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
 
   @Override
   public void save(ProductVersion productVersion) {
-    var dto = productVersionMongoMapper.toDTO(productVersion);
+	var dto = productVersionMongoMapper.toDTO(productVersion);
 
-    productVersionsMongoDao.save(dto);
+	productVersionsMongoDao.save(dto);
   }
 
   @Override
   public Optional<ProductVersion> findById(ProductVersionId versionId) {
-    var versionIdDto = productVersionMongoMapper.toDTO(versionId);
+	var versionIdDto = productVersionMongoMapper.toDTO(versionId);
 
-    return productVersionsMongoDao.findById(versionIdDto).map(productVersionMongoMapper::toDomain);
+	return productVersionsMongoDao.findById(versionIdDto).map(productVersionMongoMapper::toDomain);
   }
 
   @Override
   public void delete(ProductVersion version) {
-    var versionDto = productVersionMongoMapper.toDTO(version);
+	var versionDto = productVersionMongoMapper.toDTO(version);
 
-    productVersionsMongoDao.delete(versionDto);
+	productVersionsMongoDao.delete(versionDto);
   }
 
   @Override
   public List<ProductVersion> findAll(ProductVersionCriteria criteria) {
-    var page = productVersionsMongoDao.findAll(criteria);
+	var page = productVersionsMongoDao.findAll(criteria);
 
-    return productVersionMongoMapper.toDomain(page);
+	return productVersionMongoMapper.toDomain(page);
   }
 
   @Override
   public long count(ProductVersionCriteria criteria) {
-    return productVersionsMongoDao.count(criteria);
+	return productVersionsMongoDao.count(criteria);
   }
 
   @Override
   public List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria) {
-    var page =
-        productVersionsMongoDao.findAll(
-            criteria, ProductVersionSummaryMongoDTO.class, ProductVersionSummaryMongoDTO.FIELDS);
+	var page = productVersionsMongoDao.findAll(criteria, ProductVersionSummaryMongoDTO.class, ProductVersionSummaryMongoDTO.FIELDS);
 
-    return productVersionMongoMapper.toDomainSummary(page);
+	return productVersionMongoMapper.toDomainSummary(page);
   }
 }

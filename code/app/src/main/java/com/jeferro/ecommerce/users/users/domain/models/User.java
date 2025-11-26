@@ -12,7 +12,7 @@ public class User extends AggregateRoot<Username> {
 
   private final Set<String> roles;
 
-  public User(Username id, String encodedPassword, Set<String> roles, String version, Metadata metadata) {
+  public User(Username id, String encodedPassword, Set<String> roles, int version, Metadata metadata) {
     super(id, version, metadata);
 
     this.encodedPassword = encodedPassword;

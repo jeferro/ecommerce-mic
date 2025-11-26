@@ -10,27 +10,27 @@ public class UserMother {
     var username = UsernameMother.john();
     var roles = Set.of(Roles.USER);
 
-    return new User(username, "encoded-password", roles, "v1", null);
+    return new User(username, "encoded-password", roles, 1, null);
   }
 
   public static User james() {
     var username = UsernameMother.james();
     var roles = Set.of(Roles.USER);
 
-    return new User(username, "encoded-password", roles, "v1",null);
+    return new User(username, "encoded-password", roles, 1,null);
   }
 
   public static User emily() {
     var username = UsernameMother.emily();
     var roles = Set.of(Roles.USER, Roles.ADMIN);
 
-    return new User(username, "encoded-password", roles, "v1",null);
+    return new User(username, "encoded-password", roles, 1,null);
   }
 
   public static User unknown() {
     var username = UsernameMother.unknown();
     var roles = Set.of(Roles.USER);
 
-    return new User(username, "encoded-password", roles, "v1",null);
+    return new User(username, "encoded-password", roles, 1,null);
   }
 }

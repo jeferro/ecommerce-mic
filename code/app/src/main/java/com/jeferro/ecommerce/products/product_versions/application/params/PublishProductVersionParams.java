@@ -11,13 +11,12 @@ public class PublishProductVersionParams extends Params<ProductVersion> {
 
   private final ProductVersionId productVersionId;
 
-  private final String version;
+  private final int version;
 
-  public PublishProductVersionParams(ProductVersionId productVersionId, String version) {
+  public PublishProductVersionParams(ProductVersionId productVersionId, int version) {
     super();
 
     ValueValidator.isNotNull(productVersionId, "productVersionId");
-    ValueValidator.isNotNull(version, "version");
 
     this.productVersionId = productVersionId;
     this.version = version;

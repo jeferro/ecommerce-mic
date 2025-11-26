@@ -1,4 +1,4 @@
-package com.jeferro.shared.ddd.infrastructure.rest.mappers;
+package com.jeferro.shared.ddd.infrastructure.rest_api.mappers;
 
 import com.jeferro.shared.ddd.domain.exceptions.ApplicationException;
 import java.net.URI;

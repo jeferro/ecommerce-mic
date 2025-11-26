@@ -333,9 +333,9 @@ components:
         status:
           $ref: '#/components/schemas/ProductStatus'
         version:
-          type: string
+          type: integer
           description: Version of the entity
-          example: '1'
+          example: 1
         metadata:
           $ref: '../shared.yml#/components/schemas/Metadata'
 
@@ -375,9 +375,9 @@ components:
         status:
           $ref: '#/components/schemas/ProductStatus'
         version:
-          type: string
+          type: integer
           description: Version of the entity
-          example: '1'
+          example: 1
         metadata:
           $ref: '../shared.yml#/components/schemas/Metadata'
 
@@ -461,9 +461,9 @@ components:
             es_ES: 'Manzana'
             en_US: 'Apple'
         version:
-          type: string
+          type: integer
           description: Version of the entity to update
-          example: "1"
+          example: 1
 
     PublishProductVersionInput:
       type: object
@@ -472,9 +472,9 @@ components:
         - version
       properties:
         version:
-          type: string
+          type: integer
           description: Version of the entity to update
-          example: "1"
+          example: 1
 
     UnpublishProductVersionInput:
       type: object
@@ -483,8 +483,8 @@ components:
         - version
       properties:
         version:
-          type: string
+          type: integer
           description: Version of the entity to update
-          example: "1"
+          example: 1
 
 

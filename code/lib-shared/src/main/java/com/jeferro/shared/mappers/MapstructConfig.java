@@ -7,6 +7,8 @@ import org.mapstruct.MapperConfig;
 import org.mapstruct.NullValueMappingStrategy;
 
 @MapperConfig(
-    uses = {ValueObjectMapper.class, LocaleMapper.class, StringIdentifierMapper.class},
+    uses = {ValueObjectMapper.class,
+		LocaleMapper.class,
+		StringIdentifierMapper.class},
     nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public class MapstructConfig {}

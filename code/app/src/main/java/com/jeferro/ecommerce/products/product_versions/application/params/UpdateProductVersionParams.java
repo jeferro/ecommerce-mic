@@ -14,14 +14,13 @@ public class UpdateProductVersionParams extends Params<ProductVersion> {
 
   private final LocalizedField name;
 
-  private final String version;
+  private final int version;
 
-  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, String version) {
+  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, int version) {
     super();
 
     ValueValidator.isNotNull(productVersionId, "productVersionId");
     ValueValidator.isNotNull(name, "name");
-    ValueValidator.isNotNull(version, "version");
 
     this.productVersionId = productVersionId;
     this.name = name;

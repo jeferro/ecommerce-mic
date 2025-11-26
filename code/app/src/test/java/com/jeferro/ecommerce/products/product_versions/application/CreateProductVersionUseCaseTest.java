@@ -148,7 +148,7 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v2", null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, 2, null);
   }
 
   public ProductVersion previousPearV2() {
@@ -162,6 +162,6 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, "v2", null);
+    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, 2, null);
   }
 }

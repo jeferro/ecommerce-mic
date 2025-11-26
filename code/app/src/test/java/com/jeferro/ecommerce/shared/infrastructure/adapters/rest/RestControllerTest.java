@@ -3,7 +3,7 @@ package com.jeferro.ecommerce.shared.infrastructure.adapters.rest;
 import com.jeferro.ecommerce.shared.application.StubUseCaseBus;
 import com.jeferro.shared.auth.infrastructure.rest.configurations.RestSecurityProperties;
 import com.jeferro.shared.auth.infrastructure.rest.jwt.HeaderJwtDecoder;
-import com.jeferro.shared.ddd.infrastructure.rest.ErrorRestController;
+import com.jeferro.shared.ddd.infrastructure.rest_api.ErrorRestController;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 

@@ -1,3 +1,3 @@
-data[0] = UpdateProductVersionParams[name=LocalizedField[values={en-US=LocalizedField[values={en-US=Apple v1, es-ES=Manzana v1}]}],productVersionId=apple::2025-01-01T09:00:00Z,version=v1]
+data[0] = UpdateProductVersionParams[name=LocalizedField[values={en-US=LocalizedField[values={en-US=Apple v1, es-ES=Manzana v1}]}],productVersionId=apple::2025-01-01T09:00:00Z,version=1]
 data[1] = 200
-data[2] = {"id":"apple::2025-01-01T09:00:00Z","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","endEffectiveDate":"2025-02-01T08:59:59Z","typeId":"fruit","name":{"en-US":"Apple v1"},"status":"UNPUBLISHED","version":"v1","metadata":{"createdAt":null,"createdBy":null,"updatedAt":null,"updatedBy":null}}
+data[2] = {"id":"apple::2025-01-01T09:00:00Z","code":"apple","effectiveDate":"2025-01-01T09:00:00Z","endEffectiveDate":"2025-02-01T08:59:59Z","typeId":"fruit","name":{"en-US":"Apple v1"},"status":"UNPUBLISHED","version":1,"metadata":{"createdAt":null,"createdBy":null,"updatedAt":null,"updatedBy":null}}

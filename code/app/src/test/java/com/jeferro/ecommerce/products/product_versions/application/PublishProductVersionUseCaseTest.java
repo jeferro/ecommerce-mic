@@ -62,7 +62,7 @@ class PublishProductVersionUseCaseTest {
   @Test
   void should_failedAsIncorrectVersion_when_versionIsPrevious() {
     var appleV1 = ProductVersionMother.appleV1();
-    var previousVersion = "v0";
+    var previousVersion = 0;
 
     var params = new PublishProductVersionParams(appleV1.getId(), previousVersion);
 

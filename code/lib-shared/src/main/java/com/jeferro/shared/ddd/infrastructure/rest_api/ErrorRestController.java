@@ -1,11 +1,11 @@
-package com.jeferro.shared.ddd.infrastructure.rest;
+package com.jeferro.shared.ddd.infrastructure.rest_api;
 
 import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
 import com.jeferro.shared.ddd.domain.exceptions.InternalException;
 import com.jeferro.shared.ddd.domain.exceptions.NotFoundException;
 import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
 import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
-import com.jeferro.shared.ddd.infrastructure.rest.mappers.ProblemDetailRestMapper;
+import com.jeferro.shared.ddd.infrastructure.rest_api.mappers.ProblemDetailRestMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,6 @@ public class ErrorRestController {
   @ResponseBody
   @ExceptionHandler(
       value = {
-        ValueValidationException.class,
         ServerWebInputException.class,
         MissingServletRequestParameterException.class
       })

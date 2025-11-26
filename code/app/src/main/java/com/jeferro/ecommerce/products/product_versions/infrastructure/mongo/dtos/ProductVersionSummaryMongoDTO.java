@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
-@Document(collection = "products")
+@Document(collection = "product_versions")
 public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
 
   public static final List<String> FIELDS = List.of("name", "status");
