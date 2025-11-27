@@ -1,0 +1,495 @@
+openapi: "3.0.0"
+
+info:
+  version: 1.0.0
+  title: Product Rest API
+  description: API Rest definition to manage products
+
+servers:
+  - url: http://localhost:8080
+    description: Local
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Product versions
+    description: Section of the product versions
+
+paths:
+  /v1/products:
+    get:
+      operationId: search-product-versions
+      summary: Search product versions
+      description: Search product versions
+      tags:
+        - Product versions
+      parameters:
+        - name: pageNumber
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Number of the page
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Size of the page
+        - name: order
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductOrder'
+          description: Order of the result
+        - name: ascending
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Return data using ascending order
+        - name: searchDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: Show only active product version at date
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersionSummaryList'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+  /v1/products/{productCode}/versions:
+    get:
+      operationId: search-product-version-ids
+      summary: Search product versions
+      description: Search product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - name: pageNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Number of the page
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Size of the page
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersionIdList'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+  /v1/products/{productCode}/versions/{effectiveDate}:
+    post:
+      operationId: create-product-version
+      summary: Create product version
+      description: Create product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - $ref: '#/components/parameters/effectiveDatePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductVersionInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+    get:
+      operationId: get-product-version
+      summary: Get product version
+      description: Get product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - $ref: '#/components/parameters/effectiveDatePath'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+    patch:
+      operationId: update-product-version
+      summary: Update product version
+      description: Update product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - $ref: '#/components/parameters/effectiveDatePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductVersionInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+    delete:
+      operationId: delete-product-version
+      summary: Delete product version
+      description: Delete product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - $ref: '#/components/parameters/effectiveDatePath'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+  /v1/products/{productCode}/versions/{effectiveDate}/published:
+    put:
+      operationId: publish-product-version
+      summary: Publish product version
+      description: Publish product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - $ref: '#/components/parameters/effectiveDatePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishProductVersionInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+  /v1/products/{productCode}/versions/{effectiveDate}/unpublished:
+    put:
+      operationId: unpublish-product-version
+      summary: Unpublish product version
+      description: Unpublish product version
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - $ref: '#/components/parameters/effectiveDatePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnpublishProductVersionInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT security
+      
+  parameters:
+    productCodePath:
+      name: productCode
+      in: path
+      description: Code of the product
+      required: true
+      schema:
+        type: string
+      example: '123456789'
+
+    effectiveDatePath:
+      name: effectiveDate
+      in: path
+      description: Effective date of the product version
+      required: true
+      schema:
+        type: string
+      example: '2025-08-01_09:00:00'
+
+  schemas:
+    ProductOrder:
+      type: string
+      description: Order of the product listing
+      enum:
+        - 'ID'
+        - 'NAME'
+      x-enum-varnames:
+        - ID
+        - NAME
+
+    ProductStatus:
+      type: string
+      description: status of the product
+      enum:
+        - 'PUBLISHED'
+        - 'UNPUBLISHED'
+      x-enum-varnames:
+        - PUBLISHED
+        - UNPUBLISHED
+
+    ProductVersion:
+      type: object
+      description: Product version
+      required:
+        - id
+        - code
+        - effectiveDate
+        - typeId
+        - name
+        - status
+        - version
+        - metadata
+      properties:
+        id:
+          type: string
+          description: Identifier of product version
+          example: '123456789::2025-08-01_09:00:00'
+        code:
+          type: string
+          description: Code of the product
+          example: '123456789'
+        effectiveDate:
+          type: string
+          format: date-time
+          description: Effective date of the product
+          example: '2025-08-01T09:00:00Z'
+        endEffectiveDate:
+          type: string
+          format: date-time
+          description: End effective date of the product
+          example: '2025-08-15T09:00:00Z'
+        typeId:
+          type: string
+          description: Identifier of the product type
+          example: 'fruit'
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          description: Name of the product
+          example:
+            es: 'Manzana'
+            en: 'Apple'
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity
+          example: 1
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
+
+    ProductVersionSummary:
+      type: object
+      description: Summary of product version
+      required:
+        - id
+        - code
+        - effectiveDate
+        - name
+        - status
+        - version
+        - metadata
+      properties:
+        id:
+          type: string
+          description: Identifier of the product version
+          example: '123456789::2025-08-01_09:00:00'
+        code:
+          type: string
+          description: Code of the product
+          example: '123456789'
+        effectiveDate:
+          type: string
+          format: date-time
+          description: Effective date of the product
+          example: '2025-08-01T09:00:00Z'
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          description: Name of the product
+          example:
+            es: 'Manzana'
+            en: 'Apple'
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity
+          example: 1
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
+
+    ProductVersionSummaryList:
+      type: object
+      required:
+        - pageNumber
+        - pageSize
+        - totalItems
+        - items
+      properties:
+        pageNumber:
+          type: integer
+          description: Number of total pages
+        pageSize:
+          type: integer
+          description: Size of each page
+        totalItems:
+          type: integer
+          description: Number of total items
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersionSummary'
+
+    ProductVersionIdList:
+      type: object
+      required:
+        - pageNumber
+        - pageSize
+        - totalItems
+        - items
+      properties:
+        pageNumber:
+          type: integer
+          description: Number of total pages
+        pageSize:
+          type: integer
+          description: Size of each page
+        totalItems:
+          type: integer
+          description: Number of total items
+        items:
+          type: array
+          items:
+            type: string
+
+    CreateProductVersionInput:
+      type: object
+      description: Input to create product version
+      required:
+        - typeId
+        - name
+      properties:
+        typeId:
+          type: string
+          description: Identifier of the product type
+          example: 'fruit'
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          description: Name of the product
+          example:
+            es_ES: 'Manzana'
+            en_US: 'Apple'
+
+    UpdateProductVersionInput:
+      type: object
+      description: Input to update a product version
+      required:
+        - name
+        - version
+      properties:
+        name:
+          type: object
+          additionalProperties:
+            type: string
+          description: Name of the product
+          example:
+            es_ES: 'Manzana'
+            en_US: 'Apple'
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity to update
+          example: 1
+
+    PublishProductVersionInput:
+      type: object
+      description: Input to publish a product version
+      required:
+        - version
+      properties:
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity to update
+          example: 1
+
+    UnpublishProductVersionInput:
+      type: object
+      description: Input to unpublish a product version
+      required:
+        - version
+      properties:
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity to update
+          example: 1
+
+

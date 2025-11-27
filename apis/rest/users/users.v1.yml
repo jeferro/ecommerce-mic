@@ -71,12 +71,16 @@ components:
       description: Authentication information
       required:
         - username
+        - token
         - roles
       properties:
         username:
           type: string
           description: Identifier of user
           example: 'one-user'
+        token:
+          type: string
+          description: Authentication token
         roles:
           type: array
           items:

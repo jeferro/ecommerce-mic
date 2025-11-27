@@ -7,6 +7,7 @@ db['users'].insertMany([
         roles: [
             'user'
         ],
+        version: 1,
         metadata: {
             createdAt: now,
             createdBy: 'user',
@@ -21,6 +22,7 @@ db['users'].insertMany([
             'user',
             'admin'
         ],
+        version: 1,
         metadata: {
             createdAt: now,
             createdBy: 'user',

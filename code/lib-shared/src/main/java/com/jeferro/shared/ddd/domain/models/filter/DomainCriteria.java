@@ -8,23 +8,35 @@ import lombok.Getter;
 @AllArgsConstructor
 public abstract class DomainCriteria<Order> extends ValueObject {
 
-  protected static final int DEFAULT_PAGE_SIZE = 100;
+  private static final int DEFAULT_PAGE_SIZE = 100;
 
   public static final boolean DEFAULT_ASCENDING = true;
 
-  private int pageNumber;
+  private Integer pageNumber;
 
-  private final int pageSize;
+  private final Integer pageSize;
 
   private final Order order;
 
   private final Boolean ascending;
 
   public boolean isAscending() {
-    return ascending != null ? ascending : DEFAULT_ASCENDING;
+	return ascending != null ? ascending : DEFAULT_ASCENDING;
   }
 
   public void nextPage() {
-    pageNumber = pageNumber + 1;
+	pageNumber = pageNumber + 1;
+  }
+
+  public int getPageSize() {
+	return pageSize != null
+		? pageSize
+		: DEFAULT_PAGE_SIZE;
+  }
+
+  public int getPageNumber() {
+	return pageNumber != null
+		? pageNumber
+		: 0;
   }
 }

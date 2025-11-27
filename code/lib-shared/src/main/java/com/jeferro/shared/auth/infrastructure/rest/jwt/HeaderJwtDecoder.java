@@ -61,8 +61,7 @@ public class HeaderJwtDecoder {
   public String encode(String username, Set<String> roles) {
     var issuedAt = Instant.now();
 
-    var jwtBuilder =
-        JWT.create()
+    var jwtBuilder = JWT.create()
             .withIssuer(jwtProperties.issuer())
             .withIssuedAt(issuedAt)
             .withSubject(username)

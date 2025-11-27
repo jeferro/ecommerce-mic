@@ -1,0 +1,22 @@
+{
+  "namespace": "com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos",
+  "type": "record",
+  "name": "ProductPublishedV1AvroDTO",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Identifier of the event"
+    },
+    {
+      "name": "sentAt",
+      "type": "string",
+      "doc": "Date when the event was sent"
+    },
+    {
+      "name": "entity",
+      "type": "ProductVersionV1AvroDTO",
+      "doc": "Product version published"
+    }
+  ]
+}

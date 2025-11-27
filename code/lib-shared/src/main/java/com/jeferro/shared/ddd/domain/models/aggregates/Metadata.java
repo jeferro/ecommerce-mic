@@ -2,9 +2,12 @@ package com.jeferro.shared.ddd.domain.models.aggregates;
 
 import com.jeferro.shared.ddd.domain.models.value_objects.ValueObject;
 import java.time.Instant;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class Metadata extends ValueObject {
 
   private final Instant createdAt;
@@ -14,11 +17,4 @@ public class Metadata extends ValueObject {
   private final Instant updatedAt;
 
   private final String updatedBy;
-
-  public Metadata(Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
-    this.createdAt = createdAt;
-    this.createdBy = createdBy;
-    this.updatedAt = updatedAt;
-    this.updatedBy = updatedBy;
-  }
 }

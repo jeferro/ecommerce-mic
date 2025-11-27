@@ -197,11 +197,17 @@ components:
       description: Update review input
       required:
         - comment
+        - version
       properties:
         comment:
           type: string
           description: Comment of the review
           example: 'One comment of the product'
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity to update
+          example: 1
 
     Review:
       type: object
@@ -212,6 +218,8 @@ components:
         - entityId
         - locale
         - comment
+        - version
+        - metadata
       properties:
         id:
           type: string
@@ -233,6 +241,13 @@ components:
           type: string
           description: Comment of the review
           example: 'One comment of the product'
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity
+          example: 1
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
 
     ReviewList:
       type: object

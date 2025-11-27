@@ -1,0 +1,22 @@
+{
+  "namespace": "com.jeferro.ecommerce.products.reviews.infrastructure.kafka.dtos",
+  "type": "record",
+  "name": "ReviewDeletedV1AvroDTO",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Identifier of the event"
+    },
+    {
+      "name": "sentAt",
+      "type": "string",
+      "doc": "Date when the event was sent"
+    },
+    {
+      "name": "entity",
+      "type": "ReviewV1AvroDTO",
+      "doc": "Review deleted"
+    }
+  ]
+}
