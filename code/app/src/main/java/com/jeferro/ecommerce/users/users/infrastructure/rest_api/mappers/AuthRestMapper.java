@@ -7,12 +7,9 @@ import com.jeferro.ecommerce.users.users.infrastructure.rest_api.dtos.SignInInpu
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
 public abstract class AuthRestMapper {
-
-  public static final AuthRestMapper INSTANCE = Mappers.getMapper(AuthRestMapper.class);
 
   public abstract SignInParams toSignInParams(SignInInputRestDTO inputRestDTO);
 

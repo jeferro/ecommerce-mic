@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationsRestController implements AuthenticationApi {
 
-  private final AuthRestMapper authRestMapper = AuthRestMapper.INSTANCE;
+  private final AuthRestMapper authRestMapper;
 
   private final HeaderJwtDecoder headerJwtDecoder;
 

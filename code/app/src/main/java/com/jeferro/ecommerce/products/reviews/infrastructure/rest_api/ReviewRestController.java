@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReviewRestController implements ReviewsApi {
 
-  private final ReviewRestMapper reviewRestMapper = ReviewRestMapper.INSTANCE;
+  private final ReviewRestMapper reviewRestMapper;
 
   private final UseCaseBus useCaseBus;
 

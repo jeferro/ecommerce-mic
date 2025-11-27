@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductVersionMongoRepository implements ProductVersionRepository {
 
-  private final ProductVersionMongoMapper productVersionMongoMapper = ProductVersionMongoMapper.INSTANCE;
+  private final ProductVersionMongoMapper productVersionMongoMapper;
 
   private final ProductVersionsMongoDao productVersionsMongoDao;
 

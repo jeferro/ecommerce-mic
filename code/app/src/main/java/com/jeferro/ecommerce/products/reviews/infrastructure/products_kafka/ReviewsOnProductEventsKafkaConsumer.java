@@ -19,7 +19,7 @@ public class ReviewsOnProductEventsKafkaConsumer {
 
   private static final Logger logger = LoggerFactory.getLogger(ReviewsOnProductEventsKafkaConsumer.class);
 
-  private final ReviewKafkaMapper reviewKafkaMapper = ReviewKafkaMapper.INSTANCE;
+  private final ReviewKafkaMapper reviewKafkaMapper;
 
   private final UseCaseBus useCaseBus;
 

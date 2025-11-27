@@ -11,15 +11,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductVersionEventKafkaProducer implements EventBusProducer<ProductVersionEvent> {
 
-  private final ProductVersionKafkaMapper productVersionKafkaMapper = ProductVersionKafkaMapper.INSTANCE;
+  private final ProductVersionKafkaMapper productVersionKafkaMapper;
 
   private final ProductVersionsProperties productVersionsProperties;
 
   private final KafkaTemplate<String, Object> kafkaTemplate;
 
-  public ProductVersionEventKafkaProducer(ApplicationProperties applicationProperties,
-      KafkaTemplate<String, Object> kafkaTemplate) {
-	this.kafkaTemplate = kafkaTemplate;
+  public ProductVersionEventKafkaProducer(ProductVersionKafkaMapper productVersionKafkaMapper,
+                                          ApplicationProperties applicationProperties,
+                                          KafkaTemplate<String, Object> kafkaTemplate) {
+    this.productVersionKafkaMapper = productVersionKafkaMapper;
+    this.kafkaTemplate = kafkaTemplate;
 
     this.productVersionsProperties = applicationProperties.getProductVersions();
   }

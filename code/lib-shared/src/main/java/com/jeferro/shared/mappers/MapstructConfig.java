@@ -1,14 +1,12 @@
 package com.jeferro.shared.mappers;
 
-import com.jeferro.shared.mappers.others.LocaleMapper;
-import com.jeferro.shared.mappers.others.StringIdentifierMapper;
-import com.jeferro.shared.mappers.others.ValueObjectMapper;
+import com.jeferro.shared.mappers.others.CommonMapper;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.NullValueMappingStrategy;
 
 @MapperConfig(
-    uses = {ValueObjectMapper.class,
-		LocaleMapper.class,
-		StringIdentifierMapper.class},
-    nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public class MapstructConfig {}
+        uses = {CommonMapper.class,},
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,
+        componentModel = "spring")
+public class MapstructConfig {
+}

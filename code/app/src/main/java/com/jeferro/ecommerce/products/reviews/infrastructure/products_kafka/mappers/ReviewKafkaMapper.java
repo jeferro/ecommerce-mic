@@ -8,12 +8,9 @@ import com.jeferro.shared.mappers.EventMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
 public abstract class ReviewKafkaMapper extends EventMapper<ReviewEvent> {
-
-  public static final ReviewKafkaMapper INSTANCE = Mappers.getMapper(ReviewKafkaMapper.class);
 
   @Mapping(target = "entityId", expression = "java(toDomain(domain, entity.getId()))")
   public abstract DeleteAllReviewsOfEntityIdParams toDeleteAllReviewsOfEntityIdParams(String domain, ProductVersionV1AvroDTO entity);

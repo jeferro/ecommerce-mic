@@ -1,5 +1,5 @@
 # smaller base image for the runtime environment
-FROM openjdk:21-oracle
+FROM openjdk:21-jdk
 
 WORKDIR /app
 
