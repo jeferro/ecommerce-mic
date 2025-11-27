@@ -1,6 +1,7 @@
 package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api;
 
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.mappers.ProductVersionRestMapperImpl;
 import com.jeferro.ecommerce.shared.application.StubUseCaseBus;
 import com.jeferro.ecommerce.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.ecommerce.shared.utils.ApprovalUtils;
@@ -8,12 +9,14 @@ import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @WebMvcTest(ProductVersionRestController.class)
+@Import(ProductVersionRestMapperImpl.class)
 class ProductVersionRestControllerTest extends RestControllerTest {
 
   @Autowired private MockMvc mockMvc;
@@ -22,12 +25,11 @@ class ProductVersionRestControllerTest extends RestControllerTest {
 
   @Test
   void execute_list_product_versions_on_request() throws Exception {
-    var products =
-        PaginatedList.createOfItems(ProductVersionMother.appleV1(), ProductVersionMother.pearV1());
+    var products = PaginatedList.createOfItems(ProductVersionMother.appleV1Summary(), ProductVersionMother.pearV1Summary());
+
     stubUseCaseBus.init(products);
 
-    var url =
-        "/v1/products?"
+    var url = "/v1/products?"
             + "pageNumber=0"
             + "&pageSize=10"
             + "&order=NAME"
@@ -51,8 +53,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
   void execute_list_product_version_ids_on_request() throws Exception {
     var appleV1 = ProductVersionMother.appleV1();
 
-    var products =
-        PaginatedList.createOfItems(ProductVersionMother.appleV1(), ProductVersionMother.appleV2());
+    var products = PaginatedList.createOfItems(ProductVersionMother.appleV1Summary(), ProductVersionMother.pearV1Summary());
     stubUseCaseBus.init(products);
 
     String url = "/v1/products/" + appleV1.getCode() + "/versions?pageNumber=0&pageSize=10";
@@ -128,8 +129,7 @@ class ProductVersionRestControllerTest extends RestControllerTest {
     var appleV1 = ProductVersionMother.appleV1();
     stubUseCaseBus.init(appleV1);
 
-    var requestContent =
-        """
+    var requestContent = """
                 {
                   "name": {
                     "en-US": "%s"

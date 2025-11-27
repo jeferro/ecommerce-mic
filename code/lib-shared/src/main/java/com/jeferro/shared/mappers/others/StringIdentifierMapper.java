@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.mapstruct.Mapper;
 import org.mapstruct.TargetType;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface StringIdentifierMapper {
 
   static <V extends StringIdentifier> String toDTO(V valueObject) {

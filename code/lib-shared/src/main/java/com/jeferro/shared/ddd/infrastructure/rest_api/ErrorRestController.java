@@ -4,17 +4,19 @@ import com.jeferro.shared.ddd.domain.exceptions.ForbiddenException;
 import com.jeferro.shared.ddd.domain.exceptions.InternalException;
 import com.jeferro.shared.ddd.domain.exceptions.NotFoundException;
 import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
-import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 import com.jeferro.shared.ddd.infrastructure.rest_api.mappers.ProblemDetailRestMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -27,10 +29,12 @@ public class ErrorRestController {
 
   @ResponseBody
   @ExceptionHandler(
-      value = {
-        ServerWebInputException.class,
-        MissingServletRequestParameterException.class
-      })
+          value = {
+                  ServerWebInputException.class,
+                  MissingServletRequestParameterException.class,
+                  HttpMessageConversionException.class,
+                  TypeMismatchException.class
+          })
   public ResponseEntity<ProblemDetail> handleBadRequest(Exception cause) {
     return problemDetailRestMapper.toDTO(HttpStatus.BAD_REQUEST, cause);
   }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReviewMongoRepository implements ReviewsRepository {
 
-  private final ReviewMongoMapper reviewMongoMapper = ReviewMongoMapper.INSTANCE;
+  private final ReviewMongoMapper reviewMongoMapper;
 
   private final ReviewMongoDao reviewMongoDao;
 

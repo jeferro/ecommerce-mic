@@ -3,7 +3,7 @@ package com.jeferro.shared.mappers.others;
 import java.util.Locale;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public class LocaleMapper {
 
   public Locale toDomain(String dto) {

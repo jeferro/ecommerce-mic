@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.mapstruct.Mapper;
 import org.mapstruct.TargetType;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ValueObjectMapper {
 
   static <V extends SimpleValueObject<T>, T extends Serializable> T toDTO(V valueObject) {

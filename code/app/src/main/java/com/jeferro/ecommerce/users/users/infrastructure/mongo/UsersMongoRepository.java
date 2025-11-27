@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UsersMongoRepository implements UsersRepository {
 
-  private final UsersMongoMapper usersMongoMapper = UsersMongoMapper.INSTANCE;
+  private final UsersMongoMapper usersMongoMapper;
 
   private final UsersMongoDao usersMongoDao;
 

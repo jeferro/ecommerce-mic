@@ -1,29 +1,18 @@
 package com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.mappers;
 
-import com.jeferro.ecommerce.products.reviews.application.params.CreateReviewParams;
-import com.jeferro.ecommerce.products.reviews.application.params.DeleteReviewParams;
-import com.jeferro.ecommerce.products.reviews.application.params.GetReviewParams;
-import com.jeferro.ecommerce.products.reviews.application.params.SearchReviewParams;
-import com.jeferro.ecommerce.products.reviews.application.params.UpdateReviewParams;
+import com.jeferro.ecommerce.products.reviews.application.params.*;
 import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewId;
 import com.jeferro.ecommerce.products.reviews.domain.models.criteria.ReviewCriteria;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.CreateReviewInputRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.ReviewListRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.ReviewOrderRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.ReviewRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.UpdateReviewInputRestDTO;
+import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.*;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregatePrimaryMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapstructConfig.class)
 public abstract class ReviewRestMapper
     extends AggregatePrimaryMapper<Review, ReviewId, ReviewRestDTO> {
-
-  public static final ReviewRestMapper INSTANCE = Mappers.getMapper(ReviewRestMapper.class);
 
   public abstract ReviewListRestDTO toSummaryListDTO(PaginatedList<Review> reviews);
 
