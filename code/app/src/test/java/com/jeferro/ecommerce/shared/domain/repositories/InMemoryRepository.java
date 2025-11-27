@@ -14,8 +14,10 @@ public abstract class InMemoryRepository<
     data.clear();
   }
 
-  public void save(Aggregate aggregate) {
+  public Aggregate save(Aggregate aggregate) {
     data.put(aggregate.getId(), aggregate);
+
+    return aggregate;
   }
 
   public Optional<Aggregate> findById(Id id) {

@@ -11,9 +11,9 @@ public class PublishProductVersionParams extends Params<ProductVersion> {
 
   private final ProductVersionId productVersionId;
 
-  private final int version;
+  private final long version;
 
-  public PublishProductVersionParams(ProductVersionId productVersionId, int version) {
+  public PublishProductVersionParams(ProductVersionId productVersionId, long version) {
     super();
 
     ValueValidator.isNotNull(productVersionId, "productVersionId");

@@ -43,10 +43,8 @@ public class PublishProductVersionUseCase extends UseCase<PublishProductVersionP
 
     productVersion.publish(version);
 
-    productVersionRepository.save(productVersion);
-
     eventBus.sendAll(productVersion);
 
-    return productVersion;
+    return productVersionRepository.save(productVersion);
   }
 }

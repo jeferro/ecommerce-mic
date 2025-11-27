@@ -13,9 +13,9 @@ public class UpdateReviewParams extends Params<Review> {
 
   private final String comment;
 
-  private final int version;
+  private final long version;
 
-  public UpdateReviewParams(ReviewId reviewId, String comment, int version) {
+  public UpdateReviewParams(ReviewId reviewId, String comment, long version) {
     super();
 
     ValueValidator.isNotNull(reviewId, "reviewId");

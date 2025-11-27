@@ -33,7 +33,7 @@ public class ProductVersionMongoDTO extends AuditedMongoDTO {
       String typeId,
       ProductStatusMongoDTO status,
       Map<String, String> name,
-      String version,
+      Long version,
       MetadataMongoDTO metadata) {
     super(version, metadata);
     this.id = id;

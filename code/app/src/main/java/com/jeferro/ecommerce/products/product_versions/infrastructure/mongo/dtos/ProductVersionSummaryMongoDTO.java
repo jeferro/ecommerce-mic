@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "product_versions")
 public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
 
-  public static final List<String> FIELDS = List.of("name", "status");
+  public static final List<String> FIELDS = List.of("name", "status", "version", "metadata");
 
   private final String id;
 
@@ -23,7 +23,7 @@ public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
       String id,
       Map<String, String> name,
       ProductStatusMongoDTO status,
-      String version,
+      Long version,
       MetadataMongoDTO metadata) {
     super(version, metadata);
     this.id = id;

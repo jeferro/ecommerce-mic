@@ -205,6 +205,7 @@ components:
           example: 'One comment of the product'
         version:
           type: integer
+          format: int64
           description: Version of the entity to update
           example: 1
 
@@ -242,6 +243,7 @@ components:
           example: 'One comment of the product'
         version:
           type: integer
+          format: int64
           description: Version of the entity
           example: 1
         metadata:

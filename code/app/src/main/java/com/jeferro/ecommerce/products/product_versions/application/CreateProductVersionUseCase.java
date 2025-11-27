@@ -81,10 +81,8 @@ public class CreateProductVersionUseCase extends UseCase<CreateProductVersionPar
 
     var newVersion = ProductVersion.create(versionId, typeId, name, nextProductVersion);
 
-    productVersionRepository.save(newVersion);
-
     eventBus.sendAll(newVersion);
 
-    return newVersion;
+    return productVersionRepository.save(newVersion);
   }
 }

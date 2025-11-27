@@ -23,10 +23,12 @@ public class ProductVersionMongoRepository implements ProductVersionRepository {
   private final ProductVersionsMongoDao productVersionsMongoDao;
 
   @Override
-  public void save(ProductVersion productVersion) {
+  public ProductVersion save(ProductVersion productVersion) {
 	var dto = productVersionMongoMapper.toDTO(productVersion);
 
-	productVersionsMongoDao.save(dto);
+	var resultDto = productVersionsMongoDao.save(dto);
+
+	return productVersionMongoMapper.toDomain(resultDto);
   }
 
   @Override

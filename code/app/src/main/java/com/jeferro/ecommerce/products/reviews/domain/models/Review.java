@@ -18,7 +18,7 @@ public class Review extends AggregateRoot<ReviewId> {
 
   private String comment;
 
-  public Review(ReviewId id, String comment, Locale locale, int version, Metadata metadata) {
+  public Review(ReviewId id, String comment, Locale locale, long version, Metadata metadata) {
     super(id, version, metadata);
 
     this.locale = locale;
@@ -31,7 +31,7 @@ public class Review extends AggregateRoot<ReviewId> {
     ValueValidator.isNotNull(auth, "auth");
 
     var reviewId = ReviewId.createOf(entityId, auth);
-    var review = new Review(reviewId, comment, auth.getLocale(), 1, null);
+    var review = new Review(reviewId, comment, auth.getLocale(), 0L, null);
 
     var event = ReviewCreated.create(review);
     review.record(event);

@@ -25,7 +25,7 @@ public class ReviewMongoDTO extends AuditedMongoDTO {
       EntityIdMongoDTO entityId,
       String locale,
       String comment,
-      String version,
+      Long version,
       MetadataMongoDTO metadata) {
     super(version, metadata);
     this.id = id;

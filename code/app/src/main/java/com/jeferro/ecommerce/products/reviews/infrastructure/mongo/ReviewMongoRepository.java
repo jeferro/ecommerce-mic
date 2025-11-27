@@ -21,10 +21,12 @@ public class ReviewMongoRepository implements ReviewsRepository {
   private final ReviewMongoDao reviewMongoDao;
 
   @Override
-  public void save(Review review) {
+  public Review save(Review review) {
     var reviewDto = reviewMongoMapper.toDTO(review);
 
-    reviewMongoDao.save(reviewDto);
+    var resultDto = reviewMongoDao.save(reviewDto);
+
+    return reviewMongoMapper.toDomain(resultDto);
   }
 
   @Override

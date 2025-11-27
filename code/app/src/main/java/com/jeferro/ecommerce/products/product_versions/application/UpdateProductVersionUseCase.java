@@ -44,10 +44,8 @@ public class UpdateProductVersionUseCase extends UseCase<UpdateProductVersionPar
 
     productVersion.update(name, version);
 
-    productVersionRepository.save(productVersion);
-
     eventBus.sendAll(productVersion);
 
-    return productVersion;
+    return productVersionRepository.save(productVersion);
   }
 }

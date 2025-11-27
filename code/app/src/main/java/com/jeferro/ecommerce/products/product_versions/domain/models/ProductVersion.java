@@ -35,7 +35,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
       ParametricValueId typeId,
       Instant endEffectiveDate,
       ProductStatus status,
-      int version,
+      long version,
       Metadata metadata) {
     super(id, version, metadata);
 
@@ -73,7 +73,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
             UNPUBLISHED,
-            1,
+            0L,
             null);
 
     var event = ProductVersionCreated.create(product);
@@ -82,10 +82,10 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     return product;
   }
 
-  public void update(LocalizedField name, int version) {
+  public void update(LocalizedField name, long version) {
     ValueValidator.isNotNull(name, "name");
 
-    increaseVersion(version);
+    ensureVersion(version);
 
     this.name = name;
 
@@ -93,8 +93,8 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     record(event);
   }
 
-  public void publish(int version) {
-    increaseVersion(version);
+  public void publish(long version) {
+    ensureVersion(version);
 
     if (PUBLISHED.equals(status)) {
       return;
@@ -106,8 +106,8 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     record(event);
   }
 
-  public void unpublish(int version) {
-    increaseVersion(version);
+  public void unpublish(long version) {
+    ensureVersion(version);
 
     if (UNPUBLISHED.equals(status)) {
       return;

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ReviewsRepository {
 
-  void save(Review review);
+  Review save(Review review);
 
   Optional<Review> findById(ReviewId reviewId);
 

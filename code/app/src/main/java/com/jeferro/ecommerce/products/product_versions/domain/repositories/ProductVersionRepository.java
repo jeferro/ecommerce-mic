@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ProductVersionRepository {
 
-  void save(ProductVersion productVersion);
+  ProductVersion save(ProductVersion productVersion);
 
   Optional<ProductVersion> findById(ProductVersionId versionId);
 

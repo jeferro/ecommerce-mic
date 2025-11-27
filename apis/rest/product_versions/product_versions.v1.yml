@@ -334,6 +334,7 @@ components:
           $ref: '#/components/schemas/ProductStatus'
         version:
           type: integer
+          format: int64
           description: Version of the entity
           example: 1
         metadata:
@@ -376,6 +377,7 @@ components:
           $ref: '#/components/schemas/ProductStatus'
         version:
           type: integer
+          format: int64
           description: Version of the entity
           example: 1
         metadata:
@@ -462,6 +464,7 @@ components:
             en_US: 'Apple'
         version:
           type: integer
+          format: int64
           description: Version of the entity to update
           example: 1
 
@@ -473,6 +476,7 @@ components:
       properties:
         version:
           type: integer
+          format: int64
           description: Version of the entity to update
           example: 1
 
@@ -484,6 +488,7 @@ components:
       properties:
         version:
           type: integer
+          format: int64
           description: Version of the entity to update
           example: 1
 

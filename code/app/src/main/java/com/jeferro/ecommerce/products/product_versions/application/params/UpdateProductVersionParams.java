@@ -14,9 +14,9 @@ public class UpdateProductVersionParams extends Params<ProductVersion> {
 
   private final LocalizedField name;
 
-  private final int version;
+  private final long version;
 
-  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, int version) {
+  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, long version) {
     super();
 
     ValueValidator.isNotNull(productVersionId, "productVersionId");

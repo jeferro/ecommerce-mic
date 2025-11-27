@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Version;
 public abstract class AuditedMongoDTO {
 
   @Version
-  private int version;
+  private Long version;
 
   private MetadataMongoDTO metadata;
 
@@ -20,5 +20,11 @@ public abstract class AuditedMongoDTO {
     }
 
     metadata.markAsUpdateBy(username);
+  }
+
+  public boolean isNew() {
+    return metadata == null
+        || metadata.getCreatedAt() == null
+        || metadata.getCreatedBy() == null;
   }
 }

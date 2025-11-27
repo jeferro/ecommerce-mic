@@ -16,7 +16,7 @@ public class UserMongoDTO extends AuditedMongoDTO {
 
   private final Set<String> roles;
 
-  public UserMongoDTO(String id, String encodedPassword, Set<String> roles, String version, MetadataMongoDTO metadata) {
+  public UserMongoDTO(String id, String encodedPassword, Set<String> roles, Long version, MetadataMongoDTO metadata) {
     super(version, metadata);
     this.id = id;
     this.encodedPassword = encodedPassword;
