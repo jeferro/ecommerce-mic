@@ -30,7 +30,7 @@ tasks:
     dir: "{{.DOCKER_DIR}}"
     cmds:
       - echo "## Starting environment..."
-      - docker compose up -d
+      - podman compose up -d
       - echo "✅ Environment started successfully"
       - echo ""
 
@@ -40,7 +40,7 @@ tasks:
     dir: "{{.DOCKER_DIR}}"
     cmds:
       - echo "## Stopping environment..."
-      - docker compose down -v
+      - podman compose down -v
       - echo "✅ Environment stopped successfully"
       - echo ""
 
