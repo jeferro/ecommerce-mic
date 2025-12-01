@@ -8,8 +8,8 @@ We need the next tools to develop application:
 
 * [ASDF](https://asdf-vm.com/)
 * [Task](https://taskfile.dev)
-* Docker
-* Docker compose
+* Podman
+* Podman compose
 
 
 ## Installation

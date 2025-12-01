@@ -10,7 +10,7 @@ The project consists of the following folders:
   * Rest: openapi contracts
   * Avro: event contracts
 * Code: source code of the Spring Boot microservice
-* Docker: Docker container definitions
+* Podman: Podman container definitions
 * Docs: documentation
 
 
