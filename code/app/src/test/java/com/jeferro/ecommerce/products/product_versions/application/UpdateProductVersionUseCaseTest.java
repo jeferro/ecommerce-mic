@@ -39,7 +39,10 @@ class UpdateProductVersionUseCaseTest {
     var appleV1 = ProductVersionMother.appleV1();
 
     var newName = LocalizedField.createOf("en-US", "new product name");
-    var params = new UpdateProductVersionParams(appleV1.getId(), newName, appleV1.getVersion());
+    var params = new UpdateProductVersionParams(appleV1.getId(), newName,
+            appleV1.getPrice(),
+            appleV1.getDiscount(),
+            appleV1.getVersion());
 
     var result = updateProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -55,7 +58,10 @@ class UpdateProductVersionUseCaseTest {
     var bananaV1 = ProductVersionMother.bananaV1();
 
     var newName = LocalizedField.createOf("en-US", "new product name");
-    var params = new UpdateProductVersionParams(bananaV1.getId(), newName, bananaV1.getVersion());
+    var params = new UpdateProductVersionParams(bananaV1.getId(), newName,
+            bananaV1.getPrice(),
+            bananaV1.getDiscount(),
+            bananaV1.getVersion());
 
     assertThrows(
         ProductVersionNotFoundException.class,
@@ -69,7 +75,10 @@ class UpdateProductVersionUseCaseTest {
 
 
     var newName = LocalizedField.createOf("en-US", "new product name");
-    var params = new UpdateProductVersionParams(appleV1.getId(), newName, previousVersion);
+    var params = new UpdateProductVersionParams(appleV1.getId(), newName,
+            appleV1.getPrice(),
+            appleV1.getDiscount(),
+            previousVersion);
 
     assertThrows(
         IncorrectVersionException.class,

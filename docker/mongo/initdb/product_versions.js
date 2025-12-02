@@ -11,6 +11,9 @@ db['product_versions'].insertMany([
           "en-US": "Apple",
           "es-ES": "Manzana",
         },
+        "price": "1.25",
+        "discount": "0",
+        "totalPrice": "1.25",
         status: "UNPUBLISHED",
         version: 1,
         metadata: {
@@ -30,6 +33,9 @@ db['product_versions'].insertMany([
           "en-US": "Apple",
           "es-ES": "Manzana",
         },
+        "price": "1.25",
+        "discount": "0",
+        "totalPrice": "1.25",
         status: "PUBLISHED",
         version: 1,
         metadata: {
@@ -49,6 +55,9 @@ db['product_versions'].insertMany([
           "en-US": "Kiwi",
           "es-ES": "Kiwi",
         },
+        "price": "3.5",
+        "discount": "0",
+        "totalPrice": "3.5",
         status: "PUBLISHED",
         version: 1,
         metadata: {
@@ -68,6 +77,9 @@ db['product_versions'].insertMany([
           "en-US": "Banana",
           "es-ES": "Banana",
         },
+        "price": "3",
+        "discount": "0",
+        "totalPrice": "3",
         status: "UNPUBLISHED",
         version: 1,
         metadata: {

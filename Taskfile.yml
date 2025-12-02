@@ -24,7 +24,7 @@ tasks:
 
       - task: build
 
-  env-start:
+  env-up:
     desc: "Start environment"
     silent: true
     dir: "{{.DOCKER_DIR}}"
@@ -34,7 +34,7 @@ tasks:
       - echo "✅ Environment started successfully"
       - echo ""
 
-  env-stop:
+  env-down:
     desc: "Stop environment"
     silent: true
     dir: "{{.DOCKER_DIR}}"

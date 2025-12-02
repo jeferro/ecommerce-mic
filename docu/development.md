@@ -48,7 +48,7 @@ task test
 Before execute project, we need to start environment:
 
 ~~~bash
-task env-start
+task env-up
 ~~~
 
 Then we can use below command to execute project:

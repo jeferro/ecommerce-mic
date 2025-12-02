@@ -4,21 +4,39 @@ import com.jeferro.ecommerce.products.product_versions.domain.models.status.Prod
 import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
+
+import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.Getter;
 
 @Getter
 public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
-  protected LocalizedField name;
+  protected final LocalizedField name;
 
-  protected ProductStatus status;
+  protected final ProductStatus status;
 
-  public ProductVersionSummary(ProductVersionId id, LocalizedField name, ProductStatus status, long version, Metadata metadata) {
+  private final BigDecimal price;
+
+  private final BigDecimal discount;
+
+  private final BigDecimal totalPrice;
+
+  public ProductVersionSummary(ProductVersionId id,
+                               LocalizedField name,
+                               BigDecimal price,
+                               BigDecimal discount,
+                               BigDecimal totalPrice,
+                               ProductStatus status,
+                               long version,
+                               Metadata metadata) {
     super(id, version, metadata);
 
     this.name = name;
     this.status = status;
+    this.price = price;
+    this.discount = discount;
+    this.totalPrice = totalPrice;
   }
 
   @Override

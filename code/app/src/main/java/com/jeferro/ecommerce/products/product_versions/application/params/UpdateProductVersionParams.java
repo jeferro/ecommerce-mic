@@ -7,6 +7,8 @@ import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 public class UpdateProductVersionParams extends Params<ProductVersion> {
 
@@ -14,16 +16,21 @@ public class UpdateProductVersionParams extends Params<ProductVersion> {
 
   private final LocalizedField name;
 
+  private final BigDecimal price;
+
+  private final BigDecimal discount;
+
   private final long version;
 
-  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, long version) {
+  public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, BigDecimal price, BigDecimal discount, long version) {
     super();
 
     ValueValidator.isNotNull(productVersionId, "productVersionId");
-    ValueValidator.isNotNull(name, "name");
 
     this.productVersionId = productVersionId;
     this.name = name;
+    this.price = price;
+    this.discount = discount;
     this.version = version;
   }
 }

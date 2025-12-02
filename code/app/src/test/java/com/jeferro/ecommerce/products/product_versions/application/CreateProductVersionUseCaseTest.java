@@ -18,6 +18,7 @@ import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -53,7 +54,9 @@ class CreateProductVersionUseCaseTest {
     var pearV2 = pearV2();
 
     var params =
-        new CreateProductVersionParams(pearV2.getId(), pearV2.getTypeId(), pearV2.getName());
+        new CreateProductVersionParams(pearV2.getId(), pearV2.getTypeId(), pearV2.getName(),
+                pearV2.getPrice(),
+                pearV2.getDiscount());
 
     var result = createProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -69,7 +72,9 @@ class CreateProductVersionUseCaseTest {
     var pearV2 = pearV2();
 
     var params =
-        new CreateProductVersionParams(pearV2.getId(), pearV2.getTypeId(), pearV2.getName());
+        new CreateProductVersionParams(pearV2.getId(), pearV2.getTypeId(), pearV2.getName(),
+                pearV2.getPrice(),
+                pearV2.getDiscount());
 
     createProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -88,7 +93,9 @@ class CreateProductVersionUseCaseTest {
 
     var params =
         new CreateProductVersionParams(
-            previousPearV2.getId(), previousPearV2.getTypeId(), previousPearV2.getName());
+            previousPearV2.getId(), previousPearV2.getTypeId(), previousPearV2.getName(),
+                previousPearV2.getPrice(),
+                previousPearV2.getDiscount());
 
     var result = createProductVersionUseCase.execute(AuthMother.john(), params);
 
@@ -102,7 +109,9 @@ class CreateProductVersionUseCaseTest {
     var pearV1 = ProductVersionMother.pearV1();
 
     var params =
-        new CreateProductVersionParams(pearV1.getId(), pearV1.getTypeId(), pearV1.getName());
+        new CreateProductVersionParams(pearV1.getId(), pearV1.getTypeId(), pearV1.getName(),
+                pearV1.getPrice(),
+                pearV1.getDiscount());
 
     assertThrows(
         ProductVersionAlreadyExistsException.class,
@@ -148,7 +157,12 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, 2L, null);
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("2"),
+            new BigDecimal("0"),
+            new BigDecimal("2"),
+            PUBLISHED,
+            2L, null);
   }
 
   public ProductVersion previousPearV2() {
@@ -162,6 +176,11 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, 2L, null);
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("2"),
+            new BigDecimal("0"),
+            new BigDecimal("2"),
+            PUBLISHED,
+            2L, null);
   }
 }

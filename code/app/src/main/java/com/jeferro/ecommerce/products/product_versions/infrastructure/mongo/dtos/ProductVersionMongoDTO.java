@@ -2,6 +2,8 @@ package com.jeferro.ecommerce.products.product_versions.infrastructure.mongo.dto
 
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.AuditedMongoDTO;
 import com.jeferro.shared.auth.infrastructure.mongo.dtos.MetadataMongoDTO;
+
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
 import lombok.Getter;
@@ -25,6 +27,12 @@ public class ProductVersionMongoDTO extends AuditedMongoDTO {
 
   private final Map<String, String> name;
 
+  private final BigDecimal price;
+
+  private final BigDecimal discount;
+
+  private final BigDecimal totalPrice;
+
   public ProductVersionMongoDTO(
       String id,
       String code,
@@ -33,6 +41,9 @@ public class ProductVersionMongoDTO extends AuditedMongoDTO {
       String typeId,
       ProductStatusMongoDTO status,
       Map<String, String> name,
+      BigDecimal price,
+      BigDecimal discount,
+      BigDecimal totalPrice,
       Long version,
       MetadataMongoDTO metadata) {
     super(version, metadata);
@@ -43,5 +54,8 @@ public class ProductVersionMongoDTO extends AuditedMongoDTO {
     this.typeId = typeId;
     this.status = status;
     this.name = name;
+    this.price = price;
+    this.discount = discount;
+    this.totalPrice = totalPrice;
   }
 }

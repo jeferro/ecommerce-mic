@@ -37,6 +37,21 @@
         "doc": "Type of product"
       },
       {
+        "name": "price",
+        "type": "string",
+        "doc": "Price of product"
+      },
+      {
+        "name": "discount",
+        "type": "string",
+        "doc": "Discount of product"
+      },
+      {
+        "name": "totalPrice",
+        "type": "string",
+        "doc": "Total price of product"
+      },
+      {
         "name": "name",
         "type": {
           "type": "map",
