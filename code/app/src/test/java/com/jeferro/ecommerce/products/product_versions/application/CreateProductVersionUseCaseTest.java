@@ -18,6 +18,7 @@ import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -148,7 +149,8 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, 2L, null);
+    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("2"), new BigDecimal("0"), PUBLISHED,
+            2L, null);
   }
 
   public ProductVersion previousPearV2() {
@@ -162,6 +164,7 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, PUBLISHED, 2L, null);
+    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("2"), new BigDecimal("0"), PUBLISHED,
+            2L, null);
   }
 }

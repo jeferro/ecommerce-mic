@@ -16,6 +16,8 @@ import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
+
+import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.Getter;
 
@@ -30,29 +32,39 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
   private Instant endEffectiveDate;
 
+  private BigDecimal prize;
+
+  private BigDecimal discount;
+
   public ProductVersion(ProductVersionId id,
-      LocalizedField name,
-      ParametricValueId typeId,
-      Instant endEffectiveDate,
-      ProductStatus status,
-      long version,
-      Metadata metadata) {
+                        LocalizedField name,
+                        ParametricValueId typeId,
+                        Instant endEffectiveDate,
+                        BigDecimal prize, BigDecimal discount, ProductStatus status,
+                        long version,
+                        Metadata metadata) {
     super(id, version, metadata);
 
     this.name = name;
     this.status = status;
     this.typeId = typeId;
     this.endEffectiveDate = endEffectiveDate;
+    this.prize = prize;
+    this.discount = discount;
   }
 
   public static ProductVersion create(
       ProductVersionId versionId,
       ParametricValueId typeId,
       LocalizedField name,
+      BigDecimal prize,
+      BigDecimal discount,
       ProductVersion nextVersion) {
     ValueValidator.isNotNull(versionId, "versionId");
     ValueValidator.isNotNull(typeId, "typeId");
     ValueValidator.isNotNull(name, "name");
+    ValueValidator.isZeroOrPositive(prize, "prize");
+    ValueValidator.inRange(discount, 0, 100, "discount");
 
     if (nextVersion != null) {
       ValueValidator.ensure(
@@ -72,8 +84,8 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
             name,
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
-            UNPUBLISHED,
-            0L,
+                prize, discount, UNPUBLISHED,
+                0L,
             null);
 
     var event = ProductVersionCreated.create(product);
@@ -82,12 +94,16 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     return product;
   }
 
-  public void update(LocalizedField name, long version) {
+  public void update(LocalizedField name, BigDecimal prize, BigDecimal discount, long version) {
     ValueValidator.isNotNull(name, "name");
+    ValueValidator.isZeroOrPositive(prize, "prize");
+    ValueValidator.inRange(discount, 0, 100, "discount");
 
     ensureVersion(version);
 
     this.name = name;
+    this.prize = prize;
+    this.discount = discount;
 
     var event = ProductVersionUpdated.create(this);
     record(event);
@@ -144,6 +160,10 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
   public boolean isUnpublished() {
     return UNPUBLISHED.equals(status);
+  }
+
+  public BigDecimal getTotalPrice() {
+    return prize.multiply(discount);
   }
 
   public ProductCode getCode() {
