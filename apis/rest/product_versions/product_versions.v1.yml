@@ -463,6 +463,8 @@ components:
       required:
         - typeId
         - name
+        - price
+        - discount
       properties:
         typeId:
           type: string
@@ -476,12 +478,22 @@ components:
           example:
             es_ES: 'Manzana'
             en_US: 'Apple'
+        price:
+          type: string
+          description: Price of the product
+          example: '1.25'
+        discount:
+          type: string
+          description: Discount of the product (percentage)
+          example: '0'
 
     UpdateProductVersionInput:
       type: object
       description: Input to update a product version
       required:
         - name
+        - price
+        - discount
         - version
       properties:
         name:
@@ -492,6 +504,14 @@ components:
           example:
             es_ES: 'Manzana'
             en_US: 'Apple'
+        price:
+          type: string
+          description: Price of the product
+          example: '1.25'
+        discount:
+          type: string
+          description: Discount of the product (percentage)
+          example: '0'
         version:
           type: integer
           format: int64

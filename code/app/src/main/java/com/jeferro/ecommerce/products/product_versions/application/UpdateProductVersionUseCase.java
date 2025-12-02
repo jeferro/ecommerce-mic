@@ -40,9 +40,11 @@ public class UpdateProductVersionUseCase extends UseCase<UpdateProductVersionPar
 
   private ProductVersion updateProductVersion(UpdateProductVersionParams params, ProductVersion productVersion) {
     var name = params.getName();
+    var price = params.getPrice();
+    var discount = params.getDiscount();
     var version = params.getVersion();
 
-    productVersion.update(name, version);
+    productVersion.update(name, price, discount, version);
 
     eventBus.sendAll(productVersion);
 

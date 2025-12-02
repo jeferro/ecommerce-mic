@@ -84,7 +84,9 @@ class ProductVersionRestControllerTest extends RestControllerTest {
                   "name": {
                     "en-US": "Apple",
                     "es-ES": "Manzana"
-                  }
+                  },
+                  "price": "3.5",
+                  "discount": "0"
                 }"""
             .formatted(appleV1.getId(), appleV1.getTypeId());
 
@@ -134,6 +136,8 @@ class ProductVersionRestControllerTest extends RestControllerTest {
                   "name": {
                     "en-US": "%s"
                   },
+                  "price": "3",
+                  "discount": "0",
                   "version": "%s"
                 }"""
             .formatted(appleV1.getName(), appleV1.getVersion());
