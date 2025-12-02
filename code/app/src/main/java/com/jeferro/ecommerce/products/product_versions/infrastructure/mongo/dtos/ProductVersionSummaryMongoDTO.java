@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "product_versions")
 public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
 
-  public static final List<String> FIELDS = List.of("name", "price", "discount", "status", "version", "metadata");
+  public static final List<String> FIELDS = List.of("name", "price", "discount", "totalPrice", "status", "version", "metadata");
 
   private final String id;
 
