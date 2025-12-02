@@ -1,0 +1,29 @@
+meta {
+  name: Delete product version
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{ecommerce-url}}/v1/products/:productCode/versions/:effectiveDate
+  body: none
+  auth: bearer
+}
+
+params:path {
+  productCode: pineapple
+  effectiveDate: 2025-01-14T09:00:00.00Z
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+auth:bearer {
+  token: {{ecommerce-jwt-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

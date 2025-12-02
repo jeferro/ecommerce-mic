@@ -1,0 +1,39 @@
+meta {
+  name: Create product versions
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{ecommerce-url}}/v1/products/:productCode/versions/:effectiveDate
+  body: json
+  auth: bearer
+}
+
+params:path {
+  productCode: pineapple
+  effectiveDate: 2025-01-14T09:00:00.00Z
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+auth:bearer {
+  token: {{ecommerce-jwt-token}}
+}
+
+body:json {
+  {
+      "typeId": "fruit",
+      "name":  {
+          "en-US": "Pineapple",
+          "es-ES": "Piña"
+      }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

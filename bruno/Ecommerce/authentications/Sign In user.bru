@@ -1,0 +1,33 @@
+meta {
+  name: Sign In user
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{ecommerce-url}}/v1/authentications
+  body: json
+  auth: none
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+body:json {
+  {
+      "username": "user",
+      "password": "user"
+  }
+}
+
+script:post-response {
+  var responseData = res.getBody();
+  
+  bru.setEnvVar("ecommerce-jwt-token", responseData.token.split(" ")[1]);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Sign In admin
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{ecommerce-url}}/v1/authentications
+  body: json
+  auth: none
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+body:json {
+  {
+      "username": "admin",
+      "password": "admin"
+  }
+}
+
+script:post-response {
+  var responseData;
+  
+  responseData = res.getBody();
+  
+  bru.setEnvVar("ecommerce-jwt-token", res.getHeader("Authorization").split(" ")[1]);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
