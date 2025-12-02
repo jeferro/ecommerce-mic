@@ -157,7 +157,11 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("2"), new BigDecimal("0"), PUBLISHED,
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("2"),
+            new BigDecimal("0"),
+            new BigDecimal("2"),
+            PUBLISHED,
             2L, null);
   }
 
@@ -172,7 +176,11 @@ class CreateProductVersionUseCaseTest {
             "en-US", "Pear V2",
             "es-ES", "Pera V2");
 
-    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("2"), new BigDecimal("0"), PUBLISHED,
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("2"),
+            new BigDecimal("0"),
+            new BigDecimal("2"),
+            PUBLISHED,
             2L, null);
   }
 }

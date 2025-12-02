@@ -49,6 +49,7 @@ public class ProductVersionInMemoryRepository
     return new ProductVersionSummary(productVersion.getId(), productVersion.getName(),
             productVersion.getPrice(),
             productVersion.getDiscount(),
+            productVersion.getTotalPrice(),
             productVersion.getStatus(),
             1L,
             null);

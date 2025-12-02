@@ -23,19 +23,25 @@ public class ProductVersionSummaryMongoDTO extends AuditedMongoDTO {
 
   private final BigDecimal discount;
 
+  private final BigDecimal totalPrice;
+
   private final ProductStatusMongoDTO status;
 
   public ProductVersionSummaryMongoDTO(
           String id,
           Map<String, String> name,
+          BigDecimal price,
+          BigDecimal discount,
+          BigDecimal totalPrice,
           ProductStatusMongoDTO status,
           Long version,
-          MetadataMongoDTO metadata, BigDecimal price, BigDecimal discount) {
+          MetadataMongoDTO metadata) {
     super(version, metadata);
     this.id = id;
     this.name = name;
-    this.status = status;
     this.price = price;
     this.discount = discount;
+    this.totalPrice = totalPrice;
+    this.status = status;
   }
 }

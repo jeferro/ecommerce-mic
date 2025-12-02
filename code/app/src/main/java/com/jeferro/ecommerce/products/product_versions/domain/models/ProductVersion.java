@@ -36,11 +36,16 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
   private BigDecimal discount;
 
+  private BigDecimal totalPrice;
+
   public ProductVersion(ProductVersionId id,
                         LocalizedField name,
                         ParametricValueId typeId,
                         Instant endEffectiveDate,
-                        BigDecimal price, BigDecimal discount, ProductStatus status,
+                        BigDecimal price,
+                        BigDecimal discount,
+                        BigDecimal totalPrice,
+                        ProductStatus status,
                         long version,
                         Metadata metadata) {
     super(id, version, metadata);
@@ -51,6 +56,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     this.endEffectiveDate = endEffectiveDate;
     this.price = price;
     this.discount = discount;
+    this.totalPrice = totalPrice;
   }
 
   public static ProductVersion create(
@@ -84,8 +90,11 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
             name,
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
-                price, discount, UNPUBLISHED,
-                0L,
+            price,
+            discount,
+            calculateTotalPrice(price, discount),
+            UNPUBLISHED,
+            0L,
             null);
 
     var event = ProductVersionCreated.create(product);
@@ -104,6 +113,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     this.name = name;
     this.price = price;
     this.discount = discount;
+    this.totalPrice = calculateTotalPrice(price, discount);
 
     var event = ProductVersionUpdated.create(this);
     record(event);
@@ -154,16 +164,18 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     record(event);
   }
 
+  private static BigDecimal calculateTotalPrice(BigDecimal price, BigDecimal discount) {
+    var totalDiscount = price.multiply(discount);
+
+    return price.subtract(totalDiscount);
+  }
+
   public boolean isPublished() {
     return PUBLISHED.equals(status);
   }
 
   public boolean isUnpublished() {
     return UNPUBLISHED.equals(status);
-  }
-
-  public BigDecimal getTotalPrice() {
-    return price.multiply(discount);
   }
 
   public ProductCode getCode() {

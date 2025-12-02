@@ -22,7 +22,7 @@ public class ProductVersionMother {
     var name = LocalizedField.createOf("en-US", "Apple v1", "es-ES", "Manzana v1");
 
     return new ProductVersionSummary(productId, name, new BigDecimal("1.25"), new BigDecimal("0"),
-            UNPUBLISHED, 1L, null);
+            new BigDecimal("1.25"), UNPUBLISHED, 1L, null);
   }
 
   public static ProductVersion appleV1() {
@@ -34,7 +34,10 @@ public class ProductVersionMother {
     var name = LocalizedField.createOf("en-US", "Apple v1", "es-ES", "Manzana v1");
 
     return new ProductVersion(productId, name, fruitId, APPLE_V2_EFFECTIVE_DATE.minus(1, SECONDS),
-            new BigDecimal("1.25"), new BigDecimal("0"), UNPUBLISHED,
+            new BigDecimal("1.25"),
+            new BigDecimal("0"),
+            new BigDecimal("1.25"),
+            UNPUBLISHED,
             1L, null);
   }
 
@@ -45,7 +48,11 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Apple v2", "es-ES", "Manzana v2");
 
-    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("1.25"), new BigDecimal("0"), PUBLISHED,
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("1.25"),
+            new BigDecimal("0"),
+            new BigDecimal("1.25"),
+            PUBLISHED,
             2L, null);
   }
 
@@ -57,7 +64,11 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Pear v1", "es-ES", "Pera v1");
 
-    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("1.75"), new BigDecimal("0"), PUBLISHED,
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("1.75"),
+            new BigDecimal("0"),
+            new BigDecimal("1.75"),
+            PUBLISHED,
             1L, null);
   }
 
@@ -68,7 +79,8 @@ public class ProductVersionMother {
 
     var name = LocalizedField.createOf("en-US", "Pear v1", "es-ES", "Pera v1");
 
-    return new ProductVersionSummary(productId, name, new BigDecimal("1.75"), new BigDecimal("0"), PUBLISHED, 1L, null);
+    return new ProductVersionSummary(productId, name, new BigDecimal("1.75"), new BigDecimal("0"),
+            new BigDecimal("1.75"), PUBLISHED, 1L, null);
   }
 
   public static ProductVersion bananaV1() {
@@ -79,7 +91,11 @@ public class ProductVersionMother {
     var fruitId = ProductTypeMother.fruitId();
     var name = LocalizedField.createOf("en-US", "Banana", "es-ES", "Plátano");
 
-    return new ProductVersion(productId, name, fruitId, null, new BigDecimal("3"), new BigDecimal("0"), PUBLISHED,
+    return new ProductVersion(productId, name, fruitId, null,
+            new BigDecimal("3"),
+            new BigDecimal("0"),
+            new BigDecimal("3"),
+            PUBLISHED,
             1L,null);
   }
 }

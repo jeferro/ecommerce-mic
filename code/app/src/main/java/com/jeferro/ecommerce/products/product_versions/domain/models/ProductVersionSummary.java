@@ -20,10 +20,13 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
   private final BigDecimal discount;
 
+  private final BigDecimal totalPrice;
+
   public ProductVersionSummary(ProductVersionId id,
                                LocalizedField name,
                                BigDecimal price,
                                BigDecimal discount,
+                               BigDecimal totalPrice,
                                ProductStatus status,
                                long version,
                                Metadata metadata) {
@@ -33,6 +36,7 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
     this.status = status;
     this.price = price;
     this.discount = discount;
+    this.totalPrice = totalPrice;
   }
 
   @Override
@@ -51,9 +55,5 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
   public Instant getEffectiveDate() {
     return id.getEffectiveDate();
-  }
-
-  public BigDecimal getTotalPrice() {
-    return price.multiply(discount);
   }
 }
