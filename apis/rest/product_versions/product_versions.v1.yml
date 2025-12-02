@@ -296,9 +296,9 @@ components:
         - effectiveDate
         - typeId
         - name
-        - prize
+        - price
         - discount
-        - totalPrize
+        - totalPrice
         - status
         - version
         - metadata
@@ -333,17 +333,17 @@ components:
           example:
             es: 'Manzana'
             en: 'Apple'
-        prize:
+        price:
           type: string
-          description: Prize of the product
+          description: Price of the product
           example: '1.25'
         discount:
           type: string
           description: Discount of the product (percentage)
           example: '0'
-        totalPrize:
+        totalPrice:
           type: string
-          description: Total prize of the product
+          description: Total price of the product
           example: '1.25'
         status:
           $ref: '#/components/schemas/ProductStatus'
@@ -363,9 +363,9 @@ components:
         - code
         - effectiveDate
         - name
-        - prize
+        - price
         - discount
-        - totalPrize
+        - totalPrice
         - status
         - version
         - metadata
@@ -391,17 +391,17 @@ components:
           example:
             es: 'Manzana'
             en: 'Apple'
-        prize:
+        price:
           type: string
-          description: Prize of the product
+          description: Price of the product
           example: '1.25'
         discount:
           type: string
           description: Discount of the product (percentage)
           example: '0'
-        totalPrize:
+        totalPrice:
           type: string
-          description: Total prize of the product
+          description: Total price of the product
           example: '1.25'
         status:
           $ref: '#/components/schemas/ProductStatus'

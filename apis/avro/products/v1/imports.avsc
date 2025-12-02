@@ -37,9 +37,9 @@
         "doc": "Type of product"
       },
       {
-        "name": "prize",
+        "name": "price",
         "type": "string",
-        "doc": "Prize of product"
+        "doc": "Price of product"
       },
       {
         "name": "discount",
@@ -47,9 +47,9 @@
         "doc": "Discount of product"
       },
       {
-        "name": "totalPrize",
+        "name": "totalPrice",
         "type": "string",
-        "doc": "Total prize of product"
+        "doc": "Total price of product"
       },
       {
         "name": "name",

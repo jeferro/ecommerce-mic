@@ -32,7 +32,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
   private Instant endEffectiveDate;
 
-  private BigDecimal prize;
+  private BigDecimal price;
 
   private BigDecimal discount;
 
@@ -40,7 +40,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
                         LocalizedField name,
                         ParametricValueId typeId,
                         Instant endEffectiveDate,
-                        BigDecimal prize, BigDecimal discount, ProductStatus status,
+                        BigDecimal price, BigDecimal discount, ProductStatus status,
                         long version,
                         Metadata metadata) {
     super(id, version, metadata);
@@ -49,7 +49,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     this.status = status;
     this.typeId = typeId;
     this.endEffectiveDate = endEffectiveDate;
-    this.prize = prize;
+    this.price = price;
     this.discount = discount;
   }
 
@@ -57,13 +57,13 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
       ProductVersionId versionId,
       ParametricValueId typeId,
       LocalizedField name,
-      BigDecimal prize,
+      BigDecimal price,
       BigDecimal discount,
       ProductVersion nextVersion) {
     ValueValidator.isNotNull(versionId, "versionId");
     ValueValidator.isNotNull(typeId, "typeId");
     ValueValidator.isNotNull(name, "name");
-    ValueValidator.isZeroOrPositive(prize, "prize");
+    ValueValidator.isZeroOrPositive(price, "price");
     ValueValidator.inRange(discount, 0, 100, "discount");
 
     if (nextVersion != null) {
@@ -84,7 +84,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
             name,
             typeId,
             InstantTruncator.trunkToSeconds(endEffectiveDate),
-                prize, discount, UNPUBLISHED,
+                price, discount, UNPUBLISHED,
                 0L,
             null);
 
@@ -94,15 +94,15 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
     return product;
   }
 
-  public void update(LocalizedField name, BigDecimal prize, BigDecimal discount, long version) {
+  public void update(LocalizedField name, BigDecimal price, BigDecimal discount, long version) {
     ValueValidator.isNotNull(name, "name");
-    ValueValidator.isZeroOrPositive(prize, "prize");
+    ValueValidator.isZeroOrPositive(price, "price");
     ValueValidator.inRange(discount, 0, 100, "discount");
 
     ensureVersion(version);
 
     this.name = name;
-    this.prize = prize;
+    this.price = price;
     this.discount = discount;
 
     var event = ProductVersionUpdated.create(this);
@@ -163,7 +163,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
   }
 
   public BigDecimal getTotalPrice() {
-    return prize.multiply(discount);
+    return price.multiply(discount);
   }
 
   public ProductCode getCode() {

@@ -16,13 +16,13 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
   protected final ProductStatus status;
 
-  private final BigDecimal prize;
+  private final BigDecimal price;
 
   private final BigDecimal discount;
 
   public ProductVersionSummary(ProductVersionId id,
                                LocalizedField name,
-                               BigDecimal prize,
+                               BigDecimal price,
                                BigDecimal discount,
                                ProductStatus status,
                                long version,
@@ -31,7 +31,7 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
 
     this.name = name;
     this.status = status;
-    this.prize = prize;
+    this.price = price;
     this.discount = discount;
   }
 
@@ -54,6 +54,6 @@ public class ProductVersionSummary extends AggregateRoot<ProductVersionId> {
   }
 
   public BigDecimal getTotalPrice() {
-    return prize.multiply(discount);
+    return price.multiply(discount);
   }
 }
