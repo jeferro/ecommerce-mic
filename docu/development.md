@@ -20,10 +20,6 @@ We should install project environment:
 task install
 ~~~
 
-Before develop, we should configure style code in IntelliJ. We should 
-import the style "config/intellij-java-google-style" in `Settings -> Editor 
--> Code Style -> Java -> Scheme`
-
 
 ## Build
 
@@ -58,3 +54,11 @@ task start
 ~~~
 
 After that, Kafka UI is running locally: http://localhost:9021/
+
+
+
+## Execute Scripts
+
+If we want execute some script, we should configure .env file previously. 
+Copy the file "tools/scripts/.env.template" as "tools/scripts/.env" and set configurations.
+

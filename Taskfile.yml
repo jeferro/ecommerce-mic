@@ -14,6 +14,7 @@ tasks:
       - echo "## Installing ASDF plugins..."
       - asdf plugin add java || true
       - asdf plugin add gradle || true
+      - asdf plugin add mongodb-database-tools || true
       - echo "✅ Asdf plugins installed successfully"
       - echo ""
 
