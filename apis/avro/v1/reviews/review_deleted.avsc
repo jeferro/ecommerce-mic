@@ -1,7 +1,7 @@
 {
-  "namespace": "com.jeferro.ecommerce.products.reviews.infrastructure.kafka.dtos",
+  "namespace": "com.jeferro.ecommerce.products.reviews.infrastructure.kafka.dtos.v1",
   "type": "record",
-  "name": "ReviewCreatedV1AvroDTO",
+  "name": "ReviewDeletedV1AvroDTO",
   "fields": [
     {
       "name": "id",
@@ -16,7 +16,7 @@
     {
       "name": "entity",
       "type": "ReviewV1AvroDTO",
-      "doc": "Review created"
+      "doc": "Review deleted"
     }
   ]
 }

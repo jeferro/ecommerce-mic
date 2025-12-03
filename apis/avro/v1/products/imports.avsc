@@ -1,6 +1,6 @@
 [
   {
-    "namespace": "com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos",
+    "namespace": "com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos.v1",
     "name": "ProductStatusV1AvroDTO",
     "type": "enum",
     "default": "UNKNOWN",
@@ -11,7 +11,7 @@
     ]
   },
   {
-    "namespace": "com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos",
+    "namespace": "com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos.v1",
     "name": "ProductVersionV1AvroDTO",
     "type": "record",
     "fields": [

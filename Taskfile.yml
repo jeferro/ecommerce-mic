@@ -4,7 +4,7 @@ version: '3'
 
 vars:
   CODE_DIR: code
-  DOCKER_DIR: docker
+  DOCKER_DIR: tools/docker
 
 tasks:
   install:
