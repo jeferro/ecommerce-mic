@@ -47,17 +47,17 @@ apiFirstGenerator {
     specs = listOf(
         ApiFirstGeneratorSpec().apply {
             name = "users-v1"
-            basePackage = "com.jeferro.ecommerce.users.users.infrastructure.rest_api"
+            basePackage = "com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1"
             specFile = file("${projectDir}/../../apis/rest/v1/users/users.v1.yml")
         },
         ApiFirstGeneratorSpec().apply {
             name = "products-v1"
-            basePackage = "com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api"
+            basePackage = "com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1"
             specFile = file("${projectDir}/../../apis/rest/v1/product_versions/product_versions.v1.yml")
         },
         ApiFirstGeneratorSpec().apply {
             name = "reviews-v1"
-            basePackage = "com.jeferro.ecommerce.products.reviews.infrastructure.rest_api"
+            basePackage = "com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1"
             specFile = file("${projectDir}/../../apis/rest/v1/reviews/reviews.v1.yml")
         }
     )
@@ -66,7 +66,7 @@ apiFirstGenerator {
 
 // Avro
 avroGenerator {
-    schemaDir = file("${projectDir}/../../apis/avro")
+    schemaDir = file("${projectDir}/../../apis/avro/v1")
     targetDir = file("${projectDir}/build/generated/sources/avro")
 }
 

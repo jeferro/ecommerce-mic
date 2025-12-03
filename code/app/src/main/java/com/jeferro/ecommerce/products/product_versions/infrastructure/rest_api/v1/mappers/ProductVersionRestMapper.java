@@ -1,11 +1,11 @@
-package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.mappers;
+package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1.mappers;
 
 import com.jeferro.ecommerce.products.product_versions.application.params.*;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersion;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionId;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionSummary;
 import com.jeferro.ecommerce.products.product_versions.domain.models.criteria.ProductVersionCriteria;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.*;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1.dtos.*;
 import com.jeferro.shared.ddd.domain.models.aggregates.PaginatedList;
 import com.jeferro.shared.mappers.AggregatePrimaryMapper;
 import com.jeferro.shared.mappers.MapstructConfig;

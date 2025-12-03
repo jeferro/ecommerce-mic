@@ -1,8 +1,7 @@
-package com.jeferro.ecommerce.users.users.infrastructure.rest_api;
+package com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1;
 
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.dtos.AuthRestDTO;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.dtos.SignInInputRestDTO;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.mappers.AuthRestMapper;
+import com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1.dtos.*;
+import com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1.mappers.AuthRestMapper;
 import com.jeferro.shared.auth.infrastructure.rest.jwt.HeaderJwtDecoder;
 import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;

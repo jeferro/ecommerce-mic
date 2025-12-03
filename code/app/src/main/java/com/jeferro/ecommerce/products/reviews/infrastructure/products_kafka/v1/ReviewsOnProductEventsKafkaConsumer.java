@@ -1,7 +1,7 @@
-package com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka;
+package com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka.v1;
 
-import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos.ProductDeletedV1AvroDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka.mappers.ReviewKafkaMapper;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.v1.dtos.ProductDeletedV1AvroDTO;
+import com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka.v1.mappers.ReviewKafkaMapper;
 import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

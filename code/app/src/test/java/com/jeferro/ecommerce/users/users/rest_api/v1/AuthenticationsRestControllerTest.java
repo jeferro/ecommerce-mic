@@ -1,12 +1,11 @@
-package com.jeferro.ecommerce.users.users.rest_api;
+package com.jeferro.ecommerce.users.users.rest_api.v1;
 
 import com.jeferro.ecommerce.shared.application.StubUseCaseBus;
 import com.jeferro.ecommerce.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.ecommerce.users.users.application.params.SignInParams;
 import com.jeferro.ecommerce.users.users.domain.models.UserMother;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.AuthenticationsRestController;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.mappers.AuthRestMapper;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.mappers.AuthRestMapperImpl;
+import com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1.AuthenticationsRestController;
+import com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1.mappers.AuthRestMapperImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

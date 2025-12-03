@@ -1,7 +1,7 @@
-package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api;
+package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1;
 
-import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.dtos.*;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.mappers.ProductVersionRestMapper;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1.dtos.*;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1.mappers.ProductVersionRestMapper;
 import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

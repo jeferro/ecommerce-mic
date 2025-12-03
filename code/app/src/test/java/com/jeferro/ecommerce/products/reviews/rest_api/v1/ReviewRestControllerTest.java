@@ -1,9 +1,9 @@
-package com.jeferro.ecommerce.products.reviews.rest_api;
+package com.jeferro.ecommerce.products.reviews.rest_api.v1;
 
 import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewMother;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.ReviewRestController;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.mappers.ReviewRestMapperImpl;
+import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1.ReviewRestController;
+import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1.mappers.ReviewRestMapperImpl;
 import com.jeferro.ecommerce.shared.application.StubUseCaseBus;
 import com.jeferro.ecommerce.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.ecommerce.shared.utils.ApprovalUtils;

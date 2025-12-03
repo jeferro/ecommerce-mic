@@ -48,6 +48,10 @@ public class AvroGeneratorTask implements Action<Task> {
             Schema.Parser parser = new Schema.Parser();
 
             for (var avroFile : avroFiles) {
+                if(avroFile.getName().contains(".DS_Store")) {
+                  continue;
+                }
+
                 var schema = parser.parse(avroFile);
 
                 var compiler = new SpecificCompiler(schema);

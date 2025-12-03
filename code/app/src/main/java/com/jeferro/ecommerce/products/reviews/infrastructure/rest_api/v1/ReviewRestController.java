@@ -1,11 +1,7 @@
-package com.jeferro.ecommerce.products.reviews.infrastructure.rest_api;
+package com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1;
 
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.CreateReviewInputRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.ReviewListRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.ReviewOrderRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.ReviewRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.dtos.UpdateReviewInputRestDTO;
-import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.mappers.ReviewRestMapper;
+import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1.dtos.*;
+import com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1.mappers.ReviewRestMapper;
 import com.jeferro.shared.ddd.application.UseCaseBus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

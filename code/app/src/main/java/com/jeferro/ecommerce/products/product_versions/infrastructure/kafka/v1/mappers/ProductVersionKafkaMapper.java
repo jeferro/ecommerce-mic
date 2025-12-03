@@ -1,7 +1,7 @@
-package com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.mappers;
+package com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.v1.mappers;
 
 import com.jeferro.ecommerce.products.product_versions.domain.events.*;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos.*;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.v1.dtos.*;
 import com.jeferro.shared.mappers.EventMapper;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;

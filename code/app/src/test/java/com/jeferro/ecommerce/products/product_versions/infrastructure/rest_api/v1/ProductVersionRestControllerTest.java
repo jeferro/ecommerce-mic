@@ -1,7 +1,7 @@
-package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api;
+package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1;
 
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.mappers.ProductVersionRestMapperImpl;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1.mappers.ProductVersionRestMapperImpl;
 import com.jeferro.ecommerce.shared.application.StubUseCaseBus;
 import com.jeferro.ecommerce.shared.infrastructure.adapters.rest.RestControllerTest;
 import com.jeferro.ecommerce.shared.utils.ApprovalUtils;

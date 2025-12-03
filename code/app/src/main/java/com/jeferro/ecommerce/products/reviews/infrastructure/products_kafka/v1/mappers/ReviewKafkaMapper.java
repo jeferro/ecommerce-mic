@@ -1,6 +1,6 @@
-package com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka.mappers;
+package com.jeferro.ecommerce.products.reviews.infrastructure.products_kafka.v1.mappers;
 
-import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.dtos.ProductVersionV1AvroDTO;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.v1.dtos.*;
 import com.jeferro.ecommerce.products.reviews.application.params.DeleteAllReviewsOfEntityIdParams;
 import com.jeferro.ecommerce.products.reviews.domain.events.ReviewEvent;
 import com.jeferro.ecommerce.products.reviews.domain.models.EntityId;

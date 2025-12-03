@@ -1,7 +1,7 @@
-package com.jeferro.ecommerce.products.product_versions.infrastructure.kafka;
+package com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.v1;
 
 import com.jeferro.ecommerce.products.product_versions.domain.events.ProductVersionEvent;
-import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.mappers.ProductVersionKafkaMapper;
+import com.jeferro.ecommerce.products.product_versions.infrastructure.kafka.v1.mappers.ProductVersionKafkaMapper;
 import com.jeferro.ecommerce.shared.infrastructure.properties.ApplicationProperties;
 import com.jeferro.ecommerce.shared.infrastructure.properties.ProductVersionsProperties;
 import com.jeferro.shared.ddd.domain.events.EventBusProducer;

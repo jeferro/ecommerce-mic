@@ -1,9 +1,8 @@
-package com.jeferro.ecommerce.users.users.infrastructure.rest_api.mappers;
+package com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1.mappers;
 
 import com.jeferro.ecommerce.users.users.application.params.SignInParams;
 import com.jeferro.ecommerce.users.users.domain.models.User;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.dtos.AuthRestDTO;
-import com.jeferro.ecommerce.users.users.infrastructure.rest_api.dtos.SignInInputRestDTO;
+import com.jeferro.ecommerce.users.users.infrastructure.rest_api.v1.dtos.*;
 import com.jeferro.shared.mappers.MapstructConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

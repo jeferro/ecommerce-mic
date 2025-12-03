@@ -1,6 +1,6 @@
 [
   {
-    "namespace": "com.jeferro.ecommerce.products.reviews.infrastructure.kafka.dtos.v1",
+    "namespace": "com.jeferro.ecommerce.products.reviews.infrastructure.kafka.v1.dtos",
     "name": "ReviewV1AvroDTO",
     "type": "record",
     "fields": [
