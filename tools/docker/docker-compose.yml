@@ -6,7 +6,7 @@ services:
 
   mongodb:
     image: mongo:7.0
-    container_name: products_mongo
+    container_name: ecommerce_mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -20,7 +20,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.1
-    container_name: products_zookeeper
+    container_name: ecommerce_zookeeper
     hostname: zookeeper
     restart: always
     environment:
@@ -32,7 +32,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.6.1
-    container_name: products_kafka
+    container_name: ecommerce_kafka
     hostname: kafka
     restart: always
     environment:
@@ -60,7 +60,7 @@ services:
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.6.1
-    container_name: products_schema-registry
+    container_name: ecommerce_schema-registry
     hostname: schema-registry
     restart: always
     environment:
@@ -76,7 +76,7 @@ services:
   kafka-ui:
     image: provectuslabs/kafka-ui:v0.7.2
     restart: always
-    container_name: products-kafka-ui
+    container_name: ecommerce_kafka-ui
     ports:
       - "9021:8080"
     environment:
