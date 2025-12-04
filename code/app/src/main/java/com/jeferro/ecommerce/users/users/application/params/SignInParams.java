@@ -5,12 +5,14 @@ import com.jeferro.ecommerce.users.users.domain.models.Username;
 import com.jeferro.shared.ddd.application.params.Params;
 import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Getter
 public class SignInParams extends Params<User> {
 
   private final Username username;
 
+  @ToStringExclude
   private final String password;
 
   public SignInParams(Username username, String password) {

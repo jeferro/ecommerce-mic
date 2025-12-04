@@ -4,10 +4,12 @@ import com.jeferro.shared.ddd.domain.models.aggregates.AggregateRoot;
 import com.jeferro.shared.ddd.domain.models.aggregates.Metadata;
 import java.util.Set;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Getter
 public class User extends AggregateRoot<Username> {
 
+  @ToStringExclude
   private final String encodedPassword;
 
   private final Set<String> roles;
