@@ -8,11 +8,9 @@ public class EventId extends UUID {
     super(value);
   }
 
-  private EventId() {
-    super();
-  }
-
   public static EventId create() {
-    return new EventId();
+    var value = generateUuid();
+
+    return new EventId(value);
   }
 }

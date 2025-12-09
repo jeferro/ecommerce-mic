@@ -6,7 +6,7 @@ public abstract class UUID extends StringIdentifier {
     super(value);
   }
 
-  protected UUID() {
-    super(java.util.UUID.randomUUID().toString());
+  protected static String generateUuid() {
+    return java.util.UUID.randomUUID().toString();
   }
 }
