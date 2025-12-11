@@ -7,12 +7,12 @@ import com.jeferro.shared.ddd.domain.exceptions.ValueValidationException;
 
 public class ReviewAlreadyExistsException extends ValueValidationException {
 
-  protected ReviewAlreadyExistsException(String code, String title, String message) {
-    super(code, title, message);
+  protected ReviewAlreadyExistsException(String code, String message) {
+    super(code, "Review already exists", message);
   }
 
   public static ReviewAlreadyExistsException createOf(ReviewId reviewId) {
     return new ReviewAlreadyExistsException(
-        REVIEW_ALREADY_EXISTS, "Review already exists", "Review " + reviewId + " already exists");
+        REVIEW_ALREADY_EXISTS, "Review " + reviewId + " already exists");
   }
 }

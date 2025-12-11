@@ -9,7 +9,7 @@ import com.jeferro.shared.ddd.domain.models.auth.Auth;
 public class ReviewDoesNotBelongUserException extends ForbiddenException {
 
   protected ReviewDoesNotBelongUserException(String code, String title, String message) {
-    super(code, title, message);
+    super(code, message);
   }
 
   public static ReviewDoesNotBelongUserException belongsToOtherUser(ReviewId reviewId, Auth auth) {
