@@ -3,7 +3,7 @@ package com.jeferro.shared.ddd.domain.exceptions;
 public class IncorrectVersionException extends ValueValidationException {
 
   protected IncorrectVersionException(String code, String message) {
-    super(code, message);
+    super(code, "Incorrect version", message);
   }
 
   public static IncorrectVersionException createOfIncorrectVersion() {
