@@ -5,14 +5,13 @@ import java.util.Set;
 
 public non-sealed class ForbiddenException extends ApplicationException {
 
-  protected ForbiddenException(String code, String title, String message) {
-    super(code, title, message);
+  protected ForbiddenException(String code, String message) {
+    super(code, "Forbidden", message);
   }
 
   public static ForbiddenException createOf(Auth auth, Set<String> mandatoryRoles) {
     return new ForbiddenException(
         FORBIDDEN_CODE,
-        "Forbidden",
         "Auth "
             + auth
             + " has not permission to execute use case. Mandatory roles: "
@@ -20,6 +19,6 @@ public non-sealed class ForbiddenException extends ApplicationException {
   }
 
   public static ForbiddenException createOfNotUserAuth(Auth auth) {
-    return new ForbiddenException(FORBIDDEN_CODE, "Forbidden", "Auth isn't a user auth: " + auth);
+    return new ForbiddenException(FORBIDDEN_CODE, "Auth isn't a user auth: " + auth);
   }
 }
