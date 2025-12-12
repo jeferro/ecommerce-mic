@@ -15,7 +15,7 @@ public class SearchProductVersionsParams extends Params<PaginatedList<ProductVer
   public SearchProductVersionsParams(ProductVersionCriteria criteria) {
     super();
 
-    ValueValidator.ensureIsNotNull(criteria, "criteria");
+    ValueValidator.ensureNotNull(criteria, "criteria");
 
     this.criteria = criteria;
   }

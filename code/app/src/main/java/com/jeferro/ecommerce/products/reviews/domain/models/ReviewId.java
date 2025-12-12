@@ -36,8 +36,8 @@ public class ReviewId extends StringIdentifier {
   }
 
   public static ReviewId createOf(EntityId entityId, Auth auth) {
-    ValueValidator.ensureIsNotNull(entityId, "entityId");
-    ValueValidator.ensureIsNotNull(auth, "auth");
+    ValueValidator.ensureNotNull(entityId, "entityId");
+    ValueValidator.ensureNotNull(auth, "auth");
 
     String username = auth.getUsername();
 

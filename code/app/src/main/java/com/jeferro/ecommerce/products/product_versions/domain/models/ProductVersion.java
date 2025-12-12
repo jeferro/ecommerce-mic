@@ -66,10 +66,10 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
       BigDecimal price,
       BigDecimal discount,
       ProductVersion nextVersion) {
-    ValueValidator.ensureIsNotNull(versionId, "versionId");
-    ValueValidator.ensureIsNotNull(typeId, "typeId");
-    ValueValidator.ensureIsNotNull(name, "name");
-    ValueValidator.ensureIsZeroOrPositive(price, "price");
+    ValueValidator.ensureNotNull(versionId, "versionId");
+    ValueValidator.ensureNotNull(typeId, "typeId");
+    ValueValidator.ensureNotNull(name, "name");
+    ValueValidator.ensureZeroOrPositive(price, "price");
     ValueValidator.ensureInRange(discount, 0, 100, "discount");
 
     if (nextVersion != null) {
@@ -104,8 +104,8 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
   }
 
   public void update(LocalizedField name, BigDecimal price, BigDecimal discount, long version) {
-    ValueValidator.ensureIsNotNull(name, "name");
-    ValueValidator.ensureIsZeroOrPositive(price, "price");
+    ValueValidator.ensureNotNull(name, "name");
+    ValueValidator.ensureZeroOrPositive(price, "price");
     ValueValidator.ensureInRange(discount, 0, 100, "discount");
 
     ensureVersion(version);

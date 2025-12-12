@@ -13,7 +13,7 @@ public class DeleteAllReviewsOfEntityIdParams extends Params<Void> {
   public DeleteAllReviewsOfEntityIdParams(EntityId entityId) {
     super();
 
-    ValueValidator.ensureIsNotNull(entityId, "entityId");
+    ValueValidator.ensureNotNull(entityId, "entityId");
 
     this.entityId = entityId;
   }

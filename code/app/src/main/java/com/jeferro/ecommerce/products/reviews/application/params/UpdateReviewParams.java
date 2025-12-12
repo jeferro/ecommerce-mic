@@ -18,8 +18,8 @@ public class UpdateReviewParams extends Params<Review> {
   public UpdateReviewParams(ReviewId reviewId, String comment, long version) {
     super();
 
-    ValueValidator.ensureIsNotNull(reviewId, "reviewId");
-    ValueValidator.ensureIsNotNull(comment, "comment");
+    ValueValidator.ensureNotNull(reviewId, "reviewId");
+    ValueValidator.ensureNotNull(comment, "comment");
 
     this.reviewId = reviewId;
     this.comment = comment;

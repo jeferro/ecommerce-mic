@@ -14,7 +14,7 @@ public class DeleteReviewParams extends Params<Review> {
   public DeleteReviewParams(ReviewId reviewId) {
     super();
 
-    ValueValidator.ensureIsNotNull(reviewId, "reviewId");
+    ValueValidator.ensureNotNull(reviewId, "reviewId");
 
     this.reviewId = reviewId;
   }
