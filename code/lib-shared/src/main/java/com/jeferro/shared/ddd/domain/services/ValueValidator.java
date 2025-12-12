@@ -14,14 +14,17 @@ public class ValueValidator {
     }
   }
 
-  public static <T> void isPositive(int value, String attributeName) {
-    if (value < 0 || value == 0) {
-      throw ValueValidationException.createOfMessage(
-              attributeName + " is negative value: " + value);
+  public static <T> void ensurePositive(int value, String attributeName) {
+    if (value < 0) {
+      throw ValueValidationException.createOfMessage(attributeName + " is negative: " + value);
+    }
+
+    if (value == 0) {
+      throw ValueValidationException.createOfMessage(attributeName + " is zero: " + value);
     }
   }
 
-  public static <T> void isNotBlank(String value, String attributeName) {
+  public static <T> void ensureNotBlank(String value, String attributeName) {
     if (value == null) {
       throw ValueValidationException.createOfMessage(attributeName + " is null");
     }
@@ -31,13 +34,13 @@ public class ValueValidator {
     }
   }
 
-  public static <T> void isNotNull(Object value, String attributeName) {
+  public static <T> void ensureNotNull(Object value, String attributeName) {
     if (value == null) {
       throw ValueValidationException.createOfMessage(attributeName + " is null");
     }
   }
 
-  public static <T> void isNotEmpty(Collection<?> value, String attributeName) {
+  public static <T> void ensureNotEmpty(Collection<?> value, String attributeName) {
     if (value == null) {
       throw ValueValidationException.createOfMessage(attributeName + " is null");
     }
@@ -47,7 +50,7 @@ public class ValueValidator {
     }
   }
 
-  public static <T> void isZeroOrPositive(Integer value, String attributeName) {
+  public static <T> void ensureZeroOrPositive(Integer value, String attributeName) {
     if (value == null) {
       throw ValueValidationException.createOfMessage(attributeName + " is null");
     }
@@ -57,7 +60,7 @@ public class ValueValidator {
     }
   }
 
-  public static <T> void isZeroOrPositive(BigDecimal value, String attributeName) {
+  public static <T> void ensureZeroOrPositive(BigDecimal value, String attributeName) {
     if (value == null) {
       throw ValueValidationException.createOfMessage(attributeName + " is null");
     }
@@ -67,7 +70,7 @@ public class ValueValidator {
     }
   }
 
-  public static <T> void inRange(BigDecimal value, int min, int max, String attributeName) {
+  public static <T> void ensureInRange(BigDecimal value, int min, int max, String attributeName) {
     if (value == null) {
       throw ValueValidationException.createOfMessage(attributeName + " is null");
     }

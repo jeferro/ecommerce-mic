@@ -15,7 +15,7 @@ public class SearchReviewParams extends Params<PaginatedList<Review>> {
   public SearchReviewParams(ReviewCriteria criteria) {
     super();
 
-    ValueValidator.isNotNull(criteria, "criteria");
+    ValueValidator.ensureNotNull(criteria, "criteria");
 
     this.criteria = criteria;
   }

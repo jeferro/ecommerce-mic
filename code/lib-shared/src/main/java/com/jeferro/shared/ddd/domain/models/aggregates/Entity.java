@@ -13,7 +13,7 @@ public class Entity<ID extends Identifier> {
   protected final ID id;
 
   public Entity(ID id) {
-    ValueValidator.isNotNull(id, "id");
+    ValueValidator.ensureNotNull(id, "id");
 
     this.id = id;
   }

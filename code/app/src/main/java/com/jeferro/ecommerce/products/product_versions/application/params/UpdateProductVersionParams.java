@@ -25,7 +25,7 @@ public class UpdateProductVersionParams extends Params<ProductVersion> {
   public UpdateProductVersionParams(ProductVersionId productVersionId, LocalizedField name, BigDecimal price, BigDecimal discount, long version) {
     super();
 
-    ValueValidator.isNotNull(productVersionId, "productVersionId");
+    ValueValidator.ensureNotNull(productVersionId, "productVersionId");
 
     this.productVersionId = productVersionId;
     this.name = name;

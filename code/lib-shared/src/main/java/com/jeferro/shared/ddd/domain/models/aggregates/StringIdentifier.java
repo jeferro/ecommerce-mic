@@ -7,7 +7,7 @@ public abstract class StringIdentifier extends Identifier {
   private final String value;
 
   public StringIdentifier(String value) {
-    ValueValidator.isNotNull(value, "value");
+    ValueValidator.ensureNotNull(value, "value");
 
     this.value = value;
   }

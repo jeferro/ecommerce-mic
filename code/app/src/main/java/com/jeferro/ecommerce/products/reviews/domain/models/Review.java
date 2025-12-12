@@ -26,9 +26,9 @@ public class Review extends AggregateRoot<ReviewId> {
   }
 
   public static Review createOf(EntityId entityId, String comment, Auth auth) {
-    ValueValidator.isNotNull(entityId, "entityId");
-    ValueValidator.isNotNull(comment, "comment");
-    ValueValidator.isNotNull(auth, "auth");
+    ValueValidator.ensureNotNull(entityId, "entityId");
+    ValueValidator.ensureNotNull(comment, "comment");
+    ValueValidator.ensureNotNull(auth, "auth");
 
     var reviewId = ReviewId.createOf(entityId, auth);
     var review = new Review(reviewId, comment, auth.getLocale(), 0L, null);
@@ -40,8 +40,8 @@ public class Review extends AggregateRoot<ReviewId> {
   }
 
   public void update(String comment, Auth auth) {
-    ValueValidator.isNotNull(comment, "comment");
-    ValueValidator.isNotNull(locale, "locale");
+    ValueValidator.ensureNotNull(comment, "comment");
+    ValueValidator.ensureNotNull(locale, "locale");
 
     this.comment = comment;
     this.locale = auth.getLocale();

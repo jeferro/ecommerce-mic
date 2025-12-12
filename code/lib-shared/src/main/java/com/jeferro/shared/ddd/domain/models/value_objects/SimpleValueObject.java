@@ -10,7 +10,7 @@ public class SimpleValueObject<T extends Serializable> extends ValueObject {
   private final T value;
 
   public SimpleValueObject(T value) {
-    ValueValidator.isNotNull(value, "value");
+    ValueValidator.ensureNotNull(value, "value");
 
     this.value = value;
   }
