@@ -16,7 +16,7 @@ public class UnpublishProductVersionParams extends Params<ProductVersion> {
   public UnpublishProductVersionParams(ProductVersionId productVersionId, long version) {
     super();
 
-    ValueValidator.isNotNull(productVersionId, "productVersionId");
+    ValueValidator.ensureIsNotNull(productVersionId, "productVersionId");
 
     this.productVersionId = productVersionId;
     this.version = version;

@@ -13,7 +13,7 @@ public class LocalizedField extends ValueObject {
   private final Map<String, String> values;
 
   public LocalizedField(Map<String, String> values) {
-    ValueValidator.isNotNull(values, "values");
+    ValueValidator.ensureIsNotNull(values, "values");
 
     this.values = values;
   }

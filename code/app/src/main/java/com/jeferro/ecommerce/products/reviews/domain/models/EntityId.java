@@ -35,8 +35,8 @@ public class EntityId extends StringIdentifier {
   }
 
   public static EntityId createOf(String domain, String id) {
-    ValueValidator.isNotNull(domain, "domain");
-    ValueValidator.isNotNull(id, "id");
+    ValueValidator.ensureIsNotNull(domain, "domain");
+    ValueValidator.ensureIsNotNull(id, "id");
 
     return new EntityId(domain, id);
   }

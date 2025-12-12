@@ -14,7 +14,7 @@ public class DeleteProductVersionParams extends Params<ProductVersion> {
   public DeleteProductVersionParams(ProductVersionId productVersionId) {
     super();
 
-    ValueValidator.isNotNull(productVersionId, "productVersionId");
+    ValueValidator.ensureIsNotNull(productVersionId, "productVersionId");
 
     this.productVersionId = productVersionId;
   }

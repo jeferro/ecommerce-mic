@@ -25,8 +25,8 @@ public class Parametric extends Projection<ParametricId> {
 
   public static Parametric createOf(
       ParametricId id, LocalizedField name, List<ParametricValue> values) {
-    ValueValidator.isNotNull(name, "name");
-    ValueValidator.isNotEmpty(values, "values");
+    ValueValidator.ensureIsNotNull(name, "name");
+    ValueValidator.ensureIsNotEmpty(values, "values");
 
     return new Parametric(id, name, values);
   }

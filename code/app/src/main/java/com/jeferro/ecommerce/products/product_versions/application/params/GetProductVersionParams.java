@@ -14,7 +14,7 @@ public class GetProductVersionParams extends Params<ProductVersion> {
   public GetProductVersionParams(ProductVersionId productVersionId) {
     super();
 
-    ValueValidator.isNotNull(productVersionId, "productVersionId");
+    ValueValidator.ensureIsNotNull(productVersionId, "productVersionId");
 
     this.productVersionId = productVersionId;
   }

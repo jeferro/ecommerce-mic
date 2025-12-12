@@ -37,8 +37,8 @@ public class ProductVersionId extends StringIdentifier {
   }
 
   public static ProductVersionId createOf(ProductCode code, Instant effectiveDate) {
-    ValueValidator.isNotNull(code, "code");
-    ValueValidator.isNotNull(effectiveDate, "effectiveDate");
+    ValueValidator.ensureIsNotNull(code, "code");
+    ValueValidator.ensureIsNotNull(effectiveDate, "effectiveDate");
 
     var truncatedEffectiveDate = InstantTruncator.trunkToSeconds(effectiveDate);
 

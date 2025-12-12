@@ -34,10 +34,10 @@ public class Execution<P extends Params<R>, R> {
   }
 
   public static <P extends Params<R>, R> Execution<P, R> create(Auth auth, UseCase<P, R> useCase, P params, int retries) {
-    ValueValidator.isNotNull(auth, "auth");
-    ValueValidator.isNotNull(useCase, "useCase");
-    ValueValidator.isNotNull(params, "params");
-    ValueValidator.isPositive(retries, "retries");
+    ValueValidator.ensureIsNotNull(auth, "auth");
+    ValueValidator.ensureIsNotNull(useCase, "useCase");
+    ValueValidator.ensureIsNotNull(params, "params");
+    ValueValidator.ensureIsPositive(retries, "retries");
 
     List<ExecutionAttempt<R>> attempts = new ArrayList<>();
 

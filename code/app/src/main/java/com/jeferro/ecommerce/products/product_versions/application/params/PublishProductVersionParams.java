@@ -16,7 +16,7 @@ public class PublishProductVersionParams extends Params<ProductVersion> {
   public PublishProductVersionParams(ProductVersionId productVersionId, long version) {
     super();
 
-    ValueValidator.isNotNull(productVersionId, "productVersionId");
+    ValueValidator.ensureIsNotNull(productVersionId, "productVersionId");
 
     this.productVersionId = productVersionId;
     this.version = version;
