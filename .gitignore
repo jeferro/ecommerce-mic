@@ -33,6 +33,8 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
+.vscode/
+
 *.received.txt
 
 tools/scripts/.env

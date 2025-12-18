@@ -238,7 +238,7 @@ paths:
         default:
           $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
 
-  /v1/products/{productCode}/versions/by-date-range:
+  /v1/products/{productCode}/versions/period:
     delete:
       operationId: delete-product-versions-in-periods
       summary: Delete product versions in periods
@@ -253,14 +253,14 @@ paths:
           schema:
             type: string
             format: date-time
-          description: Start date of the range
+          description: Start date of the period
         - name: endDate
           in: query
           required: true
           schema:
             type: string
             format: date-time
-          description: End date of the range
+          description: End date of the period
       responses:
         '204':
           description: No Content
