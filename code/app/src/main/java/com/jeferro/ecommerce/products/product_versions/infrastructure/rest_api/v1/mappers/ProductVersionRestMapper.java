@@ -45,6 +45,8 @@ public abstract class ProductVersionRestMapper
 
   @Mapping(target = "minEffectiveDate", ignore = true)
   @Mapping(target = "maxEffectiveDate", ignore = true)
+  @Mapping(target = "startDate", ignore = true)
+  @Mapping(target = "endDate", ignore = true)
   protected abstract ProductVersionCriteria toProductFilter(
           Integer pageNumber,
           Integer pageSize,

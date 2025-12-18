@@ -32,8 +32,7 @@ class DeleteProductVersionInPeriodUseCaseTest {
     eventInMemoryBus = new EventInMemoryBus();
     productsInMemoryRepository = new ProductVersionInMemoryRepository();
 
-    deleteProductVersionInPeriodUseCase =
-        new DeleteProductVersionInPeriodUseCase(productsInMemoryRepository, eventInMemoryBus);
+    deleteProductVersionInPeriodUseCase = new DeleteProductVersionInPeriodUseCase(productsInMemoryRepository, eventInMemoryBus);
   }
 
   @Test
@@ -42,11 +41,8 @@ class DeleteProductVersionInPeriodUseCaseTest {
     var startDate = Instant.parse("2025-01-15T09:00:00.00Z");
     var endDate = Instant.parse("2025-02-15T09:00:00.00Z");
 
-    // Crear una versión que se solapa con el rango
-    var overlappingVersionId =
-        ProductVersionId.createOf(appleCode, Instant.parse("2025-01-20T09:00:00.00Z"));
-    var overlappingVersion =
-        ProductVersion.create(
+    var overlappingVersionId = ProductVersionId.createOf(appleCode, Instant.parse("2025-01-20T09:00:00.00Z"));
+    var overlappingVersion = ProductVersion.create(
             overlappingVersionId,
             ProductVersionMother.appleV1().getTypeId(),
             ProductVersionMother.appleV1().getName(),
@@ -69,15 +65,11 @@ class DeleteProductVersionInPeriodUseCaseTest {
     var startDate = Instant.parse("2025-01-15T09:00:00.00Z");
     var endDate = Instant.parse("2025-02-15T09:00:00.00Z");
 
-    // appleV1 tiene effectiveDate = 2025-01-01T09:00:00.00Z, está antes del rango
     var appleV1 = ProductVersionMother.appleV1();
     productsInMemoryRepository.save(appleV1);
 
-    // Crear una versión que se solapa con el rango
-    var overlappingVersionId =
-        ProductVersionId.createOf(appleCode, Instant.parse("2025-01-20T09:00:00.00Z"));
-    var overlappingVersion =
-        ProductVersion.create(
+    var overlappingVersionId = ProductVersionId.createOf(appleCode, Instant.parse("2025-01-20T09:00:00.00Z"));
+    var overlappingVersion = ProductVersion.create(
             overlappingVersionId,
             appleV1.getTypeId(),
             appleV1.getName(),
@@ -86,7 +78,6 @@ class DeleteProductVersionInPeriodUseCaseTest {
             null);
     productsInMemoryRepository.save(overlappingVersion);
 
-    // appleV2 tiene effectiveDate = 2025-02-01T09:00:00.00Z, está después del rango
     var appleV2 = ProductVersionMother.appleV2();
     productsInMemoryRepository.save(appleV2);
 
@@ -94,7 +85,6 @@ class DeleteProductVersionInPeriodUseCaseTest {
 
     deleteProductVersionInPeriodUseCase.execute(AuthMother.john(), params);
 
-    // Verificar que appleV1 ahora tiene endEffectiveDate apuntando a appleV2
     var updatedAppleV1 = productsInMemoryRepository.findByIdOrError(appleV1.getId());
     assertEquals(
         appleV2.getEffectiveDate().minusSeconds(1), updatedAppleV1.getEndEffectiveDate());
@@ -107,11 +97,9 @@ class DeleteProductVersionInPeriodUseCaseTest {
     var startDate = Instant.parse("2025-01-15T09:00:00.00Z");
     var endDate = Instant.parse("2025-02-15T09:00:00.00Z");
 
-    // appleV1 tiene effectiveDate = 2025-01-01T09:00:00.00Z, está antes del rango
     var appleV1 = ProductVersionMother.appleV1();
     productsInMemoryRepository.save(appleV1);
 
-    // Crear una versión que se solapa con el rango
     var overlappingVersionId =
         ProductVersionId.createOf(appleCode, Instant.parse("2025-01-20T09:00:00.00Z"));
     var overlappingVersion =
@@ -128,7 +116,6 @@ class DeleteProductVersionInPeriodUseCaseTest {
 
     deleteProductVersionInPeriodUseCase.execute(AuthMother.john(), params);
 
-    // Verificar que appleV1 ahora tiene endEffectiveDate = null
     var updatedAppleV1 = productsInMemoryRepository.findByIdOrError(appleV1.getId());
     assertNull(updatedAppleV1.getEndEffectiveDate());
     assertProductUpdatedWasPublished(updatedAppleV1);
