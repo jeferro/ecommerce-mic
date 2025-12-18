@@ -240,8 +240,8 @@ paths:
 
   /v1/products/{productCode}/versions/by-date-range:
     delete:
-      operationId: delete-product-versions-by-date-range
-      summary: Delete product versions by date range
+      operationId: delete-product-versions-in-periods
+      summary: Delete product versions in periods
       description: Delete product versions that apply between start date and end date
       tags:
         - Product versions
