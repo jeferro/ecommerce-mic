@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ecommerce [debug]",
+      "type": "java",
+      "request": "launch",
+      "mainClass": "com.jeferro.ecommerce.EcommerceApplication",
+      "projectName": "app",
+      "args": "",
+      "vmArgs": "",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
+
