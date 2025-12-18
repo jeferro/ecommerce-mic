@@ -112,4 +112,12 @@ public class ProductVersionRestController implements ProductVersionsApi {
 
     return productVersionRestMapper.toDTO(productVersion);
   }
+
+  public void deleteProductVersionsByDateRange(
+      String productCode, OffsetDateTime startDate, OffsetDateTime endDate) {
+    var params = productVersionRestMapper.toDeleteProductVersionInPeriodParams(
+        productCode, startDate, endDate);
+
+    useCaseBus.execute(params);
+  }
 }

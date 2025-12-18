@@ -59,6 +59,21 @@ public class ProductVersionsMongoDao
       mongoCriteria.add(searchDateCriteria);
     }
 
+    if (domainCriteria.hasStartDate() && domainCriteria.hasEndDate()) {
+      // Una versión se solapa con el rango [startDate, endDate) si:
+      // effectiveDate < endDate Y (endEffectiveDate == null OR endEffectiveDate > startDate)
+      Criteria overlappingCriteria =
+          new Criteria()
+              .andOperator(
+                  Criteria.where("effectiveDate").lt(domainCriteria.getEndDate()),
+                  new Criteria()
+                      .orOperator(
+                          Criteria.where("endEffectiveDate").is(null),
+                          Criteria.where("endEffectiveDate").gt(domainCriteria.getStartDate())));
+
+      mongoCriteria.add(overlappingCriteria);
+    }
+
     return mongoCriteria;
   }
 

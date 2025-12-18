@@ -59,7 +59,8 @@ public class ProductVersionInMemoryRepository
     return matchProductCode(productVersion, filter)
         && matchMinEffectiveProductCode(productVersion, filter)
         && matchMaxEffectiveProductCode(productVersion, filter)
-        && matchSearchDate(productVersion, filter);
+        && matchSearchDate(productVersion, filter)
+        && matchOverlappingDateRange(productVersion, filter);
   }
 
   private boolean matchProductCode(ProductVersion productVersion, ProductVersionCriteria filter) {
@@ -91,6 +92,22 @@ public class ProductVersionInMemoryRepository
         && (endEffectiveDate == null
             || endEffectiveDate.isAfter(searchDate)
             || endEffectiveDate.equals(searchDate));
+  }
+
+  private boolean matchOverlappingDateRange(ProductVersion productVersion, ProductVersionCriteria filter) {
+    if (!filter.hasStartDate() || !filter.hasEndDate()) {
+      return true;
+    }
+
+    Instant startDate = filter.getStartDate();
+    Instant endDate = filter.getEndDate();
+    Instant effectiveDate = productVersion.getEffectiveDate();
+    Instant endEffectiveDate = productVersion.getEndEffectiveDate();
+
+    // Una versión se solapa con el rango [startDate, endDate) si:
+    // effectiveDate < endDate Y (endEffectiveDate == null OR endEffectiveDate > startDate)
+    return effectiveDate.isBefore(endDate)
+        && (endEffectiveDate == null || endEffectiveDate.isAfter(startDate));
   }
 
   private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionCriteria criteria) {

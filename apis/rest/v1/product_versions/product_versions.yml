@@ -238,6 +238,35 @@ paths:
         default:
           $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
 
+  /v1/products/{productCode}/versions/by-date-range:
+    delete:
+      operationId: delete-product-versions-by-date-range
+      summary: Delete product versions by date range
+      description: Delete product versions that apply between start date and end date
+      tags:
+        - Product versions
+      parameters:
+        - $ref: '#/components/parameters/productCodePath'
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Start date of the range
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: End date of the range
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
 components:
 
   securitySchemes:

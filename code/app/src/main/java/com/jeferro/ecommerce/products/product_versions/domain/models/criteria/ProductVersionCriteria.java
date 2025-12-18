@@ -20,6 +20,10 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
 
   private final Instant searchDate;
 
+  private final Instant startDate;
+
+  private final Instant endDate;
+
   public ProductVersionCriteria(
       Integer pageNumber,
       Integer pageSize,
@@ -28,22 +32,26 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
       ProductCode code,
       Instant minEffectiveDate,
       Instant maxEffectiveDate,
-      Instant searchDate) {
+      Instant searchDate,
+      Instant startDate,
+      Instant endDate) {
     super(pageNumber, pageSize, order, ascending);
 
     this.code = code;
     this.minEffectiveDate = minEffectiveDate;
     this.maxEffectiveDate = maxEffectiveDate;
     this.searchDate = searchDate;
+    this.startDate = startDate;
+    this.endDate = endDate;
   }
 
   public static ProductVersionCriteria allPage() {
-    return new ProductVersionCriteria(0, null, NAME, null, null, null, null, null);
+    return new ProductVersionCriteria(0, null, NAME, null, null, null, null, null, null, null);
   }
 
   public static ProductVersionCriteria byCodePage(ProductCode code) {
     return new ProductVersionCriteria(
-        0, null, START_EFFECTIVE_DATE, false, code, null, null, null);
+        0, null, START_EFFECTIVE_DATE, false, code, null, null, null, null, null);
   }
 
   public static ProductVersionCriteria previousProductVersion(ProductVersionId versionId) {
@@ -55,6 +63,8 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
         versionId.getCode(),
         null,
         versionId.getEffectiveDate(),
+        null,
+        null,
         null);
   }
 
@@ -67,7 +77,23 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
         versionId.getCode(),
         versionId.getEffectiveDate(),
         null,
+        null,
+        null,
         null);
+  }
+
+  public static ProductVersionCriteria overlappingDateRange(ProductCode code, Instant startDate, Instant endDate) {
+    return new ProductVersionCriteria(
+        0,
+        null,
+        START_EFFECTIVE_DATE,
+        true,
+        code,
+        null,
+        null,
+        null,
+        startDate,
+        endDate);
   }
 
   public boolean hasCode() {
@@ -84,5 +110,13 @@ public class ProductVersionCriteria extends DomainCriteria<ProductVersionOrder> 
 
   public boolean hasSearchDate() {
     return searchDate != null;
+  }
+
+  public boolean hasStartDate() {
+    return startDate != null;
+  }
+
+  public boolean hasEndDate() {
+    return endDate != null;
   }
 }

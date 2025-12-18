@@ -1,6 +1,7 @@
 package com.jeferro.ecommerce.products.product_versions.infrastructure.rest_api.v1.mappers;
 
 import com.jeferro.ecommerce.products.product_versions.application.params.*;
+import com.jeferro.ecommerce.products.product_versions.domain.models.ProductCode;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersion;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionId;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionSummary;
@@ -68,4 +69,13 @@ public abstract class ProductVersionRestMapper
                                                                          UnpublishProductVersionInputRestDTO unpublishProductVersionInputRestDTO);
 
   public abstract DeleteProductVersionParams toDeleteProductParams(ProductVersionId productVersionId);
+
+  public DeleteProductVersionInPeriodParams toDeleteProductVersionInPeriodParams(
+      String productCode, OffsetDateTime startDate, OffsetDateTime endDate) {
+    var code = new ProductCode(productCode);
+    var start = startDate.toInstant();
+    var end = endDate.toInstant();
+
+    return new DeleteProductVersionInPeriodParams(code, start, end);
+  }
 }
