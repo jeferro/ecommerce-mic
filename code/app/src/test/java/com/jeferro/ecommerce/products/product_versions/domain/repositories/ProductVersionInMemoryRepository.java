@@ -15,13 +15,13 @@ public class ProductVersionInMemoryRepository
 
   public ProductVersionInMemoryRepository() {
     var appleV1 = ProductVersionMother.appleV1();
-    data.put(appleV1.getId(), appleV1);
+    save(appleV1);
 
     var appleV2 = ProductVersionMother.appleV2();
-    data.put(appleV2.getId(), appleV2);
+    save(appleV2);
 
     var pearV1 = ProductVersionMother.pearV1();
-    data.put(pearV1.getId(), pearV1);
+    save(pearV1);
   }
 
   @Override
@@ -29,7 +29,7 @@ public class ProductVersionInMemoryRepository
     var entities =
         data.values().stream()
             .filter(product -> matchCriteria(criteria, product))
-            .sorted((p1, p2) -> compareProducts(p1, p2, criteria))
+            .sorted((p1, p2) -> compare(p1, p2, criteria))
             .toList();
 
     return paginateEntities(entities, criteria);
@@ -93,7 +93,7 @@ public class ProductVersionInMemoryRepository
             || endEffectiveDate.equals(searchDate));
   }
 
-  private int compareProducts(ProductVersion p1, ProductVersion p2, ProductVersionCriteria criteria) {
+  private int compare(ProductVersion p1, ProductVersion p2, ProductVersionCriteria criteria) {
     var order = criteria.getOrder();
 
     if(order == null){

@@ -10,12 +10,12 @@ public class UsersInMemoryRepository extends InMemoryRepository<User, Username>
 
   public UsersInMemoryRepository() {
     var john = UserMother.john();
-    data.put(john.getId(), john);
+    save(john);
 
     var james = UserMother.james();
-    data.put(james.getId(), james);
+    save(james);
 
     var emily = UserMother.emily();
-    data.put(emily.getId(), emily);
+    save(emily);
   }
 }
