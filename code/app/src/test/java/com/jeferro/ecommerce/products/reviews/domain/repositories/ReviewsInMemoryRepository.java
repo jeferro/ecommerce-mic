@@ -23,7 +23,7 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
     var entities =
         data.values().stream()
             .filter(review -> matchCriteria(review, criteria))
-            .sorted((r1, r2) -> compareReviews(r1, r2, criteria))
+            .sorted((r1, r2) -> compare(r1, r2, criteria))
             .toList();
 
     return paginateEntities(entities, criteria);
@@ -47,7 +47,7 @@ public class ReviewsInMemoryRepository extends InMemoryRepository<Review, Review
     return !criteria.hasEntityId() || review.getEntityId().equals(criteria.getEntityId());
   }
 
-  private int compareReviews(Review r1, Review r2, ReviewCriteria criteria) {
+  private int compare(Review r1, Review r2, ReviewCriteria criteria) {
     var order = criteria.getOrder();
 
     if(order == null){
