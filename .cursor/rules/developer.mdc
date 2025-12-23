@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # Guía de Desarrollo (DDD + Arquitectura Hexagonal)
 
 Sigue estas reglas al desarrollar código en la carpeta `code/`. El objetivo es mantener el código desacoplado, testable y centrado en la lógica de negocio.
@@ -34,4 +38,5 @@ Por cada Aggregate Root o Proyección, el código se divide en:
 *   **Palabra clave `var`**: Usar siempre `var` para la definición de variables locales, excepto cuando sea obligatorio el tipo.
 *   **Sin Comentarios**: El código debe ser auto-explicativo. Solo usar comentarios para aclarar integraciones externas o decisiones de diseño críticas.
 *   **Shared**: El código reutilizable debe ir a paquetes `shared` (a nivel de dominio o de módulo).
+
 

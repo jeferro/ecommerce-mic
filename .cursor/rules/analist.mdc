@@ -1,3 +1,7 @@
+---
+alwaysApply: false
+---
+
 # Reglas de Refinamiento de Historias de Usuario
 
 Sigue estas reglas estrictamente cuando el usuario te pida refinar una HU.
@@ -6,17 +10,20 @@ Sigue estas reglas estrictamente cuando el usuario te pida refinar una HU.
 
 * Solo realizar el refinamiento de la parte de **back-end**.
 * La información de la parte de **front-end** debe utilizarse para determinar los atributos necesarios en el modelo, además de los datos de entrada y salida en las peticiones.
-* Tener en cuenta la guía de desarrollo `docs/development-guide.md`.
+* Tener en cuenta la regla para el desarrollo `.cursor/rules/developer.mdc`.
 * Por cada HU, crear un archivo MD en el mismo directorio que la descripción funcional. El nombre será el mismo que el HU con el prefijo `hu-`.
 
 ## Estructura del Documento
 
+### Título
+
 * Utilizar el nombre de la HU como **título** del archivo (notación H1), que es un texto muy breve describiendo la funcionalidad.
 
-* 
-
 ### Descripción
+
 Debe explicar breve y sencillamente la funcionalidad, escrita desde la perspectiva de la persona que desea esa nueva capacidad.
+
+Utilizar el formato:
 
 |          |                                     |
 |----------|-------------------------------------|
@@ -25,7 +32,8 @@ Debe explicar breve y sencillamente la funcionalidad, escrita desde la perspecti
 | Para     | Obtener un beneficio o valor        |
 
 ### Modelo de Datos
-Listado de atributos con sus tipos y validaciones.
+
+Listado de atributos con sus tipos y validaciones:
 * Nombres en **negrita**, camelCase y empezando en minúscula.
 * Tipo de dato entre paréntesis después del nombre. Usar tipos Java.
 * Si es una paramétrica, usar `ParametricValue`.
@@ -36,6 +44,7 @@ Listado de atributos con sus tipos y validaciones.
 * Si la HU es para crear el modelo, incluir todos los atributos. Si no, solo los cambios.
 
 ### Contratos
+
 Definición de cambios en APIs (REST, GraphQL, etc.).
 * Para REST, incluir: URL, Query parameters, Body (mismo formato que modelo) y Response.
 
@@ -50,4 +59,5 @@ Pasos a seguir para realizar la tarea:
 * **Proceso despliegue especial**: si aplica.
 
 *Si algún valor no aplica, indicar "N/A".*
+
 

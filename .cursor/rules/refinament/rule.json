@@ -1,8 +1,0 @@
-{
-  "description": "Reglas para el refinamiento de Historias de Usuario (HU) en el directorio hus/. Se aplica automáticamente al trabajar con archivos Markdown de descripción funcional o de refinamiento.",
-  "globs": [
-    "hus/**/*.md"
-  ],
-  "alwaysApply": false
-}
-
