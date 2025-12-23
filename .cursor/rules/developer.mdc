@@ -1,5 +1,6 @@
 ---
-alwaysApply: false
+alwaysApply: true
+path: code/**
 ---
 
 # Guía de Desarrollo (DDD + Arquitectura Hexagonal)
