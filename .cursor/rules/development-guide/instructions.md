@@ -1,0 +1,37 @@
+# Guía de Desarrollo (DDD + Arquitectura Hexagonal)
+
+Sigue estas reglas al desarrollar código en la carpeta `code/`. El objetivo es mantener el código desacoplado, testable y centrado en la lógica de negocio.
+
+## Estructura de Capas
+Por cada Aggregate Root o Proyección, el código se divide en:
+*   **domain**: Lógica de negocio pura (modelos, repositorios, servicios, excepciones). Sin dependencias de frameworks (excepto Lombok/Apache Commons).
+*   **application**: Casos de uso (UseCase) y sus parámetros (Params). Orquestan el flujo.
+*   **infrastructure**: Adaptadores de entrada (REST, Kafka) y salida (Mongo, Clientes REST).
+
+## Domain: Modelos y Lógica
+*   **Agregados/Entidades**:
+    *   Usar siempre **Factory Methods** (named constructors) en lugar de constructores (estos últimos solo para mappers/mothers).
+    *   No usar setters. Los cambios se realizan mediante **métodos de acción públicos** semánticos.
+    *   Validar integridad dentro del modelo usando métodos `ensure...` que lancen excepciones de dominio.
+*   **Identifiers**: Deben extender de `Identifier` (o `StringIdentifier`/`UUIDIdentifier`).
+*   **Value Objects**:
+    *   Realizan validaciones en el constructor.
+*   **Repositorios**: Interfaces que definen `save`, `findById`, `findByIdOrError`, `delete` y `findAllByCriteria`.
+*   **Events**: Nombres en pasado (ej: `InvoiceCreated`). Se registran en el agregado usando `record(event)`.
+
+## Application: Casos de Uso
+*   **UseCase**: Clase que extiende `UseCase<Params, Result>`. Orquesta la lógica, valida existencia de entidades y lanza eventos.
+*   **Params**: Clase que extiende `Params`. Valida **campos requeridos** en el constructor. Usa tipos básicos o Value Objects, nunca entidades.
+
+## Infrastructure: Adaptadores
+*   **Paquetización**: Por tecnología (ej: `rest_api`, `mongo`, `kafka`).
+*   **Mappers**: Encargados de convertir entre DTOs e infraestructura y el Dominio.
+*   **Adaptadores Primarios**: Controladores que llaman a `useCaseBus.execute(params)`.
+*   **Adaptadores Secundarios**: Implementaciones de interfaces de dominio (repositorios, servicios externos).
+
+## Convenciones de Código
+*   **Código Semántico**: Nombres de métodos claros (ej: `findUserOrNull` en vez de `getUser`, `ensurePermissions` en vez de `validate`).
+*   **Palabra clave `var`**: Usar siempre `var` para la definición de variables locales, excepto cuando sea obligatorio el tipo.
+*   **Sin Comentarios**: El código debe ser auto-explicativo. Solo usar comentarios para aclarar integraciones externas o decisiones de diseño críticas.
+*   **Shared**: El código reutilizable debe ir a paquetes `shared` (a nivel de dominio o de módulo).
+

@@ -1,0 +1,8 @@
+{
+  "description": "Guía de desarrollo del proyecto siguiendo DDD y Arquitectura Hexagonal. Se aplica a todos los archivos de código fuente (Java) para asegurar la consistencia en la estructura, nomenclatura y patrones.",
+  "globs": [
+    "code/**/*.java"
+  ],
+  "alwaysApply": false
+}
+
