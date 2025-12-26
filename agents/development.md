@@ -1,11 +1,16 @@
 ---
-alwaysApply: true
-path: code/**
+globs: code/**/*.java
+alwaysApply: false
 ---
-
 # Guía de Desarrollo (DDD + Arquitectura Hexagonal)
 
 Sigue estas reglas al desarrollar código en la carpeta `code/`. El objetivo es mantener el código desacoplado, testable y centrado en la lógica de negocio.
+
+## Comandos
+
+*   Para compilar el proyecto: ejecutar `task build` en el directorio raiz del proyecto.
+*   Para ejecutar los test del proyecto: ejecutar `task test` en el directorio raiz del proyecto.
+*   Para arrancar la aplicación: ejecutar `task env-up` (arrancar contenendores) y `task start` (ejecutar la aplicación) en el directorio raíz del proyecto.
 
 ## Estructura de Capas
 Por cada Aggregate Root o Proyección, el código se divide en:
@@ -40,4 +45,8 @@ Por cada Aggregate Root o Proyección, el código se divide en:
 *   **Sin Comentarios**: El código debe ser auto-explicativo. Solo usar comentarios para aclarar integraciones externas o decisiones de diseño críticas.
 *   **Shared**: El código reutilizable debe ir a paquetes `shared` (a nivel de dominio o de módulo).
 
+
+## Otras convenciiones
+
+*   Ejecutar todos los test después de generar o modificar una funcionalidad, para comprobar que no se ha alterado el comportamiento de la aplicación.
 
