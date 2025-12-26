@@ -47,41 +47,45 @@ class GetMedicalCenterUseCaseTest {
   }
 
   private MedicalCenter createTestMedicalCenter(MedicalCenterId id) {
+    var provinceCode = com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("28");
+    var address = new com.jeferro.ecommerce.medical_centers.medical_centers.domain.models.Address(
+        com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("1"),
+        "Calle Test",
+        "1",
+        null,
+        null,
+        "28001",
+        "Madrid",
+        provinceCode,
+        com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("1")
+    );
+
     return MedicalCenter.create(
-        id,
-        com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("28"),
-        1L,
-        "holder-001",
-        null,
-        null,
-        "Centro Médico Test",
-        java.time.LocalDate.now(),
-        new com.jeferro.ecommerce.medical_centers.medical_centers.domain.models.Address(
-            com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("1"),
-            "Calle Test",
-            "1",
-            null,
-            null,
-            "28001",
-            "Madrid",
-            com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("28"),
-            com.jeferro.ecommerce.support.parametrics.domain.models.values.ParametricValueId.createOf("1")
-        ),
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
+        id,                                    // MedicalCenterId id
+        provinceCode,                          // ParametricValueId provinceCode
+        1L,                                    // long sequentialNumber
+        "holder-001",                          // String holderId
+        null,                                  // String groupCode
+        null,                                  // ParametricValueId treatment
+        "Centro Medico Test",                 // String name
+        java.time.LocalDate.now(),            // LocalDate registrationDate
+        address,                               // Address address
+        null,                                  // List<String> phones
+        null,                                  // HealthAuthorization healthAuthorization
+        null,                                  // CenterClass centerClass
+        null,                                  // Contact portalContact
+        null,                                  // Contact communicationContact
+        null,                                  // Contact medicalDirectionContact
+        null,                                  // List<Contact> billingContacts
+        null,                                  // List<Contact> authorizationContacts
+        null,                                  // Boolean publishableInGuides
+        null,                                  // Boolean onlineAppointment
+        null,                                  // LocalDate validityPeriodEndDate
+        null,                                  // BillingIndicators billingIndicators
+        null,                                  // BankAccount bankAccount
+        null,                                  // List<Observation> observations
+        null,                                  // String billingCenter
+        null                                   // String healthComplex
     );
   }
 }

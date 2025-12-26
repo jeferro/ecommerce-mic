@@ -49,11 +49,11 @@ components:
     medicalCenterIdPath:
       name: medicalCenterId
       in: path
-      description: Medical center id
+      description: Medical center id (code)
       required: true
       schema:
         type: string
-      example: 'medical-center-001'
+      example: '2800001'
 
   schemas:
     MedicalCenter:
@@ -61,7 +61,6 @@ components:
       description: Medical center
       required:
         - id
-        - code
         - holderId
         - name
         - registrationDate
@@ -75,11 +74,7 @@ components:
       properties:
         id:
           type: string
-          description: Identifier of the medical center
-          example: 'medical-center-001'
-        code:
-          type: string
-          description: Code of the medical center
+          description: Identifier of the medical center (code)
           example: '2800001'
         holderId:
           type: string
@@ -90,7 +85,9 @@ components:
           description: Group code
           example: 'group-001'
         treatment:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Treatment parametric value id
+          example: '1'
         name:
           type: string
           description: Name of the medical center
@@ -103,7 +100,7 @@ components:
         address:
           $ref: '#/components/schemas/Address'
         phones:
-          type: arrayx
+          type: array
           items:
             type: string
           description: List of phone numbers
@@ -117,7 +114,8 @@ components:
           format: date
           description: Deactivation date
         deactivationReason:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Deactivation reason parametric value id
         status:
           $ref: '#/components/schemas/MedicalCenterStatus'
         portalContact:
@@ -174,19 +172,6 @@ components:
         metadata:
           $ref: '../shared.yml#/components/schemas/Metadata'
 
-    ParametricValue:
-      type: object
-      description: Parametric value
-      properties:
-        id:
-          type: string
-          description: Identifier of the parametric value
-          example: '1'
-        name:
-          type: string
-          description: Name of the parametric value
-          example: 'Doctor'
-
     Address:
       type: object
       description: Address
@@ -194,7 +179,9 @@ components:
         - streetType
       properties:
         streetType:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Street type parametric value id
+          example: '1'
         streetName:
           type: string
           description: Street name
@@ -220,9 +207,13 @@ components:
           description: City
           example: 'Madrid'
         province:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Province parametric value id
+          example: '28'
         country:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Country parametric value id
+          example: '1'
 
     Contact:
       type: object
@@ -254,7 +245,8 @@ components:
       description: Health authorization
       properties:
         autonomousCommunity:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Autonomous community parametric value id
         registrationNumber:
           type: string
           description: Registration number
@@ -271,13 +263,13 @@ components:
         hospitalClasses:
           type: array
           items:
-            $ref: '#/components/schemas/ParametricValue'
-          description: List of hospital classes
+            type: string
+          description: List of hospital classes parametric value ids
         extrahospitalClasses:
           type: array
           items:
-            $ref: '#/components/schemas/ParametricValue'
-          description: List of extrahospital classes
+            type: string
+          description: List of extrahospital classes parametric value ids
 
     CenterClassType:
       type: string
@@ -323,7 +315,8 @@ components:
       description: Billing indicators
       properties:
         changeReasons:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Change reasons parametric value id
         ownershipChange:
           type: boolean
           description: Ownership change
@@ -351,7 +344,8 @@ components:
           type: boolean
           description: Whether reconciles
         reconciliationMethod:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Reconciliation method parametric value id
         startDate:
           type: string
           format: date
@@ -361,7 +355,8 @@ components:
           format: date
           description: End date
         changeReason:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Change reason parametric value id
         ownershipChange:
           type: boolean
           description: Ownership change
@@ -389,7 +384,8 @@ components:
           description: End date
           example: '2024-12-31'
         changeReason:
-          $ref: '#/components/schemas/ParametricValue'
+          type: string
+          description: Change reason parametric value id
         ownershipChange:
           type: boolean
           description: Ownership change
