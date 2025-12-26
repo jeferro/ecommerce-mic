@@ -1,0 +1,462 @@
+openapi: "3.0.0"
+
+info:
+  version: 1.0.0
+  title: Medical Centers Rest API
+  description: API rest of medical centers
+
+servers:
+  - url: http://localhost:8080
+    description: Local
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Medical Centers
+    description: Section of the medical centers
+
+paths:
+  /v1/medical-centers/{medicalCenterId}:
+    get:
+      operationId: get-medical-center
+      summary: Get medical center
+      description: Get medical center
+      tags:
+        - Medical Centers
+      parameters:
+        - $ref: '#/components/parameters/medicalCenterIdPath'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalCenter'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT security
+
+  parameters:
+    medicalCenterIdPath:
+      name: medicalCenterId
+      in: path
+      description: Medical center id
+      required: true
+      schema:
+        type: string
+      example: 'medical-center-001'
+
+  schemas:
+    MedicalCenter:
+      type: object
+      description: Medical center
+      required:
+        - id
+        - code
+        - holderId
+        - name
+        - registrationDate
+        - address
+        - status
+        - publishableInGuides
+        - onlineAppointment
+        - validityPeriod
+        - version
+        - metadata
+      properties:
+        id:
+          type: string
+          description: Identifier of the medical center
+          example: 'medical-center-001'
+        code:
+          type: string
+          description: Code of the medical center
+          example: '2800001'
+        holderId:
+          type: string
+          description: Identifier of the holder
+          example: 'holder-001'
+        groupCode:
+          type: string
+          description: Group code
+          example: 'group-001'
+        treatment:
+          $ref: '#/components/schemas/ParametricValue'
+        name:
+          type: string
+          description: Name of the medical center
+          example: 'Centro Médico Ejemplo'
+        registrationDate:
+          type: string
+          format: date
+          description: Registration date
+          example: '2024-01-15'
+        address:
+          $ref: '#/components/schemas/Address'
+        phones:
+          type: arrayx
+          items:
+            type: string
+          description: List of phone numbers
+          example: ['+34 912345678']
+        healthAuthorization:
+          $ref: '#/components/schemas/HealthAuthorization'
+        centerClass:
+          $ref: '#/components/schemas/CenterClass'
+        deactivationDate:
+          type: string
+          format: date
+          description: Deactivation date
+        deactivationReason:
+          $ref: '#/components/schemas/ParametricValue'
+        status:
+          $ref: '#/components/schemas/MedicalCenterStatus'
+        portalContact:
+          $ref: '#/components/schemas/Contact'
+        communicationContact:
+          $ref: '#/components/schemas/Contact'
+        medicalDirectionContact:
+          $ref: '#/components/schemas/Contact'
+        billingContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          description: List of billing contacts
+        authorizationContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          description: List of authorization contacts
+        publishableInGuides:
+          type: boolean
+          description: Whether the medical center is publishable in guides
+          example: true
+        onlineAppointment:
+          type: boolean
+          description: Whether online appointment is available
+          example: false
+        validityPeriod:
+          $ref: '#/components/schemas/ValidityPeriod'
+        billingIndicators:
+          $ref: '#/components/schemas/BillingIndicators'
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+        observations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Observation'
+          description: List of observations
+        holderHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/HolderHistoryEntry'
+          description: List of holder history entries
+        billingCenter:
+          type: string
+          description: Billing center
+        healthComplex:
+          type: string
+          description: Health complex
+        version:
+          type: integer
+          format: int64
+          description: Version of the entity
+          example: 1
+        metadata:
+          $ref: '../shared.yml#/components/schemas/Metadata'
+
+    ParametricValue:
+      type: object
+      description: Parametric value
+      properties:
+        id:
+          type: string
+          description: Identifier of the parametric value
+          example: '1'
+        name:
+          type: string
+          description: Name of the parametric value
+          example: 'Doctor'
+
+    Address:
+      type: object
+      description: Address
+      required:
+        - streetType
+      properties:
+        streetType:
+          $ref: '#/components/schemas/ParametricValue'
+        streetName:
+          type: string
+          description: Street name
+          example: 'Calle Mayor'
+        number:
+          type: string
+          description: Street number
+          example: '10'
+        floor:
+          type: string
+          description: Floor
+          example: '2'
+        door:
+          type: string
+          description: Door
+          example: 'A'
+        postalCode:
+          type: string
+          description: Postal code
+          example: '28001'
+        city:
+          type: string
+          description: City
+          example: 'Madrid'
+        province:
+          $ref: '#/components/schemas/ParametricValue'
+        country:
+          $ref: '#/components/schemas/ParametricValue'
+
+    Contact:
+      type: object
+      description: Contact
+      properties:
+        name:
+          type: string
+          description: Name of the contact
+          example: 'Juan Pérez'
+        nif:
+          type: string
+          description: NIF
+          example: '12345678A'
+        phone:
+          type: string
+          description: Phone number
+          example: '+34 912345678'
+        email:
+          type: string
+          format: email
+          description: Email address
+          example: 'juan.perez@example.com'
+        ppsPartialAdminUserCode:
+          type: string
+          description: PPS partial admin user code
+
+    HealthAuthorization:
+      type: object
+      description: Health authorization
+      properties:
+        autonomousCommunity:
+          $ref: '#/components/schemas/ParametricValue'
+        registrationNumber:
+          type: string
+          description: Registration number
+          example: 'REG123456'
+
+    CenterClass:
+      type: object
+      description: Center class
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/CenterClassType'
+        hospitalClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParametricValue'
+          description: List of hospital classes
+        extrahospitalClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParametricValue'
+          description: List of extrahospital classes
+
+    CenterClassType:
+      type: string
+      description: Center class type
+      enum:
+        - HOSPITAL
+        - EXTRASHOSPITAL
+      x-enum-varnames:
+        - HOSPITAL
+        - EXTRASHOSPITAL
+
+    MedicalCenterStatus:
+      type: string
+      description: Medical center status
+      enum:
+        - INACTIVE
+        - ACTIVE
+        - DEACTIVATED
+      x-enum-varnames:
+        - INACTIVE
+        - ACTIVE
+        - DEACTIVATED
+
+    ValidityPeriod:
+      type: object
+      description: Validity period
+      required:
+        - startDate
+      properties:
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          example: '2024-01-01'
+        endDate:
+          type: string
+          format: date
+          description: End date
+          example: '2024-12-31'
+
+    BillingIndicators:
+      type: object
+      description: Billing indicators
+      properties:
+        changeReasons:
+          $ref: '#/components/schemas/ParametricValue'
+        ownershipChange:
+          type: boolean
+          description: Ownership change
+        pendingAssistancePayment:
+          type: boolean
+          description: Pending assistance payment
+        notApplicablePreviousIndicator:
+          type: boolean
+          description: Not applicable previous indicator
+        reconciliation:
+          $ref: '#/components/schemas/Reconciliation'
+        changeHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingIndicatorChange'
+          description: List of billing indicator changes
+
+    Reconciliation:
+      type: object
+      description: Reconciliation
+      required:
+        - reconciles
+      properties:
+        reconciles:
+          type: boolean
+          description: Whether reconciles
+        reconciliationMethod:
+          $ref: '#/components/schemas/ParametricValue'
+        startDate:
+          type: string
+          format: date
+          description: Start date
+        endDate:
+          type: string
+          format: date
+          description: End date
+        changeReason:
+          $ref: '#/components/schemas/ParametricValue'
+        ownershipChange:
+          type: boolean
+          description: Ownership change
+        pendingAssistancePayment:
+          type: boolean
+          description: Pending assistance payment
+        notApplicablePreviousIndicator:
+          type: boolean
+          description: Not applicable previous indicator
+
+    BillingIndicatorChange:
+      type: object
+      description: Billing indicator change
+      required:
+        - startDate
+      properties:
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          example: '2024-01-01'
+        endDate:
+          type: string
+          format: date
+          description: End date
+          example: '2024-12-31'
+        changeReason:
+          $ref: '#/components/schemas/ParametricValue'
+        ownershipChange:
+          type: boolean
+          description: Ownership change
+        pendingAssistancePayment:
+          type: boolean
+          description: Pending assistance payment
+        notApplicablePreviousIndicator:
+          type: boolean
+          description: Not applicable previous indicator
+
+    BankAccount:
+      type: object
+      description: Bank account
+      properties:
+        iban:
+          type: string
+          description: IBAN
+          example: 'ES9121000418450200051332'
+        swift:
+          type: string
+          description: SWIFT code
+          example: 'CAIXESBBXXX'
+        accountHolder:
+          type: string
+          description: Account holder
+          example: 'Centro Médico Ejemplo S.L.'
+
+    Observation:
+      type: object
+      description: Observation
+      required:
+        - publishable
+        - text
+      properties:
+        publishable:
+          type: boolean
+          description: Whether the observation is publishable
+        text:
+          type: string
+          description: Text of the observation
+          example: 'Observación importante'
+
+    HolderHistoryEntry:
+      type: object
+      description: Holder history entry
+      required:
+        - holderCode
+        - holderName
+        - registrationDate
+      properties:
+        holderCode:
+          type: string
+          description: Holder code
+          example: 'holder-001'
+        holderName:
+          type: string
+          description: Holder name
+          example: 'Titular Ejemplo S.L.'
+        registrationDate:
+          type: string
+          format: date
+          description: Registration date
+          example: '2024-01-01'
+        deactivationDate:
+          type: string
+          format: date
+          description: Deactivation date
+          example: '2024-12-31'
+
+

@@ -32,3 +32,4 @@ public class HealthAuthorization extends ValueObject {
   }
 }
 
+

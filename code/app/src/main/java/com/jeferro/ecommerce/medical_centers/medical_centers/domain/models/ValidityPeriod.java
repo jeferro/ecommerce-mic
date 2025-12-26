@@ -24,3 +24,4 @@ public class ValidityPeriod extends ValueObject {
   }
 }
 
+

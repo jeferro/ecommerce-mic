@@ -57,3 +57,4 @@ public class MedicalCenterCriteria extends DomainCriteria<MedicalCenterOrder> {
   }
 }
 
+

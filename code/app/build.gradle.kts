@@ -59,6 +59,11 @@ apiFirstGenerator {
             name = "reviews-v1"
             basePackage = "com.jeferro.ecommerce.products.reviews.infrastructure.rest_api.v1"
             specFile = file("${projectDir}/../../apis/rest/v1/reviews/reviews.yml")
+        },
+        ApiFirstGeneratorSpec().apply {
+            name = "medical-centers-v1"
+            basePackage = "com.jeferro.ecommerce.medical_centers.medical_centers.infrastructure.rest_api.v1"
+            specFile = file("${projectDir}/../../apis/rest/v1/medical_centers/medical_centers.yml")
         }
     )
 }

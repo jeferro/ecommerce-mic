@@ -36,3 +36,4 @@ public interface MedicalCenterRepository {
   long count(MedicalCenterCriteria criteria);
 }
 
+
