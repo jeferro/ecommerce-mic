@@ -17,6 +17,29 @@ tags:
     description: Section of the medical centers
 
 paths:
+  /v1/medical-centers:
+    post:
+      operationId: create-medical-center
+      summary: Create medical center
+      description: Create medical center
+      tags:
+        - Medical Centers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMedicalCenterInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalCenter'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
   /v1/medical-centers/{medicalCenterId}:
     get:
       operationId: get-medical-center
@@ -56,6 +79,90 @@ components:
       example: '2800001'
 
   schemas:
+    CreateMedicalCenterInput:
+      type: object
+      description: Create medical center input
+      required:
+        - holderId
+        - name
+        - registrationDate
+        - address
+      properties:
+        holderId:
+          type: string
+          description: Identifier of the holder
+          example: 'holder-001'
+        groupCode:
+          type: string
+          description: Group code
+          example: 'group-001'
+        treatment:
+          type: string
+          description: Treatment parametric value id
+          example: '1'
+        name:
+          type: string
+          description: Name of the medical center
+          example: 'Centro Medico Ejemplo'
+        registrationDate:
+          type: string
+          format: date
+          description: Registration date
+          example: '2024-01-15'
+        address:
+          $ref: '#/components/schemas/Address'
+        phones:
+          type: array
+          items:
+            type: string
+          description: List of phone numbers
+          example: ['+34 912345678']
+        healthAuthorization:
+          $ref: '#/components/schemas/HealthAuthorization'
+        centerClass:
+          $ref: '#/components/schemas/CenterClass'
+        portalContact:
+          $ref: '#/components/schemas/Contact'
+        communicationContact:
+          $ref: '#/components/schemas/Contact'
+        medicalDirectionContact:
+          $ref: '#/components/schemas/Contact'
+        billingContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          description: List of billing contacts
+        authorizationContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          description: List of authorization contacts
+        publishableInGuides:
+          type: boolean
+          description: Whether the medical center is publishable in guides
+          example: true
+        onlineAppointment:
+          type: boolean
+          description: Whether online appointment is available
+          example: false
+        validityPeriod:
+          $ref: '#/components/schemas/ValidityPeriod'
+        billingIndicators:
+          $ref: '#/components/schemas/BillingIndicators'
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+        observations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Observation'
+          description: List of observations
+        billingCenter:
+          type: string
+          description: Billing center
+        healthComplex:
+          type: string
+          description: Health complex
+
     MedicalCenter:
       type: object
       description: Medical center
