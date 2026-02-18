@@ -23,8 +23,6 @@ tasks:
       - echo "✅ Asdf tools installed successfully"
       - echo ""
 
-      - task: build
-
   env-up:
     desc: "Start environment"
     silent: true
@@ -45,14 +43,14 @@ tasks:
       - echo "✅ Environment stopped successfully"
       - echo ""
 
-  build:
-    desc: "Build project"
+  compile:
+    desc: "Compile project"
     silent: true
     dir: "{{.CODE_DIR}}"
     cmds:
-      - echo "## Building project..."
-      - gradle clean build -x test
-      - echo "✅ Project built successfully"
+      - echo "## Compile project..."
+      - gradle clean classes -x test
+      - echo "✅ Project compiled successfully"
       - echo ""
 
   test:

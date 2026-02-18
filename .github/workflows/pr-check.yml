@@ -7,14 +7,11 @@ on:
       - opened
       - synchronize
       - reopened
-    paths:
-      - code/**
-      - apis/**
 
 jobs:
 
-  build:
-    name: Build
+  compile:
+    name: Compile
     runs-on: ubuntu-latest
     env:
       # disable default JVM in container
@@ -23,14 +20,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Task
-        uses: go-task/setup-task@v1
+      - name: Install Tools
+        uses: ./.github/actions/tools-install
 
-      - name: Install ASDF
-        uses: ./.github/actions/asdf-install
-
-      - name: Build
-        run: task build
+      - name: Compile
+        run: task compile
 
   test:
     name: Test
@@ -42,11 +36,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Task
-        uses: go-task/setup-task@v1
-
-      - name: Install ASDF
-        uses: ./.github/actions/asdf-install
+      - name: Install Tools
+        uses: ./.github/actions/tools-install
 
       - name: Test
-        run: task build
+        run: task test
