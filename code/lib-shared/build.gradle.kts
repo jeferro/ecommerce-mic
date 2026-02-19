@@ -8,6 +8,9 @@ plugins {
 
 dependencies {
     // Spring
+    implementation("com.fasterxml.uuid", "java-uuid-generator", Versions.fasterxml)
+
+    // Spring
     implementation("org.springframework.boot", "spring-boot-starter")
     api("org.springframework.boot", "spring-boot-starter-security")
     api("org.springframework.boot", "spring-boot-starter-aop")

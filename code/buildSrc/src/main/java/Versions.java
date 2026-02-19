@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.Nullable;
+
 public interface Versions {
 
   int java = 25;
@@ -29,4 +31,6 @@ public interface Versions {
   String arch_unit = "1.4.1";
 
   String commons_compress = "1.28.0";
+
+  String fasterxml = "5.1.0";
 }
