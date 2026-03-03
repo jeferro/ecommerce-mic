@@ -2,7 +2,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Versions {
 
-  int java = 25;
+  int java = 21;
 
   String spring_boot = "3.5.6";
 
@@ -25,6 +25,10 @@ public interface Versions {
   String mapstruct = "1.6.3";
 
   String jacoco = "0.8.13";
+
+  String pitest_plugin = "1.15.0";
+
+  String pitest_junit5_plugin = "1.2.2";
 
   String approval_tests = "25.4.3";
 

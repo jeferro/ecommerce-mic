@@ -6,6 +6,7 @@ plugins {
     id("io.spring.dependency-management")
     id("com.jeferro.plugins.avro-generator")
     id("com.jeferro.plugins.api-first-generator")
+    id("info.solidsoft.pitest")
 }
 
 dependencies {
@@ -16,6 +17,7 @@ dependencies {
 
     // Test
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation("com.tngtech.archunit", "archunit", Versions.arch_unit)
 
@@ -38,6 +40,23 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Checkstyle> {
     exclude("**/generated/**", "**/generated-resources/**", "**/build/**")
+}
+
+// Mutation Test
+pitest {
+    junit5PluginVersion = Versions.pitest_junit5_plugin
+    targetClasses = setOf("com.jeferro.ecommerce.*")
+    excludedClasses = setOf(
+        "com.jeferro.ecommerce.**.*Application*",
+        "com.jeferro.ecommerce.**.*Configuration*",
+        "com.jeferro.ecommerce.**.dtos.*",
+        "com.jeferro.ecommerce.**.daos.*",
+        "com.jeferro.ecommerce.**.params.*",
+        "com.jeferro.ecommerce.**.mappers.*"
+    )
+    outputFormats = setOf("HTML", "XML")
+    timestampedReports = false
+    threads = Runtime.getRuntime().availableProcessors()
 }
 
 
