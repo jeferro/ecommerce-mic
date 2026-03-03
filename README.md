@@ -17,8 +17,8 @@ We need the next tools to develop application:
 
 * [ASDF](https://asdf-vm.com/)
 * [Task](https://taskfile.dev)
-* Podman
-* Podman compose
+* Docker
+* Docker compose
 
 
 ### Installation
