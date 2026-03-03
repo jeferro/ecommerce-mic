@@ -1,8 +1,5 @@
 package com.jeferro.shared.ddd.domain.models.aggregates;
 
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.NoArgGenerator;
-
 public abstract class UUID extends StringIdentifier {
 
   public UUID(String value) {
@@ -10,8 +7,6 @@ public abstract class UUID extends StringIdentifier {
   }
 
   protected static String generateUuid() {
-    NoArgGenerator timeBasedGenerator = Generators.timeBasedEpochGenerator();
-
-    return timeBasedGenerator.generate().toString();
+    return java.util.UUID.randomUUID().toString();
   }
 }
