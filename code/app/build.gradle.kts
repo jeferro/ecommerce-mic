@@ -42,6 +42,7 @@ tasks.withType<Checkstyle> {
     exclude("**/generated/**", "**/generated-resources/**", "**/build/**")
 }
 
+
 // Mutation Test
 pitest {
     junit5PluginVersion = Versions.pitest_junit5_plugin
