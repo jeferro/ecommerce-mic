@@ -1,6 +1,6 @@
 public interface Versions {
 
-  int java = 21;
+  int java = 25;
 
   String spring_boot = "3.5.6";
 
@@ -24,7 +24,7 @@ public interface Versions {
 
   String jacoco = "0.8.13";
 
-  String pitest_plugin = "1.15.0";
+  String pitest_plugin = "1.19.0-rc.3";
 
   String pitest_junit5_plugin = "1.2.2";
 

@@ -17,7 +17,6 @@ dependencies {
 
     // Test
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation("com.tngtech.archunit", "archunit", Versions.arch_unit)
 
@@ -30,7 +29,6 @@ dependencies {
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-parameters")
 }
-
 
 
 // Mapstruct
