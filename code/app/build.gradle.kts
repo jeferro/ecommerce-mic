@@ -6,6 +6,7 @@ plugins {
     id("io.spring.dependency-management")
     id("com.jeferro.plugins.avro-generator")
     id("com.jeferro.plugins.api-first-generator")
+    id("info.solidsoft.pitest")
 }
 
 dependencies {
@@ -30,7 +31,6 @@ tasks.withType<JavaCompile> {
 }
 
 
-
 // Mapstruct
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-Amapstruct.unmappedTargetPolicy=ERROR")
@@ -38,6 +38,24 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Checkstyle> {
     exclude("**/generated/**", "**/generated-resources/**", "**/build/**")
+}
+
+
+// Mutation Test
+pitest {
+    junit5PluginVersion = Versions.pitest_junit5_plugin
+    targetClasses = setOf("com.jeferro.ecommerce.*")
+    excludedClasses = setOf(
+        "com.jeferro.ecommerce.**.*Application*",
+        "com.jeferro.ecommerce.**.*Configuration*",
+        "com.jeferro.ecommerce.**.dtos.*",
+        "com.jeferro.ecommerce.**.daos.*",
+        "com.jeferro.ecommerce.**.params.*",
+        "com.jeferro.ecommerce.**.mappers.*"
+    )
+    outputFormats = setOf("HTML", "XML")
+    timestampedReports = false
+    threads = Runtime.getRuntime().availableProcessors()
 }
 
 

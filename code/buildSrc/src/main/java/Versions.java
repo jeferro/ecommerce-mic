@@ -26,6 +26,10 @@ public interface Versions {
 
   String jacoco = "0.8.13";
 
+  String pitest_plugin = "1.19.0-rc.3";
+
+  String pitest_junit5_plugin = "1.2.2";
+
   String approval_tests = "25.4.3";
 
   String arch_unit = "1.4.1";

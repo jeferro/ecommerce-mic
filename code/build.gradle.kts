@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version Versions.spring_dependency_management apply false
     id("com.jeferro.plugins.api-first-generator") apply false
     id("com.jeferro.plugins.avro-generator") apply false
+    id("info.solidsoft.pitest") version Versions.pitest_plugin apply false
 }
 
 
