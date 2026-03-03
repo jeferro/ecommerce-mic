@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.Nullable;
-
 public interface Versions {
 
   int java = 21;
