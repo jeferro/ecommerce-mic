@@ -12,8 +12,8 @@ import com.jeferro.ecommerce.products.reviews.domain.exceptions.ReviewAlreadyExi
 import com.jeferro.ecommerce.products.reviews.domain.models.EntityId;
 import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewMother;
-import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
+import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsFakeRepository;
+import com.jeferro.ecommerce.shared.domain.events.EventFakeBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import com.jeferro.shared.ddd.domain.models.auth.Auth;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,18 +21,18 @@ import org.junit.jupiter.api.Test;
 
 class CreateReviewUseCaseTest {
 
-  private ReviewsInMemoryRepository reviewsInMemoryRepository;
+  private ReviewsFakeRepository reviewsFakeRepository;
 
-  private EventInMemoryBus eventInMemoryBus;
+  private EventFakeBus eventFakeBus;
 
   private CreateReviewUseCase createReviewUseCase;
 
   @BeforeEach
   public void beforeEach() {
-    reviewsInMemoryRepository = new ReviewsInMemoryRepository();
-    eventInMemoryBus = new EventInMemoryBus();
+    reviewsFakeRepository = new ReviewsFakeRepository();
+    eventFakeBus = new EventFakeBus();
 
-    createReviewUseCase = new CreateReviewUseCase(reviewsInMemoryRepository, eventInMemoryBus);
+    createReviewUseCase = new CreateReviewUseCase(reviewsFakeRepository, eventFakeBus);
   }
 
   @Test
@@ -69,11 +69,11 @@ class CreateReviewUseCaseTest {
   }
 
   private void assertReviewInDatabase(Review result) {
-    assertTrue(reviewsInMemoryRepository.contains(result));
+    assertTrue(reviewsFakeRepository.contains(result));
   }
 
   private void assertReviewCreatedWasPublished(Review result) {
-    var event = eventInMemoryBus.filterOfClass(ReviewCreated.class).findFirst();
+    var event = eventFakeBus.filterOfClass(ReviewCreated.class).findFirst();
 
     if (event.isEmpty()) {
       fail();

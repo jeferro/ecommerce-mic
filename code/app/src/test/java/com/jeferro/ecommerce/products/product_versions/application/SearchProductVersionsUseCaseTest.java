@@ -6,22 +6,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.jeferro.ecommerce.products.product_versions.application.params.SearchProductVersionsParams;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
 import com.jeferro.ecommerce.products.product_versions.domain.models.criteria.ProductVersionCriteria;
-import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionInMemoryRepository;
+import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionFakeRepository;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SearchProductVersionsUseCaseTest {
 
-  private ProductVersionInMemoryRepository productsInMemoryRepository;
+  private ProductVersionFakeRepository productVersionFakeRepository;
 
   private SearchProductVersionsUseCase searchProductVersionsUseCase;
 
   @BeforeEach
   void beforeEach() {
-    productsInMemoryRepository = new ProductVersionInMemoryRepository();
+    productVersionFakeRepository = new ProductVersionFakeRepository();
 
-    searchProductVersionsUseCase = new SearchProductVersionsUseCase(productsInMemoryRepository);
+    searchProductVersionsUseCase = new SearchProductVersionsUseCase(productVersionFakeRepository);
   }
 
   @Test
@@ -52,7 +52,7 @@ class SearchProductVersionsUseCaseTest {
 
   @Test
   void should_returnEmptyList_when_productsNotExist() {
-    productsInMemoryRepository.clear();
+    productVersionFakeRepository.clear();
 
     var params = new SearchProductVersionsParams(ProductVersionCriteria.allPage());
 

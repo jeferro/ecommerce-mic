@@ -7,7 +7,7 @@ import com.jeferro.ecommerce.products.product_versions.domain.models.ProductCode
 import com.jeferro.ecommerce.products.reviews.application.params.SearchReviewParams;
 import com.jeferro.ecommerce.products.reviews.domain.models.EntityId;
 import com.jeferro.ecommerce.products.reviews.domain.models.criteria.ReviewCriteria;
-import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsInMemoryRepository;
+import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsFakeRepository;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ class SearchReviewUseCaseTest {
 
   @BeforeEach
   public void beforeEach() {
-    ReviewsInMemoryRepository reviewsInMemoryRepository = new ReviewsInMemoryRepository();
+    ReviewsFakeRepository reviewsInMemoryRepository = new ReviewsFakeRepository();
 
     searchReviewUseCase = new SearchReviewUseCase(reviewsInMemoryRepository);
   }

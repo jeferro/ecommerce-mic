@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ParametricInMemoryFinder implements ParametricFinder {
+public class ParametricFakeFinder implements ParametricFinder {
 
   private final List<Parametric> parametrics = List.of(mockProductType());
 

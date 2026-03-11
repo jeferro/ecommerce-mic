@@ -10,8 +10,8 @@ import com.jeferro.ecommerce.products.product_versions.domain.events.ProductVers
 import com.jeferro.ecommerce.products.product_versions.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersion;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
-import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionInMemoryRepository;
-import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
+import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionFakeRepository;
+import com.jeferro.ecommerce.shared.domain.events.EventFakeBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import com.jeferro.shared.ddd.domain.exceptions.IncorrectVersionException;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
@@ -20,18 +20,18 @@ import org.junit.jupiter.api.Test;
 
 class UpdateProductVersionUseCaseTest {
 
-  private ProductVersionInMemoryRepository productsInMemoryRepository;
+  private ProductVersionFakeRepository productVersionFakeRepository;
 
-  private EventInMemoryBus eventInMemoryBus;
+  private EventFakeBus eventFakeBus;
 
   private UpdateProductVersionUseCase updateProductVersionUseCase;
 
   @BeforeEach
   void beforeEach() {
-    eventInMemoryBus = new EventInMemoryBus();
-    productsInMemoryRepository = new ProductVersionInMemoryRepository();
+    eventFakeBus = new EventFakeBus();
+    productVersionFakeRepository = new ProductVersionFakeRepository();
 
-    updateProductVersionUseCase = new UpdateProductVersionUseCase(productsInMemoryRepository, eventInMemoryBus);
+    updateProductVersionUseCase = new UpdateProductVersionUseCase(productVersionFakeRepository, eventFakeBus);
   }
 
   @Test
@@ -86,11 +86,11 @@ class UpdateProductVersionUseCaseTest {
   }
 
   private void assertProductDataInDatabase(ProductVersion result) {
-    assertTrue(productsInMemoryRepository.contains(result));
+    assertTrue(productVersionFakeRepository.contains(result));
   }
 
   private void assertProductUpdatedWasPublished(ProductVersion productVersion) {
-    var event = eventInMemoryBus.filterOfClass(ProductVersionUpdated.class).findFirst();
+    var event = eventFakeBus.filterOfClass(ProductVersionUpdated.class).findFirst();
 
     if (event.isEmpty()) {
       fail();

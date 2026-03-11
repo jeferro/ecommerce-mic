@@ -43,9 +43,7 @@ public class DeleteAllReviewsOfEntityIdUseCase extends UseCase<DeleteAllReviewsO
   }
 
   private int calculateTotalPages(DeleteAllReviewsOfEntityIdParams params) {
-    var allByEntityIdCriteria = ReviewCriteria.allByEntityId(params.getEntityId());
-
-    var totalReviews = reviewsRepository.count(allByEntityIdCriteria);
+    var totalReviews = reviewsRepository.countAllByEntity(params.getEntityId());
 
 	return PageUtils.calculateTotalPages(totalReviews, PAGE_SIZE);
   }

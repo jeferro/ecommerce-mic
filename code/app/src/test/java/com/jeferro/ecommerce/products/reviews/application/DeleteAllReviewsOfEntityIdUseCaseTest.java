@@ -10,8 +10,8 @@ import com.jeferro.ecommerce.products.reviews.domain.events.ReviewDeleted;
 import com.jeferro.ecommerce.products.reviews.domain.models.EntityId;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewId;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewMother;
-import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
+import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsFakeRepository;
+import com.jeferro.ecommerce.shared.domain.events.EventFakeBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,19 +20,19 @@ import org.junit.jupiter.api.Test;
 
 class DeleteAllReviewsOfEntityIdUseCaseTest {
 
-  private ReviewsInMemoryRepository reviewsInMemoryRepository;
+  private ReviewsFakeRepository reviewsFakeRepository;
 
-  private EventInMemoryBus eventInMemoryBus;
+  private EventFakeBus eventFakeBus;
 
   private DeleteAllReviewsOfEntityIdUseCase deleteAllReviewsOfEntityIdUseCase;
 
   @BeforeEach
   public void beforeEach() {
-    reviewsInMemoryRepository = new ReviewsInMemoryRepository();
-    eventInMemoryBus = new EventInMemoryBus();
+    reviewsFakeRepository = new ReviewsFakeRepository();
+    eventFakeBus = new EventFakeBus();
 
     deleteAllReviewsOfEntityIdUseCase =
-        new DeleteAllReviewsOfEntityIdUseCase(reviewsInMemoryRepository, eventInMemoryBus);
+        new DeleteAllReviewsOfEntityIdUseCase(reviewsFakeRepository, eventFakeBus);
   }
 
   @Test
@@ -60,13 +60,13 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
   }
 
   private void assertThereAreNotReviewsOfApple() {
-    assertTrue(reviewsInMemoryRepository.isEmpty());
+    assertTrue(reviewsFakeRepository.isEmpty());
   }
 
   private void assertReviewDeletedWasPublished() {
     Set<ReviewId> notifiedReviewIds = new HashSet<>();
 
-    eventInMemoryBus.forEach(
+    eventFakeBus.forEach(
         event -> {
           assertInstanceOf(ReviewDeleted.class, event);
 
@@ -82,6 +82,6 @@ class DeleteAllReviewsOfEntityIdUseCaseTest {
   }
 
   private void assertNoEventsWerePublished() {
-    assertTrue(eventInMemoryBus.isEmpty());
+    assertTrue(eventFakeBus.isEmpty());
   }
 }

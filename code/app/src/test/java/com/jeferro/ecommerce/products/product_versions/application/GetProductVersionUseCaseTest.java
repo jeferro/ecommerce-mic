@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.jeferro.ecommerce.products.product_versions.application.params.GetProductVersionParams;
 import com.jeferro.ecommerce.products.product_versions.domain.exceptions.ProductVersionNotFoundException;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
-import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionInMemoryRepository;
+import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionFakeRepository;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +17,8 @@ class GetProductVersionUseCaseTest {
 
   @BeforeEach
   void beforeEach() {
-    ProductVersionInMemoryRepository productsInMemoryRepository =
-        new ProductVersionInMemoryRepository();
+    ProductVersionFakeRepository productsInMemoryRepository =
+        new ProductVersionFakeRepository();
 
     getProductVersionUseCase = new GetProductVersionUseCase(productsInMemoryRepository);
   }

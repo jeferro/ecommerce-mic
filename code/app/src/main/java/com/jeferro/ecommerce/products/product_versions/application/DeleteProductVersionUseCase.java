@@ -53,8 +53,7 @@ public class DeleteProductVersionUseCase extends UseCase<DeleteProductVersionPar
   }
 
   private void setEndEffectiveDateOfPreviousVersion(ProductVersionId versionId) {
-    var previousProductVersionCriteria = ProductVersionCriteria.previousProductVersion(versionId);
-    var previousProductVersionOpt = productVersionRepository.findOne(previousProductVersionCriteria);
+    var previousProductVersionOpt = productVersionRepository.findPreviousProductVersion(versionId);
 
     if (previousProductVersionOpt.isEmpty()) {
       return;

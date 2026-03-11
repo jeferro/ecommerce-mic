@@ -55,9 +55,7 @@ public class CreateProductVersionUseCase extends UseCase<CreateProductVersionPar
   }
 
   private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) {
-    var previousVersionCriteria = ProductVersionCriteria.previousProductVersion(versionId);
-
-    var previousVersionOpt = productVersionRepository.findOne(previousVersionCriteria);
+    var previousVersionOpt = productVersionRepository.findPreviousProductVersion(versionId);
 
     if (previousVersionOpt.isEmpty()) {
       return;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class EventInMemoryBus extends EventBus {
+public class EventFakeBus extends EventBus {
 
   private final List<Event> events = new ArrayList<>();
 

@@ -11,26 +11,26 @@ import com.jeferro.ecommerce.products.reviews.domain.exceptions.ReviewDoesNotBel
 import com.jeferro.ecommerce.products.reviews.domain.exceptions.ReviewNotFoundException;
 import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewMother;
-import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
+import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsFakeRepository;
+import com.jeferro.ecommerce.shared.domain.events.EventFakeBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UpdateReviewUseCaseTest {
 
-  private ReviewsInMemoryRepository reviewsInMemoryRepository;
+  private ReviewsFakeRepository reviewsFakeRepository;
 
-  private EventInMemoryBus eventInMemoryBus;
+  private EventFakeBus eventFakeBus;
 
   private UpdateReviewUseCase updateReviewUseCase;
 
   @BeforeEach
   void beforeEach() {
-    reviewsInMemoryRepository = new ReviewsInMemoryRepository();
-    eventInMemoryBus = new EventInMemoryBus();
+    reviewsFakeRepository = new ReviewsFakeRepository();
+    eventFakeBus = new EventFakeBus();
 
-    updateReviewUseCase = new UpdateReviewUseCase(reviewsInMemoryRepository, eventInMemoryBus);
+    updateReviewUseCase = new UpdateReviewUseCase(reviewsFakeRepository, eventFakeBus);
   }
 
   @Test
@@ -77,11 +77,11 @@ class UpdateReviewUseCaseTest {
   }
 
   private void assertReviewInDatabase(Review result) {
-    assertTrue(reviewsInMemoryRepository.contains(result));
+    assertTrue(reviewsFakeRepository.contains(result));
   }
 
   private void assertReviewUpdatedWasPublished(Review result) {
-    var event = eventInMemoryBus.filterOfClass(ReviewUpdated.class).findFirst();
+    var event = eventFakeBus.filterOfClass(ReviewUpdated.class).findFirst();
 
     if (event.isEmpty()) {
       fail();
