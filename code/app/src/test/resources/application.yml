@@ -4,13 +4,9 @@ logging:
     com.jeferro: INFO
 
 
-components:
-  kafka:
-    products:
-      topic: com.jeferro.products.products.test
-
-  rest:
-    security:
+shared:
+  auth:
+    rest:
       issuer: "products"
       duration:
       password: "test"

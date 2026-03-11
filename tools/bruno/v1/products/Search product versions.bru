@@ -1,0 +1,32 @@
+meta {
+  name: Search product versions
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{ecommerce-url}}/v1/products?pageSize=10&pageNumber=0&order=NAME&ascending=false&searchDate=2025-01-15T09:00:00.00Z
+  body: none
+  auth: bearer
+}
+
+params:query {
+  pageSize: 10
+  pageNumber: 0
+  order: NAME
+  ascending: false
+  searchDate: 2025-01-15T09:00:00.00Z
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+auth:bearer {
+  token: {{ecommerce-jwt-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

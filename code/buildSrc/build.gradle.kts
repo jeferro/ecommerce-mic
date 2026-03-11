@@ -12,11 +12,8 @@ repositories {
 
 dependencies {
     implementation("org.apache.avro", "avro-compiler", "1.11.3")
-    api(
-        "org.apache.commons",
-        "commons-compress",
-        "1.25.0"
-    ) // Dependency necessary to solve conflict between avro and spring boot plugin
+    api("org.apache.commons", "commons-compress", "1.25.0")
+    // Dependency necessary to solve conflict between avro and spring boot plugin
 
     implementation("org.openapitools", "openapi-generator-gradle-plugin", "7.5.0")
 }

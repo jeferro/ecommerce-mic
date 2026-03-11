@@ -1,3 +1,0 @@
-data[0] = SearchProductsParams[filter=ProductFilter[name=apple,ascending=true,order=NAME,pageNumber=0,pageSize=10]]
-data[1] = 200
-data[2] = {"pageNumber":0,"pageSize":2,"totalItems":2,"items":[{"code":"apple","typeId":"fruit","name":{"en-US":"Apple"},"status":"PUBLISHED"},{"code":"pear","typeId":"fruit","name":{"en-US":"Pear"},"status":"PUBLISHED"}]}

@@ -7,99 +7,167 @@ on:
       - closed
     branches:
       - main
-      - master
       - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.base_ref }}
+  cancel-in-progress: true
 
 env:
   git_user_name: "github-actions[bot]"
   git_user_email: "github-actions[bot]@users.noreply.github.com"
-  was_merged: ${{ github.event.pull_request.merged == 'true' }}
   is_release: ${{ github.head_ref == 'develop' }}
-  is_hotfix: ${{ startsWith(github.head_ref , 'hotfix') }}
-  is_snapshot: ${{ startsWith(github.head_ref , 'feature') || startsWith(github.head_ref , 'bugfix') }}
 
 jobs:
 
   release-version:
     name: Release version
-    if: ${{ (github.event.pull_request.merged == 'true') && (github.head_ref == 'develop' || startsWith(github.head_ref , 'hotfix')) }}
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
+      - name: Check release is necessary
+        id: check_release
+        run: |
+          if [[ "${{ github.event.pull_request.merged }}" == "true" && \
+                "${{ github.base_ref }}" == "main" && \
+                ( "${{ github.head_ref }}" == "develop" || "${{ github.head_ref }}" =~ ^hotfix ) ]]; then
+            echo "apply_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "apply_release=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout
+        if: steps.check_release.outputs.apply_release == 'true'
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.base_ref }}
           persist-credentials: true
 
       - name: Configure Git
+        if: steps.check_release.outputs.apply_release == 'true'
         run: |
           git config user.name "${{ env.git_user_name }}"
           git config user.email "${{ env.git_user_email }}"
 
+      - name: Install Tools
+        if: steps.check_release.outputs.apply_release == 'true'
+        uses: ./.github/actions/tools-install
+
       - name: Generate release version
+        if: steps.check_release.outputs.apply_release == 'true'
         uses: ./.github/actions/increase-version
         with:
           properties-path: ./code/gradle.properties
           type: ${{ env.is_release && 'release' || 'hotfix' }}
 
       - name: Commit release version
+        if: steps.check_release.outputs.apply_release == 'true'
         run: |
-          MS_VERSION=$(grep "version" ./code/gradle.properties | cut -d'=' -f2)
-        
+          APP_VERSION=$(grep "version" ./code/gradle.properties | cut -d'=' -f2)
+
           git add ./code/gradle.properties
-          
-          git commit -m "Release $MS_VERSION"
-        
+
+          git commit -m "Release $APP_VERSION"
+
           git push origin HEAD
 
+          echo "commit version $APP_VERSION"
+
       - name: Tag release version
+        if: steps.check_release.outputs.apply_release == 'true'
         run: |
-          MS_VERSION=$(grep "version" ./code/gradle.properties | cut -d'=' -f2)
-          
-          git tag -a "$MS_VERSION" -m "New version tag $MS_VERSION"
-          
+          APP_VERSION=$(grep "version" ./code/gradle.properties | cut -d'=' -f2)
+
+          git tag -a "$APP_VERSION" -m "New version tag $APP_VERSION"
+
           git push --tags
 
+          echo "Created tag $APP_VERSION"
+
       - name: Generate snapshot version
+        if: steps.check_release.outputs.apply_release == 'true'
         uses: ./.github/actions/increase-version
         with:
           properties-path: ./code/gradle.properties
           type: snapshot
 
       - name: Create PR to sync develop
+        if: steps.check_release.outputs.apply_release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          MS_VERSION=$(grep "version" ./code/gradle.properties | cut -d'=' -f2)
-          
-          git checkout -b "feature/sync-$MS_VERSION"
-          
-          git add ./code/gradle.properties
-          
-          git commit -m "Snapshot $MS_VERSION"
-          
-          git push origin HEAD
-          
-          gh pr create --base "develop" --head "feature/sync-$MS_VERSION" --title "Sync develop to $MS_VERSION" --body ""
+          APP_VERSION=$(grep "version" ./code/gradle.properties | cut -d'=' -f2)
 
-  build:
-    name: Build
-    needs: [release-version]
-    if: always()
+          git checkout -b "feature/sync-$APP_VERSION"
+
+          git add ./code/gradle.properties
+
+          git commit -m "Snapshot $APP_VERSION"
+
+          git push origin HEAD
+
+          gh pr create --base "develop" --head "feature/sync-$APP_VERSION" --title "Sync develop to $APP_VERSION" --body ""
+
+          echo "Created pr $APP_VERSION"
+
+  compile:
+    name: Compile
+    needs: [ release-version ]
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
 
-      - name: Install asdf
-        uses: ./.github/actions/asdf-install
+      - name: Install TOOLS
+        uses: ./.github/actions/tools-install
+
+      - name: Compile
+        run: task compile
+
+  test:
+    name: Test
+    needs: [ release-version ]
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Install Tools
+        uses: ./.github/actions/tools-install
+
+      - name: Test
+        run: task test
+
+  build:
+    name: Build
+    needs: [ compile, test ]
+    runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Install TOOLS
+        uses: ./.github/actions/tools-install
 
       - name: Build
-        working-directory: code
-        run: gradle build -x test
-        env:
-          # disable default JVM in container
-          JAVA_HOME: ""
+        run: task build
 
       - name: Upload compiled output in artifact
         uses: actions/upload-artifact@v4
@@ -110,14 +178,15 @@ jobs:
   publish-jar:
     name: Publish Jar
     needs: [build]
-    if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install asdf
-        uses: ./.github/actions/asdf-install
+        with:
+          ref: ${{ github.base_ref }}
 
       - name: Download compiled output from artifact
         uses: actions/download-artifact@v4
@@ -138,11 +207,15 @@ jobs:
   publish-docker:
     name: Publish Docker
     needs: [build]
-    if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
 
       - name: Download compiled output from artifact
         uses: actions/download-artifact@v4
@@ -150,7 +223,7 @@ jobs:
           name: ms-build
           path: code/build/
 
-      - name: Set up Docker Buildx
+      - name: Set up Docker Build
         uses: docker/setup-buildx-action@v3
 
       - name: Generate docker image tag name
@@ -185,11 +258,15 @@ jobs:
   deploy:
     name: Deploy
     needs: [publish-docker]
-    if: always()
     runs-on: ubuntu-latest
+    env:
+      # disable default JVM in container
+      JAVA_HOME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
 
       - name: Execute docker image
         working-directory: code

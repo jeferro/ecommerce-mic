@@ -1,0 +1,88 @@
+openapi: "3.0.0"
+
+info:
+  version: 1.0.0
+  title: Authentication Rest API
+  description: API rest of authentication
+
+servers:
+  - url: http://localhost:8080
+    description: Local
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Authentication
+    description: Section of the authentication
+
+paths:
+  /v1/authentications:
+    post:
+      operationId: authenticate
+      summary: Authenticate user
+      description: Authenticate user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInInput'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+        default:
+          $ref: '../shared.yml#/components/responses/ProblemDetailsResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT security
+
+  schemas:
+    SignInInput:
+      type: object
+      description: Sign In Input
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: Username
+          example: 'johndoe'
+        password:
+          type: string
+          description: Password
+          example: 'johndoe'
+
+    Auth:
+      type: object
+      description: Authentication information
+      required:
+        - username
+        - token
+        - roles
+      properties:
+        username:
+          type: string
+          description: Identifier of user
+          example: 'one-user'
+        token:
+          type: string
+          description: Authentication token
+        roles:
+          type: array
+          items:
+            type: string
+          example: [ "USER" ]

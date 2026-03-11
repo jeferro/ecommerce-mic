@@ -1,5 +1,32 @@
 components:
   schemas:
+    Metadata:
+      type: object
+      required:
+        - createdAt
+        - createdBy
+        - updatedAt
+        - updatedBy
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+          description: Date when entity was created
+          example: '2025-08-15T09:00:00Z'
+        createdBy:
+          type: string
+          description: User who creates the entity
+          example: 'user'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last date when entity was updated
+          example: '2025-08-15T09:00:00Z'
+        updatedBy:
+          type: string
+          description: Last user who updates the entity
+          example: 'user'
+
     ProblemDetailsTypes:
       type: string
       description: codes of the error

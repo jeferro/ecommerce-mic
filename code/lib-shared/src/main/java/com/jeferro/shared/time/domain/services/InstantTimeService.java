@@ -4,8 +4,8 @@ import java.time.Instant;
 
 public class InstantTimeService implements TimeGenerator {
 
-    @Override
-    public Instant generate() {
-        return Instant.now();
-    }
+  @Override
+  public Instant generate() {
+    return Instant.now();
+  }
 }

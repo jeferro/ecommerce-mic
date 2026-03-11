@@ -1,4 +1,4 @@
-rootProject.name = "products"
+rootProject.name = "ecommerce"
 
 include(":app")
 

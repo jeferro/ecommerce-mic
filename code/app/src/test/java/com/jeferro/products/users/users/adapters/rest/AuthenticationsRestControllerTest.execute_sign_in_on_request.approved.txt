@@ -1,3 +1,0 @@
-data[0] = SignInParams[password=plain-password,username=user]
-data[1] = 200
-data[2] = {"username":"user","roles":["user"]}

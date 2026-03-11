@@ -6,11 +6,10 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://root:root@127.0.0.1:27017/products?authSource=admin
+      uri: mongodb://admin:admin@127.0.0.1:27017/products?authSource=admin
 
-components:
-  rest:
-    security:
-      issuer: "products"
+shared:
+  auth:
+    rest:
       duration: 7D
       password: "123456"

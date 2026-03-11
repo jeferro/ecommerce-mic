@@ -1,0 +1,28 @@
+meta {
+  name: Get review
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{ecommerce-url}}/v1/reviews/:reviewId
+  body: none
+  auth: bearer
+}
+
+params:path {
+  reviewId: user::products::banana
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+auth:bearer {
+  token: {{ecommerce-jwt-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

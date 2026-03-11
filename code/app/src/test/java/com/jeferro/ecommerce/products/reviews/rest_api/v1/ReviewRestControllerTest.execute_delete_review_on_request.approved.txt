@@ -1,0 +1,3 @@
+data[0] = DeleteReviewParams[reviewId=john::products::apple]
+data[1] = 200
+data[2] = {"id":"john::products::apple","username":"john","entityId":"products::apple","locale":"en-US","comment":"Comment about apple","version":1,"metadata":{"createdAt":null,"createdBy":null,"updatedAt":null,"updatedBy":null}}

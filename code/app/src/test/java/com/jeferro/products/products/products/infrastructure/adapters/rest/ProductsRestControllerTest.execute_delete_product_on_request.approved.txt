@@ -1,3 +1,0 @@
-data[0] = DeleteProductParams[productCode=apple]
-data[1] = 200
-data[2] = {"code":"apple","typeId":"fruit","name":{"en-US":"Apple"},"status":"PUBLISHED"}

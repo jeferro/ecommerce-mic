@@ -36,3 +36,6 @@ out/
 .vscode/
 
 *.received.txt
+
+tools/scripts/.env
+tools/scripts/.mongo-backup

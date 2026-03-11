@@ -4,17 +4,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-@ConfigurationProperties("components.rest.security")
+@ConfigurationProperties("shared.auth.rest")
 public record RestSecurityProperties(
-        String issuer,
-        Duration duration,
-        String password
-) {
-    public long durationAsMillis() {
-        return duration.toMillis();
-    }
+	String issuer,
+	Duration duration,
+	String password) {
 
-    public boolean hasDuration() {
-        return duration != null;
-    }
+  public long durationAsMillis() {
+	return duration.toMillis();
+  }
+
+  public boolean hasDuration() {
+	return duration != null;
+  }
 }
