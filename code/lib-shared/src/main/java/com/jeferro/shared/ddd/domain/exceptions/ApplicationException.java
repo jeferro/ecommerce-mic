@@ -1,22 +1,37 @@
 package com.jeferro.shared.ddd.domain.exceptions;
 
-import com.jeferro.shared.ddd.domain.utils.ValueValidationUtils;
+import com.jeferro.shared.ddd.domain.services.ValueValidator;
 import lombok.Getter;
 
 @Getter
-public abstract class ApplicationException extends RuntimeException {
+public abstract sealed class ApplicationException extends RuntimeException
+    permits ForbiddenException,
+        NotFoundException,
+        UnauthorizedException,
+        ValueValidationException,
+        InternalException {
 
-    private final String code;
+  protected static final String VALUE_VALIDATION_CODE = "value-validation";
 
-    private final String title;
+  protected static final String INCORRECT_VERSION_CODE = "incorrect-version";
 
-    protected ApplicationException(String code, String title, String message) {
-        super(message);
+  protected static final String FORBIDDEN_CODE = "forbidden";
 
-        ValueValidationUtils.isNotBlank(code, "code", this);
-        ValueValidationUtils.isNotBlank(title, "title", this);
+  protected static final String INTERNAL_ERROR_CODE = "internal";
 
-        this.code = code;
-        this.title = title;
-    }
+  protected static final String UNAUTHORIZED_CODE = "unauthorized";
+
+  private final String code;
+
+  private final String title;
+
+  protected ApplicationException(String code, String title, String message) {
+    super(message);
+
+    ValueValidator.ensureNotBlank(code, "code");
+    ValueValidator.ensureNotBlank(title, "title");
+
+    this.code = code;
+    this.title = title;
+  }
 }

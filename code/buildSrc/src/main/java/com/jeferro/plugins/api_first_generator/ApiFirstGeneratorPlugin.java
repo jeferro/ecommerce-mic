@@ -5,68 +5,88 @@ import org.gradle.api.Project;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.openapitools.generator.gradle.plugin.OpenApiGeneratorPlugin;
-import org.openapitools.generator.gradle.plugin.extensions.OpenApiGeneratorGenerateExtension;
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApiFirstGeneratorPlugin implements Plugin<Project> {
 
-    @Override
-    public void apply(Project target) {
-        ApiFirstGeneratorExtension extension = target.getExtensions()
-                .create("apiFirstGenerator", ApiFirstGeneratorExtension.class);
+  @Override
+  public void apply(Project target) {
+	ApiFirstGeneratorExtension extension = target.getExtensions()
+		.create("apiFirstGenerator", ApiFirstGeneratorExtension.class);
 
-        target.getPlugins().apply(OpenApiGeneratorPlugin.class);
+	target.getPlugins().apply(OpenApiGeneratorPlugin.class);
 
-        target.afterEvaluate(project -> {
+	target.afterEvaluate(project -> {
 
-            configureSourceSets(project, extension);
+	  configureSourceSets(project, extension);
 
-            configureOpenapiTask(project, extension);
-        });
-    }
+	  configureOpenapiTask(project, extension);
+	});
+  }
 
-    private void configureSourceSets(Project project, ApiFirstGeneratorExtension extension) {
-        project.getExtensions()
-                .getByType(SourceSetContainer.class).stream()
-                .filter(sourceSet -> sourceSet.getName().equals("main"))
-                .forEach(sourceSet -> {
-                    sourceSet.getResources().srcDir(extension.specFile.getParentFile());
+  private void configureSourceSets(Project project, ApiFirstGeneratorExtension extension) {
+	extension.specs.forEach(spec -> {
+	  project.getExtensions()
+		  .getByType(SourceSetContainer.class).stream()
+		  .filter(sourceSet -> sourceSet.getName().equals("main"))
+		  .forEach(sourceSet -> {
+			var targetDir = createTargetDir(extension, spec);
 
-                    var targetDir = new File(extension.targetDir, "src/main/java");
-                    sourceSet.getJava().srcDir(targetDir);
-                });
-    }
+			sourceSet.getResources().srcDir(spec.specFile.getParentFile());
 
-    private void configureOpenapiTask(Project project, ApiFirstGeneratorExtension extension) {
-        project.getTasks().withType(JavaCompile.class)
-                .configureEach(javaCompile -> javaCompile.dependsOn("openApiGenerate"));
+			var targetDirJava = new File(targetDir, "src/main/java");
+			sourceSet.getJava().srcDir(targetDirJava);
+		  });
+	});
 
-        project.getExtensions().configure(
-                OpenApiGeneratorGenerateExtension.class,
-                generatorExtension -> {
-                    generatorExtension.getGeneratorName().set("spring");
-                    generatorExtension.getInputSpec().set(extension.specFile.getAbsolutePath());
-                    generatorExtension.getOutputDir().set(extension.targetDir.getAbsolutePath());
+  }
 
-                    generatorExtension.getPackageName().set(extension.basePackage);
-                    generatorExtension.getApiPackage().set(extension.basePackage + ".apis");
-                    generatorExtension.getModelPackage().set(extension.basePackage + ".dtos");
-                    generatorExtension.getModelNameSuffix().set("RestDTO");
-                    generatorExtension.getApiNameSuffix().set("Api");
+  private void configureOpenapiTask(Project project, ApiFirstGeneratorExtension extension) {
+	var providers = new ArrayList<>();
 
-                    generatorExtension.getGenerateApiTests().set(false);
+	extension.specs.forEach(spec -> {
+	  var taskName = "openapi-" + spec.name;
+	  var targetDir = createTargetDir(extension, spec);
 
-                    Map<String, String> options = new HashMap<>();
-                    options.put("useTags", "true");
-                    options.put("gradleBuildFile", "false");
-                    options.put("useSpringBoot3", "true");
-                    options.put("documentationProvider", "none");
-                    options.put("interfaceOnly", "true");
-                    options.put("useResponseEntity", "false");
-                    generatorExtension.getConfigOptions().set(options);
-                });
-    }
+	  var provider = project.getTasks().register(taskName, GenerateTask.class, task -> {
+		task.getGeneratorName().set("spring");
+		task.getInputSpec().set(spec.specFile.getAbsolutePath());
+		task.getOutputDir().set(targetDir.getAbsolutePath());
+
+		task.getPackageName().set(spec.basePackage);
+		task.getApiPackage().set(spec.basePackage);
+		task.getModelPackage().set(spec.basePackage + ".dtos");
+		task.getModelNameSuffix().set("RestDTO");
+		task.getApiNameSuffix().set("Api");
+
+		task.getGenerateApiTests().set(false);
+
+		Map<String, String> options = new HashMap<>();
+		options.put("useTags", "true");
+		options.put("gradleBuildFile", "false");
+		options.put("useSpringBoot3", "true");
+		options.put("documentationProvider", "none");
+		options.put("interfaceOnly", "true");
+		options.put("useResponseEntity", "false");
+		task.getConfigOptions().set(options);
+	  });
+
+	  providers.add(provider);
+
+	  project.getTasks().withType(JavaCompile.class)
+		  .configureEach(javaCompile -> javaCompile.dependsOn(taskName));
+	});
+
+	project.getTasks().named("build")
+		.configure(buildTask -> buildTask.dependsOn(providers.toArray()));
+  }
+
+  private File createTargetDir(ApiFirstGeneratorExtension extension, ApiFirstGeneratorSpec spec) {
+	return new File(extension.buildDir, "openapi-" + spec.name);
+  }
 }

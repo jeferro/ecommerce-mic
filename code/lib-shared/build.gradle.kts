@@ -7,18 +7,13 @@ plugins {
 }
 
 dependencies {
-    // General
-    api("org.apache.commons", "commons-lang3", Versions.commons_lang3)
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-
-    api("org.mapstruct", "mapstruct", Versions.mapstruct)
-    annotationProcessor("org.mapstruct", "mapstruct-processor", Versions.mapstruct)
+    // Spring
+    implementation("com.fasterxml.uuid", "java-uuid-generator", Versions.fasterxml)
 
     // Spring
     implementation("org.springframework.boot", "spring-boot-starter")
     api("org.springframework.boot", "spring-boot-starter-security")
+    api("org.springframework.boot", "spring-boot-starter-aop")
 
     // Rest
     api("org.springframework.boot", "spring-boot-starter-web")
@@ -33,7 +28,7 @@ dependencies {
     api("org.springframework.kafka", "spring-kafka", Versions.spring_kafka)
 
     api("org.apache.avro", "avro", Versions.avro)
-    api("org.apache.commons", "commons-compress", "1.25.0")
+    api("org.apache.commons", "commons-compress", Versions.commons_compress)
     implementation("io.confluent", "kafka-avro-serializer", Versions.kafka_avro_serializer)
 }
 

@@ -1,5 +1,5 @@
 metadata:
-  application-id: products
+  application-id: ecommerce
   environment: local
 
 
@@ -17,9 +17,17 @@ logging:
   level:
     root: WARN
     com.jeferro: INFO
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
-components:
-  products:
-    products-topic: com.jeferro.${metadata.application-id}.products.${metadata.environment}.v1
-    product-reviews-topic: com.jeferro.${metadata.application-id}.product-reviews.${metadata.environment}.v1
-    product-reviews-consumer-group-id: ${metadata.application-id}.product-reviews.${metadata.environment}
+shared:
+  auth:
+    rest:
+      issuer: ${metadata.application-id}
+
+
+application:
+  product-versions:
+    topic: com.jeferro.${metadata.application-id}.${metadata.environment}.product-versions.v1
+
+  reviews:
+    product-versions-consumer-group-id: ${metadata.application-id}.${metadata.environment}.product_versions.reviews

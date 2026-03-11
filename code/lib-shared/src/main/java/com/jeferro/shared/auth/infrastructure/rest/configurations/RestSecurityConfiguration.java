@@ -18,22 +18,24 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 public class RestSecurityConfiguration implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
-    }
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**");
+  }
 
-    @Bean
-    UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager();
-    }
+  @Bean
+  UserDetailsService userDetailsService() {
+    return new InMemoryUserDetailsManager();
+  }
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthRestFilter authRestFilter) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-                .addFilterAfter(authRestFilter, AnonymousAuthenticationFilter.class)
-                .build();
-    }
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http, AuthRestFilter authRestFilter)
+      throws Exception {
+    return http.csrf(AbstractHttpConfigurer::disable)
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+        .addFilterAfter(authRestFilter, AnonymousAuthenticationFilter.class)
+        .build();
+  }
 }

@@ -1,35 +1,34 @@
 package com.jeferro.shared.ddd.domain.models.auth;
 
-import lombok.Getter;
-
+import java.util.Locale;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 public class UserAuth extends Auth {
 
-    private final String username;
+  private final String username;
 
-    private final Set<String> roles;
+  private final Set<String> roles;
 
-    public UserAuth(String username, Set<String> roles) {
-        super();
+  public UserAuth(Locale locale, String username, Set<String> roles) {
+    super(locale);
 
-        this.username = username;
-        this.roles = roles;
-    }
+    this.username = username;
+    this.roles = roles;
+  }
 
-    public static UserAuth create(String username, Set<String> roles) {
-        return new UserAuth(username, roles);
-    }
+  public static UserAuth create(Locale locale, String username, Set<String> roles) {
+    return new UserAuth(locale, username, roles);
+  }
 
-    @Override
-    public String username() {
-        return username;
-    }
+  @Override
+  public String getUsername() {
+    return username;
+  }
 
-    @Override
-    public boolean hasRoles(Set<String> mandatoryRoles) {
-        return mandatoryRoles.isEmpty()
-                || roles.containsAll(mandatoryRoles);
-    }
+  @Override
+  public boolean hasRoles(Set<String> mandatoryRoles) {
+    return mandatoryRoles.isEmpty() || roles.containsAll(mandatoryRoles);
+  }
 }

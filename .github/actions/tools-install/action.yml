@@ -1,0 +1,26 @@
+name: 'Install asdf'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install ASDF
+      uses: asdf-vm/actions/setup@v4
+
+    - name: Add asdf to PATH
+      shell: bash
+      run: |
+        echo "$HOME/.asdf/shims" >> $GITHUB_PATH
+
+    - name: Cache asdf
+      id: asdf-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.asdf/
+        key: ${{ runner.os }}-${{ hashFiles('.tool-versions') }}
+
+    - name: Install Task
+      uses: go-task/setup-task@v1
+
+    - name: Install tools
+      shell: bash
+      run: task install

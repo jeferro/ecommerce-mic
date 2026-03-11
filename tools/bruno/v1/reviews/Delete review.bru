@@ -1,0 +1,28 @@
+meta {
+  name: Delete review
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{ecommerce-url}}/v1/reviews/:reviewId
+  body: none
+  auth: bearer
+}
+
+params:path {
+  reviewId: user::products::apple
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+auth:bearer {
+  token: {{ecommerce-jwt-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

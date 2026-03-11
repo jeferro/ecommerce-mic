@@ -1,12 +1,16 @@
 package com.jeferro.shared.ddd.domain.exceptions;
 
-public class ValueValidationException extends InternalErrorException {
+public non-sealed class ValueValidationException extends ApplicationException {
 
-    private ValueValidationException(String message) {
-        super(message);
-    }
+  private ValueValidationException(String code, String message) {
+    this(code, "Value validation error", message);
+  }
 
-    public static ValueValidationException createOfMessage(String message) {
-        return new ValueValidationException(message);
-    }
+  protected ValueValidationException(String code, String title, String message) {
+    super(code, title, message);
+  }
+
+  public static ValueValidationException createOfMessage(String message) {
+    return new ValueValidationException(VALUE_VALIDATION_CODE, message);
+  }
 }

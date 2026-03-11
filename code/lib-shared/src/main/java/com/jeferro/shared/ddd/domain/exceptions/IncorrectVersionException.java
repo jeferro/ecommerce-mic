@@ -1,0 +1,12 @@
+package com.jeferro.shared.ddd.domain.exceptions;
+
+public final class IncorrectVersionException extends ValueValidationException {
+
+  private IncorrectVersionException(String code, String message) {
+    super(code, "Incorrect version", message);
+  }
+
+  public static IncorrectVersionException createOfIncorrectVersion() {
+    return new IncorrectVersionException(INCORRECT_VERSION_CODE, "Version of entity to update is incorrect");
+  }
+}
