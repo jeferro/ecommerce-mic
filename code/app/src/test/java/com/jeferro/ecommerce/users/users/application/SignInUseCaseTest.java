@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import com.jeferro.ecommerce.users.users.application.params.SignInParams;
 import com.jeferro.ecommerce.users.users.domain.models.UserMother;
-import com.jeferro.ecommerce.users.users.domain.repositories.UsersInMemoryRepository;
+import com.jeferro.ecommerce.users.users.domain.repositories.UsersFakeRepository;
 import com.jeferro.ecommerce.users.users.domain.services.FakePasswordEncoder;
 import com.jeferro.shared.ddd.domain.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,16 +14,16 @@ import org.junit.jupiter.api.Test;
 
 class SignInUseCaseTest {
 
-  private UsersInMemoryRepository usersInMemoryRepository;
+  private UsersFakeRepository usersFakeRepository;
 
   private SignInUseCase signInUseCase;
 
   @BeforeEach
   void beforeEach() {
-    usersInMemoryRepository = new UsersInMemoryRepository();
+    usersFakeRepository = new UsersFakeRepository();
     var fakePasswordEncoder = new FakePasswordEncoder();
 
-    signInUseCase = new SignInUseCase(usersInMemoryRepository, fakePasswordEncoder);
+    signInUseCase = new SignInUseCase(usersFakeRepository, fakePasswordEncoder);
   }
 
   @Test

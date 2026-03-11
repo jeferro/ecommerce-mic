@@ -11,27 +11,27 @@ import com.jeferro.ecommerce.products.reviews.domain.exceptions.ReviewDoesNotBel
 import com.jeferro.ecommerce.products.reviews.domain.exceptions.ReviewNotFoundException;
 import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewMother;
-import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsInMemoryRepository;
-import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
+import com.jeferro.ecommerce.products.reviews.domain.repositories.ReviewsFakeRepository;
+import com.jeferro.ecommerce.shared.domain.events.EventFakeBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class DeleteReviewUseCaseTest {
 
-  private ReviewsInMemoryRepository reviewsInMemoryRepository;
+  private ReviewsFakeRepository reviewsFakeRepository;
 
-  private EventInMemoryBus eventInMemoryBus;
+  private EventFakeBus eventFakeBus;
 
   private DeleteReviewUseCase deleteReviewUseCase;
 
   @BeforeEach
   public void beforeEach() {
-    reviewsInMemoryRepository = new ReviewsInMemoryRepository();
+    reviewsFakeRepository = new ReviewsFakeRepository();
 
-    eventInMemoryBus = new EventInMemoryBus();
+    eventFakeBus = new EventFakeBus();
 
-    deleteReviewUseCase = new DeleteReviewUseCase(reviewsInMemoryRepository, eventInMemoryBus);
+    deleteReviewUseCase = new DeleteReviewUseCase(reviewsFakeRepository, eventFakeBus);
   }
 
   @Test
@@ -44,7 +44,7 @@ class DeleteReviewUseCaseTest {
 
     assertEquals(johnReviewOfApple, result);
 
-    assertFalse(reviewsInMemoryRepository.contains(result));
+    assertFalse(reviewsFakeRepository.contains(result));
 
     assertReviewDeletedWasPublished(result);
   }
@@ -71,7 +71,7 @@ class DeleteReviewUseCaseTest {
   }
 
   private void assertReviewDeletedWasPublished(Review result) {
-    var event = eventInMemoryBus.filterOfClass(ReviewDeleted.class).findFirst();
+    var event = eventFakeBus.filterOfClass(ReviewDeleted.class).findFirst();
 
     if (event.isEmpty()) {
       fail();

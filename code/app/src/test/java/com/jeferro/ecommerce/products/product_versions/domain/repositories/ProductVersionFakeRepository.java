@@ -5,15 +5,15 @@ import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVers
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionSummary;
 import com.jeferro.ecommerce.products.product_versions.domain.models.criteria.ProductVersionCriteria;
-import com.jeferro.ecommerce.shared.domain.repositories.InMemoryRepository;
+import com.jeferro.ecommerce.shared.domain.repositories.FakeRepository;
 import java.time.Instant;
 import java.util.List;
 
-public class ProductVersionInMemoryRepository
-    extends InMemoryRepository<ProductVersion, ProductVersionId>
+public class ProductVersionFakeRepository
+    extends FakeRepository<ProductVersion, ProductVersionId>
     implements ProductVersionRepository {
 
-  public ProductVersionInMemoryRepository() {
+  public ProductVersionFakeRepository() {
     var appleV1 = ProductVersionMother.appleV1();
     save(appleV1);
 

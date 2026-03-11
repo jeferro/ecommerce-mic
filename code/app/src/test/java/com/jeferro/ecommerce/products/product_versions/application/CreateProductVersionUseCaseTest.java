@@ -2,17 +2,17 @@ package com.jeferro.ecommerce.products.product_versions.application;
 
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductCodeMother;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionMother;
-import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionInMemoryRepository;
+import com.jeferro.ecommerce.products.product_versions.domain.repositories.ProductVersionFakeRepository;
 import com.jeferro.ecommerce.products.product_versions.application.params.CreateProductVersionParams;
 import com.jeferro.ecommerce.products.product_versions.domain.events.ProductVersionCreated;
 import com.jeferro.ecommerce.products.product_versions.domain.events.ProductVersionUpdated;
 import com.jeferro.ecommerce.products.product_versions.domain.exceptions.ProductVersionAlreadyExistsException;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersion;
 import com.jeferro.ecommerce.products.product_versions.domain.models.ProductVersionId;
-import com.jeferro.ecommerce.shared.domain.events.EventInMemoryBus;
+import com.jeferro.ecommerce.shared.domain.events.EventFakeBus;
 import com.jeferro.ecommerce.shared.domain.models.auth.AuthMother;
 import com.jeferro.ecommerce.support.parametrics.domain.models.ProductTypeMother;
-import com.jeferro.ecommerce.support.parametrics.domain.services.ParametricInMemoryFinder;
+import com.jeferro.ecommerce.support.parametrics.domain.services.ParametricFakeFinder;
 import com.jeferro.ecommerce.support.parametrics.domain.services.ParametricValidator;
 import com.jeferro.shared.locale.domain.models.LocalizedField;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,22 +31,22 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class CreateProductVersionUseCaseTest {
 
-  private ProductVersionInMemoryRepository productsInMemoryRepository;
+  private ProductVersionFakeRepository productVersionFakeRepository;
 
-  private EventInMemoryBus eventInMemoryBus;
+  private EventFakeBus eventFakeBus;
 
   private CreateProductVersionUseCase createProductVersionUseCase;
 
   @BeforeEach
   void beforeEach() {
-    eventInMemoryBus = new EventInMemoryBus();
-    productsInMemoryRepository = new ProductVersionInMemoryRepository();
+    eventFakeBus = new EventFakeBus();
+    productVersionFakeRepository = new ProductVersionFakeRepository();
 
-    var parametricFinder = new ParametricInMemoryFinder();
+    var parametricFinder = new ParametricFakeFinder();
     var parametricValidator = new ParametricValidator(parametricFinder);
 
     createProductVersionUseCase =
-        new CreateProductVersionUseCase(productsInMemoryRepository, parametricValidator, eventInMemoryBus);
+        new CreateProductVersionUseCase(productVersionFakeRepository, parametricValidator, eventFakeBus);
   }
 
   @Test
@@ -62,7 +62,7 @@ class CreateProductVersionUseCaseTest {
 
     assertNull(result.getEndEffectiveDate());
 
-    assertTrue(productsInMemoryRepository.contains(result));
+    assertTrue(productVersionFakeRepository.contains(result));
 
     assertProductCreatedWasPublished(result);
   }
@@ -79,7 +79,7 @@ class CreateProductVersionUseCaseTest {
     createProductVersionUseCase.execute(AuthMother.john(), params);
 
     var pearV1Id = ProductVersionMother.pearV1().getId();
-    var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
+    var pearV1 = productVersionFakeRepository.findByIdOrError(pearV1Id);
 
     assertEquals(
         pearV2.getEffectiveDate().minus(1, ChronoUnit.SECONDS), pearV1.getEndEffectiveDate());
@@ -99,7 +99,7 @@ class CreateProductVersionUseCaseTest {
 
     var result = createProductVersionUseCase.execute(AuthMother.john(), params);
 
-    assertTrue(productsInMemoryRepository.contains(result));
+    assertTrue(productVersionFakeRepository.contains(result));
 
     assertEndEffectiveDateOfPreviousVersion(result);
   }
@@ -119,7 +119,7 @@ class CreateProductVersionUseCaseTest {
   }
 
   private void assertProductCreatedWasPublished(ProductVersion result) {
-    var event = eventInMemoryBus.filterOfClass(ProductVersionCreated.class).findFirst();
+    var event = eventFakeBus.filterOfClass(ProductVersionCreated.class).findFirst();
 
     if (event.isEmpty()) {
       fail();
@@ -129,7 +129,7 @@ class CreateProductVersionUseCaseTest {
   }
 
   private void assertProductUpdatedWasPublished(ProductVersion previous) {
-    var event = eventInMemoryBus.filterOfClass(ProductVersionUpdated.class).findFirst();
+    var event = eventFakeBus.filterOfClass(ProductVersionUpdated.class).findFirst();
 
     if (event.isEmpty()) {
       fail();
@@ -140,7 +140,7 @@ class CreateProductVersionUseCaseTest {
 
   private void assertEndEffectiveDateOfPreviousVersion(ProductVersion result) {
     var pearV1Id = ProductVersionMother.pearV1().getId();
-    var pearV1 = productsInMemoryRepository.findByIdOrError(pearV1Id);
+    var pearV1 = productVersionFakeRepository.findByIdOrError(pearV1Id);
 
     assertEquals(
         pearV1.getEffectiveDate().minus(1, ChronoUnit.SECONDS), result.getEndEffectiveDate());

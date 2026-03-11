@@ -4,13 +4,13 @@ import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewId;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewMother;
 import com.jeferro.ecommerce.products.reviews.domain.models.criteria.ReviewCriteria;
-import com.jeferro.ecommerce.shared.domain.repositories.InMemoryRepository;
+import com.jeferro.ecommerce.shared.domain.repositories.FakeRepository;
 import java.util.List;
 
-public class ReviewsInMemoryRepository extends InMemoryRepository<Review, ReviewId>
+public class ReviewsFakeRepository extends FakeRepository<Review, ReviewId>
     implements ReviewsRepository {
 
-  public ReviewsInMemoryRepository() {
+  public ReviewsFakeRepository() {
     var johnReviewOfApple = ReviewMother.johnReviewOfApple();
     data.put(johnReviewOfApple.getId(), johnReviewOfApple);
 

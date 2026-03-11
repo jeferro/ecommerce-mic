@@ -5,7 +5,7 @@ import com.jeferro.shared.ddd.domain.models.aggregates.Identifier;
 import com.jeferro.shared.ddd.domain.models.filter.DomainCriteria;
 import java.util.*;
 
-public abstract class InMemoryRepository<
+public abstract class FakeRepository<
     Aggregate extends AggregateRoot<Id>, Id extends Identifier> {
 
   protected final Map<Id, Aggregate> data = new HashMap<>();

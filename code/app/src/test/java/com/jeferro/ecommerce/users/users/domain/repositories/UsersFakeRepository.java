@@ -1,14 +1,14 @@
 package com.jeferro.ecommerce.users.users.domain.repositories;
 
-import com.jeferro.ecommerce.shared.domain.repositories.InMemoryRepository;
+import com.jeferro.ecommerce.shared.domain.repositories.FakeRepository;
 import com.jeferro.ecommerce.users.users.domain.models.User;
 import com.jeferro.ecommerce.users.users.domain.models.UserMother;
 import com.jeferro.ecommerce.users.users.domain.models.Username;
 
-public class UsersInMemoryRepository extends InMemoryRepository<User, Username>
+public class UsersFakeRepository extends FakeRepository<User, Username>
     implements UsersRepository {
 
-  public UsersInMemoryRepository() {
+  public UsersFakeRepository() {
     var john = UserMother.john();
     save(john);
 
