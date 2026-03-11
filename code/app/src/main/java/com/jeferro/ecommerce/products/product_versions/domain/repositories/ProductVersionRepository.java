@@ -33,6 +33,12 @@ public interface ProductVersionRepository {
     return Optional.of(result.getFirst());
   }
 
+  default Optional<ProductVersion> findPreviousProductVersion(ProductVersionId versionId) {
+    var previousVersionCriteria = ProductVersionCriteria.previousProductVersion(versionId);
+
+    return findOne(previousVersionCriteria);
+  }
+
   long count(ProductVersionCriteria criteria);
 
   List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria);

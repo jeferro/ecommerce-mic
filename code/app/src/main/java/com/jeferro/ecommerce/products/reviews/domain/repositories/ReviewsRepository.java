@@ -1,6 +1,7 @@
 package com.jeferro.ecommerce.products.reviews.domain.repositories;
 
 import com.jeferro.ecommerce.products.reviews.domain.exceptions.ReviewNotFoundException;
+import com.jeferro.ecommerce.products.reviews.domain.models.EntityId;
 import com.jeferro.ecommerce.products.reviews.domain.models.Review;
 import com.jeferro.ecommerce.products.reviews.domain.models.ReviewId;
 import com.jeferro.ecommerce.products.reviews.domain.models.criteria.ReviewCriteria;
@@ -24,4 +25,10 @@ public interface ReviewsRepository {
   List<Review> findAll(ReviewCriteria criteria);
 
   long count(ReviewCriteria criteria);
+
+  default long countAllByEntity(EntityId entityId) {
+    var allByEntityIdCriteria = ReviewCriteria.allByEntityId(entityId);
+
+    return count(allByEntityIdCriteria);
+  }
 }
