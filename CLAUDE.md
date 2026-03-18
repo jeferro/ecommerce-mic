@@ -1,45 +1,68 @@
-# AGENTS.md — Development Rules for Claude Code
+# CLAUDE.md — Development Rules for Claude Code
 
 This file defines the mandatory conventions and architectural rules for all code generation in this project.
 Always follow these rules unless the spec explicitly overrides a specific point.
 
 ---
 
+## Tech Stack
+
+| Component | Technology | Version |
+|---|---|---|
+| Language | Java | 25 |
+| Build | Gradle (Kotlin DSL) | 9.x |
+| Framework | Spring Boot | 3.5.6 |
+| Persistence | Spring Data MongoDB | Boot-managed |
+| Messaging | Apache Kafka + Spring Kafka | 3.3.10 |
+| Event schemas | Apache Avro (Confluent) | 1.12.0 |
+| REST API | OpenAPI Generator (API-first, custom Gradle plugin) | — |
+| Mapping | MapStruct | 1.6.3 |
+| Boilerplate | Lombok | Boot-managed |
+| Utilities | Apache Commons Lang 3 | 3.19.0 |
+| JWT | auth0 Java JWT | 4.5.0 |
+| Testing | JUnit 5 + ApprovalTests + ArchUnit + PIT | — |
+
+---
+
 ## Architecture: DDD + Hexagonal (Ports & Adapters)
 
-### Package Structure
-
-The root structure reflects **Bounded Contexts** and their **Aggregate Roots**:
+### Project Layout
 
 ```
-src/
-  <bounded_context>/
-    <aggregate_root>/
-      application/
-        params/
-      domain/
-        models/
-        repositories/
-        services/
-        exceptions/
-        events/
-      infrastructure/
-        <technology>/        # e.g. rest_api, mongo, postgres, kafka
-          config/            # (optional)
-          dtos/              # (optional)
-          daos/              # (optional)
-          mappers/
-          services/          # (optional)
-    shared/
-      domain/
-      infrastructure/
-  shared/
-    domain/
+code/
+  lib-shared/               # Shared DDD framework (base classes, infra config)
+  app/                      # Application module (all bounded contexts)
+    src/main/java/com/jeferro/ecommerce/
+      <bounded_context>/
+        <aggregate_root>/
+          application/
+            params/
+          domain/
+            models/
+            models/criteria/
+            repositories/
+            services/
+            exceptions/
+            events/
+          infrastructure/
+            <technology>/   # e.g. rest_api/v1, mongo, kafka/v1
+              config/       # (optional)
+              dtos/         # (optional)
+              daos/         # (optional)
+              mappers/
+        shared/
+          domain/
+          infrastructure/
+      shared/
+        domain/
+apis/
+  rest/v1/                  # OpenAPI YAML specs (source of truth for REST DTOs)
+tools/
+  docker/docker-compose.yml # Local infra (MongoDB, Kafka)
 ```
 
 **Rules:**
 - One module per Aggregate Root. Never mix aggregates in the same module.
-- `views/` is a sibling of the aggregate module when read-models exist.
 - Shared code between bounded contexts lives in the top-level `shared/` package.
 - Shared code within a bounded context lives in `<bounded_context>/shared/`.
 
@@ -48,107 +71,167 @@ src/
 ## Domain Layer
 
 ### General Rules
-- **No framework dependencies** in `domain/`. Only Lombok and Apache Commons are allowed.
+- **No framework dependencies** in `domain/`. Only Lombok, Apache Commons, and lib-shared DDD classes are allowed.
 - Never use setters on aggregates, entities, or value objects. All state changes go through action methods.
-- All action methods and factory methods must validate their inputs.
-- Validation methods that throw a domain exception must be named with the `ensure` prefix (e.g. `ensureInvoiceIsNotPaid()`).
-- Prefer `var` for local variable declarations unless the compiler requires an explicit type.
-- Write semantic, self-explanatory code. Avoid comments except to clarify external API behavior or document a deliberate technical decision that prevents a known bug.
+- All action methods and factory methods must validate their inputs using `ValueValidator`.
+- Methods that check an invariant and throw a domain exception must be named with the `ensure` prefix (e.g. `ensureReviewBelongsToUser()`).
+- Prefer `var` for local variable declarations.
+- Write semantic, self-explanatory code. Avoid comments except to document deliberate technical decisions.
 
 ### Identifiers
-- Every Aggregate Root, Entity, and Projection must have an `Id` class extending `UUIDIdentifier` or `StringIdentifier`.
+- Every Aggregate Root, Entity, and Projection must have an `Id` class extending `StringIdentifier`.
 - Identifiers live in `domain/models/`.
-- Always provide a static `createOf()` factory method that generates the value.
+- Identifiers can be **rich objects** — they may carry parsed domain data (e.g. `ProductVersionId` holds `ProductCode code` and `Instant effectiveDate` embedded in the string `"code::effectiveDate"`).
+- Always provide a public constructor that parses the raw string value, and a static `createOf(...)` factory method for construction with validation.
+- Use `::` as separator when composing multi-part string identifiers.
 
 ```java
-public class InvoiceId extends UUIDIdentifier {
-    public InvoiceId(String value) { super(value); }
-    public static InvoiceId createOf() { return new InvoiceId(generateUuid()); }
+@Getter
+public class ProductVersionId extends StringIdentifier {
+
+    private static final String SEPARATOR = "::";
+
+    private final ProductCode code;
+    private final Instant effectiveDate;
+
+    public ProductVersionId(String value) {
+        super(value);
+        var split = value.split(SEPARATOR);
+        if (split.length != 2) {
+            throw ValueValidationException.createOfMessage("Incorrect format " + value);
+        }
+        this.code = new ProductCode(split[0]);
+        this.effectiveDate = Instant.parse(split[1]);
+    }
+
+    private ProductVersionId(ProductCode code, Instant effectiveDate) {
+        super(code + SEPARATOR + effectiveDate);
+        this.code = code;
+        this.effectiveDate = effectiveDate;
+    }
+
+    public static ProductVersionId createOf(ProductCode code, Instant effectiveDate) {
+        ValueValidator.ensureNotNull(code, "code");
+        ValueValidator.ensureNotNull(effectiveDate, "effectiveDate");
+        return new ProductVersionId(code, InstantTruncator.trunkToSeconds(effectiveDate));
+    }
 }
 ```
 
 ### Value Objects
 - Extend `ValueObject`.
-- Validations go in the constructor (not a factory method), because they are used as use-case params.
+- Validations go in the constructor.
 - Throw `ValueValidationException` for format/constraint violations.
 
 ### Aggregates & Entities
-- Always create instances via a **named static factory method** (e.g. `createEmpty()`, `createOf()`). Never expose constructors for business creation.
-- Use constructors only inside Mothers and Mappers.
-- Each use case corresponds to one **public action method** on the aggregate (e.g. `addLine()`, `paid()`).
-- Action methods must record domain events via `record(event)`.
-- Business invariants are enforced by private `ensure*()` methods that throw domain exceptions.
-- Encapsulate all calculations inside the aggregate or entity (e.g. `getTotal()`, `belongsTo()`).
-- **Project attributes from other aggregates** when needed for: business logic, filtering, list summaries, always-displayed data, performance, or saving temporal state.
+- Always create business instances via a **named static factory method** (e.g. `create(...)`, `createOf(...)`). Never expose constructors for business creation.
+- Constructors are public and used only inside Mothers, Mappers, and the aggregate's own factory methods.
+- Annotate with `@Getter` (Lombok). Never add public setters.
+- Each use case corresponds to one **public action method** on the aggregate (e.g. `update()`, `publish()`, `delete()`).
+- Action methods call `ValueValidator` for parameter validation, then `record(event)` for domain events.
+- Optimistic locking: mutating action methods call `ensureVersion(version)` to prevent concurrent modification.
+- Business invariants enforced via methods named `ensure*()` that throw domain exceptions (may be public if called from use cases).
+- Encapsulate all calculations inside the aggregate or entity (e.g. `calculateTotalPrice()`).
 
 ```java
-@AllArgsConstructor
-public class Invoice extends AggregateRoot<InvoiceId> {
-    // Fields, no public setters
+@Getter
+public class ProductVersion extends AggregateRoot<ProductVersionId> {
 
-    public static Invoice createEmpty(LocalDate date) { ... }
+    protected LocalizedField name;
+    protected ProductStatus status;
+    // ... other fields
 
-    public void addLine(Product product, long amount) {
-        ensureInvoiceIsNotPaid();
-        // validation + logic + record(event)
+    public ProductVersion(ProductVersionId id, /* all fields */, long version, Metadata metadata) {
+        super(id, version, metadata);
+        // assign fields
     }
 
-    private void ensureInvoiceIsNotPaid() {
-        if (paid) throw InvoiceAlreadyPaidException.createOf(id);
+    public static ProductVersion create(ProductVersionId versionId, /* params */) {
+        ValueValidator.ensureNotNull(versionId, "versionId");
+        // ... more validations
+        var product = new ProductVersion(versionId, /* ... */, 0L, null);
+        product.record(ProductVersionCreated.create(product));
+        return product;
+    }
+
+    public void update(LocalizedField name, BigDecimal price, BigDecimal discount, long version) {
+        ValueValidator.ensureNotNull(name, "name");
+        // ... more validations
+        ensureVersion(version);
+        this.name = name;
+        // ...
+        record(ProductVersionUpdated.create(this));
     }
 }
 ```
 
+### Summaries
+- A Summary is a lightweight read-only projection of an aggregate for list responses.
+- Extends `AggregateRoot<Id>` directly (same base class as the aggregate, not a separate `View` class).
+- Lives in the same `domain/models/` package as the aggregate.
+- Override `getId()` with `@Deprecated` and provide a semantically named alternative (e.g. `getVersionId()`).
+- Returned by the repository via a dedicated `findAllSummary(criteria)` method.
+
 ### Projections
-- Extend `Projection<Id>`.
+- Extend `Projection<Id>` from lib-shared.
 - Represent an aggregate from an external Bounded Context.
 - May contain read-oriented business logic specific to the current BC.
-- Primary operation is query (or update if persisted locally for resilience).
-
-### Views & Summaries
-- Extend `View<Id>`. Read-only, no repository.
-- Accessed via a `Finder` interface (query methods only, no mutations).
-- `Summary` views live in the same module as their aggregate — no separate module needed.
-- Composition (REST or DB) is implemented in the infrastructure layer; complex composition logic may live in domain.
+- Accessed via a domain service interface (Finder/port). Implementation lives in infrastructure.
 
 ### Events
-- Extend the aggregate's base event class (e.g. `InvoiceEvent`).
-- Class names use **past tense** (e.g. `InvoiceLineAdded`, `InvoiceCreated`).
-- Provide a static `create(...)` factory method.
+- Extend the aggregate's base event class (e.g. `ProductVersionEvent` extends `Event<ProductVersion, ProductVersionId>`).
+- Class names use **past tense** (e.g. `ProductVersionCreated`, `ReviewDeleted`).
+- Provide a static `create(Aggregate)` factory method that takes the full aggregate snapshot.
+- `Event` from lib-shared holds the full entity snapshot, an `EventId`, and `sentAt`.
 
 ### Exceptions
 - Extend the appropriate base: `NotFoundException`, `ForbiddenException`, `ValueValidationException`, or `IncorrectVersionException`.
-- Always provide a static `createOf(...)` factory method.
-- The exception title is always fixed; only the error code and message are parameterized.
+- Always provide a static `createOf(...)` factory method (additional named factory methods are allowed when semantics require it).
+- Constructor takes `(code, title, message)`. The title is always a fixed string; code and message are parameterized.
+- Error code constants are defined in `shared/domain/exceptions/ProductExceptionCodes.java`.
 
 ```java
-public class InvoiceNotFoundException extends NotFoundException {
-    public static InvoiceNotFoundException createOf(InvoiceId id) {
-        return new InvoiceNotFoundException(INVOICE_NOT_FOUND, "Invoice " + id + " not found");
+public class ProductVersionNotFoundException extends NotFoundException {
+    public static ProductVersionNotFoundException createOf(ProductVersionId id) {
+        return new ProductVersionNotFoundException(PRODUCT_NOT_FOUND, "Product not found",
+                "Product version " + id + " not found");
     }
 }
 ```
 
 ### Repositories
 - One interface per Aggregate Root. Never create a repository for a plain Entity.
-- Method naming: `save()` (create or update, returns the saved entity), `findById()` (returns `Optional`), `findByIdOrError()` (default method, throws `NotFoundException`), `delete()`, `deleteAll()`, `findAllByCriteria()`, `countByCriteria()`.
-- Use the **Criteria pattern** for multi-record queries to minimize the number of repository methods.
-- Add `default` methods to the interface for common query combinations.
+- Method naming:
+  - `save(entity)` — create or update, returns the saved entity.
+  - `findById(id)` — returns `Optional`.
+  - `findByIdOrError(id)` — default method, throws `NotFoundException`.
+  - `findOne(criteria)` — default method returning `Optional`, built on `findAll`.
+  - `findAll(criteria)` — returns `List`.
+  - `findAllSummary(criteria)` — returns `List<Summary>`.
+  - `count(criteria)` — returns `long`.
+  - `delete(entity)`.
+- Use the **Criteria pattern** for multi-record queries. Add `default` convenience methods (e.g. `findPreviousProductVersion()`) built on top of `findAll`.
 
 ```java
-public interface InvoiceRepository {
-    Invoice save(Invoice invoice);
-    Optional<Invoice> findById(InvoiceId id);
-    default Invoice findByIdOrError(InvoiceId id) { ... }
-    void delete(Invoice invoice);
-    List<InvoiceSummary> findAllByCriteria(InvoiceCriteria criteria);
-    long countByCriteria(InvoiceCriteria criteria);
+public interface ProductVersionRepository {
+    ProductVersion save(ProductVersion productVersion);
+    Optional<ProductVersion> findById(ProductVersionId versionId);
+    default ProductVersion findByIdOrError(ProductVersionId versionId) {
+        return findById(versionId)
+                .orElseThrow(() -> ProductVersionNotFoundException.createOf(versionId));
+    }
+    void delete(ProductVersion version);
+    List<ProductVersion> findAll(ProductVersionCriteria criteria);
+    default Optional<ProductVersion> findOne(ProductVersionCriteria criteria) { ... }
+    default Optional<ProductVersion> findPreviousProductVersion(ProductVersionId versionId) { ... }
+    long count(ProductVersionCriteria criteria);
+    List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria);
 }
 ```
 
 ### Domain Services
-- Either an **output port interface** (implemented in infrastructure, e.g. `EmailNotifier`) or a class with **business logic not belonging to any single aggregate**.
-- Interfaces follow the same pattern as repositories: name describes the capability, not the technology.
+- Either an **output port interface** (implemented in infrastructure, e.g. `PasswordEncoder`, `ParametricFinder`) or a class with **business logic not belonging to any single aggregate** (e.g. `ParametricValidator`).
+- Interface names describe the capability, not the technology.
 
 ---
 
@@ -156,37 +239,65 @@ public interface InvoiceRepository {
 
 ### Params
 - One `Params` class per use case, extending `Params<ReturnType>`.
-- Constructor validates **required fields only** using `ValueValidator.isRequired(...)`. All other validations are domain rules.
-- Attributes must be **primitive types or Value Objects**. Never pass aggregates or entities.
-- Use an `Input` suffix class (e.g. `InvoiceLineInput`) when grouping related value objects for a param.
-
-### Use Cases
-- One class per use case, named `<Action>UseCase` (describes behavior, e.g. `AddInvoiceLineUseCase`).
-- Extend `UseCase<Params, ReturnType>` and annotate with `@Component`.
-- Declare `getMandatoryUserRoles()` for authorization.
-- Responsibilities: manage transactionality, validate referenced entities exist, call aggregate action methods, persist via repository, publish events via `EventBus`.
-- A use case should ideally call **one action method on one aggregate**. Synchronous multi-aggregate operations are the exception.
-- In complex logic, the `execute()` method should read as a list of steps, each delegating to a private method.
+- Constructor assigns all fields without validation — validation is the aggregate's responsibility.
+- Attributes must be **primitive types, Value Objects, or Identifiers**. Never pass aggregates or entities.
+- Annotate with `@Getter` (Lombok).
 
 ```java
-@Component
-@RequiredArgsConstructor
-public class AddInvoiceLineUseCase extends UseCase<AddInvoiceLineParams, Invoice> {
-    @Override
-    public Invoice execute(Auth auth, AddInvoiceLineParams params) {
-        var product = productsRepository.findByIdOrError(params.getProductId());
-        var invoice = invoicesRepository.findByIdOrError(params.getInvoiceId());
-        invoice.addLine(product, params.getAmount());
-        invoicesRepository.save(invoice);
-        eventBus.sendAll(invoice);
-        return invoice;
+@Getter
+public class CreateProductVersionParams extends Params<ProductVersion> {
+    private final ProductVersionId productVersionId;
+    private final ParametricValueId typeId;
+    private final LocalizedField name;
+    private final BigDecimal price;
+    private final BigDecimal discount;
+
+    public CreateProductVersionParams(ProductVersionId productVersionId, ParametricValueId typeId,
+            LocalizedField name, BigDecimal price, BigDecimal discount) {
+        super();
+        this.productVersionId = productVersionId;
+        // ... assign fields
     }
 }
 ```
 
+### Use Cases
+- One class per use case, named `<Action>UseCase` (e.g. `CreateProductVersionUseCase`).
+- Extend `UseCase<Params, ReturnType>` and annotate with `@Component @RequiredArgsConstructor`.
+- Declare `getMandatoryUserRoles()` returning a `Set<String>` of role constants from `Roles`.
+- The `execute()` method should read as a sequential list of named steps, each delegating to a private method.
+- A use case should ideally call **one action method on one aggregate**. Multi-aggregate operations within a single use case are an intentional exception (e.g. updating a previous version when creating a new one).
+- Event ordering: call `eventBus.sendAll(aggregate)` **before** `repository.save()` for new aggregates; after `save()` for updates to existing aggregates.
+
+```java
+@Component
+@RequiredArgsConstructor
+public class CreateProductVersionUseCase extends UseCase<CreateProductVersionParams, ProductVersion> {
+
+    @Override
+    public Set<String> getMandatoryUserRoles() {
+        return Set.of(USER);
+    }
+
+    @Override
+    public ProductVersion execute(Auth auth, CreateProductVersionParams params) {
+        var productVersionId = params.getProductVersionId();
+
+        ensureProductVersionNotExist(productVersionId);
+        parametricValidator.validateProductType(params.getTypeId());
+        setEndEffectiveDateOfPreviousProduct(productVersionId);
+        return createNewVersion(productVersionId, params);
+    }
+
+    private void ensureProductVersionNotExist(ProductVersionId versionId) { ... }
+    private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) { ... }
+    private ProductVersion createNewVersion(ProductVersionId versionId, CreateProductVersionParams params) { ... }
+}
+```
+
 ### Idempotency
-- Synchronous use cases: use an aggregate version code to prevent concurrent modification.
-- Asynchronous use cases: store a `lastUpdatedAt` timestamp and skip the operation if the incoming date is older.
+- Synchronous use cases: pass the aggregate `version` through params and call `ensureVersion(version)` inside the aggregate action method.
+- Asynchronous Kafka use cases: use `useCaseBus.executeWithRetry()` (3 retries) for resilience.
 - Apply only when it makes sense for the specific use case.
 
 ### Bulk Operations
@@ -194,50 +305,127 @@ public class AddInvoiceLineUseCase extends UseCase<AddInvoiceLineParams, Invoice
 - Avoid global transactions; use per-batch transactionality.
 - Log errors per batch without blocking the rest (`try/catch` per batch).
 
-### Use Case Testing
-- Use **solidarity testing** (sociable tests): test use cases as a black box.
-- Repositories → use the **Fake** in-memory implementation.
-- Domain services (domain implementation) → use the **real class**.
-- Domain services (infrastructure implementation) → use a **Mock** class.
-- Do not mock aggregates or entities.
-- Value Objects → unit-test independently.
-
 ---
 
 ## Infrastructure Layer
 
 ### Package Naming
-Name packages after the technology they integrate with:
-`rest_api`, `rest_api_v1`, `grpc_api`, `rest_client`, `mongo`, `postgres`, `kafka`
+Name packages after the technology and version:
+`rest_api/v1`, `mongo`, `kafka/v1`, `bcrypt`, `mock`
 
-### Primary Adapters (Inbound)
-- Responsible for data conversion and delegating to use cases via `UseCaseBus`.
-- No business logic inside controllers or consumers.
+### Primary Adapters — REST Controllers
+- Implement the interface generated from the OpenAPI spec (API-first).
+- Annotate with `@RestController @RequiredArgsConstructor`.
+- Delegate data conversion to the `RestMapper`, then dispatch to `useCaseBus.execute(params)`.
+- No business logic inside controllers.
 
-### Secondary Adapters (Outbound)
-- Implement domain repository/service interfaces.
-- Responsible for DTO↔Domain conversion (via Mappers) and persistence/external calls.
+```java
+@RestController
+@RequiredArgsConstructor
+public class ProductVersionRestController implements ProductVersionsApi {
+    private final ProductVersionRestMapper productVersionRestMapper;
+    private final UseCaseBus useCaseBus;
+
+    @Override
+    public ProductVersionRestDTO createProductVersion(String productCode, String effectiveDate,
+            CreateProductVersionInputRestDTO body) {
+        var params = productVersionRestMapper.toCreateProductParams(
+                productVersionRestMapper.toDomain(productCode, effectiveDate), body);
+        var productVersion = useCaseBus.execute(params);
+        return productVersionRestMapper.toDTO(productVersion);
+    }
+}
+```
+
+### Primary Adapters — Kafka Consumers
+- Annotate with `@KafkaListener` per topic.
+- Use `@KafkaHandler` per Avro type and a `@KafkaHandler(isDefault = true)` to silently ignore unknown types.
+- Call `useCaseBus.executeWithRetry()` for idempotent processing.
+
+### Secondary Adapters — Repositories
+- Annotate with `@Component @RequiredArgsConstructor`, implement the domain repository interface.
+- Delegate all work to a `MongoDao` + `Mapper`. No business logic.
+
+### Secondary Adapters — Event Producers
+- Implement `EventBusProducer<EventBaseClass>`.
+- Automatically registered by `SpringEventBus` (scans for all `EventBusProducer` beans).
+- Use sealed-class `switch` expression in the Kafka mapper to dispatch to specific Avro DTOs.
+
+### MongoDao
+- Extend `MongoDao<DTO, ID, Criteria>` from lib-shared.
+- Override `mapCriteria()` to translate the domain Criteria object to Spring Data `Criteria`.
+- Override `mapOrder()` to map the order enum to the MongoDB field name.
 
 ### Mappers
+- Annotate with `@Mapper(config = MapstructConfig.class)`, extend the appropriate base:
+  - `AggregatePrimaryMapper` — domain → REST DTO (outbound from domain).
+  - `AggregateSecondaryMapper` — Mongo/Kafka DTO → domain (inbound to domain).
+  - `EventMapper` — domain Event → Avro DTO.
 - One Mapper class **per aggregate** (not per class), grouping all conversion methods.
-- Extract reusable mappers (e.g. `AddressRestMapper`) only when shared across multiple aggregate mappers.
-
-### DTOs
-- May be auto-generated (OpenAPI, Avro, Protobuf). Do not hand-write if a generator is configured.
+- DTOs for REST are auto-generated from OpenAPI specs. Do not hand-write them.
+- DTOs for Kafka are auto-generated from Avro `.avsc` schemas. Do not hand-write them.
+- MongoDB DTOs extend `AuditedMongoDTO` (adds `version` + `MetadataMongoDTO`). Annotate with `@Document`.
 
 ---
 
-## Testing — Mothers & Fakes
+## Testing
+
+### Use Case Tests (Solidarity / Sociable)
+- Pure JUnit 5, no Spring context.
+- Wire collaborators manually in `@BeforeEach`.
+- Repositories → use the **Fake** in-memory implementation.
+- Domain services (domain implementation) → use the **real class**.
+- Domain services (infrastructure implementation) → use a **Fake** or **Mock**.
+- Do not mock aggregates or entities.
+- Value Objects → unit-test independently.
+- Assertions verify: return value, fake repository state, event bus contents.
+
+```java
+class CreateProductVersionUseCaseTest {
+    @BeforeEach
+    void beforeEach() {
+        var eventFakeBus = new EventFakeBus();
+        var productVersionFakeRepository = new ProductVersionFakeRepository();
+        var parametricFinder = new ParametricFakeFinder();
+        var parametricValidator = new ParametricValidator(parametricFinder);
+        createProductVersionUseCase = new CreateProductVersionUseCase(
+                productVersionFakeRepository, parametricValidator, eventFakeBus);
+    }
+}
+```
+
+### REST Controller Tests
+- `@WebMvcTest` + `@Import` for mapper implementation.
+- Use `StubUseCaseBus` instead of the real bus — records params, returns a preset result.
+- Use `ApprovalUtils.verifyAll(params, status, responseBody)` for snapshot-based verification.
+- Extend `RestControllerTest` base which provides JWT token constants and security config.
 
 ### Object Mothers
-- One `Mother` class per aggregate/entity, located in the test source tree.
-- Use **constructors directly** (not factory methods) to avoid triggering domain events.
-- Provide named methods that describe the state (e.g. `createUnpaidEmptyInvoice()`, `createPaidInvoice()`).
+- One `Mother` class per aggregate/entity, in the test source tree, same package as the domain class.
+- Use **constructors directly** (not factory methods) to create objects in any desired state without triggering domain events.
+- Provide named methods that describe the domain state (e.g. `appleV1()`, `appleV2()`, `pearV1Summary()`).
+
+```java
+public class ProductVersionMother {
+    public static ProductVersion appleV1() {
+        var id = ProductVersionId.createOf(ProductCodeMother.apple(), Instant.parse("2025-01-01T09:00:00.00Z"));
+        return new ProductVersion(id, name, fruitId, endDate, price, discount, totalPrice, UNPUBLISHED, 1L, null);
+    }
+}
+```
 
 ### In-Memory Fakes
-- Implement the repository interface using in-memory maps.
-- Pre-populate with Mother objects in the constructor.
-- Implement all query methods with in-memory filtering and sorting.
+- Extend `FakeRepository<Aggregate, Id>` from the test shared module and implement the domain repository interface.
+- Pre-populate with Mother objects in the constructor via `save()`.
+- Implement `findAll(criteria)` with in-memory filtering and sorting.
+- Implement `findAllSummary(criteria)` by mapping from `findAll(criteria)`.
+- Implement `count(criteria)` as `findAll(criteria).size()`.
+
+### ArchUnit Tests
+- Enforce that `domain/` cannot depend on `application/` or `infrastructure/`.
+- Enforce that `application/` cannot depend on `infrastructure/`.
+- Enforce that exceptions live in the `exceptions` package and params in the `params` package.
+- No `services` layer is allowed inside `application/`.
 
 ---
 
@@ -245,19 +433,29 @@ Name packages after the technology they integrate with:
 
 | Element | Convention | Example |
 |---|---|---|
-| Factory method | Descriptive verb phrase | `createEmpty()`, `createOf()` |
-| Action method | Verb describing the business action | `addLine()`, `paid()` |
-| Ensure method | `ensure` + invariant description | `ensureInvoiceIsNotPaid()` |
+| Aggregate factory method | Descriptive verb (`create`, `createOf`) | `ProductVersion.create(...)`, `Review.createOf(...)` |
+| Identifier factory method | `createOf(parts...)` | `ProductVersionId.createOf(code, date)` |
+| Action method | Verb describing the business action | `update()`, `publish()`, `delete()` |
+| Ensure method | `ensure` + invariant description | `ensureVersion()`, `ensureReviewBelongsToUser()` |
 | Repository find single | `findById` / `findByIdOrError` | — |
-| Repository find multiple | `findAllByCriteria` | — |
-| Use case class | `<Action>UseCase` | `DeleteAllInvoicesUseCase` |
-| Event class | Past tense | `InvoiceLineAdded` |
-| Exception class | Entity + problem | `InvoiceNotFoundException` |
-| DTO suffix | By layer — `RestDTO`, `MongoDTO` | `InvoiceRestDTO` |
-| Mapper suffix | By layer — `RestMapper`, `MongoMapper` | `InvoiceRestMapper` |
+| Repository find multiple | `findAll(criteria)` / `findAllSummary(criteria)` | — |
+| Repository count | `count(criteria)` | — |
+| Use case class | `<Action>UseCase` | `CreateProductVersionUseCase` |
+| Params class | `<Action>Params` | `CreateProductVersionParams` |
+| Event class | Past tense | `ProductVersionCreated`, `ReviewDeleted` |
+| Exception class | Entity + problem | `ProductVersionNotFoundException` |
+| Kafka producer | Entity + `EventKafkaProducer` | `ProductVersionEventKafkaProducer` |
+| Kafka consumer | Entity + source + `KafkaConsumer` | `ReviewsOnProductEventsKafkaConsumer` |
+| REST DTO suffix | `RestDTO` (auto-generated) | `ProductVersionRestDTO` |
+| Mongo DTO suffix | `MongoDTO` | `ProductVersionMongoDTO` |
+| REST Mapper suffix | `RestMapper` | `ProductVersionRestMapper` |
+| Mongo Mapper suffix | `MongoMapper` | `ProductVersionMongoMapper` |
+| Kafka Mapper suffix | `KafkaMapper` | `ProductVersionKafkaMapper` |
+| Mother class | Entity + `Mother` | `ProductVersionMother` |
+| Fake repository | Entity + `FakeRepository` | `ProductVersionFakeRepository` |
+| Fake service | Entity + `Fake` + PortName | `ParametricFakeFinder` |
 
 **Variable naming:** always use descriptive names. Prefer `var` for declarations.
-**Method naming:** prefer explicit over generic (`findUserOrNull` over `getUser`, `ensurePermissionsOfUser` over `validateUser`).
 
 ---
 
@@ -269,3 +467,5 @@ Name packages after the technology they integrate with:
 - No framework imports inside `domain/`.
 - No generic variable names (`data`, `obj`, `temp`).
 - No comments for code that should be self-explanatory — rename instead.
+- No hand-written REST DTOs — they are generated from OpenAPI specs.
+- No hand-written Avro DTOs — they are generated from `.avsc` schemas.
