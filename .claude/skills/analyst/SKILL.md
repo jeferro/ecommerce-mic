@@ -103,8 +103,19 @@ Example:
 | Quiero | Recuperar mi contraseña |
 | Para | Volver a acceder a mi cuenta si la olvido |
 
-## Goals
-[Bulleted list in Spanish of what is within the scope of this specific task.]
+## Acceptance criteria
+
+Specific conditions the feature must meet to be considered done and accepted by the Product Owner.
+One row per criterion, written in Gherkin format (Dado / Cuando / Entonces).
+
+Cover all three types:
+- **Input data:** one criterion per input field, including validations (required/optional, format, etc.)
+- **Output data:** what is returned — full aggregate (detail endpoints) or a subset (search endpoints).
+- **Business rules:** operations triggered by the action (e.g. record updated, event published).
+
+| Título | Condición |
+| --- | --- |
+| [Nombre corto del criterio] | **Dado:** [contexto] **Cuando:** [acción] **Entonces:** [resultado] |
 
 ## Design
 
@@ -141,9 +152,11 @@ Use the relevant layers from this list:]
 - The "Para" row must express business value, not a technical outcome.
 - Does not mention classes, methods, or technologies.
 
-### Goals
-- Each point must be verifiable. If it cannot be verified, reformulate it.
-- Do not include objectives already covered by another spec in the same feature.
+### Acceptance criteria
+- One row per criterion. Each criterion must be independently verifiable.
+- Cover all input fields (including validations), the expected output, and every business rule triggered.
+- "Entonces" must describe an observable outcome, not an internal implementation detail.
+- Do not duplicate criteria already covered by another spec in the same feature.
 
 ### Design — Data models
 - Reference artefacts by class name and their relative path from `code/app/src/main/java/`.
