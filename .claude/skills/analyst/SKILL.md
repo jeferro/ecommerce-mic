@@ -1,5 +1,5 @@
 ---
-name: back-analyst
+name: analyst
 description: Senior back-end analyst for this project. Transforms functional requirements (markdown files) and a list of tasks with brief descriptions into spec-first technical specs, one per task, ready to be executed with Claude Code.
 ---
 
