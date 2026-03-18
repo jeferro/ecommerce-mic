@@ -32,7 +32,7 @@ Always follow these rules unless the spec explicitly overrides a specific point.
 code/
   lib-shared/               # Shared DDD framework (base classes, infra config)
   app/                      # Application module (all bounded contexts)
-    src/main/java/com/jeferro/ecommerce/
+    src/main/java/<base_package>/
       <bounded_context>/
         <aggregate_root>/
           application/
@@ -61,6 +61,8 @@ tools/
   docker/docker-compose.yml # Local infra (MongoDB, Kafka)
 ```
 
+### Modules
+
 **Rules:**
 - One module per Aggregate Root. Never mix aggregates in the same module.
 - Shared code between bounded contexts lives in the top-level `shared/` package.
@@ -74,46 +76,46 @@ tools/
 - **No framework dependencies** in `domain/`. Only Lombok, Apache Commons, and lib-shared DDD classes are allowed.
 - Never use setters on aggregates, entities, or value objects. All state changes go through action methods.
 - All action methods and factory methods must validate their inputs using `ValueValidator`.
-- Methods that check an invariant and throw a domain exception must be named with the `ensure` prefix (e.g. `ensureReviewBelongsToUser()`).
+- Methods that check an invariant and throw a domain exception must be named with the `ensure` prefix (e.g. `ensureOwnershipBelongsToUser()`).
 - Prefer `var` for local variable declarations.
 - Write semantic, self-explanatory code. Avoid comments except to document deliberate technical decisions.
 
 ### Identifiers
 - Every Aggregate Root, Entity, and Projection must have an `Id` class extending `StringIdentifier`.
 - Identifiers live in `domain/models/`.
-- Identifiers can be **rich objects** — they may carry parsed domain data (e.g. `ProductVersionId` holds `ProductCode code` and `Instant effectiveDate` embedded in the string `"code::effectiveDate"`).
+- Identifiers can be **rich objects** — they may carry parsed domain data (e.g. a composite ID holds multiple fields embedded in a string `"part1::part2"`).
 - Always provide a public constructor that parses the raw string value, and a static `createOf(...)` factory method for construction with validation.
 - Use `::` as separator when composing multi-part string identifiers.
 
 ```java
 @Getter
-public class ProductVersionId extends StringIdentifier {
+public class OrderLineId extends StringIdentifier {
 
     private static final String SEPARATOR = "::";
 
-    private final ProductCode code;
-    private final Instant effectiveDate;
+    private final OrderId orderId;
+    private final ProductId productId;
 
-    public ProductVersionId(String value) {
+    public OrderLineId(String value) {
         super(value);
         var split = value.split(SEPARATOR);
         if (split.length != 2) {
             throw ValueValidationException.createOfMessage("Incorrect format " + value);
         }
-        this.code = new ProductCode(split[0]);
-        this.effectiveDate = Instant.parse(split[1]);
+        this.orderId = new OrderId(split[0]);
+        this.productId = new ProductId(split[1]);
     }
 
-    private ProductVersionId(ProductCode code, Instant effectiveDate) {
-        super(code + SEPARATOR + effectiveDate);
-        this.code = code;
-        this.effectiveDate = effectiveDate;
+    private OrderLineId(OrderId orderId, ProductId productId) {
+        super(orderId + SEPARATOR + productId);
+        this.orderId = orderId;
+        this.productId = productId;
     }
 
-    public static ProductVersionId createOf(ProductCode code, Instant effectiveDate) {
-        ValueValidator.ensureNotNull(code, "code");
-        ValueValidator.ensureNotNull(effectiveDate, "effectiveDate");
-        return new ProductVersionId(code, InstantTruncator.trunkToSeconds(effectiveDate));
+    public static OrderLineId createOf(OrderId orderId, ProductId productId) {
+        ValueValidator.ensureNotNull(orderId, "orderId");
+        ValueValidator.ensureNotNull(productId, "productId");
+        return new OrderLineId(orderId, productId);
     }
 }
 ```
@@ -135,32 +137,34 @@ public class ProductVersionId extends StringIdentifier {
 
 ```java
 @Getter
-public class ProductVersion extends AggregateRoot<ProductVersionId> {
+public class Order extends AggregateRoot<OrderId> {
 
-    protected LocalizedField name;
-    protected ProductStatus status;
+    protected OrderStatus status;
     // ... other fields
 
-    public ProductVersion(ProductVersionId id, /* all fields */, long version, Metadata metadata) {
+    public Order(OrderId id, /* all fields */, long version, Metadata metadata) {
         super(id, version, metadata);
         // assign fields
     }
 
-    public static ProductVersion create(ProductVersionId versionId, /* params */) {
-        ValueValidator.ensureNotNull(versionId, "versionId");
+    public static Order create(OrderId orderId, /* params */) {
+        ValueValidator.ensureNotNull(orderId, "orderId");
         // ... more validations
-        var product = new ProductVersion(versionId, /* ... */, 0L, null);
-        product.record(ProductVersionCreated.create(product));
-        return product;
+        var order = new Order(orderId, /* ... */, 0L, null);
+        order.record(OrderCreated.create(order));
+        return order;
     }
 
-    public void update(LocalizedField name, BigDecimal price, BigDecimal discount, long version) {
-        ValueValidator.ensureNotNull(name, "name");
+    public void update(/* params */, long version) {
+        ValueValidator.ensureNotNull(/* param */, "param");
         // ... more validations
         ensureVersion(version);
-        this.name = name;
-        // ...
-        record(ProductVersionUpdated.create(this));
+        // mutate fields
+        record(OrderUpdated.create(this));
+    }
+
+    public void ensureOwnershipBelongsToUser(Auth auth) {
+        // throw ForbiddenException if not owner
     }
 }
 ```
@@ -169,7 +173,7 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 - A Summary is a lightweight read-only projection of an aggregate for list responses.
 - Extends `AggregateRoot<Id>` directly (same base class as the aggregate, not a separate `View` class).
 - Lives in the same `domain/models/` package as the aggregate.
-- Override `getId()` with `@Deprecated` and provide a semantically named alternative (e.g. `getVersionId()`).
+- Override `getId()` with `@Deprecated` and provide a semantically named alternative (e.g. `getOrderId()`).
 - Returned by the repository via a dedicated `findAllSummary(criteria)` method.
 
 ### Projections
@@ -179,8 +183,8 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 - Accessed via a domain service interface (Finder/port). Implementation lives in infrastructure.
 
 ### Events
-- Extend the aggregate's base event class (e.g. `ProductVersionEvent` extends `Event<ProductVersion, ProductVersionId>`).
-- Class names use **past tense** (e.g. `ProductVersionCreated`, `ReviewDeleted`).
+- Extend the aggregate's base event class (e.g. `OrderEvent` extends `Event<Order, OrderId>`).
+- Class names use **past tense** (e.g. `OrderCreated`, `OrderDeleted`).
 - Provide a static `create(Aggregate)` factory method that takes the full aggregate snapshot.
 - `Event` from lib-shared holds the full entity snapshot, an `EventId`, and `sentAt`.
 
@@ -188,13 +192,13 @@ public class ProductVersion extends AggregateRoot<ProductVersionId> {
 - Extend the appropriate base: `NotFoundException`, `ForbiddenException`, `ValueValidationException`, or `IncorrectVersionException`.
 - Always provide a static `createOf(...)` factory method (additional named factory methods are allowed when semantics require it).
 - Constructor takes `(code, title, message)`. The title is always a fixed string; code and message are parameterized.
-- Error code constants are defined in `shared/domain/exceptions/ProductExceptionCodes.java`.
+- Error code constants are defined in `shared/domain/exceptions/<Context>ExceptionCodes.java`.
 
 ```java
-public class ProductVersionNotFoundException extends NotFoundException {
-    public static ProductVersionNotFoundException createOf(ProductVersionId id) {
-        return new ProductVersionNotFoundException(PRODUCT_NOT_FOUND, "Product not found",
-                "Product version " + id + " not found");
+public class OrderNotFoundException extends NotFoundException {
+    public static OrderNotFoundException createOf(OrderId id) {
+        return new OrderNotFoundException(ORDER_NOT_FOUND, "Order not found",
+                "Order " + id + " not found");
     }
 }
 ```
@@ -210,27 +214,26 @@ public class ProductVersionNotFoundException extends NotFoundException {
   - `findAllSummary(criteria)` — returns `List<Summary>`.
   - `count(criteria)` — returns `long`.
   - `delete(entity)`.
-- Use the **Criteria pattern** for multi-record queries. Add `default` convenience methods (e.g. `findPreviousProductVersion()`) built on top of `findAll`.
+- Use the **Criteria pattern** for multi-record queries. Add `default` convenience methods built on top of `findAll`.
 
 ```java
-public interface ProductVersionRepository {
-    ProductVersion save(ProductVersion productVersion);
-    Optional<ProductVersion> findById(ProductVersionId versionId);
-    default ProductVersion findByIdOrError(ProductVersionId versionId) {
-        return findById(versionId)
-                .orElseThrow(() -> ProductVersionNotFoundException.createOf(versionId));
+public interface OrderRepository {
+    Order save(Order order);
+    Optional<Order> findById(OrderId orderId);
+    default Order findByIdOrError(OrderId orderId) {
+        return findById(orderId)
+                .orElseThrow(() -> OrderNotFoundException.createOf(orderId));
     }
-    void delete(ProductVersion version);
-    List<ProductVersion> findAll(ProductVersionCriteria criteria);
-    default Optional<ProductVersion> findOne(ProductVersionCriteria criteria) { ... }
-    default Optional<ProductVersion> findPreviousProductVersion(ProductVersionId versionId) { ... }
-    long count(ProductVersionCriteria criteria);
-    List<ProductVersionSummary> findAllSummary(ProductVersionCriteria criteria);
+    void delete(Order order);
+    List<Order> findAll(OrderCriteria criteria);
+    default Optional<Order> findOne(OrderCriteria criteria) { ... }
+    long count(OrderCriteria criteria);
+    List<OrderSummary> findAllSummary(OrderCriteria criteria);
 }
 ```
 
 ### Domain Services
-- Either an **output port interface** (implemented in infrastructure, e.g. `PasswordEncoder`, `ParametricFinder`) or a class with **business logic not belonging to any single aggregate** (e.g. `ParametricValidator`).
+- Either an **output port interface** (implemented in infrastructure, e.g. `PasswordEncoder`, `ExternalFinder`) or a class with **business logic not belonging to any single aggregate** (e.g. `OrderValidator`).
 - Interface names describe the capability, not the technology.
 
 ---
@@ -242,37 +245,36 @@ public interface ProductVersionRepository {
 - Constructor assigns all fields without validation — validation is the aggregate's responsibility.
 - Attributes must be **primitive types, Value Objects, or Identifiers**. Never pass aggregates or entities.
 - Annotate with `@Getter` (Lombok).
+- Application layer only can depends on 'domain/'
 
 ```java
 @Getter
-public class CreateProductVersionParams extends Params<ProductVersion> {
-    private final ProductVersionId productVersionId;
-    private final ParametricValueId typeId;
-    private final LocalizedField name;
-    private final BigDecimal price;
-    private final BigDecimal discount;
+public class CreateOrderParams extends Params<Order> {
+    private final OrderId orderId;
+    private final CustomerId customerId;
+    // ... other fields
 
-    public CreateProductVersionParams(ProductVersionId productVersionId, ParametricValueId typeId,
-            LocalizedField name, BigDecimal price, BigDecimal discount) {
+    public CreateOrderParams(OrderId orderId, CustomerId customerId /* ... */) {
         super();
-        this.productVersionId = productVersionId;
+        this.orderId = orderId;
+        this.customerId = customerId;
         // ... assign fields
     }
 }
 ```
 
 ### Use Cases
-- One class per use case, named `<Action>UseCase` (e.g. `CreateProductVersionUseCase`).
+- One class per use case, named `<Action>UseCase` (e.g. `CreateOrderUseCase`).
 - Extend `UseCase<Params, ReturnType>` and annotate with `@Component @RequiredArgsConstructor`.
 - Declare `getMandatoryUserRoles()` returning a `Set<String>` of role constants from `Roles`.
 - The `execute()` method should read as a sequential list of named steps, each delegating to a private method.
-- A use case should ideally call **one action method on one aggregate**. Multi-aggregate operations within a single use case are an intentional exception (e.g. updating a previous version when creating a new one).
+- A use case should ideally call **one action method on one aggregate**. Multi-aggregate operations within a single use case are an intentional exception.
 - Event ordering: call `eventBus.sendAll(aggregate)` **before** `repository.save()` for new aggregates; after `save()` for updates to existing aggregates.
 
 ```java
 @Component
 @RequiredArgsConstructor
-public class CreateProductVersionUseCase extends UseCase<CreateProductVersionParams, ProductVersion> {
+public class CreateOrderUseCase extends UseCase<CreateOrderParams, Order> {
 
     @Override
     public Set<String> getMandatoryUserRoles() {
@@ -280,18 +282,17 @@ public class CreateProductVersionUseCase extends UseCase<CreateProductVersionPar
     }
 
     @Override
-    public ProductVersion execute(Auth auth, CreateProductVersionParams params) {
-        var productVersionId = params.getProductVersionId();
+    public Order execute(Auth auth, CreateOrderParams params) {
+        var orderId = params.getOrderId();
 
-        ensureProductVersionNotExist(productVersionId);
-        parametricValidator.validateProductType(params.getTypeId());
-        setEndEffectiveDateOfPreviousProduct(productVersionId);
-        return createNewVersion(productVersionId, params);
+        ensureOrderNotExist(orderId);
+        validateExternalDependencies(params);
+        return createOrder(orderId, params);
     }
 
-    private void ensureProductVersionNotExist(ProductVersionId versionId) { ... }
-    private void setEndEffectiveDateOfPreviousProduct(ProductVersionId versionId) { ... }
-    private ProductVersion createNewVersion(ProductVersionId versionId, CreateProductVersionParams params) { ... }
+    private void ensureOrderNotExist(OrderId orderId) { ... }
+    private void validateExternalDependencies(CreateOrderParams params) { ... }
+    private Order createOrder(OrderId orderId, CreateOrderParams params) { ... }
 }
 ```
 
@@ -322,17 +323,16 @@ Name packages after the technology and version:
 ```java
 @RestController
 @RequiredArgsConstructor
-public class ProductVersionRestController implements ProductVersionsApi {
-    private final ProductVersionRestMapper productVersionRestMapper;
+public class OrderRestController implements OrdersApi {
+    private final OrderRestMapper orderRestMapper;
     private final UseCaseBus useCaseBus;
 
     @Override
-    public ProductVersionRestDTO createProductVersion(String productCode, String effectiveDate,
-            CreateProductVersionInputRestDTO body) {
-        var params = productVersionRestMapper.toCreateProductParams(
-                productVersionRestMapper.toDomain(productCode, effectiveDate), body);
-        var productVersion = useCaseBus.execute(params);
-        return productVersionRestMapper.toDTO(productVersion);
+    public OrderRestDTO createOrder(String orderId, CreateOrderInputRestDTO body) {
+        var params = orderRestMapper.toCreateOrderParams(
+                orderRestMapper.toDomain(orderId), body);
+        var order = useCaseBus.execute(params);
+        return orderRestMapper.toDTO(order);
     }
 }
 ```
@@ -381,15 +381,15 @@ public class ProductVersionRestController implements ProductVersionsApi {
 - Assertions verify: return value, fake repository state, event bus contents.
 
 ```java
-class CreateProductVersionUseCaseTest {
+class CreateOrderUseCaseTest {
     @BeforeEach
     void beforeEach() {
         var eventFakeBus = new EventFakeBus();
-        var productVersionFakeRepository = new ProductVersionFakeRepository();
-        var parametricFinder = new ParametricFakeFinder();
-        var parametricValidator = new ParametricValidator(parametricFinder);
-        createProductVersionUseCase = new CreateProductVersionUseCase(
-                productVersionFakeRepository, parametricValidator, eventFakeBus);
+        var orderFakeRepository = new OrderFakeRepository();
+        var externalFinder = new ExternalFakeFinder();
+        var orderValidator = new OrderValidator(externalFinder);
+        createOrderUseCase = new CreateOrderUseCase(
+                orderFakeRepository, orderValidator, eventFakeBus);
     }
 }
 ```
@@ -403,13 +403,13 @@ class CreateProductVersionUseCaseTest {
 ### Object Mothers
 - One `Mother` class per aggregate/entity, in the test source tree, same package as the domain class.
 - Use **constructors directly** (not factory methods) to create objects in any desired state without triggering domain events.
-- Provide named methods that describe the domain state (e.g. `appleV1()`, `appleV2()`, `pearV1Summary()`).
+- Provide named methods that describe the domain state (e.g. `pendingOrder()`, `completedOrder()`, `orderSummary()`).
 
 ```java
-public class ProductVersionMother {
-    public static ProductVersion appleV1() {
-        var id = ProductVersionId.createOf(ProductCodeMother.apple(), Instant.parse("2025-01-01T09:00:00.00Z"));
-        return new ProductVersion(id, name, fruitId, endDate, price, discount, totalPrice, UNPUBLISHED, 1L, null);
+public class OrderMother {
+    public static Order pendingOrder() {
+        var id = OrderId.createOf(/* ... */);
+        return new Order(id, /* fields */, PENDING, 1L, null);
     }
 }
 ```
@@ -421,39 +421,33 @@ public class ProductVersionMother {
 - Implement `findAllSummary(criteria)` by mapping from `findAll(criteria)`.
 - Implement `count(criteria)` as `findAll(criteria).size()`.
 
-### ArchUnit Tests
-- Enforce that `domain/` cannot depend on `application/` or `infrastructure/`.
-- Enforce that `application/` cannot depend on `infrastructure/`.
-- Enforce that exceptions live in the `exceptions` package and params in the `params` package.
-- No `services` layer is allowed inside `application/`.
-
 ---
 
 ## Naming Conventions
 
 | Element | Convention | Example |
 |---|---|---|
-| Aggregate factory method | Descriptive verb (`create`, `createOf`) | `ProductVersion.create(...)`, `Review.createOf(...)` |
-| Identifier factory method | `createOf(parts...)` | `ProductVersionId.createOf(code, date)` |
+| Aggregate factory method | Descriptive verb (`create`, `createOf`) | `Order.create(...)`, `Review.createOf(...)` |
+| Identifier factory method | `createOf(parts...)` | `OrderLineId.createOf(orderId, productId)` |
 | Action method | Verb describing the business action | `update()`, `publish()`, `delete()` |
-| Ensure method | `ensure` + invariant description | `ensureVersion()`, `ensureReviewBelongsToUser()` |
+| Ensure method | `ensure` + invariant description | `ensureVersion()`, `ensureOwnershipBelongsToUser()` |
 | Repository find single | `findById` / `findByIdOrError` | — |
 | Repository find multiple | `findAll(criteria)` / `findAllSummary(criteria)` | — |
 | Repository count | `count(criteria)` | — |
-| Use case class | `<Action>UseCase` | `CreateProductVersionUseCase` |
-| Params class | `<Action>Params` | `CreateProductVersionParams` |
-| Event class | Past tense | `ProductVersionCreated`, `ReviewDeleted` |
-| Exception class | Entity + problem | `ProductVersionNotFoundException` |
-| Kafka producer | Entity + `EventKafkaProducer` | `ProductVersionEventKafkaProducer` |
-| Kafka consumer | Entity + source + `KafkaConsumer` | `ReviewsOnProductEventsKafkaConsumer` |
-| REST DTO suffix | `RestDTO` (auto-generated) | `ProductVersionRestDTO` |
-| Mongo DTO suffix | `MongoDTO` | `ProductVersionMongoDTO` |
-| REST Mapper suffix | `RestMapper` | `ProductVersionRestMapper` |
-| Mongo Mapper suffix | `MongoMapper` | `ProductVersionMongoMapper` |
-| Kafka Mapper suffix | `KafkaMapper` | `ProductVersionKafkaMapper` |
-| Mother class | Entity + `Mother` | `ProductVersionMother` |
-| Fake repository | Entity + `FakeRepository` | `ProductVersionFakeRepository` |
-| Fake service | Entity + `Fake` + PortName | `ParametricFakeFinder` |
+| Use case class | `<Action>UseCase` | `CreateOrderUseCase` |
+| Params class | `<Action>Params` | `CreateOrderParams` |
+| Event class | Past tense | `OrderCreated`, `OrderDeleted` |
+| Exception class | Entity + problem | `OrderNotFoundException` |
+| Kafka producer | Entity + `EventKafkaProducer` | `OrderEventKafkaProducer` |
+| Kafka consumer | Entity + source + `KafkaConsumer` | `OrdersOnInventoryEventsKafkaConsumer` |
+| REST DTO suffix | `RestDTO` (auto-generated) | `OrderRestDTO` |
+| Mongo DTO suffix | `MongoDTO` | `OrderMongoDTO` |
+| REST Mapper suffix | `RestMapper` | `OrderRestMapper` |
+| Mongo Mapper suffix | `MongoMapper` | `OrderMongoMapper` |
+| Kafka Mapper suffix | `KafkaMapper` | `OrderKafkaMapper` |
+| Mother class | Entity + `Mother` | `OrderMother` |
+| Fake repository | Entity + `FakeRepository` | `OrderFakeRepository` |
+| Fake service | Entity + `Fake` + PortName | `ExternalFakeFinder` |
 
 **Variable naming:** always use descriptive names. Prefer `var` for declarations.
 
