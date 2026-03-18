@@ -88,33 +88,34 @@ Design, Tasks, Edge cases & constraints) are kept in English as structural marke
 # Feature: [Readable task name]
 
 ## Description
-[2-4 sentences in Spanish. Explains the business problem this task solves and why it matters.
-This is not a technical summary — it is the "why".]
+Brief user story written from the perspective of the person who wants that capability
+(usually a user or customer of the system). Use the following table format:
 
-## Non-goals
-[Bulleted list in Spanish of what this task does NOT include. Be explicit to avoid scope creep.
-Examples: does not include notifications, does not modify the state of other entities, does not expose a public endpoint.]
+| Cómo | [Tipo de usuario] |
+| --- | --- |
+| Quiero | [Realizar una acción / funcionalidad] |
+| Para | [Obtener un beneficio o valor] |
+
+Example:
+
+| Cómo | Usuario registrado |
+| --- | --- |
+| Quiero | Recuperar mi contraseña |
+| Para | Volver a acceder a mi cuenta si la olvido |
 
 ## Goals
 [Bulleted list in Spanish of what is within the scope of this specific task.]
 
 ## Design
 
-### Bounded context y aggregate root
-[Name of the bounded context and the affected aggregate root. If there are several, explain the interaction.]
-
-### Modelos de datos afectados
+### Data models 
 [Describe the relevant domain artefacts: aggregate, value objects, identifiers, events, exceptions.
 Include the file path if it already exists, or the path where it must be created if new.
 Do not write code — describe attributes and responsibilities in prose or lists.]
 
-### API afectada
+### APIs
 [If applicable: REST endpoint (HTTP method + path in the OpenAPI YAML), or Kafka topic + Avro schema.
 Indicate whether it is a primary adapter (input) or secondary adapter (output).]
-
-### Patrones DDD aplicados
-[List the applicable patterns: Aggregate, Entity, Value Object, Domain Event, Repository, Use Case,
-Domain Service, Projection, Summary, Idempotency (version), Bulk operation, etc.]
 
 ## Tasks
 [One sub-task per affected layer. Format: checkbox + description + path of the main file to create or modify.
@@ -128,12 +129,6 @@ Use the relevant layers from this list:]
 - [ ] **Tests** — [brief description] (`<path>`)
 
 [Omit layers that do not apply to this task. Do not add trivial tasks like "add import".]
-
-## Edge cases & constraints
-[List of domain invariants, non-obvious validations, boundary conditions, or concurrency constraints
-that the developer must consider and that are NOT evident from reading the requirements.
-Examples: idempotency if the resource already exists, optimistic version control, valid state transitions,
-role-specific permissions, behaviour with null or optional data.]
 ```
 
 ---
@@ -141,13 +136,10 @@ role-specific permissions, behaviour with null or optional data.]
 ## Quality criteria per section
 
 ### Description
-- Written in business language, not technical.
-- Answers: what does the system do? why is it needed?
+- Written as a user story table: Cómo / Quiero / Para.
+- Written from the perspective of the user or client who benefits from the feature.
+- The "Para" row must express business value, not a technical outcome.
 - Does not mention classes, methods, or technologies.
-
-### Non-goals
-- Be specific. Avoid "everything else".
-- Anticipate what a developer might assume is included but is not.
 
 ### Goals
 - Each point must be verifiable. If it cannot be verified, reformulate it.
@@ -158,7 +150,7 @@ role-specific permissions, behaviour with null or optional data.]
 - For new artefacts, specify which package they belong to according to the structure in `CLAUDE.md`.
 - Explicitly mention if a value object, event, or exception can reuse an existing one.
 
-### Design — Affected API
+### Design — APIs
 - For REST: reference the `.yml` file in `apis/rest/v1/` that defines the endpoint.
   If the endpoint is new, indicate the file where it should be added and describe the request/response schema in prose.
 - For Kafka: reference the `.avsc` file in `apis/avro/v1/` or indicate that a new one must be created.
@@ -168,12 +160,6 @@ role-specific permissions, behaviour with null or optional data.]
 - The file path is the most representative file of the layer (e.g. the UseCase, not the Params).
 - If a task involves creating several files in the same layer, mention all of them in that sub-task's description.
 - Do not include layers that are not touched in this task.
-
-### Edge cases & constraints
-- Always include idempotency rules if the use case can be received more than once (Kafka).
-- Mention optimistic version control if the aggregate can be modified concurrently.
-- Document valid state transitions if the aggregate has a lifecycle with states.
-- Indicate the roles that have permission to execute the use case.
 
 ---
 
