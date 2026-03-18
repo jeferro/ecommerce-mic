@@ -66,10 +66,10 @@ Confirm with the user the bounded context, affected aggregate root(s), and any a
 One `.md` file per task at:
 
 ```
-specs/<bounded_context>/<task-name>.md
+specs/<bounded_context>/<task-name>-spec.md
 ```
 
-The filename must be kebab-case and match the task name provided by the user.
+The filename must be kebab-case, end in `-spec.md`, and match the task name provided by the user.
 
 ---
 
@@ -86,10 +86,10 @@ User story table from the perspective of the person who wants that capability:
 ```markdown
 ## Description
 
-| Cómo | [Tipo de usuario] |
-| --- | --- |
+| Cómo   | [Tipo de usuario]                     |
+|--------|---------------------------------------|
 | Quiero | [Realizar una acción / funcionalidad] |
-| Para | [Obtener un beneficio o valor] |
+| Para   | [Obtener un beneficio o valor]        |
 ```
 
 Rules:
@@ -111,8 +111,9 @@ Do not duplicate criteria already covered by another spec in the same feature.
 ```markdown
 ## Acceptance criteria
 
-| Título | Condición |
-| --- | --- |
+
+| Título         | Condición                                                           |
+|----------------|---------------------------------------------------------------------|
 | [Nombre corto] | **Dado:** [contexto] **Cuando:** [acción] **Entonces:** [resultado] |
 ```
 
