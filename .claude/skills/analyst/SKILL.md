@@ -119,14 +119,37 @@ Cover all three types:
 
 ## Design
 
-### Data models 
-[Describe the relevant domain artefacts: aggregate, value objects, identifiers, events, exceptions.
-Include the file path if it already exists, or the path where it must be created if new.
-Do not write code — describe attributes and responsibilities in prose or lists.]
+### Data models
+
+List only the **changes** to the domain model required by this task — attributes to add, remove, or modify.
+Do not repeat validations already present in the code or defined in a preceding task.
+
+Format rules:
+- Attribute name in bold.
+- Add `(Obligatorio)` if required; omit otherwise.
+- State validations inline: format, range, consistency constraints within the aggregate.
+- For enums: list each possible value with its name.
+- For parametrics: list possible values and note that it must be validated against the parametrics service.
+- For nested objects: add one indented sub-level per attribute.
+
+Example:
+- **id** (Obligatorio)
+- **address** (Obligatorio)
+  - **roadType** (Obligatorio) — paramétrica, validar contra servicio de paramétricas
+  - **roadName** (Obligatorio)
+  - **number** (Obligatorio) — número positivo
 
 ### APIs
-[If applicable: REST endpoint (HTTP method + path in the OpenAPI YAML), or Kafka topic + Avro schema.
-Indicate whether it is a primary adapter (input) or secondary adapter (output).]
+
+**REST** (primary adapter — input):
+- **URL:** HTTP method + path of the endpoint to create or modify.
+- **Query parameters:** URL parameters used in the request (e.g. search filters). Omit if none.
+- **Body:** all input attributes using the same format as Data models (bold name, `(Obligatorio)`, inline validations).
+  Include cross-aggregate integrity validations not covered by the data model (e.g. referenced entity must exist, parametric validations).
+- **Response:** state whether the full aggregate is returned. If not, list the returned attributes using the same format as Data models.
+
+**Kafka** (secondary adapter — output):
+- Topic name and Avro schema file (`apis/avro/v1/...`). If new, indicate it must be created.
 
 ## Tasks
 [One sub-task per affected layer. Format: checkbox + description + path of the main file to create or modify.
@@ -159,13 +182,14 @@ Use the relevant layers from this list:]
 - Do not duplicate criteria already covered by another spec in the same feature.
 
 ### Design — Data models
-- Reference artefacts by class name and their relative path from `code/app/src/main/java/`.
-- For new artefacts, specify which package they belong to according to the structure in `CLAUDE.md`.
-- Explicitly mention if a value object, event, or exception can reuse an existing one.
+- Only include changes: new attributes, removed attributes, or modified validations.
+- Do not list validations already in the code or covered by a preceding task in the same feature.
+- Follow the format: bold name, `(Obligatorio)` if required, inline validations, nested objects indented.
 
 ### Design — APIs
-- For REST: reference the `.yml` file in `apis/rest/v1/` that defines the endpoint.
-  If the endpoint is new, indicate the file where it should be added and describe the request/response schema in prose.
+- For REST: follow the URL / Query parameters / Body / Response structure exactly.
+  Body and Response attributes use the same format as Data models (bold, `(Obligatorio)`, inline validations).
+  Cross-aggregate integrity rules go in Body, not in Data models.
 - For Kafka: reference the `.avsc` file in `apis/avro/v1/` or indicate that a new one must be created.
 
 ### Tasks
