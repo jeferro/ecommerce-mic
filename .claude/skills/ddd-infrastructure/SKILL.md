@@ -79,3 +79,93 @@ public class OrderRestController implements OrdersApi {
 - DTOs for REST are auto-generated from OpenAPI specs. Do not hand-write them.
 - DTOs for Kafka are auto-generated from Avro `.avsc` schemas. Do not hand-write them.
 - MongoDB DTOs extend `AuditedMongoDTO` (adds `version` + `MetadataMongoDTO`). Annotate with `@Document`.
+
+---
+
+## Bruno API Collection (`tools/bruno`)
+
+Every change to a REST API **must** be reflected in the Bruno collection at `tools/bruno/`.
+
+### Structure
+
+```
+tools/bruno/
+  bruno.json                   # Collection metadata
+  collection.bru               # Root config (auth, shared vars)
+  environments/
+    local.bru                  # Environment vars: ecommerce-url, jwt-token, etc.
+  v1/
+    folder.bru                 # Folder: v1
+    <resource>/
+      folder.bru               # Folder per resource
+      <Operation>.bru          # One file per endpoint
+```
+
+### Rules
+
+- One `.bru` file per endpoint operation. The file name is the human-readable operation name (e.g. `Create product versions.bru`).
+- Files are ordered with `seq` in the `meta` block. Use sequential numbers within each folder.
+- All requests under `v1/` inherit auth from their folder (`auth: inherit`). Only override if the endpoint is unauthenticated (`auth: none`).
+- Bearer token always uses `{{ecommerce-jwt-token}}` from the environment.
+- URL always uses `{{ecommerce-url}}` as the base.
+- When adding a new resource, create a `folder.bru` in the new subfolder.
+
+### File format
+
+```bru
+meta {
+  name: <Operation name>
+  type: http
+  seq: <N>
+}
+
+<method> {
+  url: {{ecommerce-url}}/v1/<resource>/<path>
+  body: json | none
+  auth: bearer | inherit | none
+}
+
+params:path {
+  <param>: <example-value>
+}
+
+params:query {
+  ~<param>: <example-value>   # prefix ~ to disable optional params
+}
+
+headers {
+  Accept-Language: {{accept-language}}
+}
+
+auth:bearer {
+  token: {{ecommerce-jwt-token}}
+}
+
+body:json {
+  {
+    <json-body>
+  }
+}
+
+script:post-response {
+  // Store response values in env vars when needed
+  bru.setEnvVar("product-version", res.getBody().version);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+```
+
+### When to update Bruno files
+
+| API change                                   | Bruno action                                                           |
+|----------------------------------------------|------------------------------------------------------------------------|
+| New endpoint added                           | Add a new `.bru` file in the corresponding resource folder             |
+| Endpoint URL changed                         | Update the `url` in the affected `.bru` file                           |
+| Request body field added/removed             | Update `body:json` in the affected `.bru` file                         |
+| Path/query parameter added/removed           | Update `params:path` or `params:query`                                 |
+| New resource (new folder in `v1/`)           | Create the resource subfolder + `folder.bru` + one `.bru` per endpoint |
+| Endpoint removed                             | Delete the corresponding `.bru` file                                   |
+| Response field needed by subsequent requests | Add/update `script:post-response` to store it via `bru.setEnvVar()`    |
