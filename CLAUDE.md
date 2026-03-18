@@ -5,6 +5,20 @@ Always follow these rules unless the spec explicitly overrides a specific point.
 
 ---
 
+## Common Commands
+
+All commands must be run from the project root directory.
+
+| Command          | Description                                              |
+|------------------|----------------------------------------------------------|
+| `task env-up`    | Start local infrastructure (MongoDB, Kafka, etc.)        |
+| `task env-down`  | Stop local infrastructure                                |
+| `task start`     | Run the application (requires `task env-up` first)       |
+| `task compile`   | Compile the project                                      |
+| `task test`      | Run the test suite                                       |
+
+---
+
 ## Tech Stack
 
 | Component     | Technology                                          | Version      |
