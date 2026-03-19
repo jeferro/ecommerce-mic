@@ -99,20 +99,18 @@ Rules:
 
 #### `## Design`
 
-#### `## Tasks`
+#### `### Tasks`
 
 One sub-task per affected layer. Omit layers not touched by this task.
 Do not add trivial tasks like "add import" or "configure bean".
 
 ```markdown
-## Tasks
-
-- [ ] **Domain** — [descripción breve] (`<path>`)
-- [ ] **Application** — [descripción breve] (`<path>`)
-- [ ] **Infrastructure / REST** — [descripción breve] (`<path>`)
-- [ ] **Infrastructure / MongoDB** — [descripción breve] (`<path>`)
-- [ ] **Infrastructure / Kafka** — [descripción breve] (`<path>`)
-- [ ] **Tests** — [descripción breve] (`<path>`)
+- [ ] **Domain** — [descripción breve]
+- [ ] **Application** — [descripción breve]
+- [ ] **Infrastructure / REST** — [descripción breve]
+- [ ] **Infrastructure / MongoDB** — [descripción breve]
+- [ ] **Infrastructure / Kafka** — [descripción breve]
+- [ ] **Tests** — [descripción breve]
 ```
 
 Rules:
