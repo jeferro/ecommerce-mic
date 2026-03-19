@@ -140,9 +140,10 @@ Address:
   number: (obligatorio) integer. Número positivo
 ```
 
-##### `### APIs`
+##### `### REST API`
 
-**REST** (primary adapter — input):
+Primary adapter — input. Omit this section if the task does not expose a REST endpoint.
+
 - **URL:** HTTP method + path of the endpoint to create or modify.
 - **Query parameters:** URL parameters used in the request (e.g. search filters). Omit if none.
 - **Body:** all input attributes using the same format as Domain models.
@@ -150,8 +151,32 @@ Address:
   (e.g. referenced entity must exist, parametric validations).
 - **Response:** state whether the full aggregate is returned. If not, list returned attributes using the same format as Domain models.
 
-**Kafka** (secondary adapter — output):
+##### `### REST Client`
+
+Secondary adapter — outbound HTTP integration. Omit this section if the task does not call an external REST service.
+
+- **URL:** HTTP method + full URL (or base URL + path) of the external endpoint.
+- **Request:** attributes sent, using the same format as Domain models.
+- **Response:** attributes consumed from the response, using the same format as Domain models.
+
+##### `### Kafka`
+
+Secondary adapter — output. Omit this section if the task does not produce or consume Kafka events.
+
 - Topic name and Avro schema file (`apis/avro/v1/...`). If new, indicate it must be created.
+
+##### `### Database`
+
+Omit this section if the task requires no persistence changes.
+
+Describe schema changes and any data migration required.
+
+Migration rules:
+- For **non-breaking changes** (adding a new optional field, adding a new collection): apply directly.
+- For **breaking changes** (splitting a field, renaming a field, changing a field's type): the team has agreed on a two-deployment backward-compatibility strategy:
+  1. **Deployment N:** keep the original field and add the new field(s). Writes go to both fields; reads come from the new field.
+  2. **Deployment N+1:** remove the original field.
+  Describe each deployment step separately in the spec.
 
 ---
 
