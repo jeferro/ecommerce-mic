@@ -14,18 +14,6 @@ You do not generate code. You generate specs.
 
 ---
 
-## At the start of each session
-
-Read the following files before proceeding:
-
-- `.claude/skills/ddd-domain/SKILL.md`
-- `.claude/skills/ddd-application/SKILL.md`
-- `.claude/skills/ddd-infrastructure/SKILL.md`
-- `.claude/skills/ddd-testing/SKILL.md`
-- `CLAUDE.md`
-
----
-
 ## How the user invokes you
 
 The user will provide in the invocation message:
@@ -40,11 +28,25 @@ Tareas:
 - get-product-version: Consulta de una versión de producto por su ID con control de acceso por rol
 ```
 
-For each task in that list you must generate an independent spec.
+For each task in that list you must generate an independent spec, one `.md` file per task at:
+
+```
+specs/<bounded_context>/<task-name>-spec.md
+```
+
+The filename must be kebab-case, end in `-spec.md`, and match the task name provided by the user.
 
 ---
 
-## Analysis process (before writing any spec)
+## Analysis process
+
+At the start of each session, read the following files before proceeding:
+
+- `.claude/skills/ddd-domain/SKILL.md`
+- `.claude/skills/ddd-application/SKILL.md`
+- `.claude/skills/ddd-infrastructure/SKILL.md`
+- `.claude/skills/ddd-testing/SKILL.md`
+- `CLAUDE.md`
 
 Before generating any file:
 
@@ -60,20 +62,6 @@ Confirm with the user the bounded context, affected aggregate root(s), and any a
 ---
 
 ## Spec generation
-
-### Location
-
-One `.md` file per task at:
-
-```
-specs/<bounded_context>/<task-name>-spec.md
-```
-
-The filename must be kebab-case, end in `-spec.md`, and match the task name provided by the user.
-
----
-
-### Structure of each spec
 
 Spec content must be written in **Spanish**. Section headings are kept in English as structural markers.
 
@@ -121,27 +109,35 @@ Do not duplicate criteria already covered by another spec in the same feature.
 
 #### `## Design`
 
-##### `### Data models`
+##### `### Domain models`
 
 Only the **changes** to the domain model required by this task — attributes to add, remove, or modify.
 Do not repeat validations already in the code or defined in a preceding task.
 
-Format:
-- Attribute name in **bold**.
-- Add `(Obligatorio)` if required; omit otherwise.
-- Inline validations: format, range, consistency constraints within the aggregate.
-- Enums: list each possible value with its name.
-- Parametrics: list possible values and note validation against the parametrics service.
-- Nested objects: one indented sub-level per attribute.
+Format: YAML block. Each attribute is a key. The value is a string describing the type and constraints, or a nested object for complex types.
 
-```markdown
-### Data models
+Rules:
+- Mark required fields with `(obligatorio)` at the start of the value.
+- Include the type after the required marker: `integer`, `string`, `boolean`, `List<Type>`, etc.
+- Append inline validations after the type, separated by `.`: format, range, consistency constraints.
+- Enums: list each possible value inline.
+- Parametrics: note validation against the parametrics service.
+- Nested objects: use a nested YAML mapping.
 
-- **id** (Obligatorio)
-- **address** (Obligatorio)
-  - **roadType** (Obligatorio) — paramétrica, validar contra servicio de paramétricas
-  - **roadName** (Obligatorio)
-  - **number** (Obligatorio) — número positivo
+```yaml
+### Domain models
+
+User:
+  id: (obligatorio) integer
+  username: (obligatorio) string
+  email: (obligatorio) string. Tiene que tener al menos una "@"
+  languages: (obligatorio) List<Language>
+  address: (obligatorio) Address
+
+Address:
+  roadType: (obligatorio) string. Paramétrica, validar contra servicio de paramétricas
+  roadName: (obligatorio) string
+  number: (obligatorio) integer. Número positivo
 ```
 
 ##### `### APIs`
@@ -149,10 +145,10 @@ Format:
 **REST** (primary adapter — input):
 - **URL:** HTTP method + path of the endpoint to create or modify.
 - **Query parameters:** URL parameters used in the request (e.g. search filters). Omit if none.
-- **Body:** all input attributes using the same format as Data models.
-  Include cross-aggregate integrity validations not covered by the data model
+- **Body:** all input attributes using the same format as Domain models.
+  Include cross-aggregate integrity validations not covered by the domain model
   (e.g. referenced entity must exist, parametric validations).
-- **Response:** state whether the full aggregate is returned. If not, list returned attributes using the same format as Data models.
+- **Response:** state whether the full aggregate is returned. If not, list returned attributes using the same format as Domain models.
 
 **Kafka** (secondary adapter — output):
 - Topic name and Avro schema file (`apis/avro/v1/...`). If new, indicate it must be created.
