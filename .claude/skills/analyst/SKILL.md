@@ -59,6 +59,17 @@ Before generating any file:
 
 Confirm with the user the bounded context, affected aggregate root(s), and any ambiguities before writing.
 
+Writing rules:
+
+- **Skill language:** English.
+- **Spec language:** Spanish for all content; section headings in English as structural markers.
+- **No code:** specs contain no Java code — only artefact references, paths, and design decisions in prose.
+- **No trivial tasks:** do not mention "add Gradle dependency", "import class", "configure bean".
+- **Naming:** artefact names must follow the conventions in `CLAUDE.md` (UseCase, Params, MongoDTO, RestMapper, FakeRepository, Mother, etc.).
+- **One spec per task:** never group two tasks in the same file.
+
+When done, present a summary of the generated files and any design decisions the user should review.
+
 ---
 
 ## Spec generation
@@ -87,6 +98,29 @@ Rules:
 ---
 
 #### `## Design`
+
+#### `## Tasks`
+
+One sub-task per affected layer. Omit layers not touched by this task.
+Do not add trivial tasks like "add import" or "configure bean".
+
+```markdown
+## Tasks
+
+- [ ] **Domain** — [descripción breve] (`<path>`)
+- [ ] **Application** — [descripción breve] (`<path>`)
+- [ ] **Infrastructure / REST** — [descripción breve] (`<path>`)
+- [ ] **Infrastructure / MongoDB** — [descripción breve] (`<path>`)
+- [ ] **Infrastructure / Kafka** — [descripción breve] (`<path>`)
+- [ ] **Tests** — [descripción breve] (`<path>`)
+```
+
+Rules:
+- Granularity is **one task per layer**, not one task per class.
+- The path is the most representative file of the layer (e.g. the UseCase, not the Params).
+- If a task involves several files in the same layer, mention all of them in that sub-task's description.
+
+---
 
 ##### `### Domain models`
 
@@ -239,39 +273,3 @@ Breaking-change strategy (two-deployment backward-compatibility):
   1. **Deployment N:** keep the original field and add the new field(s). Writes go to both fields; reads come from the new field.
   2. **Deployment N+1:** remove the original field.
   Describe each deployment step separately in the spec.
-
----
-
-#### `## Tasks`
-
-One sub-task per affected layer. Omit layers not touched by this task.
-Do not add trivial tasks like "add import" or "configure bean".
-
-```markdown
-## Tasks
-
-- [ ] **Domain** — [descripción breve] (`<path>`)
-- [ ] **Application** — [descripción breve] (`<path>`)
-- [ ] **Infrastructure / REST** — [descripción breve] (`<path>`)
-- [ ] **Infrastructure / MongoDB** — [descripción breve] (`<path>`)
-- [ ] **Infrastructure / Kafka** — [descripción breve] (`<path>`)
-- [ ] **Tests** — [descripción breve] (`<path>`)
-```
-
-Rules:
-- Granularity is **one task per layer**, not one task per class.
-- The path is the most representative file of the layer (e.g. the UseCase, not the Params).
-- If a task involves several files in the same layer, mention all of them in that sub-task's description.
-
----
-
-## Writing rules
-
-- **Skill language:** English.
-- **Spec language:** Spanish for all content; section headings in English as structural markers.
-- **No code:** specs contain no Java code — only artefact references, paths, and design decisions in prose.
-- **No trivial tasks:** do not mention "add Gradle dependency", "import class", "configure bean".
-- **Naming:** artefact names must follow the conventions in `CLAUDE.md` (UseCase, Params, MongoDTO, RestMapper, FakeRepository, Mother, etc.).
-- **One spec per task:** never group two tasks in the same file.
-
-When done, present a summary of the generated files and any design decisions the user should review.
