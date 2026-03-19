@@ -86,27 +86,6 @@ Rules:
 
 ---
 
-#### `## Acceptance criteria`
-
-One row per criterion in Gherkin format (Dado / Cuando / Entonces). Cover all three types:
-- **Input data:** one criterion per input field (required/optional, format, range, etc.)
-- **Output data:** full aggregate returned or subset — make it explicit.
-- **Business rules:** operations triggered (record updated, event published, etc.)
-
-"Entonces" must describe an observable outcome, not an internal implementation detail.
-Do not duplicate criteria already covered by another spec in the same feature.
-
-```markdown
-## Acceptance criteria
-
-
-| Título         | Condición                                                           |
-|----------------|---------------------------------------------------------------------|
-| [Nombre corto] | **Dado:** [contexto] **Cuando:** [acción] **Entonces:** [resultado] |
-```
-
----
-
 #### `## Design`
 
 ##### `### Domain models`
@@ -114,31 +93,44 @@ Do not duplicate criteria already covered by another spec in the same feature.
 Only the **changes** to the domain model required by this task — attributes to add, remove, or modify.
 Do not repeat validations already in the code or defined in a preceding task.
 
-Format: YAML block. Each attribute is a key. The value is a string describing the type and constraints, or a nested object for complex types.
+Format: YAML block followed by a bullet list of integrity criteria for that model.
 
-Rules:
+YAML rules:
 - Mark required fields with `(obligatorio)` at the start of the value.
 - Include the type after the required marker: `integer`, `string`, `boolean`, `List<Type>`, etc.
 - Append inline validations after the type, separated by `.`: format, range, consistency constraints.
 - Enums: list each possible value inline.
-- Parametrics: note validation against the parametrics service.
 - Nested objects: use a nested YAML mapping.
 
-```yaml
-### Domain models
+After each model's YAML block, add a **Criterios** bullet list with the integrity rules that must hold within that aggregate: required fields, calculated attributes, format constraints, allowed state transitions, etc. Omit if there are no criteria for that model.
 
+```yaml
 User:
   id: (obligatorio) integer
   username: (obligatorio) string
-  email: (obligatorio) string. Tiene que tener al menos una "@"
+  email: (obligatorio) string
   languages: (obligatorio) List<Language>
   address: (obligatorio) Address
 
 Address:
-  roadType: (obligatorio) string. Paramétrica, validar contra servicio de paramétricas
+  roadType: (obligatorio) string
   roadName: (obligatorio) string
-  number: (obligatorio) integer. Número positivo
+  number: (obligatorio) integer
 ```
+
+**Criterios:**
+- `email` debe contener al menos un carácter `@`.
+- `number` debe ser un número positivo.
+
+##### `### Use case`
+
+Cross-aggregate and external-system integrity validations that cannot be enforced within a single aggregate. Omit this section if there are no such validations.
+
+Format: a single bullet list covering all validations, regardless of which aggregate or system they involve.
+
+Example:
+- El producto indicado en cada línea de factura debe existir en el catálogo.
+- El código postal debe ser válido según el servicio de paramétricas.
 
 ##### `### REST API`
 
