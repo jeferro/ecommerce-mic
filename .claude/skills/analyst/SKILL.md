@@ -144,12 +144,59 @@ Address:
 
 Primary adapter — input. Omit this section if the task does not expose a REST endpoint.
 
-- **URL:** HTTP method + path of the endpoint to create or modify.
-- **Query parameters:** URL parameters used in the request (e.g. search filters). Omit if none.
-- **Body:** all input attributes using the same format as Domain models.
-  Include cross-aggregate integrity validations not covered by the domain model
-  (e.g. referenced entity must exist, parametric validations).
-- **Response:** state whether the full aggregate is returned. If not, list returned attributes using the same format as Domain models.
+Define the endpoint using an OpenAPI YAML code block. Include only the paths and components relevant to this task.
+
+Breaking-change strategy (two-deployment backward-compatibility):
+- For **non-breaking changes** (adding an optional field, adding a new endpoint): apply directly.
+- For **breaking changes** (removing a field, renaming a field, changing a field's type):
+  1. **Deployment N:** keep the original field and add the new field. Both are present in the schema; the new field is used by the application.
+  2. **Deployment N+1:** remove the original field from the schema.
+  Describe each deployment step separately in the spec.
+
+Example:
+
+```yaml
+paths:
+  /orders/{orderId}:
+    post:
+      summary: Crear pedido
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Pedido creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+
+components:
+  schemas:
+    CreateOrderRequest:
+      type: object
+      required:
+        - customerId
+      properties:
+        customerId:
+          type: string
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+```
 
 ##### `### REST Client`
 
@@ -194,7 +241,7 @@ Omit this section if the task requires no persistence changes.
 
 Describe schema changes and any data migration required.
 
-Migration rules:
+Breaking-change strategy (two-deployment backward-compatibility):
 - For **non-breaking changes** (adding a new optional field, adding a new collection): apply directly.
 - For **breaking changes** (splitting a field, renaming a field, changing a field's type): the team has agreed on a two-deployment backward-compatibility strategy:
   1. **Deployment N:** keep the original field and add the new field(s). Writes go to both fields; reads come from the new field.
