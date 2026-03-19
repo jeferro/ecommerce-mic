@@ -163,7 +163,30 @@ Secondary adapter — outbound HTTP integration. Omit this section if the task d
 
 Secondary adapter — output. Omit this section if the task does not produce or consume Kafka events.
 
-- Topic name and Avro schema file (`apis/avro/v1/...`). If new, indicate it must be created.
+For each affected topic, specify:
+- **Topic name** and its Avro schema file path (`apis/avro/v1/...`).
+- **Schema changes** in an Avro code block showing only the fields to add, remove, or modify.
+
+Breaking-change strategy (two-deployment backward-compatibility):
+- For **non-breaking changes** (adding an optional field): apply directly to the existing topic and schema.
+- For **breaking changes** (removing a field, renaming a field, changing a field's type, restructuring the payload):
+  1. **Deployment N:** create a new topic with the version incremented (e.g. `orders.v1` → `orders.v2`) and its new Avro schema. The producer publishes to the new topic; the old topic remains active until all consumers migrate.
+  2. **Deployment N+1:** delete the original topic and its Avro schema.
+  Describe each deployment step separately in the spec.
+
+Example:
+
+```avro
+{
+  "type": "record",
+  "name": "OrderCreated",
+  "namespace": "com.example.orders.v2",
+  "fields": [
+    { "name": "orderId", "type": "string" },
+    { "name": "totalAmount", "type": "double" }
+  ]
+}
+```
 
 ##### `### Database`
 
